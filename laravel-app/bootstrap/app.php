@@ -41,10 +41,6 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-$app->loadEnvironmentFrom(
-    '.env.' . ((getenv("APP_ENV") ? getenv("APP_ENV") : "develop"))
-);
-
 /*
 |--------------------------------------------------------------------------
 | Return The Application
