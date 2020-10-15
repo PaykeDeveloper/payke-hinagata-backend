@@ -18,7 +18,7 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/var/www/html
+      - ./laravel-app:/var/www/html
   db:
     build:
       context: ./
