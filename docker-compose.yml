@@ -1,0 +1,40 @@
+version: '3'
+services:
+  web:
+    image: nginx:1.19
+    ports:
+      - '8000:80'
+    depends_on:
+      - app
+    volumes:
+      - ./docker/web/templates:/etc/nginx/templates
+      - .:/var/www/html
+  app:
+    build:
+      context: ./
+      dockerfile: ./docker/app/Dockerfile
+    environment:
+      APP_ENV: develop
+    depends_on:
+      - db
+    volumes:
+      - .:/var/www/html
+  db:
+    build:
+      context: ./
+      dockerfile: ./docker/db/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: "_xwJL4<N_<ib5FP]"
+      MYSQL_DATABASE: payke_template
+      MYSQL_USER: admin
+      MYSQL_ROOT_HOST: 172.18.0.1
+      MYSQL_PASSWORD: "VR*aT[f>wAn7m5u2"
+      TEST_DUMP_HOST: localhost
+      TZ: "Asia/Tokyo"
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
