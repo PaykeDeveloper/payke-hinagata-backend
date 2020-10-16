@@ -15,7 +15,12 @@ services:
       dockerfile: ./docker/app/Dockerfile
     environment:
       # アプリケーションの環境変数については ./laravel-app/.env.xxxx 参照
-      APP_ENV: develop
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: payke_template
+      DB_USERNAME: admin
+      DB_PASSWORD: VR*aT[f>wAn7m5u2
     depends_on:
       - db
     volumes:
