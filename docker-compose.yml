@@ -14,17 +14,31 @@ services:
       context: ./
       dockerfile: ./docker/app/Dockerfile
     environment:
-      # アプリケーションの環境変数については ./laravel-app/.env.xxxx 参照
+      # アプリケーションの環境変数書換： 詳細は ./laravel-app/.env.xxxx 参照
+      # RDB Settings
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_PORT: 3306
       DB_DATABASE: payke_template
       DB_USERNAME: admin
       DB_PASSWORD: VR*aT[f>wAn7m5u2
+      # JobQueue Settings
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PASSWORD: null
+      REDIS_PORT: 6379
     depends_on:
       - db
+      - redis
     volumes:
+      - ./docker/app/templates/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./docker/app/templates/supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
       - ./laravel-app:/var/www/html
+    # command: bash -c "supervisord -c /etc/supervisor/supervisord.conf"
+  redis:
+    image: redis:6.0
+    ports:
+      - "6379:6379"
   db:
     build:
       context: ./
