@@ -11,8 +11,6 @@ services:
     build:
       context: ./laravel-app
     environment:
-      # アプリケーションの環境変数については ./laravel-app/.env.xxxx 参照
-      DB_CONNECTION: mysql
       DB_READ_HOST: db
       DB_READ_PORT: 3306
       DB_READ_DATABASE: payke_template
@@ -41,11 +39,9 @@ services:
       MYSQL_ROOT_PASSWORD: _xwJL4<N_<ib5FP]
       MYSQL_DATABASE: payke_template
       MYSQL_USER: admin
-      MYSQL_ROOT_HOST: 172.18.0.1
       MYSQL_PASSWORD: VR*aT[f>wAn7m5u2
       MYSQL_REPLICA_USER: follower
       MYSQL_REPLICA_PASSWORD: 6Io^AkNzz5AuWb+x
-      TEST_DUMP_HOST: localhost
       TZ: "Asia/Tokyo"
     ports:
       - 3306:3306
