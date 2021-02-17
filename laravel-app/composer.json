@@ -24,7 +24,8 @@
         "nunomaduro/collision": "^5.0",
         "nunomaduro/larastan": "^0.7.0",
         "phpstan/phpstan": "^0.12.76",
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^9.3",
+        "squizlabs/php_codesniffer": "^3.5"
     },
     "config": {
         "optimize-autoloader": true,
@@ -63,6 +64,12 @@
         ],
         "phpstan": [
             "@php vendor/bin/phpstan analyse -c phpstan.neon"
+        ],
+        "phpcs": [
+            "@php vendor/bin/phpcs --standard=phpcs.xml ./"
+        ],
+        "phpcbf": [
+            "@php vendor/bin/phpcbf --standard=phpcs.xml ./"
         ]
     }
 }
