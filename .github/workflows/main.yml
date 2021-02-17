@@ -46,9 +46,11 @@ jobs:
       REDIS_HOST: cache
       REDIS_PASSWORD: ''
       REDIS_PORT: 6379
+    defaults:
+      run:
+        working-directory: laravel-app
     steps:
       - uses: actions/checkout@v2
-      - run: cd laravel-app/
       - run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - uses: actions/cache@v2
         with:
