@@ -48,7 +48,7 @@ jobs:
       REDIS_PORT: 6379
     steps:
       - uses: actions/checkout@v2
-      - run: cd laravle-app
+      - run: cd laravel-app/
       - run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - uses: actions/cache@v2
         with:
