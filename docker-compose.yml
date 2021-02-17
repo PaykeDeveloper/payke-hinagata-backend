@@ -1,18 +1,15 @@
 version: '3'
 services:
   web:
-    image: nginx:1.19
+    build:
+      context: ./docker/web
     ports:
-      - '8000:80'
+      - 8000:80
     depends_on:
       - app
-    volumes:
-      - ./docker/web/templates:/etc/nginx/templates
-      - .:/var/www/html
   app:
     build:
-      context: ./
-      dockerfile: ./docker/app/Dockerfile
+      context: ./laravel-app
     environment:
       # アプリケーションの環境変数については ./laravel-app/.env.xxxx 参照
       DB_CONNECTION: mysql
