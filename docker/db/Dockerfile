@@ -4,7 +4,7 @@ ARG MYSQL_DATABASE
 ARG MYSQL_REPLICA_USER
 ARG MYSQL_REPLICA_PASSWORD
 
-ADD ./docker-entrypoint-initdb.d/ /docker-entrypoint-initdb.d/
+COPY ./docker-entrypoint-initdb.d/ /docker-entrypoint-initdb.d/
 
 RUN sed -i 's/:database/'"${MYSQL_DATABASE}"'/g' /docker-entrypoint-initdb.d/init.sql
 RUN sed -i 's/:user/'"${MYSQL_REPLICA_USER}"'/g' /docker-entrypoint-initdb.d/init.sql
