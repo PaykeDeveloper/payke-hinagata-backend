@@ -2,7 +2,9 @@
 <ruleset name="PHP_CodeSniffer">
     <description>The coding standard for the project.</description>
 
-    <rule ref="PSR12"/>
+    <rule ref="PSR12">
+        <exclude name="PSR12.Traits.UseDeclaration.MultipleImport"/>
+    </rule>
 
     <arg name="extensions" value="php"/>
     <arg name="colors"/>
