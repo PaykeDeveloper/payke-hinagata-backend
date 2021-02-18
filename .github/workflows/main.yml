@@ -51,16 +51,16 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 7.4
-      - run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - uses: actions/cache@v2
         with:
           path: ./vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-      - run: php composer.phar install --dev
+      - run: composer install --dev
+      - run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - run: php artisan key:generate
-      - run: php composer.phar phpstan
-      - run: php composer.phar phpcs
-      - run: php composer.phar test:coverage
+      - run: composer phpstan
+      - run: composer phpcs
+      - run: composer test:coverage
       - uses: actions/upload-artifact@v2
         with:
           name: coverage
