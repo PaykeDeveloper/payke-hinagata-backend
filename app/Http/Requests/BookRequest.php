@@ -7,6 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 // FIXME: サンプルコードです。
 class BookRequest extends FormRequest
 {
+    use OptionalFormRequest;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,10 +26,10 @@ class BookRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        return $this->toOptionalRulesIfNeeded([
             'title' => 'required|string|max:20',
             'author' => 'nullable|string',
             'release_date' => 'nullable|date',
-        ];
+        ]);
     }
 }
