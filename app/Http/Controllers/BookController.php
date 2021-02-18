@@ -28,9 +28,7 @@ class BookController extends Controller
      */
     public function store(BookRequest $request): Response
     {
-        $book = new Book();
-        $book->fill($request->all());
-        $book->save();
+        $book = Book::create($request->all());
 
         return response($book);
     }
@@ -55,8 +53,7 @@ class BookController extends Controller
      */
     public function update(BookRequest $request, Book $book): Response
     {
-        $book->fill($request->all());
-        $book->save();
+        $book->update($request->all());
 
         return response($book);
     }

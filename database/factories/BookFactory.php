@@ -20,10 +20,17 @@ class BookFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->word(),
         ];
+    }
+
+    public function withAuthor(): BookFactory
+    {
+        return $this->state(fn(array $attributed) => [
+            'author' => $this->faker->name(),
+        ]);
     }
 }

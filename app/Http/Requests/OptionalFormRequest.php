@@ -10,9 +10,7 @@ trait OptionalFormRequest
     {
         return array_map(function ($rule) {
             $values = explode(self::$separator, $rule);
-            $optional_values = array_filter($values, function ($value) {
-                return $value !== 'required';
-            });
+            $optional_values = array_filter($values, fn($value) => $value !== 'required');
             return implode(self::$separator, $optional_values);
         }, $rules);
     }

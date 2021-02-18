@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 // FIXME: サンプルコードです。
+/**
+ * @method static Book create(array $all)
+ */
 class Book extends Model
 {
     use HasFactory;
