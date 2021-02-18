@@ -1,0 +1,81 @@
+name: CI
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: _xwJL4<N_<ib5FP]
+          MYSQL_DATABASE: payke_template
+          MYSQL_USER: admin
+          MYSQL_PASSWORD: VR*aT[f>wAn7m5u2
+        options: >-
+          --health-cmd "mysqladmin ping -h localhost"
+          --health-interval 20s
+          --health-timeout 10s
+          --health-retries 10
+        ports:
+          - 3306:3306
+      cache:
+        image: redis:5.0.8
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    env:
+      DB_READ_HOST: db
+      DB_READ_PORT: 3306
+      DB_READ_DATABASE: payke_template
+      DB_READ_USERNAME: admin
+      DB_READ_PASSWORD: VR*aT[f>wAn7m5u2
+      DB_WRITE_HOST: db
+      DB_WRITE_PORT: 3306
+      DB_WRITE_DATABASE: payke_template
+      DB_WRITE_USERNAME: admin
+      DB_WRITE_PASSWORD: VR*aT[f>wAn7m5u2
+      REDIS_HOST: cache
+      REDIS_PASSWORD: ''
+      REDIS_PORT: 6379
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+      - uses: actions/cache@v2
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      - run: composer install
+      - run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - run: php artisan key:generate
+      - run: composer phpstan
+      - run: composer phpcs
+      - run: composer test:coverage
+      - uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: coverage/
+  deploy-staging:
+    needs: test
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo TODO
+  deploy-production:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo TODO

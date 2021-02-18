@@ -1,19 +1,19 @@
-# temp files from editors
-*~
-*.bak
-.DS_Store
-.buildpath
-.project
-.settings
-*.tmproj
-build
-.idea
-.vscode
-nbproject/
-*.iml
-*.pyc
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
 
-# hidden files created by Windows
-Thumbs.db
-desktop.ini
+# Intellij IDEA
+/.idea/
 
+# Project
+/coverage
