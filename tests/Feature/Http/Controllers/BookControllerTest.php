@@ -13,7 +13,7 @@ class BookControllerTest extends TestCase
     use DatabaseMigrations;
 
     /**
-     * [正常系] 一覧の取得ができる。
+     * [正常系] データ一覧の取得ができる。
      */
     public function testIndex()
     {
@@ -41,7 +41,7 @@ class BookControllerTest extends TestCase
     }
 
     /**
-     * [正常系] 単体の取得ができる。
+     * [正常系] データの取得ができる。
      */
     public function testShow()
     {
@@ -108,6 +108,21 @@ class BookControllerTest extends TestCase
     }
 
     /**
+     * [異常系] 存在しないIDで更新するとエラーになる。
+     */
+    public function testUpdateNotFound()
+    {
+        Book::factory()->create();
+        $data = [
+            'author' => 'a',
+        ];
+
+        $response = $this->patchJson(route('books.update', ['book' => -1]), $data);
+
+        $response->assertNotFound();
+    }
+
+    /**
      * [異常系] タイトルをNULLで更新するとエラーになる。
      */
     public function testUpdateNullTitle()
@@ -121,5 +136,15 @@ class BookControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
             ->assertJsonStructure(['errors' => ['title']]);
+    }
+
+    /**
+     * [異常系] 存在しないIDで削除するとエラーになる。
+     */
+    public function testDeleteNotFound()
+    {
+        $response = $this->deleteJson(route('books.destroy', ['book' => -1]));
+
+        $response->assertNotFound();
     }
 }
