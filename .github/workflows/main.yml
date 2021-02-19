@@ -13,7 +13,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: _xwJL4<N_<ib5FP]
-          MYSQL_DATABASE: payke_template
+          MYSQL_DATABASE: testing
           MYSQL_USER: admin
           MYSQL_PASSWORD: VR*aT[f>wAn7m5u2
         options: >-
@@ -35,12 +35,12 @@ jobs:
     env:
       DB_READ_HOST: db
       DB_READ_PORT: 3306
-      DB_READ_DATABASE: payke_template
+      DB_READ_DATABASE: testing
       DB_READ_USERNAME: admin
       DB_READ_PASSWORD: VR*aT[f>wAn7m5u2
       DB_WRITE_HOST: db
       DB_WRITE_PORT: 3306
-      DB_WRITE_DATABASE: payke_template
+      DB_WRITE_DATABASE: testing
       DB_WRITE_USERNAME: admin
       DB_WRITE_PASSWORD: VR*aT[f>wAn7m5u2
       REDIS_HOST: cache
