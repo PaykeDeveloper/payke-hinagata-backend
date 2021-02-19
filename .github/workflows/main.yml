@@ -33,12 +33,12 @@ jobs:
         ports:
           - 6379:6379
     env:
-      DB_READ_HOST: db
+      DB_READ_HOST: localhost
       DB_READ_PORT: 3306
       DB_READ_DATABASE: testing
       DB_READ_USERNAME: admin
       DB_READ_PASSWORD: VR*aT[f>wAn7m5u2
-      DB_WRITE_HOST: db
+      DB_WRITE_HOST: localhost
       DB_WRITE_PORT: 3306
       DB_WRITE_DATABASE: testing
       DB_WRITE_USERNAME: admin
@@ -58,9 +58,9 @@ jobs:
       - run: composer install
       - run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - run: php artisan key:generate
-#      - run: composer migrate
-#      - run: composer helper
-#      - run: composer phpstan
+      - run: composer migrate
+      - run: composer helper
+      - run: composer phpstan
       - run: composer phpcs
       - run: composer test:coverage
       - uses: actions/upload-artifact@v2
