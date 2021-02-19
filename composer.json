@@ -85,6 +85,29 @@
         ],
         "phpcbf": [
             "@php vendor/bin/phpcbf --standard=phpcs.xml ./"
+        ],
+        "helper": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:model -RM",
+            "@php artisan ide-helper:meta"
+        ],
+        "fresh": [
+            "@php artisan cache:clear",
+            "@php artisan config:clear",
+            "@php artisan route:clear",
+            "@php artisan view:clear"
+        ],
+        "migrate": [
+            "@php artisan migrate"
+        ],
+        "migrate:fresh": [
+            "@php artisan migrate"
+        ],
+        "db:seed": [
+            "@php artisan db:seed"
+        ],
+        "route:list": [
+            "@php artisan route:list"
         ]
     }
 }
