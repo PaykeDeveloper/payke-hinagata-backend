@@ -88,7 +88,7 @@
         ],
         "helper": [
             "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:model -RM",
+            "@php artisan ide-helper:model --nowrite",
             "@php artisan ide-helper:meta"
         ],
         "fresh": [
@@ -101,7 +101,7 @@
             "@php artisan migrate"
         ],
         "migrate:fresh": [
-            "@php artisan migrate"
+            "@php artisan migrate:fresh"
         ],
         "db:seed": [
             "@php artisan db:seed"
