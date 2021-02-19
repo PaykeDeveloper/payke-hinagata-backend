@@ -23,9 +23,7 @@ class BookControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(1)
-            ->assertJsonFragment([
-                'title' => $book->title,
-            ]);
+            ->assertJsonFragment($book->toArray());
     }
 
     /**
@@ -47,15 +45,12 @@ class BookControllerTest extends TestCase
      */
     public function testShow()
     {
-        $book = Book::factory()->withAuthor()->create();
+        $book = Book::factory()->create();
 
         $response = $this->getJson(route('books.show', ['book' => $book->id]));
 
         $response->assertOk()
-            ->assertJson([
-                'title' => $book->title,
-                'author' => $book->author,
-            ]);
+            ->assertJson($book->toArray());
     }
 
     /**
@@ -63,7 +58,7 @@ class BookControllerTest extends TestCase
      */
     public function testUpdate()
     {
-        $book = Book::factory()->create();
+        $book = Book::factory()->requiredOnly()->create();
         $data = [
             'author' => 'a',
         ];

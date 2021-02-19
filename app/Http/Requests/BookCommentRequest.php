@@ -25,7 +25,7 @@ class BookCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'book_id' => 'required|exists:books,id'
+            'book_id' => ['required', 'exists:books,id']
         ];
     }
 

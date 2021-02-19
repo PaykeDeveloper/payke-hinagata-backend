@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 // FIXME: サンプルコードです。
+/**
+ * @mixin IdeHelperBook
+ */
 class Book extends Model
 {
     use HasFactory;
@@ -14,7 +17,7 @@ class Book extends Model
     protected $guarded = [
         'id',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     public function comments(): HasMany

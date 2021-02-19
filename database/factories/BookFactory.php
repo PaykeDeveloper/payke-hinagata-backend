@@ -24,13 +24,14 @@ class BookFactory extends Factory
     {
         return [
             'title' => $this->faker->word(),
+            'author' => $this->faker->name(),
         ];
     }
 
-    public function withAuthor(): BookFactory
+    public function requiredOnly(): BookFactory
     {
         return $this->state(fn(array $attributed) => [
-            'author' => $this->faker->name(),
+            'author' => null,
         ]);
     }
 }

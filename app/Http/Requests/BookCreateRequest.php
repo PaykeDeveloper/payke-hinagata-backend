@@ -13,9 +13,9 @@ class BookCreateRequest extends BookRequest
     public function rules(): array
     {
         return [
-                'title' => 'required|string|max:20',
-                'author' => 'nullable|string',
-                'release_date' => 'nullable|date',
+                'title' => ['required', 'string', 'max:20'],
+                'author' => ['nullable', 'string'],
+                'release_date' => ['nullable', 'date'],
             ] + parent::rules();
     }
 }

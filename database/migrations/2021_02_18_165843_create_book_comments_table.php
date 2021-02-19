@@ -20,9 +20,9 @@ class CreateBookCommentsTable extends Migration
             $table->boolean('confirmed');
             $table->date('publish_date');
             $table->dateTimeTz('approved_at');
-            $table->decimal('amount', 5, 2);
-            $table->double('column', 15, 8);
-            $table->enum('choices', ['foo', 'bar']);
+            $table->decimal('amount', 3, 1);
+            $table->double('column', 10, 3);
+            $table->enum('choices', \App\Models\FooBar::all());
             $table->text('description');
             $table->unsignedTinyInteger('votes');
             $table->timestampsTz();

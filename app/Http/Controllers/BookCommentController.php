@@ -16,11 +16,12 @@ class BookCommentController extends Controller
      * Display a listing of the resource.
      *
      * @param BookCommentRequest $request
+     * @param string $book
      * @return Response
      */
-    public function index(BookCommentRequest $request): Response
+    public function index(BookCommentRequest $request, string $book): Response
     {
-        $comments = BookComment::whereBookId($request->book_id)->get();
+        $comments = BookComment::whereBookId($book)->get();
         return response($comments);
     }
 
