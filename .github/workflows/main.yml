@@ -33,6 +33,10 @@ jobs:
         ports:
           - 6379:6379
     env:
+      APP_ENV: testing
+      APP_KEY: base64:hG+0txeXIdVc2gvu7wzkJdFM8Uc0Z0Ck/ntD5tBc8Tw=
+      APP_DEBUG: false
+      APP_URL: http://localhost
       DB_READ_HOST: 127.0.0.1
       DB_READ_PORT: 3306
       DB_READ_DATABASE: testing
@@ -44,8 +48,16 @@ jobs:
       DB_WRITE_USERNAME: admin
       DB_WRITE_PASSWORD: VR*aT[f>wAn7m5u2
       REDIS_HOST: 127.0.0.1
-      REDIS_PASSWORD: ''
+      REDIS_PASSWORD: null
       REDIS_PORT: 6379
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      MAIL_USERNAME: null
+      MAIL_PASSWORD: null
+      MAIL_ENCRYPTION: null
+      MAIL_FROM_ADDRESS: null
+      LOG_CHANNEL: stderr
+      LOG_LEVEL: debug
     steps:
       - uses: actions/checkout@v2
       - uses: shivammathur/setup-php@v2
@@ -56,8 +68,6 @@ jobs:
           path: ./vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - run: composer install
-      - run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-      - run: php artisan key:generate
       - run: composer helper
       - run: composer phpstan
       - run: composer phpcs
