@@ -3,6 +3,17 @@ includes:
 parameters:
     paths:
         - app
-        - tests
     level: max
+    ignoreErrors:
+        - '#Call to an undefined method App\\Http\\Requests\\[a-zA-Z0-9\\_]+::route\(\)#'
+        - '#Call to an undefined method App\\Http\\Requests\\[a-zA-Z0-9\\_]+::all\(\)#'
+        - '#Call to an undefined method Illuminate\\Http\\Request::expectsJson\(\)#'
+        - '#Call to an undefined method Illuminate\\Http\\Request::getPreferredLanguage\(\)#'
+        - '#Call to an undefined method Illuminate\\Http\\Request::user\(\)#'
+        - '#Call to an undefined method Illuminate\\Http\\Request::ip\(\)#'
+        - '#Call to an undefined static method Illuminate\\Foundation\\Http\\FormRequest::all\(\)#'
+        - '#Access to undefined constant Illuminate\\Http\\Request::HEADER_X_FORWARDED_[a-zA-Z0-9\\_]+#'
+    scanFiles:
+        - _ide_helper.php
+        - _ide_helper_models.php
     checkMissingIterableValueType: false

@@ -46,7 +46,7 @@ class BookCommentController extends Controller
      */
     public function show(BookComment $bookComment, string $book_id): Response
     {
-        if ($bookComment->book_id !== $book_id) {
+        if ($bookComment->book_id !== intval($book_id)) {
             abort(404);
         }
 

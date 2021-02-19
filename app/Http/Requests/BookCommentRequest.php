@@ -5,9 +5,6 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 // FIXME: サンプルコードです。
-/**
- * @property integer book_id
- */
 class BookCommentRequest extends FormRequest
 {
     /**
@@ -32,6 +29,10 @@ class BookCommentRequest extends FormRequest
         ];
     }
 
+    /**
+     * @param null $keys
+     * @return array
+     */
     public function all($keys = null): array
     {
         $request = parent::all($keys);

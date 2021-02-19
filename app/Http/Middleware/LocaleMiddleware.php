@@ -18,7 +18,9 @@ class LocaleMiddleware
     public function handle(Request $request, Closure $next)
     {
         $lang = $request->getPreferredLanguage();
-        App::setLocale($lang);
+        if ($lang) {
+            App::setLocale($lang);
+        }
         return $next($request);
     }
 }
