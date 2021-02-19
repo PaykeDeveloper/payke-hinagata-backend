@@ -43,7 +43,7 @@ jobs:
       DB_WRITE_DATABASE: testing
       DB_WRITE_USERNAME: admin
       DB_WRITE_PASSWORD: VR*aT[f>wAn7m5u2
-      REDIS_HOST: cache
+      REDIS_HOST: localhost
       REDIS_PASSWORD: ''
       REDIS_PORT: 6379
     steps:
@@ -58,9 +58,9 @@ jobs:
       - run: composer install
       - run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - run: php artisan key:generate
-      - run: composer migrate
-      - run: composer helper
-      - run: composer phpstan
+#      - run: composer migrate
+#      - run: composer helper
+#      - run: composer phpstan
       - run: composer phpcs
       - run: composer test:coverage
       - uses: actions/upload-artifact@v2
