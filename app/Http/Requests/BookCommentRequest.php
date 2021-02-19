@@ -5,7 +5,10 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 // FIXME: サンプルコードです。
-class BookRequest extends FormRequest
+/**
+ * @property integer book_id
+ */
+class BookCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +28,14 @@ class BookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'book_id' => 'required|exists:books,id'
         ];
+    }
+
+    public function all($keys = null): array
+    {
+        $request = parent::all($keys);
+        $request['book_id'] = $this->route('book');
+        return $request;
     }
 }

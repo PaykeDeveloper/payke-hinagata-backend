@@ -7,15 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 // FIXME: サンプルコードです。
 /**
- * @mixin IdeHelperBook
+ * @mixin IdeHelperBookComment
  */
-class Book extends Model
+class BookComment extends Model
 {
     use HasFactory;
-
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at'
-    ];
 }

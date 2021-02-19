@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BookRequest;
+use App\Http\Requests\BookCreateRequest;
+use App\Http\Requests\BookUpdateRequest;
 use App\Models\Book;
 use Exception;
 use Illuminate\Http\Response;
@@ -23,10 +24,10 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param BookRequest $request
+     * @param BookCreateRequest $request
      * @return Response
      */
-    public function store(BookRequest $request): Response
+    public function store(BookCreateRequest $request): Response
     {
         $book = Book::create($request->all());
 
@@ -47,11 +48,11 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param BookRequest $request
+     * @param BookUpdateRequest $request
      * @param Book $book
      * @return Response
      */
-    public function update(BookRequest $request, Book $book): Response
+    public function update(BookUpdateRequest $request, Book $book): Response
     {
         $book->update($request->all());
 
@@ -68,6 +69,7 @@ class BookController extends Controller
     public function destroy(Book $book): Response
     {
         $book->delete();
+
         return response(null, 204);
     }
 }

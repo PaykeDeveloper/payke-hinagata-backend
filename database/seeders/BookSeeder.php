@@ -15,7 +15,13 @@ class BookSeeder extends Seeder
      */
     public function run()
     {
-        Book::updateOrCreate(['id' => 1], ['title' => 'Title 1']);
-        Book::updateOrCreate(['id' => 2], ['title' => 'Title 2']);
+        $data_set = [
+            1 => ['title' => 'Title A'],
+            2 => ['title' => 'Title B'],
+        ];
+
+        foreach ($data_set as $key => $values) {
+            Book::updateOrCreate(['id' => $key], $values);
+        }
     }
 }

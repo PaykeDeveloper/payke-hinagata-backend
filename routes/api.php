@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,5 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1'], function () {
     // FIXME: サンプルコードです。
-    Route::apiResource('books', BookController::class);
+    Route::apiResource('books', \App\Http\Controllers\BookController::class);
+    Route::apiResource('books.comments', \App\Http\Controllers\BookCommentController::class);
 });
