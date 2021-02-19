@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
 
 // FIXME: サンプルコードです。
 class BookCommentRequest extends FormRequest
@@ -25,18 +26,16 @@ class BookCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'book_id' => ['required', 'exists:books,id']
+            //
         ];
     }
 
-    /**
-     * @param null $keys
-     * @return array
-     */
-    public function all($keys = null): array
+    protected function prepareForValidation()
     {
-        $request = parent::all($keys);
-        $request['book_id'] = $this->route('book');
-        return $request;
+        $book = $this->route('book');
+        $comment = $this->route('comment');
+        if ($book->id !== $comment->book_id) {
+            abort(Response::HTTP_NOT_FOUND);
+        }
     }
 }

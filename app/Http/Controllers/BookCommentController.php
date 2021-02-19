@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BookCommentCreateRequest;
 use App\Http\Requests\BookCommentRequest;
 use App\Http\Requests\BookCommentUpdateRequest;
+use App\Models\Book;
 use App\Models\BookComment;
 use Exception;
 use Illuminate\Http\Response;
@@ -15,13 +16,13 @@ class BookCommentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param BookCommentRequest $request
-     * @param string $book
+     * @param Book $book
      * @return Response
      */
-    public function index(BookCommentRequest $request, string $book): Response
+    public function index(Book $book): Response
     {
-        $comments = BookComment::whereBookId($book)->get();
+        $comments = BookComment::whereBookId($book->id)->get();
+
         return response($comments);
     }
 
@@ -29,59 +30,60 @@ class BookCommentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param BookCommentCreateRequest $request
+     * @param Book $book
      * @return Response
      */
-    public function store(BookCommentCreateRequest $request): Response
+    public function store(BookCommentCreateRequest $request, Book $book): Response
     {
-        $book = BookComment::create($request->all());
+        $comment = new BookComment();
+        $comment->fill(($request->all()));
+        $comment->book_id = $book->id;
+        $comment->save();
 
-        return response($book);
+        return response($comment);
     }
 
     /**
-     * Display the specified resource.
+     * routes/api.phpに合わせて、引数の名前と順番を設定しましょう。
+     * 間違えた名前を設定すると、値がNULLになります。。
      *
-     * @param BookComment $bookComment
-     * @param string $book_id
+     * @param BookCommentRequest $request
+     * @param Book $book
+     * @param BookComment $comment
      * @return Response
      */
-    public function show(BookComment $bookComment, string $book_id): Response
+    public function show(BookCommentRequest $request, Book $book, BookComment $comment): Response
     {
-        if ($bookComment->book_id !== intval($book_id)) {
-            abort(Response::HTTP_NOT_FOUND);
-        }
-
-        return response($bookComment);
+        return response($comment);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param BookCommentUpdateRequest $request
-     * @param BookComment $bookComment
+     * @param Book $book
+     * @param BookComment $comment
      * @return Response
      */
-    public function update(BookCommentUpdateRequest $request, BookComment $bookComment): Response
+    public function update(BookCommentUpdateRequest $request, Book $book, BookComment $comment): Response
     {
-        if ($bookComment->book_id !== $request->route('book')) {
-            abort(Response::HTTP_NOT_FOUND);
-        }
+        $comment->update($request->all());
 
-        $bookComment->update($request->all());
-
-        return response($bookComment);
+        return response($comment);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param BookComment $bookComment
+     * @param BookCommentRequest $request
+     * @param Book $book
+     * @param BookComment $comment
      * @return Response
      * @throws Exception
      */
-    public function destroy(BookComment $bookComment): Response
+    public function destroy(BookCommentRequest $request, Book $book, BookComment $comment): Response
     {
-        $bookComment->delete();
+        $comment->delete();
 
         return response(null, 204);
     }

@@ -16,14 +16,14 @@ class BookCommentUpdateRequest extends BookCommentRequest
     public function rules(): array
     {
         return [
-                'confirmed' => ['boolean'],
-                'publish_date' => ['date'],
-                'approved_at' => ['date', 'after:start_date'],
-                'amount' => ['regex:/^\d+(\.\d{1,2})?$/'],
-                'column' => ['numeric'],
-                'choices' => [Rule::in(FooBar::all())],
-                'description' => ['string'],
-                'votes' => ['integer', 'min:1', 'max:5'],
-            ] + parent::rules();
+            'confirmed' => ['boolean'],
+            'publish_date' => ['date'],
+            'approved_at' => ['date', 'after:start_date'],
+            'amount' => ['regex:/^\d+(\.\d{1,2})?$/'],
+            'column' => ['numeric'],
+            'choices' => [Rule::in(FooBar::all())],
+            'description' => ['string'],
+            'votes' => ['integer', 'min:1', 'max:5'],
+        ];
     }
 }

@@ -1,8 +1,13 @@
 <?php
 
+namespace App\Models\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * @mixin Model
+ */
 trait UsesUuid
 {
     protected static function bootUsesUuid()

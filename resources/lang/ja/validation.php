@@ -146,6 +146,16 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        // FIXME: サンプルコードです。
+        "confirmed" => "確認済みフラグ",
+        "publish_date" => "公開日",
+        "approved_at" => "到達日時",
+        "amount" => "数量",
+        "column" => "カラム",
+        "choices" => "選択肢",
+        "description" => "説明",
+        "votes" => "得票",
+    ],
 
 ];
