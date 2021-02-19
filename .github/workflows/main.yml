@@ -33,17 +33,17 @@ jobs:
         ports:
           - 6379:6379
     env:
-      DB_READ_HOST: localhost
+      DB_READ_HOST: 127.0.0.1
       DB_READ_PORT: 3306
       DB_READ_DATABASE: testing
       DB_READ_USERNAME: admin
       DB_READ_PASSWORD: VR*aT[f>wAn7m5u2
-      DB_WRITE_HOST: localhost
+      DB_WRITE_HOST: 127.0.0.1
       DB_WRITE_PORT: 3306
       DB_WRITE_DATABASE: testing
       DB_WRITE_USERNAME: admin
       DB_WRITE_PASSWORD: VR*aT[f>wAn7m5u2
-      REDIS_HOST: localhost
+      REDIS_HOST: 127.0.0.1
       REDIS_PASSWORD: ''
       REDIS_PORT: 6379
     steps:
