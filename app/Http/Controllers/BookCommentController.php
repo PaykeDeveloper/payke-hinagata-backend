@@ -11,6 +11,17 @@ use Exception;
 use Illuminate\Http\Response;
 
 // FIXME: サンプルコードです。
+
+/**
+ * 〜 メソッドの引数について 〜
+ * FormRequestを引数にするとメソッドに到達する前にバリデーションを掛けられます。
+ * Modelを引数にするとURLパラメーターのキーで取得したデータが自動で入ります。（存在しない場合は404エラー）
+ *
+ * ただし、引数の名前と順番には十分注意をしましょう。
+ * 引数の名前は、routes/api.phpと合わせる必要があります。
+ * 間違えた名前を設定すると、値がNULLになり404エラーにはなりません。。
+ *
+ */
 class BookCommentController extends Controller
 {
     /**
@@ -44,8 +55,7 @@ class BookCommentController extends Controller
     }
 
     /**
-     * routes/api.phpに合わせて、引数の名前と順番を設定しましょう。
-     * 間違えた名前を設定すると、値がNULLになります。。
+     * Display the specified resource.
      *
      * @param BookCommentRequest $request
      * @param Book $book
