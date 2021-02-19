@@ -47,7 +47,7 @@ class BookCommentController extends Controller
     public function show(BookComment $bookComment, string $book_id): Response
     {
         if ($bookComment->book_id !== intval($book_id)) {
-            abort(404);
+            abort(Response::HTTP_NOT_FOUND);
         }
 
         return response($bookComment);
@@ -63,7 +63,7 @@ class BookCommentController extends Controller
     public function update(BookCommentUpdateRequest $request, BookComment $bookComment): Response
     {
         if ($bookComment->book_id !== $request->route('book')) {
-            abort(404);
+            abort(Response::HTTP_NOT_FOUND);
         }
 
         $bookComment->update($request->all());
