@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BookCommentCreateRequest;
 use App\Http\Requests\BookCommentRequest;
 use App\Http\Requests\BookCommentUpdateRequest;
+use App\Jobs\CreateBookComment;
+use App\Jobs\UpdateBookComment;
 use App\Models\Book;
 use App\Models\BookComment;
 use Exception;
@@ -94,6 +96,35 @@ class BookCommentController extends Controller
     public function destroy(BookCommentRequest $request, Book $book, BookComment $comment): Response
     {
         $comment->delete();
+
+        return response(null, 204);
+    }
+
+    /**
+     * カスタムメソッドの作成方法
+     *
+     * @param BookCommentCreateRequest $request
+     * @param Book $book
+     * @return Response
+     */
+    public function storeAsync(BookCommentCreateRequest $request, Book $book): Response
+    {
+        CreateBookComment::dispatch($book, $request->all());
+
+        return response(null, 204);
+    }
+
+    /**
+     * カスタムメソッドの作成方法
+     *
+     * @param BookCommentUpdateRequest $request
+     * @param Book $book
+     * @param BookComment $comment
+     * @return Response
+     */
+    public function updateAsync(BookCommentUpdateRequest $request, Book $book, BookComment $comment): Response
+    {
+        UpdateBookComment::dispatch($comment, $request->all())->afterResponse();
 
         return response(null, 204);
     }
