@@ -18,6 +18,7 @@
         "predis/predis": "^1.1"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.9",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
@@ -31,11 +32,16 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "8.0.2"
+        }
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "barryvdh/laravel-ide-helper"
+            ]
         }
     },
     "autoload": {
@@ -63,6 +69,14 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta"
+        ],
+        "test": [
+            "phpunit"
+        ],
         "test:coverage": [
             "phpunit --coverage-html coverage"
         ],
@@ -74,6 +88,29 @@
         ],
         "phpcbf": [
             "@php vendor/bin/phpcbf --standard=phpcs.xml ./"
+        ],
+        "helper": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:model --write-mixin",
+            "@php artisan ide-helper:meta"
+        ],
+        "fresh": [
+            "@php artisan cache:clear",
+            "@php artisan config:clear",
+            "@php artisan route:clear",
+            "@php artisan view:clear"
+        ],
+        "migrate": [
+            "@php artisan migrate"
+        ],
+        "migrate:fresh": [
+            "@php artisan migrate:fresh"
+        ],
+        "db:seed": [
+            "@php artisan db:seed"
+        ],
+        "route:list": [
+            "@php artisan route:list"
         ]
     }
 }

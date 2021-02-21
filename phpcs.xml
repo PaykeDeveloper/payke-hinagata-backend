@@ -11,15 +11,16 @@
     <arg value="ps"/>
 
     <exclude-pattern>/bootstrap/</exclude-pattern>
-    <exclude-pattern>/config/</exclude-pattern>
     <exclude-pattern>/database/</exclude-pattern>
     <exclude-pattern>/node_modules/</exclude-pattern>
     <exclude-pattern>/public/</exclude-pattern>
     <exclude-pattern>/resources/</exclude-pattern>
-    <exclude-pattern>/routes/</exclude-pattern>
     <exclude-pattern>/storage/</exclude-pattern>
     <exclude-pattern>/vendor/</exclude-pattern>
     <exclude-pattern>/server.php</exclude-pattern>
     <exclude-pattern>/app/Console/Kernel.php</exclude-pattern>
     <exclude-pattern>/tests/CreatesApplication.php</exclude-pattern>
+    <exclude-pattern>/.phpstorm.meta.php</exclude-pattern>
+    <exclude-pattern>/_ide_helper.php</exclude-pattern>
+    <exclude-pattern>/_ide_helper_models.php</exclude-pattern>
 </ruleset>

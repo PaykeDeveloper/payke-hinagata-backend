@@ -3,7 +3,7 @@
 /public/storage
 /storage/*.key
 /vendor
-.env
+#.env
 .env.backup
 .phpunit.result.cache
 docker-compose.override.yml
@@ -17,3 +17,6 @@ yarn-error.log
 
 # Project
 /coverage
+/.phpstorm.meta.php
+/_ide_helper.php
+/_ide_helper_models.php
