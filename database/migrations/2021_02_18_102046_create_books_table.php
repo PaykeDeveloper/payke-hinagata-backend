@@ -19,7 +19,7 @@ class CreateBooksTable extends Migration
             $table->string('title', 20);
             $table->string('author')->nullable();
             $table->date('release_date')->nullable();
-            $table->timestamps();
+            $table->timestampsTz();
         });
     }
 
