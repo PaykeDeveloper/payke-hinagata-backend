@@ -45,6 +45,7 @@ class BookCommentControllerTest extends TestCase
             'choices' => "bar",
             'description' => "Consequatur laborum vel quis",
             'votes' => 2,
+            'slug' => 'abc',
         ];
 
         $response = $this->postJson(route('books.comments.store', ['book' => $book->id]), $data);
@@ -130,6 +131,7 @@ class BookCommentControllerTest extends TestCase
             'choices' => "bar",
             'description' => "Consequatur laborum vel quis",
             'votes' => 2,
+            'slug' => 'abc',
         ];
 
         $response = $this->postJson(route('books.comments.store', ['book' => -1]), $data);
@@ -152,6 +154,7 @@ class BookCommentControllerTest extends TestCase
             'choices' => "bar",
             'description' => "Consequatur laborum vel quis",
             'votes' => 2,
+            'slug' => 'abc',
         ];
 
         $response = $this->postJson(route('books.comments.store', ['book' => $book->id]), $data);

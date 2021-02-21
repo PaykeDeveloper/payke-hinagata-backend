@@ -35,6 +35,7 @@ class BookCommentCreateRequest extends FormRequest
             'choices' => ['required', Rule::in(FooBar::all())],
             'description' => ['required', 'string'],
             'votes' => ['required', 'integer', 'min:1', 'max:5'],
+            'slug' => ['required', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
         ];
     }
 }

@@ -42,6 +42,15 @@ class BookComment extends Model
         'amount' => 'double',
     ];
 
+//    /**
+//     * URLのキーをID以外に設定したい場合はここで指定する。
+//     * @return string
+//     */
+//    public function getRouteKeyName(): string
+//    {
+//        return 'slug';
+//    }
+
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);

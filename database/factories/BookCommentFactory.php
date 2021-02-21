@@ -40,6 +40,7 @@ class BookCommentFactory extends Factory
             'choices' => $this->faker->randomElement(FooBar::all()),
             'description' => $this->faker->paragraph(),
             'votes' => $this->faker->numberBetween(1, 5),
+            'slug' => $this->faker->slug(),
         ];
     }
 }
