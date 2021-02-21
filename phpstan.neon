@@ -5,6 +5,7 @@ parameters:
         - app
     level: max
     ignoreErrors:
+        - '#PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelper[a-zA-Z0-9\\_]+#'
         - '#Call to an undefined method App\\Http\\Requests\\[a-zA-Z0-9\\_]+::route\(\)#'
         - '#Call to an undefined method App\\Http\\Requests\\[a-zA-Z0-9\\_]+::all\(\)#'
         - '#Call to an undefined method Illuminate\\Http\\Request::expectsJson\(\)#'
@@ -15,5 +16,6 @@ parameters:
         - '#Access to undefined constant Illuminate\\Http\\Request::HEADER_X_FORWARDED_[a-zA-Z0-9\\_]+#'
     scanFiles:
         - _ide_helper.php
-        - _ide_helper_models.php
+#        - _ide_helper_models.php
     checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: false

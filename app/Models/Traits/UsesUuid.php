@@ -10,6 +10,9 @@ use Illuminate\Support\Str;
  */
 trait UsesUuid
 {
+    /**
+     * @return void
+     */
     protected static function bootUsesUuid()
     {
         static::creating(function ($model) {
@@ -19,12 +22,12 @@ trait UsesUuid
         });
     }
 
-    public function getIncrementing()
+    public function getIncrementing(): bool
     {
         return false;
     }
 
-    public function getKeyType()
+    public function getKeyType(): string
     {
         return 'string';
     }
