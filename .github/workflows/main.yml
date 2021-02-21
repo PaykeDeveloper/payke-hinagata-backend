@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       db:
-        image: mysql:8.0
+        image: mysql:8.0.23
         env:
           MYSQL_ROOT_PASSWORD: _xwJL4<N_<ib5FP]
           MYSQL_DATABASE: testing
@@ -24,7 +24,7 @@ jobs:
         ports:
           - 3306:3306
       cache:
-        image: redis:5.0.8
+        image: redis:6.0.10
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
@@ -62,7 +62,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.0.2
       - uses: actions/cache@v2
         with:
           path: ./vendor
