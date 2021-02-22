@@ -36,6 +36,6 @@ class UpdateBookComment implements ShouldQueue
      */
     public function handle()
     {
-        $this->comment->fill($this->attributes)->save();
+        $this->comment->update($this->attributes);
     }
 }
