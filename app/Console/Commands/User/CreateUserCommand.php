@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands\User;
 
-use App\Models\User;
+use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class CreateUserCommand extends Command
 {
@@ -43,26 +42,20 @@ class CreateUserCommand extends Command
         $email = $this->argument("email");
         $password = $this->argument("password");
         $attributes = [
+            'name' => strstr($email, '@', true),
             'email' => $email,
             'password' => $password,
         ];
 
-        $validator = Validator::make($attributes, [
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'min:8'],
-        ]);
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
+        try {
+            $action = new CreateNewUser();
+            $action->create($attributes);
+        } catch (ValidationException $e) {
+            foreach ($e->validator->errors()->all() as $error) {
                 $this->error($error);
             }
             return 1;
         }
-
-        $user = new User();
-        $user->name = strstr($email, '@', true);
-        $user->email = $email;
-        $user->password = Hash::make($password);
-        $user->save();
         return 0;
     }
 }
