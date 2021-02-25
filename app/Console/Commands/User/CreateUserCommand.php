@@ -41,8 +41,10 @@ class CreateUserCommand extends Command
     {
         $email = $this->argument("email");
         $password = $this->argument("password");
+        $name = is_string($email) ? strstr($email, '@', true) : null;
+
         $attributes = [
-            'name' => strstr($email, '@', true),
+            'name' => $name,
             'email' => $email,
             'password' => $password,
         ];

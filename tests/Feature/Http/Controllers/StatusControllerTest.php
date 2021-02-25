@@ -12,7 +12,7 @@ class StatusControllerTest extends TestCase
     use DatabaseMigrations;
 
     /**
-     * [正常系] データの取得ができる。
+     * [正常系] 未認証の場合、is_authenticatedがFalse
      */
     public function testShowUnAuthenticated()
     {
@@ -23,7 +23,7 @@ class StatusControllerTest extends TestCase
     }
 
     /**
-     * [正常系] データの取得ができる。
+     * [正常系] 認証済みの場合、is_authenticatedがTrue
      */
     public function testShowAuthenticated()
     {
