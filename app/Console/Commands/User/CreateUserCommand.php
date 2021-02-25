@@ -47,6 +47,7 @@ class CreateUserCommand extends Command
             'name' => $name,
             'email' => $email,
             'password' => $password,
+            'password_confirmation' => $password,
         ];
 
         try {
