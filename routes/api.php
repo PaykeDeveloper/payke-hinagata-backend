@@ -23,9 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1'], function () {
     Route::get('/status', StatusController::class);
-    // FIXME: サンプルコードです。
-    Route::apiResource('books', BookController::class);
-    Route::apiResource('books.comments', BookCommentController::class);
-    Route::post('/books/{book}/comments/create-async', [BookCommentController::class, 'storeAsync']);
-    Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
+    Route::middleware('auth:sanctum')->group(function () {
+        // FIXME: サンプルコードです。
+        Route::apiResource('books', BookController::class);
+        Route::apiResource('books.comments', BookCommentController::class);
+        Route::post('/books/{book}/comments/create-async', [BookCommentController::class, 'storeAsync']);
+        Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
+    });
 });
