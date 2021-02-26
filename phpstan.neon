@@ -8,6 +8,7 @@ parameters:
         - '#PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelper[a-zA-Z0-9\\_]+#'
         - '#Call to an undefined method App\\Http\\Requests\\[a-zA-Z0-9\\_]+::route\(\)#'
         - '#Call to an undefined method App\\Http\\Requests\\[a-zA-Z0-9\\_]+::all\(\)#'
+        - '#Call to an undefined method Illuminate\\Http\\Request::session\(\)#'
         - '#Call to an undefined method Illuminate\\Http\\Request::expectsJson\(\)#'
         - '#Call to an undefined method Illuminate\\Http\\Request::getPreferredLanguage\(\)#'
         - '#Call to an undefined method Illuminate\\Http\\Request::user\(\)#'
