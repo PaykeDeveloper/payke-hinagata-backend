@@ -107,6 +107,9 @@
             "@php artisan route:clear",
             "@php artisan view:clear"
         ],
+        "tinker": [
+            "@php artisan tinker"
+        ],
         "migrate": [
             "@php artisan migrate"
         ],
