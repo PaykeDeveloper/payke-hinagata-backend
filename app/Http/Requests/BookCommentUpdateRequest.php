@@ -24,6 +24,8 @@ class BookCommentUpdateRequest extends BookCommentRequest
             'choices' => [Rule::in(FooBar::all())],
             'description' => ['string'],
             'votes' => ['integer', 'min:1', 'max:5'],
+            'slug' => ['regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
+            'cover' => ['nullable', 'mimetypes:image/jpeg,image/png,image/bmp', 'max:1024'],
         ];
     }
 }

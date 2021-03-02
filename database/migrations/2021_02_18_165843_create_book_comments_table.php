@@ -24,8 +24,9 @@ class CreateBookCommentsTable extends Migration
             $table->double('column', 10, 3);
             $table->enum('choices', \App\Models\FooBar::all());
             $table->text('description');
-            $table->string('slug')->unique();
             $table->unsignedTinyInteger('votes');
+            $table->string('slug')->unique();
+            $table->string('cover')->nullable();
             $table->timestampsTz();
             $table->softDeletes();
         });
