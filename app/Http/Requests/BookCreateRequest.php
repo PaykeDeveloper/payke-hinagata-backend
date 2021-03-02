@@ -28,6 +28,7 @@ class BookCreateRequest extends FormRequest
             'title' => ['required', 'string', 'max:20'],
             'author' => ['nullable', 'string'],
             'release_date' => ['nullable', 'date'],
+//            'cover' => ['nullable', 'mimetypes:image/jpeg,image/png,image/bmp', 'max:1024'],
         ];
     }
 }
