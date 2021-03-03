@@ -172,6 +172,30 @@ class BookCommentControllerTest extends TestCase
     }
 
     /**
+     * [異常系] Slugが重複する場合はエラーになる。
+     */
+    public function testStoreDuplicateSlug()
+    {
+        $book = Book::factory()->create();
+        $bookComment = BookComment::factory()->create();
+        $data = [
+            'confirmed' => true,
+            'publish_date' => "1971-09-17",
+            'approved_at' => "2002-11-19T07:41:55.000000Z",
+            'amount' => 95.4,
+            'column' => 1073045.344,
+            'choices' => "bar",
+            'description' => "Consequatur laborum vel quis",
+            'votes' => 2,
+            'slug' => $bookComment->slug,
+        ];
+        $response = $this->postJson(route('books.comments.store', ['book' => $book->id]), $data);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonStructure(['errors' => ['slug']]);
+    }
+
+    /**
      * [異常系] 存在しないIDで取得するとエラーになる。
      */
     public function testShowNotFound()

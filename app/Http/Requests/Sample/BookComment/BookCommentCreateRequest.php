@@ -39,7 +39,7 @@ class BookCommentCreateRequest extends FormRequest
             'choices' => ['nullable', Rule::in(FooBar::all())],
             'description' => ['string'],
             'votes' => ['nullable', 'integer', 'min:1', 'max:5'],
-            'slug' => ['required', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
+            'slug' => ['required', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'unique:book_comments'],
             'cover' => ['nullable', 'mimetypes:image/jpeg,image/png,image/bmp', 'max:1024'],
         ];
     }
