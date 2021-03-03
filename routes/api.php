@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\BookCommentController;
-use App\Http\Controllers\BookController;
+use App\Http\Controllers\Sample\BookCommentController;
+use App\Http\Controllers\Sample\BookController;
 use App\Http\Controllers\StatusController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Sample\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 // FIXME: サンプルコードです。
-class BookUpdateRequest extends FormRequest
+class BookCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class BookUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['string', 'max:20'],
+            'title' => ['required', 'string', 'max:20'],
             'author' => ['nullable', 'string'],
             'release_date' => ['nullable', 'date'],
         ];

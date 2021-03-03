@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Sample;
 
+use App\Models\IdeHelperBookComment;
 use App\Models\Traits\HasImageUploads;
 use App\Models\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

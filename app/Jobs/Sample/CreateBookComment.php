@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Sample;
 
-use App\Models\Book;
-use App\Models\BookComment;
+use App\Models\Sample\Book;
+use App\Models\Sample\BookComment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

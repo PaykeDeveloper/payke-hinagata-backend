@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers;
+namespace Tests\Feature\Http\Controllers\Sample;
 
-use App\Models\Book;
+use App\Models\Sample\Book;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;

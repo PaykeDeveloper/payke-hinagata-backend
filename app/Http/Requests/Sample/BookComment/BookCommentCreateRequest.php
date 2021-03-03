@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Sample\BookComment;
 
-use App\Models\FooBar;
+use App\Models\Sample\FooBar;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,14 +27,14 @@ class BookCommentCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'confirmed' => ['required', 'boolean'],
-            'publish_date' => ['required', 'date'],
-            'approved_at' => ['required', 'date', 'after:start_date'],
-            'amount' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
-            'column' => ['required', 'numeric'],
-            'choices' => ['required', Rule::in(FooBar::all())],
-            'description' => ['required', 'string'],
-            'votes' => ['required', 'integer', 'min:1', 'max:5'],
+            'confirmed' => ['nullable', 'boolean'],
+            'publish_date' => ['nullable', 'date'],
+            'approved_at' => ['nullable', 'date', 'after:start_date'],
+            'amount' => ['nullable', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'column' => ['nullable', 'numeric'],
+            'choices' => ['nullable', Rule::in(FooBar::all())],
+            'description' => ['string'],
+            'votes' => ['nullable', 'integer', 'min:1', 'max:5'],
             'slug' => ['required', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
             'cover' => ['nullable', 'mimetypes:image/jpeg,image/png,image/bmp', 'max:1024'],
         ];

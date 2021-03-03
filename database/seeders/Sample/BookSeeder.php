@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Sample;
 
-use App\Models\Book;
+use App\Models\Sample\Book;
 use Illuminate\Database\Seeder;
 
 // FIXME: サンプルコードです。

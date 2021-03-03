@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Sample;
 
-use App\Http\Requests\BookCreateRequest;
-use App\Http\Requests\BookUpdateRequest;
-use App\Models\Book;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Sample\Book\BookCreateRequest;
+use App\Http\Requests\Sample\Book\BookUpdateRequest;
+use App\Models\Sample\Book;
 use Exception;
 use Illuminate\Http\Response;
 

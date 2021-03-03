@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Sample\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Response;
 
 // FIXME: サンプルコードです。
-class BookCommentRequest extends FormRequest
+class BookUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,16 +25,9 @@ class BookCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['string', 'max:20'],
+            'author' => ['nullable', 'string'],
+            'release_date' => ['nullable', 'date'],
         ];
-    }
-
-    protected function prepareForValidation()
-    {
-        $book = $this->route('book');
-        $comment = $this->route('comment');
-        if ($book->id !== $comment->book_id) {
-            abort(Response::HTTP_NOT_FOUND);
-        }
     }
 }
