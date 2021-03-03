@@ -32,6 +32,8 @@ class BookCommentRequest extends FormRequest
 
     protected function prepareForValidation()
     {
+        parent::prepareForValidation();
+
         $book = $this->route('book');
         $comment = $this->route('comment');
         if ($book->id !== $comment->book_id) {
