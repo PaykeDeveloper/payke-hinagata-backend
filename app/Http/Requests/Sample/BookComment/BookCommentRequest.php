@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Sample\BookComment;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\FormRequest;
 use Illuminate\Http\Response;
 
 // FIXME: サンプルコードです。

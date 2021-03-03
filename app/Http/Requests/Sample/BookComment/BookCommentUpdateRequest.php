@@ -8,6 +8,10 @@ use Illuminate\Validation\Rule;
 // FIXME: サンプルコードです。
 class BookCommentUpdateRequest extends BookCommentRequest
 {
+    protected array $casts = [
+        'confirmed' => 'boolean'
+    ];
+
     /**
      * Get the validation rules that apply to the request.
      *

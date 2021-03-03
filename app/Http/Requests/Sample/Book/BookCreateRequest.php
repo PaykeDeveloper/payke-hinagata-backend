@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Sample\Book;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\FormRequest;
 
 // FIXME: サンプルコードです。
 class BookCreateRequest extends FormRequest

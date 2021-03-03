@@ -21,6 +21,15 @@ class BookComment extends Model
     use HasImageUploads;
 
     /**
+     * デフォルトの設定
+     *
+     * @var string[]
+     */
+    protected $attributes = [
+        'description' => ''
+    ];
+
+    /**
      * Eloquentの規約は大事。。
      * https://readouble.com/laravel/8.x/ja/eloquent.html
      */
