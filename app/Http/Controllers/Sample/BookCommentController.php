@@ -36,7 +36,6 @@ class BookCommentController extends Controller
     public function index(Book $book): Response
     {
         $comments = BookComment::whereBookId($book->id)->get();
-
         return response($comments);
     }
 
@@ -49,11 +48,7 @@ class BookCommentController extends Controller
      */
     public function store(BookCommentCreateRequest $request, Book $book): Response
     {
-        $comment = new BookComment();
-        $comment->fill(($request->all()));
-        $comment->book_id = $book->id;
-        $comment->save();
-
+        $comment = BookComment::createWithBook($request->all(), $book);
         return response($comment);
     }
 
@@ -81,7 +76,6 @@ class BookCommentController extends Controller
     public function update(BookCommentUpdateRequest $request, Book $book, BookComment $comment): Response
     {
         $comment->update($request->all());
-
         return response($comment);
     }
 
@@ -97,7 +91,6 @@ class BookCommentController extends Controller
     public function destroy(BookCommentRequest $request, Book $book, BookComment $comment): Response
     {
         $comment->delete();
-
         return response(null, 204);
     }
 
@@ -111,7 +104,6 @@ class BookCommentController extends Controller
     public function storeAsync(BookCommentCreateRequest $request, Book $book): Response
     {
         CreateBookComment::dispatch($book, $request->all());
-
         return response(null, 204);
     }
 
@@ -126,7 +118,6 @@ class BookCommentController extends Controller
     public function updateAsync(BookCommentUpdateRequest $request, Book $book, BookComment $comment): Response
     {
         UpdateBookComment::dispatch($comment, $request->all())->afterResponse();
-
         return response(null, 204);
     }
 }

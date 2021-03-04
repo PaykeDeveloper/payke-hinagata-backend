@@ -82,4 +82,13 @@ class BookComment extends Model
     {
         return $this->optionalImageUrl('cover');
     }
+
+    public static function createWithBook(array $attributes, Book $book): BookComment
+    {
+        $comment = new self();
+        $comment->fill($attributes);
+        $comment->book_id = $book->id;
+        $comment->save();
+        return $comment;
+    }
 }

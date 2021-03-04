@@ -13,19 +13,26 @@ class BookControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
+    private User $user;
+
     public function setUp(): void
     {
         parent::setUp();
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
     }
 
     /**
-     * [正常系] データ一覧の取得ができる。
+     * 正常系
      */
-    public function testIndex()
+
+    /**
+     * データ一覧の取得ができる。
+     */
+    public function testIndexSuccess()
     {
-        $book = Book::factory()->create();
+        $book = Book::factory()->create(['user_id' => $this->user->id]);
+
         $response = $this->getJson(route('books.index'));
 
         $response->assertOk()
@@ -34,25 +41,24 @@ class BookControllerTest extends TestCase
     }
 
     /**
-     * [正常系] 作成ができる。
+     * 作成ができる。
      */
-    public function testStore()
+    public function testStoreSuccess()
     {
-        $data = [
-            'title' => 'a',
-        ];
+        $data = ['title' => 'a'];
 
         $response = $this->postJson(route('books.store'), $data);
+
         $response->assertOk()
             ->assertJsonFragment($data);
     }
 
     /**
-     * [正常系] データの取得ができる。
+     * データの取得ができる。
      */
-    public function testShow()
+    public function testShowSuccess()
     {
-        $book = Book::factory()->create();
+        $book = Book::factory()->create(['user_id' => $this->user->id]);
 
         $response = $this->getJson(route('books.show', ['book' => $book->id]));
 
@@ -61,11 +67,12 @@ class BookControllerTest extends TestCase
     }
 
     /**
-     * [正常系] 更新ができる。
+     * 更新ができる。
      */
-    public function testUpdate()
+    public function testUpdateSuccess()
     {
-        $book = Book::factory()->requiredOnly()->create();
+        $book = Book::factory()->requiredOnly()->create(['user_id' => $this->user->id]);
+
         $data = [
             'author' => 'a',
         ];
@@ -77,11 +84,11 @@ class BookControllerTest extends TestCase
     }
 
     /**
-     * [正常系] 削除ができる。
+     * 削除ができる。
      */
-    public function testDestroy()
+    public function testDestroySuccess()
     {
-        $book = Book::factory()->create();
+        $book = Book::factory()->create(['user_id' => $this->user->id]);
 
         $response = $this->deleteJson(route('books.destroy', ['book' => $book->id]));
 
@@ -92,17 +99,36 @@ class BookControllerTest extends TestCase
     }
 
     /**
-     * [異常系] 存在しないIDで取得するとエラーになる。
+     * 準正常系
+     */
+
+    /**
+     * ユーザーに紐づかないデータは取得されない。
+     */
+    public function testIndexEmpty()
+    {
+        Book::factory()->create();
+
+        $response = $this->getJson(route('books.index'));
+
+        $response->assertOk()
+            ->assertJsonCount(0);
+    }
+
+    /**
+     * ユーザーに紐づかないIDで取得するとエラーになる。
      */
     public function testShowNotFound()
     {
-        $response = $this->getJson(route('books.show', ['book' => -1]));
+        $book = Book::factory()->create();
+
+        $response = $this->getJson(route('books.show', ['book' => $book->id]));
 
         $response->assertNotFound();
     }
 
     /**
-     * [異常系] タイトルを設定せず作成するとエラーになる。
+     * タイトルを設定せず作成するとエラーになる。
      */
     public function testStoreRequiredTitle()
     {
@@ -115,29 +141,25 @@ class BookControllerTest extends TestCase
     }
 
     /**
-     * [異常系] 存在しないIDで更新するとエラーになる。
+     * ユーザーに紐づかないIDで更新するとエラーになる。
      */
     public function testUpdateNotFound()
     {
-        Book::factory()->create();
-        $data = [
-            'author' => 'a',
-        ];
+        $book = Book::factory()->create();
+        $data = ['author' => 'a'];
 
-        $response = $this->patchJson(route('books.update', ['book' => -1]), $data);
+        $response = $this->patchJson(route('books.update', ['book' => $book->id]), $data);
 
         $response->assertNotFound();
     }
 
     /**
-     * [異常系] タイトルをNULLで更新するとエラーになる。
+     * タイトルをNULLで更新するとエラーになる。
      */
     public function testUpdateNullTitle()
     {
-        $book = Book::factory()->create();
-        $data = [
-            'title' => null,
-        ];
+        $book = Book::factory()->create(['user_id' => $this->user->id]);
+        $data = ['title' => null];
 
         $response = $this->patchJson(route('books.update', ['book' => $book->id]), $data);
 
@@ -146,11 +168,13 @@ class BookControllerTest extends TestCase
     }
 
     /**
-     * [異常系] 存在しないIDで削除するとエラーになる。
+     * ユーザーに紐づかないIDで削除するとエラーになる。
      */
     public function testDeleteNotFound()
     {
-        $response = $this->deleteJson(route('books.destroy', ['book' => -1]));
+        $book = Book::factory()->create();
+
+        $response = $this->deleteJson(route('books.destroy', ['book' => $book->id]));
 
         $response->assertNotFound();
     }
