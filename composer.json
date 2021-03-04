@@ -120,9 +120,6 @@
         "db:seed": [
             "@php artisan db:seed"
         ],
-        "storage:link": [
-            "@php artisan storage:link"
-        ],
         "route:list": [
             "@php artisan route:list"
         ],
