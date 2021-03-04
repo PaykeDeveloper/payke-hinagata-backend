@@ -9,7 +9,8 @@ use Illuminate\Validation\Rule;
 class BookCommentUpdateRequest extends BookCommentRequest
 {
     protected array $casts = [
-        'confirmed' => 'boolean'
+        'confirmed' => 'boolean',
+        'description' => 'string',
     ];
 
     /**

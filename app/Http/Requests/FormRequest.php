@@ -27,7 +27,7 @@ class FormRequest extends BaseClass
         $inputs = $this->all(array_keys($casts));
         $merge_inputs = [];
         foreach ($casts as $field => $pattern) {
-            if (!isset($inputs[$field])) {
+            if (!array_key_exists($field, $inputs)) {
                 continue;
             }
             $input = $inputs[$field];
@@ -54,6 +54,10 @@ class FormRequest extends BaseClass
                     return false;
                 }
                 break;
+            case 'string':
+                if ($input === null) {
+                    return '';
+                }
         }
         return $input;
     }
