@@ -22,7 +22,7 @@ class FormRequest extends BaseClass
     /**
      * @param array $casts
      */
-    private function castInputs(array $casts)
+    private function castInputs(array $casts): void
     {
         $inputs = $this->all(array_keys($casts));
         $merge_inputs = [];

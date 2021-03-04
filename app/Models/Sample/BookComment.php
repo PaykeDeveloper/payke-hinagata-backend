@@ -57,7 +57,7 @@ class BookComment extends Model
     /**
      * 画像アップロード用の設定
      */
-    protected static $imageFields = ['cover'];
+    protected static array $imageFields = ['cover'];
     protected $hidden = ['cover'];
     protected $appends = ['cover_url'];
 
