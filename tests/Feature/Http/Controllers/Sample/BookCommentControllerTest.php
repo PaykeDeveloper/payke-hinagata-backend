@@ -66,6 +66,28 @@ class BookCommentControllerTest extends TestCase
     }
 
     /**
+     * 作成ができる。
+     */
+    public function testStoreAsyncSuccess()
+    {
+        $data = [
+            'confirmed' => true,
+            'publish_date' => "1971-09-17",
+            'approved_at' => "2002-11-19T07:41:55.000000Z",
+            'amount' => 95.4,
+            'column' => 1073045.344,
+            'choices' => "bar",
+            'description' => "Consequatur laborum vel quis",
+            'votes' => 2,
+            'slug' => 'abc',
+        ];
+
+        $response = $this->postJson("/api/v1/books/{$this->book->id}/comments/create-async", $data);
+
+        $response->assertNoContent();
+    }
+
+    /**
      * データの取得ができる。
      */
     public function testShowSuccess()
@@ -96,6 +118,19 @@ class BookCommentControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJson($data);
+    }
+
+    /**
+     * 更新ができる。
+     */
+    public function testUpdateAsyncSuccess()
+    {
+        $comment = BookComment::factory()->create(['book_id' => $this->book->id]);
+        $data = ['votes' => 1];
+
+        $response = $this->patchJson("/api/v1/books/{$comment->book_id}/comments/{$comment->id}/update-async", $data);
+
+        $response->assertNoContent();
     }
 
     /**
