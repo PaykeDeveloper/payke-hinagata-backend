@@ -84,7 +84,7 @@
             "phpunit --coverage-html coverage"
         ],
         "phpstan": [
-            "@php vendor/bin/phpstan analyse -c phpstan.neon"
+            "@php vendor/bin/phpstan analyse"
         ],
         "phpcs": [
             "@php vendor/bin/phpcs --standard=phpcs.xml ./"
