@@ -28,5 +28,4 @@ class BookIndexRequest extends FormRequest
             //
         ];
     }
-
 }
