@@ -2,27 +2,16 @@
 
 namespace App\Http\Requests\Sample\BookComment;
 
-use App\Http\Requests\FormRequest;
 use App\Models\Sample\FooBar;
 use Illuminate\Validation\Rule;
 
 // FIXME: サンプルコードです。
-class BookCommentCreateRequest extends FormRequest
+class BookCommentCreateRequest extends BookCommentIndexRequest
 {
     protected array $casts = [
         'confirmed' => 'boolean',
         'description' => 'string',
     ];
-
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.

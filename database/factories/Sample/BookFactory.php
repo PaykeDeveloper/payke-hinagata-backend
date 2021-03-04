@@ -3,6 +3,7 @@
 namespace Database\Factories\Sample;
 
 use App\Models\Sample\Book;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 // FIXME: サンプルコードです。
@@ -23,6 +24,7 @@ class BookFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => User::factory(),
             'title' => $this->faker->word(),
             'author' => $this->faker->name(),
         ];
