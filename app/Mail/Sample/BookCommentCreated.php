@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Sample;
 
-use App\Models\BookComment;
+use App\Models\Sample\BookComment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;

@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
+// FIXME: サンプルコードです。
 class ExampleTest extends TestCase
 {
     /**

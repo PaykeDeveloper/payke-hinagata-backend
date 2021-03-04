@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Sample;
 
-use App\Http\Requests\BookCommentCreateRequest;
-use App\Http\Requests\BookCommentRequest;
-use App\Http\Requests\BookCommentUpdateRequest;
-use App\Jobs\CreateBookComment;
-use App\Jobs\UpdateBookComment;
-use App\Models\Book;
-use App\Models\BookComment;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Sample\BookComment\BookCommentCreateRequest;
+use App\Http\Requests\Sample\BookComment\BookCommentRequest;
+use App\Http\Requests\Sample\BookComment\BookCommentUpdateRequest;
+use App\Jobs\Sample\CreateBookComment;
+use App\Jobs\Sample\UpdateBookComment;
+use App\Models\Sample\Book;
+use App\Models\Sample\BookComment;
 use Exception;
 use Illuminate\Http\Response;
 

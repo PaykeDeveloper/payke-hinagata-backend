@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers;
+namespace Tests\Feature\Http\Controllers\Sample;
 
-use App\Models\Book;
-use App\Models\BookComment;
+use App\Models\Sample\Book;
+use App\Models\Sample\BookComment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
@@ -148,27 +148,51 @@ class BookCommentControllerTest extends TestCase
     }
 
     /**
-     * [異常系] 公開日を設定せず作成するとエラーになる。
+     * [異常系] Slugを設定せず作成するとエラーになる。
      */
-    public function testStoreRequiredPublishDate()
+    public function testStoreRequiredSlug()
     {
         $book = Book::factory()->create();
         $data = [
             'confirmed' => true,
-//            'publish_date' => "1971-09-17",
+            'publish_date' => "1971-09-17",
             'approved_at' => "2002-11-19T07:41:55.000000Z",
             'amount' => 95.4,
             'column' => 1073045.344,
             'choices' => "bar",
             'description' => "Consequatur laborum vel quis",
             'votes' => 2,
-            'slug' => 'abc',
+//            'slug' => 'abc',
         ];
 
         $response = $this->postJson(route('books.comments.store', ['book' => $book->id]), $data);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonStructure(['errors' => ['publish_date']]);
+            ->assertJsonStructure(['errors' => ['slug']]);
+    }
+
+    /**
+     * [異常系] Slugが重複する場合はエラーになる。
+     */
+    public function testStoreDuplicateSlug()
+    {
+        $book = Book::factory()->create();
+        $bookComment = BookComment::factory()->create();
+        $data = [
+            'confirmed' => true,
+            'publish_date' => "1971-09-17",
+            'approved_at' => "2002-11-19T07:41:55.000000Z",
+            'amount' => 95.4,
+            'column' => 1073045.344,
+            'choices' => "bar",
+            'description' => "Consequatur laborum vel quis",
+            'votes' => 2,
+            'slug' => $bookComment->slug,
+        ];
+        $response = $this->postJson(route('books.comments.store', ['book' => $book->id]), $data);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonStructure(['errors' => ['slug']]);
     }
 
     /**
@@ -215,13 +239,13 @@ class BookCommentControllerTest extends TestCase
     }
 
     /**
-     * [異常系] 得票をNULLで更新するとエラーになる。
+     * [異常系] SlugをNULLで更新するとエラーになる。
      */
-    public function testUpdateNullVotes()
+    public function testUpdateNullSlug()
     {
         $comment = BookComment::factory()->create();
         $data = [
-            'votes' => null,
+            'slug' => null,
         ];
 
         $response = $this->patchJson(route(
@@ -230,7 +254,7 @@ class BookCommentControllerTest extends TestCase
         ), $data);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonStructure(['errors' => ['votes']]);
+            ->assertJsonStructure(['errors' => ['slug']]);
     }
 
     /**

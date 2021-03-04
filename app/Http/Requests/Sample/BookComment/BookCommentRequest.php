@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Sample\BookComment;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\FormRequest;
 use Illuminate\Http\Response;
 
 // FIXME: サンプルコードです。
@@ -32,6 +32,8 @@ class BookCommentRequest extends FormRequest
 
     protected function prepareForValidation()
     {
+        parent::prepareForValidation();
+
         $book = $this->route('book');
         $comment = $this->route('comment');
         if ($book->id !== $comment->book_id) {

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Sample\BookSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

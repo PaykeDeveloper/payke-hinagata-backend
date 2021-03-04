@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Sample;
 
+use App\Models\IdeHelperBook;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

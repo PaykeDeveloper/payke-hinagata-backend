@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Sample;
 
+use App\Models\IdeHelperBookComment;
+use App\Models\Traits\HasImageUploads;
 use App\Models\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +18,16 @@ class BookComment extends Model
 {
     use HasFactory;
     use UsesUuid;
+    use HasImageUploads;
+
+    /**
+     * デフォルトの設定
+     *
+     * @var string[]
+     */
+    protected $attributes = [
+        'description' => ''
+    ];
 
     /**
      * Eloquentの規約は大事。。
@@ -42,10 +54,16 @@ class BookComment extends Model
         'amount' => 'double',
     ];
 
-//    /**
-//     * URLのキーをID以外に設定したい場合はここで指定する。
-//     * @return string
-//     */
+    /**
+     * 画像アップロード用の設定
+     */
+    protected static array $imageFields = ['cover'];
+    protected $hidden = ['cover'];
+    protected $appends = ['cover_url'];
+
+    /**
+     * URLのキーをID以外に設定したい場合はここで指定する。
+     */
 //    public function getRouteKeyName(): string
 //    {
 //        return 'slug';
@@ -54,5 +72,14 @@ class BookComment extends Model
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
+    }
+
+    /**
+     * 画像アップロード用の設定
+     * @return string|null
+     */
+    public function getCoverUrlAttribute(): ?string
+    {
+        return $this->optionalImageUrl('cover');
     }
 }

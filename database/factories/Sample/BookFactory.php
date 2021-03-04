@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Sample;
 
-use App\Models\Book;
+use App\Models\Sample\Book;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 // FIXME: サンプルコードです。
