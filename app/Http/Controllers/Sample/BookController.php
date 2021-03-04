@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sample\Book\BookCreateRequest;
-use App\Http\Requests\Sample\Book\BookRequest;
+use App\Http\Requests\Sample\Book\BookIndexRequest;
+use App\Http\Requests\Sample\Book\BookShowRequest;
 use App\Http\Requests\Sample\Book\BookUpdateRequest;
 use App\Models\Sample\Book;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 // FIXME: サンプルコードです。
@@ -17,10 +17,10 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param BookIndexRequest $request
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(BookIndexRequest $request): Response
     {
         $books = Book::whereUserId($request->user()->id)->get();
         return response($books);
@@ -41,11 +41,11 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param BookRequest $request
+     * @param BookShowRequest $request
      * @param Book $book
      * @return Response
      */
-    public function show(BookRequest $request, Book $book): Response
+    public function show(BookShowRequest $request, Book $book): Response
     {
         return response($book);
     }
@@ -66,12 +66,12 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param BookRequest $request
+     * @param BookShowRequest $request
      * @param Book $book
      * @return Response
      * @throws Exception
      */
-    public function destroy(BookRequest $request, Book $book): Response
+    public function destroy(BookShowRequest $request, Book $book): Response
     {
         $book->delete();
         return response(null, 204);

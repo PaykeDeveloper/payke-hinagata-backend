@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sample\BookComment\BookCommentCreateRequest;
-use App\Http\Requests\Sample\BookComment\BookCommentRequest;
+use App\Http\Requests\Sample\BookComment\BookCommentIndexRequest;
+use App\Http\Requests\Sample\BookComment\BookCommentShowRequest;
 use App\Http\Requests\Sample\BookComment\BookCommentUpdateRequest;
 use App\Jobs\Sample\CreateBookComment;
 use App\Jobs\Sample\UpdateBookComment;
@@ -30,10 +31,11 @@ class BookCommentController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param BookCommentIndexRequest $request
      * @param Book $book
      * @return Response
      */
-    public function index(Book $book): Response
+    public function index(BookCommentIndexRequest $request, Book $book): Response
     {
         $comments = BookComment::whereBookId($book->id)->get();
         return response($comments);
@@ -55,12 +57,12 @@ class BookCommentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param BookCommentRequest $request
+     * @param BookCommentShowRequest $request
      * @param Book $book
      * @param BookComment $comment
      * @return Response
      */
-    public function show(BookCommentRequest $request, Book $book, BookComment $comment): Response
+    public function show(BookCommentShowRequest $request, Book $book, BookComment $comment): Response
     {
         return response($comment);
     }
@@ -82,13 +84,13 @@ class BookCommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param BookCommentRequest $request
+     * @param BookCommentShowRequest $request
      * @param Book $book
      * @param BookComment $comment
      * @return Response
      * @throws Exception
      */
-    public function destroy(BookCommentRequest $request, Book $book, BookComment $comment): Response
+    public function destroy(BookCommentShowRequest $request, Book $book, BookComment $comment): Response
     {
         $comment->delete();
         return response(null, 204);

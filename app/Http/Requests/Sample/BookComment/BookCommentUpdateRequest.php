@@ -6,7 +6,7 @@ use App\Models\Sample\FooBar;
 use Illuminate\Validation\Rule;
 
 // FIXME: サンプルコードです。
-class BookCommentUpdateRequest extends BookCommentRequest
+class BookCommentUpdateRequest extends BookCommentShowRequest
 {
     protected array $casts = [
         'confirmed' => 'boolean',

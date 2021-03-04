@@ -23,7 +23,7 @@ class BookControllerTest extends TestCase
     }
 
     /**
-     * 正常系
+     * [正常系]
      */
 
     /**
@@ -99,7 +99,7 @@ class BookControllerTest extends TestCase
     }
 
     /**
-     * 準正常系
+     * [準正常系]
      */
 
     /**
