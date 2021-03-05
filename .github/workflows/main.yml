@@ -91,7 +91,8 @@ jobs:
           path: coverage/
   deploy-staging:
     needs: test
-    if: github.ref == 'refs/heads/main'
+#    FIXME: デプロイテストの為、コメントアウト
+#    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
