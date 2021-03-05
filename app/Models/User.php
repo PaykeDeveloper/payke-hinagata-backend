@@ -46,6 +46,17 @@ class User extends Authenticatable
     ];
 
     // FIXME: サンプルコードです。
+
+    protected static function boot()
+    {
+        parent::boot();
+        self::deleting(function ($check) {
+            foreach ($check->books as $book) {
+                $book->delete();
+            }
+        });
+    }
+
     public function books(): HasMany
     {
         return $this->hasMany(\App\Models\Sample\Book::class);

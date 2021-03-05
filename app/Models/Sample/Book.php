@@ -23,6 +23,16 @@ class Book extends Model
         'updated_at',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        self::deleting(function ($check) {
+            foreach ($check->comments as $comment) {
+                $comment->delete();
+            }
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
