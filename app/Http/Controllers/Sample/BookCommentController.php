@@ -29,8 +29,6 @@ use Illuminate\Http\Response;
 class BookCommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
      * @param BookCommentIndexRequest $request
      * @param Book $book
      * @return Response
@@ -42,8 +40,6 @@ class BookCommentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param BookCommentCreateRequest $request
      * @param Book $book
      * @return Response
@@ -55,8 +51,6 @@ class BookCommentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
      * @param BookCommentShowRequest $request
      * @param Book $book
      * @param BookComment $comment
@@ -68,8 +62,6 @@ class BookCommentController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param BookCommentUpdateRequest $request
      * @param Book $book
      * @param BookComment $comment
@@ -82,8 +74,6 @@ class BookCommentController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param BookCommentShowRequest $request
      * @param Book $book
      * @param BookComment $comment
@@ -97,8 +87,6 @@ class BookCommentController extends Controller
     }
 
     /**
-     * カスタムメソッドの作成方法
-     *
      * @param BookCommentCreateRequest $request
      * @param Book $book
      * @return Response
@@ -110,8 +98,6 @@ class BookCommentController extends Controller
     }
 
     /**
-     * カスタムメソッドの作成方法
-     *
      * @param BookCommentUpdateRequest $request
      * @param Book $book
      * @param BookComment $comment

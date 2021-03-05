@@ -15,8 +15,6 @@ use Illuminate\Http\Response;
 class BookController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
      * @param BookIndexRequest $request
      * @return Response
      */
@@ -27,8 +25,6 @@ class BookController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param BookCreateRequest $request
      * @return Response
      */
@@ -39,8 +35,6 @@ class BookController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
      * @param BookShowRequest $request
      * @param Book $book
      * @return Response
@@ -51,8 +45,6 @@ class BookController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param BookUpdateRequest $request
      * @param Book $book
      * @return Response
@@ -64,8 +56,6 @@ class BookController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param BookShowRequest $request
      * @param Book $book
      * @return Response
