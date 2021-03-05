@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
- * Class StatusController
+ * @unauthenticated
+ * @response {
+ * "is_authenticated": false
+ * }
+ *
  * @package App\Http\Controllers
  * @unauthenticated
  */

@@ -15,6 +15,18 @@ use Illuminate\Http\Response;
 class BookController extends Controller
 {
     /**
+     * @response [
+     * {
+     * "id": 2,
+     * "user_id": 1,
+     * "title": "Title 1",
+     * "author": "Author 1",
+     * "release_date": "2021-03-16",
+     * "created_at": "2021-03-05T08:31:33.000000Z",
+     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     * }
+     * ]
+     *
      * @param BookIndexRequest $request
      * @return Response
      */
@@ -25,6 +37,16 @@ class BookController extends Controller
     }
 
     /**
+     * @response {
+     * "id": 2,
+     * "user_id": 1,
+     * "title": "Title 1",
+     * "author": "Author 1",
+     * "release_date": "2021-03-16",
+     * "created_at": "2021-03-05T08:31:33.000000Z",
+     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     * }
+     *
      * @param BookCreateRequest $request
      * @return Response
      */
@@ -35,6 +57,16 @@ class BookController extends Controller
     }
 
     /**
+     * @response {
+     * "id": 2,
+     * "user_id": 1,
+     * "title": "Title 1",
+     * "author": "Author 1",
+     * "release_date": "2021-03-16",
+     * "created_at": "2021-03-05T08:31:33.000000Z",
+     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     * }
+     *
      * @param BookShowRequest $request
      * @param Book $book
      * @return Response
@@ -45,6 +77,16 @@ class BookController extends Controller
     }
 
     /**
+     * @response {
+     * "id": 2,
+     * "user_id": 1,
+     * "title": "Title 1",
+     * "author": "Author 1",
+     * "release_date": "2021-03-16",
+     * "created_at": "2021-03-05T08:31:33.000000Z",
+     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     * }
+     *
      * @param BookUpdateRequest $request
      * @param Book $book
      * @return Response
