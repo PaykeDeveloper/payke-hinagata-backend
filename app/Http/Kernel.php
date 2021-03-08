@@ -65,15 +65,4 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
-
-    public function handle($request)
-    {
-        try {
-            $response = parent::handle($request);
-            \Log::info('Kernel $response', ['headers' => $response->headers]);
-            return $response;
-        } catch (\Throwable $e) {
-            \Log::error($e);
-        }
-    }
 }
