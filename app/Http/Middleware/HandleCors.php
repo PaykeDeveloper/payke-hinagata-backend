@@ -11,8 +11,15 @@ class HandleCors extends Middleware
 {
     public function handle($request, Closure $next): Response
     {
-        $request = parent::handle($request, $next);
-        \Log::info($request->headers);
-        return $request;
+        \Log::info('HandleCors 1', [
+            'headers', $request->headers,
+            'shouldRun' => $this->shouldRun($request),
+            'isPreflightRequest' => $this->cors->isPreflightRequest($request)
+        ]);
+        $response = parent::handle($request, $next);
+        \Log::info('HandleCors 2', [
+            'headers', $response->headers,
+        ]);
+        return $response;
     }
 }
