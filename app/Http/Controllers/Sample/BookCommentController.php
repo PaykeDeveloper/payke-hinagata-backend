@@ -29,7 +29,25 @@ use Illuminate\Http\Response;
 class BookCommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @response [
+     * {
+     * "id": "4e69d027-833c-441b-b0e3-eb3805ff8064",
+     * "book_id": 1,
+     * "confirmed": true,
+     * "publish_date": "2021-03-29",
+     * "approved_at": "2021-03-05T11:06:00.000000Z",
+     * "amount": 32,
+     * "column": 3,
+     * "choices": "foo",
+     * "description": "ABC\nDEF",
+     * "votes": 2,
+     * "slug": "abc",
+     * "created_at": "2021-03-05T08:43:33.000000Z",
+     * "updated_at": "2021-03-05T11:07:25.000000Z",
+     * "deleted_at": null,
+     * "cover_url": "http://localhost:8000/storage/uploads/Ao32KH7ablb14RRUFZr2JR0P5rRlEYImx6FvV9Y2.png"
+     * }
+     * ]
      *
      * @param BookCommentIndexRequest $request
      * @param Book $book
@@ -42,7 +60,23 @@ class BookCommentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @response {
+     * "id": "4e69d027-833c-441b-b0e3-eb3805ff8064",
+     * "book_id": 1,
+     * "confirmed": true,
+     * "publish_date": "2021-03-29",
+     * "approved_at": "2021-03-05T11:06:00.000000Z",
+     * "amount": 32,
+     * "column": 3,
+     * "choices": "foo",
+     * "description": "ABC\nDEF",
+     * "votes": 2,
+     * "slug": "abc",
+     * "created_at": "2021-03-05T08:43:33.000000Z",
+     * "updated_at": "2021-03-05T11:07:25.000000Z",
+     * "deleted_at": null,
+     * "cover_url": "http://localhost:8000/storage/uploads/Ao32KH7ablb14RRUFZr2JR0P5rRlEYImx6FvV9Y2.png"
+     * }
      *
      * @param BookCommentCreateRequest $request
      * @param Book $book
@@ -55,7 +89,23 @@ class BookCommentController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @response {
+     * "id": "4e69d027-833c-441b-b0e3-eb3805ff8064",
+     * "book_id": 1,
+     * "confirmed": true,
+     * "publish_date": "2021-03-29",
+     * "approved_at": "2021-03-05T11:06:00.000000Z",
+     * "amount": 32,
+     * "column": 3,
+     * "choices": "foo",
+     * "description": "ABC\nDEF",
+     * "votes": 2,
+     * "slug": "abc",
+     * "created_at": "2021-03-05T08:43:33.000000Z",
+     * "updated_at": "2021-03-05T11:07:25.000000Z",
+     * "deleted_at": null,
+     * "cover_url": "http://localhost:8000/storage/uploads/Ao32KH7ablb14RRUFZr2JR0P5rRlEYImx6FvV9Y2.png"
+     * }
      *
      * @param BookCommentShowRequest $request
      * @param Book $book
@@ -68,7 +118,23 @@ class BookCommentController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @response {
+     * "id": "4e69d027-833c-441b-b0e3-eb3805ff8064",
+     * "book_id": 1,
+     * "confirmed": true,
+     * "publish_date": "2021-03-29",
+     * "approved_at": "2021-03-05T11:06:00.000000Z",
+     * "amount": 32,
+     * "column": 3,
+     * "choices": "foo",
+     * "description": "ABC\nDEF",
+     * "votes": 2,
+     * "slug": "abc",
+     * "created_at": "2021-03-05T08:43:33.000000Z",
+     * "updated_at": "2021-03-05T11:07:25.000000Z",
+     * "deleted_at": null,
+     * "cover_url": "http://localhost:8000/storage/uploads/Ao32KH7ablb14RRUFZr2JR0P5rRlEYImx6FvV9Y2.png"
+     * }
      *
      * @param BookCommentUpdateRequest $request
      * @param Book $book
@@ -82,8 +148,6 @@ class BookCommentController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param BookCommentShowRequest $request
      * @param Book $book
      * @param BookComment $comment
@@ -97,8 +161,6 @@ class BookCommentController extends Controller
     }
 
     /**
-     * カスタムメソッドの作成方法
-     *
      * @param BookCommentCreateRequest $request
      * @param Book $book
      * @return Response
@@ -110,8 +172,6 @@ class BookCommentController extends Controller
     }
 
     /**
-     * カスタムメソッドの作成方法
-     *
      * @param BookCommentUpdateRequest $request
      * @param Book $book
      * @param BookComment $comment

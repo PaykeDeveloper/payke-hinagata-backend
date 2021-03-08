@@ -6,6 +6,9 @@ on:
   pull_request:
     branches:
       - main
+  release:
+    types:
+      - published
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -16,7 +19,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: _xwJL4<N_<ib5FP]
           MYSQL_DATABASE: testing
-          MYSQL_USER: admin
+          MYSQL_USER: app
           MYSQL_PASSWORD: VR*aT[f>wAn7m5u2
         options: >-
           --health-cmd "mysqladmin ping -h localhost"
@@ -39,37 +42,45 @@ jobs:
       APP_KEY: base64:hG+0txeXIdVc2gvu7wzkJdFM8Uc0Z0Ck/ntD5tBc8Tw=
       APP_DEBUG: false
       APP_URL: http://localhost
+      SESSION_DOMAIN: localhost
+      SESSION_SECURE_COOKIE: 'false'
+      SANCTUM_STATEFUL_DOMAINS: localhost
       DB_READ_HOST: 127.0.0.1
       DB_READ_PORT: 3306
       DB_READ_DATABASE: testing
-      DB_READ_USERNAME: admin
+      DB_READ_USERNAME: app
       DB_READ_PASSWORD: VR*aT[f>wAn7m5u2
       DB_WRITE_HOST: 127.0.0.1
       DB_WRITE_PORT: 3306
       DB_WRITE_DATABASE: testing
-      DB_WRITE_USERNAME: admin
+      DB_WRITE_USERNAME: app
       DB_WRITE_PASSWORD: VR*aT[f>wAn7m5u2
       REDIS_HOST: 127.0.0.1
       REDIS_PASSWORD: null
       REDIS_PORT: 6379
-      MAIL_HOST: mailhog
+      MAIL_HOST: mail
       MAIL_PORT: 1025
       MAIL_USERNAME: null
       MAIL_PASSWORD: null
       MAIL_ENCRYPTION: null
-      MAIL_FROM_ADDRESS: null
+      MAIL_FROM_ADDRESS: info@example.com
+      UPLOAD_DRIVER: public
+      AWS_ACCESS_KEY_ID: null
+      AWS_SECRET_ACCESS_KEY: null
+      AWS_DEFAULT_REGION: null
+      AWS_BUCKET: null
       LOG_CHANNEL: stderr
       LOG_LEVEL: debug
     steps:
       - uses: actions/checkout@v2
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0.2
+          php-version: 7.4.16
       - uses: actions/cache@v2
         with:
           path: ./vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-      - run: composer install --ignore-platform-req=php
+      - run: composer install
       - run: composer helper
       - run: composer phpstan
       - run: composer phpcs
@@ -81,6 +92,20 @@ jobs:
   deploy-staging:
     needs: test
     if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo apt-get update -qy
+      - run: sudo apt-get install -y ruby-dev
+      - run: sudo gem install dpl
+      - run: sudo dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+        env:
+          HEROKU_APP: ${{ secrets.HEROKU_APP }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  deploy-production:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

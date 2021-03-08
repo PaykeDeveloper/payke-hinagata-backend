@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Console\Commands\User;
+namespace App\Console\Commands\Token;
 
-use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Console\Command;
-use Illuminate\Validation\ValidationException;
 
-class CreateUserCommand extends Command
+class CreateTokenCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'user:create {email?} {password?}';
+    protected $signature = 'token:create {email?} {password?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create user by email and password';
+    protected $description = 'Create token by email and password';
+
+    private const TOKEN_NAME = 'cli';
 
     /**
      * Create a new command instance.
@@ -49,24 +49,15 @@ class CreateUserCommand extends Command
             $password = $this->secret('What is the password?');
         }
 
-        $name = is_string($email) ? strstr($email, '@', true) : null;
-
-        $attributes = [
-            'name' => $name,
-            'email' => $email,
-            'password' => $password,
-            'password_confirmation' => $password,
-        ];
-
-        try {
-            $action = new CreateNewUser();
-            $action->create($attributes);
-        } catch (ValidationException $e) {
-            foreach ($e->validator->errors()->all() as $error) {
-                $this->error($error);
-            }
+        if (!\Auth::attempt(['email' => $email, 'password' => $password])) {
+            $this->error("Unauthenticated.");
             return 1;
         }
+
+        $user = \Auth::user();
+        $user->tokens()->where('name', self::TOKEN_NAME)->delete();
+        $token = $user->createToken(self::TOKEN_NAME)->plainTextToken;
+        $this->info($token);
         return 0;
     }
 }

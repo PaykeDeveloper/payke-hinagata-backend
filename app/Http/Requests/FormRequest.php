@@ -43,7 +43,12 @@ class FormRequest extends BaseClass
         }
     }
 
-    private static function cast(mixed $input, string $pattern): mixed
+    /**
+     * @param mixed $input
+     * @param string $pattern
+     * @return mixed
+     */
+    private static function cast($input, string $pattern)
     {
         switch ($pattern) {
             case 'boolean':

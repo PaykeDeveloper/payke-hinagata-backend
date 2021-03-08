@@ -166,7 +166,6 @@ return [
          * Package Service Providers...
          */
         QCod\ImageUp\ImageUpServiceProvider::class,
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         /*
          * Application Service Providers...

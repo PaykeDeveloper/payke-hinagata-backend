@@ -15,7 +15,17 @@ use Illuminate\Http\Response;
 class BookController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @response [
+     * {
+     * "id": 2,
+     * "user_id": 1,
+     * "title": "Title 1",
+     * "author": "Author 1",
+     * "release_date": "2021-03-16",
+     * "created_at": "2021-03-05T08:31:33.000000Z",
+     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     * }
+     * ]
      *
      * @param BookIndexRequest $request
      * @return Response
@@ -27,7 +37,15 @@ class BookController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @response {
+     * "id": 2,
+     * "user_id": 1,
+     * "title": "Title 1",
+     * "author": "Author 1",
+     * "release_date": "2021-03-16",
+     * "created_at": "2021-03-05T08:31:33.000000Z",
+     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     * }
      *
      * @param BookCreateRequest $request
      * @return Response
@@ -39,7 +57,15 @@ class BookController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @response {
+     * "id": 2,
+     * "user_id": 1,
+     * "title": "Title 1",
+     * "author": "Author 1",
+     * "release_date": "2021-03-16",
+     * "created_at": "2021-03-05T08:31:33.000000Z",
+     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     * }
      *
      * @param BookShowRequest $request
      * @param Book $book
@@ -51,7 +77,15 @@ class BookController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @response {
+     * "id": 2,
+     * "user_id": 1,
+     * "title": "Title 1",
+     * "author": "Author 1",
+     * "release_date": "2021-03-16",
+     * "created_at": "2021-03-05T08:31:33.000000Z",
+     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     * }
      *
      * @param BookUpdateRequest $request
      * @param Book $book
@@ -64,8 +98,6 @@ class BookController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param BookShowRequest $request
      * @param Book $book
      * @return Response

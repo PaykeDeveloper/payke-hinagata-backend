@@ -18,13 +18,15 @@
         "laravel/sanctum": "^2.9",
         "laravel/tinker": "^2.5",
         "predis/predis": "^1.1",
-        "qcod/laravel-imageup": "^1.1.0"
+        "qcod/laravel-imageup": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.9",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
+        "knuckleswtf/scribe": "^2.5",
         "laravel/sail": "^1.0.1",
+        "laravel/telescope": "^4.4",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "nunomaduro/larastan": "^0.7.0",
@@ -35,14 +37,12 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true,
-        "platform": {
-            "php": "8.0.2"
-        }
+        "sort-packages": true
     },
     "extra": {
         "laravel": {
             "dont-discover": [
+                "laravel/telescope",
                 "barryvdh/laravel-ide-helper"
             ]
         }
@@ -71,11 +71,6 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ],
-        "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:meta"
         ],
         "test": [
             "phpunit"
@@ -125,6 +120,10 @@
         ],
         "key:generate": [
             "@php artisan key:generate --show"
+        ],
+        "publish": [
+            "@php artisan telescope:publish",
+            "@php artisan scribe:generate"
         ]
     }
 }
