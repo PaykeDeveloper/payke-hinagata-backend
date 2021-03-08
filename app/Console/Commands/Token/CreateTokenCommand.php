@@ -11,7 +11,7 @@ class CreateTokenCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'token:create {email} {password}';
+    protected $signature = 'token:create {email?} {password?}';
 
     /**
      * The console command description.
@@ -41,6 +41,13 @@ class CreateTokenCommand extends Command
     {
         $email = $this->argument("email");
         $password = $this->argument("password");
+
+        while ($email === null) {
+            $email = $this->ask('What is the email?');
+        }
+        while ($password === null) {
+            $password = $this->secret('What is the password?');
+        }
 
         if (!\Auth::attempt(['email' => $email, 'password' => $password])) {
             $this->error("Unauthenticated.");
