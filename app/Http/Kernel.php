@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
 
     public function handle($request)
     {
+        \Log::info('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
         $response = parent::handle($request);
         \Log::info('Kernel $response', ['headers' => $response->headers]);
         return $response;
