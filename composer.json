@@ -19,7 +19,8 @@
         "laravel/tinker": "^2.5",
         "league/flysystem-aws-s3-v3": "^1.0",
         "predis/predis": "^1.1",
-        "qcod/laravel-imageup": "^1.1"
+        "qcod/laravel-imageup": "^1.1",
+        "ext-gd": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.9",
