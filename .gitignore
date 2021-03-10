@@ -12,6 +12,9 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 
+# macOS
+.DS_Store
+
 # Intellij IDEA
 /.idea/
 
