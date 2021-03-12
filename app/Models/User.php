@@ -45,7 +45,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // FIXME: サンプルコードです。
+
+    // FIXME: SAMPLE CODE
 
     protected static function boot()
     {

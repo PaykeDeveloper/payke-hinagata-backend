@@ -1,12 +1,13 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
-// FIXME: サンプルコードです。
 class StatusControllerTest extends TestCase
 {
     use DatabaseMigrations;

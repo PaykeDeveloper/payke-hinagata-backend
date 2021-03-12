@@ -1,8 +1,9 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Http\Requests\Sample\Book;
 
-// FIXME: サンプルコードです。
 class BookCreateRequest extends BookIndexRequest
 {
     /**

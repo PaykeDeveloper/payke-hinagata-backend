@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1'], function () {
     Route::get('/status', StatusController::class);
     Route::middleware('auth:sanctum')->group(function () {
-        // FIXME: サンプルコードです。
+        // FIXME: SAMPLE CODE
         Route::apiResource('books', BookController::class);
         Route::apiResource('books.comments', BookCommentController::class);
         Route::post('/books/{book}/comments/create-async', [BookCommentController::class, 'storeAsync']);

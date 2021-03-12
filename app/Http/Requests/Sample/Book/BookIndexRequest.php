@@ -1,10 +1,11 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Http\Requests\Sample\Book;
 
 use App\Http\Requests\FormRequest;
 
-// FIXME: サンプルコードです。
 class BookIndexRequest extends FormRequest
 {
     /**

@@ -1,10 +1,11 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-// FIXME: サンプルコードです。
 class CreateBookCommentsTable extends Migration
 {
     /**

@@ -147,7 +147,7 @@ return [
     */
 
     'attributes' => [
-        // FIXME: サンプルコードです。
+        // FIXME: SAMPLE CODE
         "confirmed" => "確認済みフラグ",
         "publish_date" => "公開日",
         "approved_at" => "到達日時",

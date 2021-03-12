@@ -1,12 +1,13 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace Database\Factories\Sample;
 
 use App\Models\Sample\Book;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-// FIXME: サンプルコードです。
 class BookFactory extends Factory
 {
     /**

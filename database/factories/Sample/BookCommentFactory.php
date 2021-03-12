@@ -1,5 +1,7 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace Database\Factories\Sample;
 
 use App\Models\Sample\Book;
@@ -7,7 +9,6 @@ use App\Models\Sample\BookComment;
 use App\Models\Sample\FooBar;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-// FIXME: サンプルコードです。
 class BookCommentFactory extends Factory
 {
     /**
