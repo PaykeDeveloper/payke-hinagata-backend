@@ -1,5 +1,7 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Jobs\Sample;
 
 use App\Models\Sample\BookComment;
@@ -9,7 +11,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-// FIXME: サンプルコードです。
 class UpdateBookComment implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;

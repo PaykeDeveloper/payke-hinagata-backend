@@ -1,5 +1,7 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace Tests\Unit\Models\Sample;
 
 use App\Models\Sample\Book;
@@ -8,7 +10,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
-// FIXME: サンプルコードです。
 class BookTest extends TestCase
 {
     use DatabaseMigrations;

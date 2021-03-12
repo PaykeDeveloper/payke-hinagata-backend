@@ -1,5 +1,7 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace Tests\Feature\Http\Controllers\Sample;
 
 use App\Models\Sample\Book;
@@ -9,7 +11,6 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-// FIXME: サンプルコードです。
 class BookControllerTest extends TestCase
 {
     use DatabaseMigrations;

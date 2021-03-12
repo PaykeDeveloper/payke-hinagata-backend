@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        // FIXME: サンプルコードです。
+        // FIXME: SAMPLE CODE
         $this->call(BookSeeder::class);
     }
 }

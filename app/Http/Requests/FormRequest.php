@@ -1,10 +1,11 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest as BaseClass;
 
-// FIXME: サンプルコードです。
 class FormRequest extends BaseClass
 {
     protected array $casts = [];

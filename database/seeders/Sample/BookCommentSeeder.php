@@ -1,10 +1,11 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace Database\Seeders\Sample;
 
 use Illuminate\Database\Seeder;
 
-// FIXME: サンプルコードです。
 class BookCommentSeeder extends Seeder
 {
     /**

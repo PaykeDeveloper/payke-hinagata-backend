@@ -1,5 +1,7 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Models\Sample;
 
 use App\Models\IdeHelperBookComment;
@@ -8,8 +10,6 @@ use App\Models\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
-// FIXME: サンプルコードです。
 
 /**
  * @mixin IdeHelperBookComment

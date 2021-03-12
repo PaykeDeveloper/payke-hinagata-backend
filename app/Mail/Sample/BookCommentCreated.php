@@ -1,5 +1,7 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Mail\Sample;
 
 use App\Models\Sample\BookComment;
@@ -7,7 +9,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-// FIXME: サンプルコードです。
 class BookCommentCreated extends Mailable
 {
     use Queueable, SerializesModels;

@@ -1,10 +1,11 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Http\Requests\Sample\BookComment;
 
 use Illuminate\Http\Response;
 
-// FIXME: サンプルコードです。
 class BookCommentShowRequest extends BookCommentIndexRequest
 {
     protected function prepareForValidation()

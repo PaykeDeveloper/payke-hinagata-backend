@@ -1,5 +1,7 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
@@ -11,7 +13,6 @@ use App\Models\Sample\Book;
 use Exception;
 use Illuminate\Http\Response;
 
-// FIXME: サンプルコードです。
 class BookController extends Controller
 {
     /**

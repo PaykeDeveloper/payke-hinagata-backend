@@ -1,5 +1,7 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
@@ -13,8 +15,6 @@ use App\Models\Sample\Book;
 use App\Models\Sample\BookComment;
 use Exception;
 use Illuminate\Http\Response;
-
-// FIXME: サンプルコードです。
 
 /**
  * 〜 メソッドの引数について 〜

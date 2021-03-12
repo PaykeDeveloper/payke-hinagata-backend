@@ -1,11 +1,12 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Http\Requests\Sample\BookComment;
 
 use App\Models\Sample\FooBar;
 use Illuminate\Validation\Rule;
 
-// FIXME: サンプルコードです。
 class BookCommentCreateRequest extends BookCommentIndexRequest
 {
     protected array $casts = [
