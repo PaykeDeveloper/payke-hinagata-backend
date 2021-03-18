@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-if (config('app.debug')) {
-    Route::get('/', fn () => view('welcome'));
-    Route::get('/phpinfo', fn () => phpinfo());
+if (!App::isProduction() && config('app.debug')) {
+    Route::get('/', fn() => view('welcome'));
+    Route::get('/phpinfo', fn() => phpinfo());
 }
