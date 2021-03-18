@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
 
     ];
 
-    private const MOCK_SEEDS = [
+    private const DUMMY_SEEDS = [
         // FIXME: SAMPLE CODE
         BookSeeder::class,
     ];
@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         \DB::transaction(function () {
             $this->call(self::BASE_SEEDS);
             if (!\App::isProduction()) {
-                $this->call(self::MOCK_SEEDS);
+                $this->call(self::DUMMY_SEEDS);
             }
         });
     }
