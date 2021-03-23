@@ -3,6 +3,7 @@
 use App\Http\Controllers\Sample\BookCommentController;
 use App\Http\Controllers\Sample\BookController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TokenController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,12 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::group(['prefix' => 'v1'], function () {
+    $limiter = config('fortify.limiters.login');
+    Route::post('/login', [TokenController::class, 'store'])
+        ->middleware(array_filter(['guest', $limiter ? 'throttle:' . $limiter : null]));
+    Route::post('/logout', [TokenController::class, 'destroy'])
+        ->middleware('auth:sanctum');
+
     Route::get('/status', StatusController::class);
     Route::middleware('auth:sanctum')->group(function () {
         // FIXME: SAMPLE CODE

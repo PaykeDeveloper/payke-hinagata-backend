@@ -41,12 +41,16 @@ class CreateUserCommand extends Command
     {
         $email = $this->argument("email");
         $password = $this->argument("password");
+        $password_confirmation = $this->argument("password");
 
         while ($email === null) {
             $email = $this->ask('What is the email?');
         }
         while ($password === null) {
             $password = $this->secret('What is the password?');
+        }
+        while ($password_confirmation === null) {
+            $password_confirmation = $this->secret('Retype the password.');
         }
 
         $name = is_string($email) ? strstr($email, '@', true) : null;
@@ -55,7 +59,7 @@ class CreateUserCommand extends Command
             'name' => $name,
             'email' => $email,
             'password' => $password,
-            'password_confirmation' => $password,
+            'password_confirmation' => $password_confirmation,
         ];
 
         try {
