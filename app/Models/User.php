@@ -62,4 +62,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Sample\Book::class);
     }
+
+    public function csvImports(): HasMany
+    {
+        return $this->hasMany(\App\Models\Sample\CsvImport::class);
+    }
 }

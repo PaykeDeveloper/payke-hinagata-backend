@@ -16,13 +16,6 @@ class CsvImportSeeder extends Seeder
     public function run()
     {
         $user = User::factory()->create();
-        $data_set = [
-            1 => ['user_id' => $user->id],
-            2 => ['user_id' => $user->id],
-        ];
-
-        foreach ($data_set as $key => $values) {
-            CsvImport::updateOrCreate(['id' => $key], $values);
-        }
+        CsvImport::factory()->count(50)->create(['user_id' => $user->id]);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Sample\BookUploadCsvController;
 use App\Http\Controllers\Sample\BookCommentController;
 use App\Http\Controllers\Sample\BookController;
 use App\Http\Controllers\StatusController;
@@ -31,6 +32,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/status', StatusController::class);
     Route::middleware('auth:sanctum')->group(function () {
         // FIXME: SAMPLE CODE
+        Route::apiResource('csv-upload.books', BookUploadCsvController::class);
         Route::apiResource('books', BookController::class);
         Route::apiResource('books.comments', BookCommentController::class);
         Route::post('/books/{book}/comments/create-async', [BookCommentController::class, 'storeAsync']);

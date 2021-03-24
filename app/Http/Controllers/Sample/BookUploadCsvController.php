@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
-use App\Models\Sample\BookUploadCsv;
+use App\Models\Sample\CsvImport;
+use App\Models\Sample\CsvImportType;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Http\Response;
@@ -17,7 +18,6 @@ class BookUploadCsvController extends Controller
      * "user_id": 1,
      * "original_file_name": "books.csv",
      * "status": 1,
-     * "error_count": 0,
      * "created_at": "2021-03-05T08:31:33.000000Z",
      * "updated_at": "2021-03-05T08:31:33.000000Z"
      * }
@@ -28,8 +28,8 @@ class BookUploadCsvController extends Controller
      */
     public function index(Request $request): Response
     {
-        $books = BookUploadCsv::whereUserId($request->user()->id)->get();
-        return response($books);
+        $csvList = CsvImport::whereUserId($request->user()->id)->whereCsvType(CsvImportType::BOOKS)->get();
+        return response($csvList);
     }
 
     /**
