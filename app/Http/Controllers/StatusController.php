@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
  * }
  *
  * @package App\Http\Controllers
+ * @group Authenticat User
  */
 class StatusController extends Controller
 {

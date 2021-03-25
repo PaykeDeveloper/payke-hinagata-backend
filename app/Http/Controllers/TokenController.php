@@ -7,6 +7,9 @@ use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Requests\LoginRequest;
 
+/**
+ * @group Authenticat User
+ */
 class TokenController extends AuthenticatedSessionController
 {
     private const TOKEN_NAME = 'api_v1';

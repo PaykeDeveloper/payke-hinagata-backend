@@ -28,14 +28,13 @@ Route::group(['prefix' => 'v1'], function () {
         ->middleware(array_filter(['guest', $limiter ? 'throttle:' . $limiter : null]));
     Route::post('/logout', [TokenController::class, 'destroy'])
         ->middleware('auth:sanctum');
-
     Route::get('/status', StatusController::class);
     Route::middleware('auth:sanctum')->group(function () {
         // FIXME: SAMPLE CODE
-        Route::apiResource('csv-upload.books', BookUploadCsvController::class);
         Route::apiResource('books', BookController::class);
         Route::apiResource('books.comments', BookCommentController::class);
         Route::post('/books/{book}/comments/create-async', [BookCommentController::class, 'storeAsync']);
         Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
+        Route::apiResource('csv-upload/books', BookUploadCsvController::class, ['except' => ['update', 'destroy']]);
     });
 });

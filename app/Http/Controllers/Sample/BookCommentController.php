@@ -26,6 +26,9 @@ use Illuminate\Http\Response;
  * 間違えた名前を設定すると、値がNULLになり404エラーにはなりません。。
  *
  */
+/**
+ * @group Books
+ */
 class BookCommentController extends Controller
 {
     /**

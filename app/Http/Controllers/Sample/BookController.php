@@ -13,6 +13,9 @@ use App\Models\Sample\Book;
 use Exception;
 use Illuminate\Http\Response;
 
+/**
+ * @group Books
+ */
 class BookController extends Controller
 {
     /**
