@@ -85,11 +85,7 @@ jobs:
       - run: composer helper
       - run: composer phpstan
       - run: composer phpcs
-      - run: composer test:coverage
-      - uses: actions/upload-artifact@v2
-        with:
-          name: coverage
-          path: coverage/
+      - run: composer test:coverage-text
   deploy-staging:
     needs: test
     if: github.ref == 'refs/heads/main'
