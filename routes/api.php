@@ -23,9 +23,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'v1'], function () {
     $limiter = config('fortify.limiters.login');
-    Route::post('/login', [TokenController::class, 'store'])
+    Route::post('/login', [TokenController::class, 'storeToken'])
         ->middleware(array_filter(['guest', $limiter ? 'throttle:' . $limiter : null]));
-    Route::post('/logout', [TokenController::class, 'destroy'])
+    Route::post('/logout', [TokenController::class, 'destroyToken'])
         ->middleware('auth:sanctum');
 
     Route::get('/status', StatusController::class);
