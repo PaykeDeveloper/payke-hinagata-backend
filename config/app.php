@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         QCod\ImageUp\ImageUpServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -176,7 +177,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
-
     ],
 
     /*

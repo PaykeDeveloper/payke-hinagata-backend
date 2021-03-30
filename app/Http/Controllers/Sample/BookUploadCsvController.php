@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Sample\Book\BookShowRequest;
 use App\Models\Sample\CsvImport;
 use App\Models\Sample\CsvImportType;
 use App\Http\Requests\Sample\BookUploadCsv\BookUploadCsvIndexRequest;
 use App\Http\Requests\Sample\BookUploadCsv\BookUploadCsvCreateRequest;
 use App\Http\Requests\Sample\BookUploadCsv\BookUploadCsvShowRequest;
+use App\Imports\Sample\BookImport;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * @group Csv Importer:Books
@@ -21,7 +22,7 @@ class BookUploadCsvController extends Controller
      * {
      * "id": 2,
      * "user_id": 1,
-     * "original_file_name": "books.csv",
+     * "file_name_original": "books.csv",
      * "import_status": 1,
      * "created_at": "2021-03-05T08:31:33.000000Z",
      * "updated_at": "2021-03-05T08:31:33.000000Z"
@@ -52,9 +53,9 @@ class BookUploadCsvController extends Controller
      */
     public function store(BookUploadCsvCreateRequest $request): Response
     {
-        $book = CsvImport::createWithUser($request->file('csv_file'), $request->user());
-        // TODO:バックグラウンドジョブの実行指定
-        return response($book);
+        $csvImport = CsvImport::createWithUser($request->file('csv_file'), $request->user());
+        Excel::import(new BookImport($csvImport->id), $csvImport->getUplodedFileFullPath());
+        return response($csvImport);
     }
 
     /**
@@ -68,11 +69,11 @@ class BookUploadCsvController extends Controller
      * }
      *
      * @param BookUploadCsvShowRequest $request
-     * @param Book $book
+     * @param CsvImport $csvImport
      * @return Response
      */
-    public function show(BookUploadCsvShowRequest $request, CsvImport $book): Response
+    public function show(BookUploadCsvShowRequest $request, CsvImport $csvImport): Response
     {
-        return response($book);
+        return response($csvImport);
     }
 }

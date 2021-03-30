@@ -11,10 +11,14 @@ RUN apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
 RUN docker-php-ext-install pdo_mysql
+RUN apt-get install -y \
+        libzip-dev \
+        libxml2-dev
+RUN docker-php-ext-install -j$(nproc) zip iconv xml simplexml
 
 WORKDIR /var/www/html
 
-# xdebug
+xdebug
 RUN pecl install xdebug-3.0.2
 RUN docker-php-ext-enable xdebug
 COPY ./docker/usr/local/etc/php/php.ini /usr/local/etc/php/php.ini

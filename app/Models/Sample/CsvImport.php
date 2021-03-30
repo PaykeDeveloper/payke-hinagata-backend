@@ -9,6 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @mixin IdeHelperCsvImport
@@ -25,7 +26,8 @@ class CsvImport extends Model
     ];
     protected static $fileFields = [
         'file_name_system' => [
-            'disk' => 'local', // FIXME: 外部公開されていないS3などのworkerサーバとの共通ディスクに配置する
+            // TODO: 一旦ローカル環境を参照する形で実装。S3などの共通ディスク要考慮
+            'disk' => 'local',
             'path' => 'import-csvs',
         ],
     ];
@@ -45,5 +47,12 @@ class CsvImport extends Model
         $csvImport->uploadFile($csv_file, 'file_name_system');
         $csvImport->save();
         return $csvImport;
+    }
+
+    public function getUplodedFileFullPath(): ?string
+    {
+        // TODO: 一旦ローカル環境を参照する形で実装。S3などの共通ディスク要考慮
+        $path = storage_path('app/'. $this->file_name_system);
+        return $path;
     }
 }
