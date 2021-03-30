@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TokenRequest;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-use Laravel\Fortify\Http\Requests\LoginRequest;
 
 class TokenController extends AuthenticatedSessionController
 {
@@ -17,15 +17,16 @@ class TokenController extends AuthenticatedSessionController
      * "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
      * }
      *
-     * @param LoginRequest $request
+     * @param TokenRequest $request
      * @return mixed
      */
-    public function store(LoginRequest $request)
+    public function storeToken(TokenRequest $request)
     {
         return $this->loginPipeline($request)->then(function ($request) {
             $user = $request->user();
-            $user->tokens()->where('name', self::TOKEN_NAME)->delete();
-            $token = $user->createToken(self::TOKEN_NAME)->plainTextToken;
+            $token_key = $this->getTokenKey($request);
+            $user->tokens()->where('name', $token_key)->delete();
+            $token = $user->createToken($token_key)->plainTextToken;
             return response(['token' => $token]);
         });
     }
@@ -34,12 +35,22 @@ class TokenController extends AuthenticatedSessionController
      * @param Request $request
      * @return LogoutResponse
      */
-    public function destroy(Request $request): LogoutResponse
+    public function destroyToken(Request $request): LogoutResponse
     {
         $user = $request->user();
-        $user->tokens()->where('name', self::TOKEN_NAME)->delete();
+        $user->tokens()->where('token', $request->bearerToken())->delete();
 
         $this->guard->logout();
         return app(LogoutResponse::class);
+    }
+
+    private function getTokenKey(TokenRequest $request): string
+    {
+        return implode('|', [
+            self::TOKEN_NAME,
+            $request->package_name,
+            $request->platform_type,
+            $request->devide_id,
+        ]);
     }
 }
