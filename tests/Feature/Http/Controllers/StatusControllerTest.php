@@ -1,7 +1,5 @@
 <?php
 
-// FIXME: SAMPLE CODE
-
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\User;
@@ -13,7 +11,11 @@ class StatusControllerTest extends TestCase
     use DatabaseMigrations;
 
     /**
-     * [正常系] 未認証の場合、is_authenticatedがFalse
+     * [正常系]
+     */
+
+    /**
+     * 未認証の場合、is_authenticatedがFalse
      */
     public function testShowUnAuthenticated()
     {
@@ -24,7 +26,7 @@ class StatusControllerTest extends TestCase
     }
 
     /**
-     * [正常系] 認証済みの場合、is_authenticatedがTrue
+     * 認証済みの場合、is_authenticatedがTrue
      */
     public function testShowAuthenticated()
     {
