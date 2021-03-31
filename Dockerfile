@@ -18,7 +18,7 @@ RUN docker-php-ext-install -j$(nproc) zip iconv xml simplexml
 
 WORKDIR /var/www/html
 
-xdebug
+# xdebug
 RUN pecl install xdebug-3.0.2
 RUN docker-php-ext-enable xdebug
 COPY ./docker/usr/local/etc/php/php.ini /usr/local/etc/php/php.ini
