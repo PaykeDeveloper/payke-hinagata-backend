@@ -2,17 +2,17 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Requests\Sample\BookUploadCsv;
+namespace App\Http\Requests\Sample\BookImportCsv;
 
+use App\Models\Sample\CsvImport;
 use Illuminate\Http\Response;
 
-class BookUploadCsvShowRequest extends BookUploadCsvIndexRequest
+class BookImportCsvShowRequest extends BookImportCsvIndexRequest
 {
     protected function prepareForValidation()
     {
         parent::prepareForValidation();
-
-        $csvImport = $this->route('book');
+        $csvImport = CsvImport::find($this->route('book'));
         if ($csvImport->user_id !== $this->user()->id) {
             abort(Response::HTTP_NOT_FOUND);
         }

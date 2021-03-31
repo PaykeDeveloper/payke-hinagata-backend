@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Sample;
 use App\Http\Controllers\Controller;
 use App\Models\Sample\CsvImport;
 use App\Models\Sample\CsvImportType;
-use App\Http\Requests\Sample\BookUploadCsv\BookUploadCsvIndexRequest;
-use App\Http\Requests\Sample\BookUploadCsv\BookUploadCsvCreateRequest;
-use App\Http\Requests\Sample\BookUploadCsv\BookUploadCsvShowRequest;
+use App\Http\Requests\Sample\BookImportCsv\BookImportCsvIndexRequest;
+use App\Http\Requests\Sample\BookImportCsv\BookImportCsvCreateRequest;
+use App\Http\Requests\Sample\BookImportCsv\BookImportCsvShowRequest;
 use App\Imports\Sample\BookImport;
 use Illuminate\Http\Response;
 use Maatwebsite\Excel\Facades\Excel;
@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 /**
  * @group Csv Importer:Books
  */
-class BookUploadCsvController extends Controller
+class BookImportCsvController extends Controller
 {
     /**
      * @response [
@@ -29,10 +29,10 @@ class BookUploadCsvController extends Controller
      * }
      * ]
      *
-     * @param BookUploadCsvIndexRequest $request
+     * @param BookImportCsvIndexRequest $request
      * @return Response
      */
-    public function index(BookUploadCsvIndexRequest $request): Response
+    public function index(BookImportCsvIndexRequest $request): Response
     {
         $csvList = CsvImport::whereUserId($request->user()->id)->whereCsvType(CsvImportType::BOOKS)->get();
         return response($csvList);
@@ -48,10 +48,10 @@ class BookUploadCsvController extends Controller
      * "updated_at": "2021-03-05T08:31:33.000000Z"
      * }
      *
-     * @param BookUploadCsvCreateRequest $request
+     * @param BookImportCsvCreateRequest $request
      * @return Response
      */
-    public function store(BookUploadCsvCreateRequest $request): Response
+    public function store(BookImportCsvCreateRequest $request): Response
     {
         $csvImport = CsvImport::createWithUser($request->file('csv_file'), $request->user());
         Excel::import(new BookImport($csvImport->id), $csvImport->getUplodedFileFullPath());
@@ -68,12 +68,13 @@ class BookUploadCsvController extends Controller
      * "updated_at": "2021-03-05T08:31:33.000000Z"
      * }
      *
-     * @param BookUploadCsvShowRequest $request
+     * @param BookImportCsvShowRequest $request
      * @param CsvImport $csvImport
      * @return Response
      */
-    public function show(BookUploadCsvShowRequest $request, CsvImport $csvImport): Response
+    public function show(BookImportCsvShowRequest $request, CsvImport $csvImport): Response
     {
+        \Log::debug(json_encode(($csvImport)));
         return response($csvImport);
     }
 }

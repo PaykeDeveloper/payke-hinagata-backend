@@ -2,11 +2,11 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Requests\Sample\BookUploadCsv;
+namespace App\Http\Requests\Sample\BookImportCsv;
 
 use App\Http\Requests\FormRequest;
 
-class BookUploadCsvIndexRequest extends FormRequest
+class BookImportCsvIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

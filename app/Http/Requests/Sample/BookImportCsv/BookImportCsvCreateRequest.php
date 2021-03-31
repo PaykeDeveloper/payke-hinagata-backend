@@ -2,9 +2,9 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Requests\Sample\BookUploadCsv;
+namespace App\Http\Requests\Sample\BookImportCsv;
 
-class BookUploadCsvCreateRequest extends BookUploadCsvIndexRequest
+class BookImportCsvCreateRequest extends BookImportCsvIndexRequest
 {
     /**
      * Get the validation rules that apply to the request.

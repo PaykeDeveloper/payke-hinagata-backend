@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Sample\BookUploadCsvController;
+use App\Http\Controllers\Sample\BookImportCsvController;
 use App\Http\Controllers\Sample\BookCommentController;
 use App\Http\Controllers\Sample\BookController;
 use App\Http\Controllers\StatusController;
@@ -35,6 +35,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('books.comments', BookCommentController::class);
         Route::post('/books/{book}/comments/create-async', [BookCommentController::class, 'storeAsync']);
         Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
-        Route::apiResource('csv-upload/books', BookUploadCsvController::class, ['except' => ['update', 'destroy']]);
+        Route::apiResource('csv-upload/books', BookImportCsvController::class, ['except' => ['update', 'destroy']]);
     });
 });
