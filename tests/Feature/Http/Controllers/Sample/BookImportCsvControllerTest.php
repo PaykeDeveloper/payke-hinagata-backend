@@ -161,7 +161,7 @@ class BookImportCsvControllerTest extends TestCase
     }
 
     /**
-     * バリデーションエラー:ファイルフォーマット異常
+     * バリデーションエラー:ファイルサイズ超過
      */
     public function testStoreLimitSizeCsvFile()
     {
