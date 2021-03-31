@@ -37,7 +37,7 @@ class BookImportCsvControllerTest extends TestCase
     {
         $csvImport = CsvImport::factory()->create(['user_id' => $this->user->id]);
 
-        $response = $this->getJson('/api/v1/csv-upload/books');
+        $response = $this->getJson(route('books-importer.index'));
         $response->assertOk()
             ->assertJsonCount(1)
             ->assertJsonFragment($csvImport->toArray());
@@ -57,9 +57,7 @@ class BookImportCsvControllerTest extends TestCase
                 '"book title","author name","2021-01-01"',
             ])
         );
-        $response = $this->postJson('/api/v1/csv-upload/books', [
-            'csv_file' => $file,
-        ]);
+        $response = $this->postJson(route('books-importer.store'), ['csv_file' => $file]);
         $response->assertOk()
             ->assertJsonPath('file_name_original', 'test.csv');
         Storage::disk('local')->assertExists('import-csvs/'.$file->hashName());
@@ -71,7 +69,7 @@ class BookImportCsvControllerTest extends TestCase
     public function testShowSuccess()
     {
         $csvImport = CsvImport::factory()->create(['user_id' => $this->user->id]);
-        $response = $this->getJson('/api/v1/csv-upload/books/' . $csvImport->id);
+        $response = $this->getJson(route('books-importer.show', ['book' =>  $csvImport->id]));
         $response->assertOk()
             ->assertJson($csvImport->toArray());
     }
@@ -92,9 +90,7 @@ class BookImportCsvControllerTest extends TestCase
                 '"book title","author name","2021-01-01"',
             ])
         );
-        $response = $this->postJson('/api/v1/csv-upload/books/' . $csvImport->id, [
-            'csv_file' => $file,
-        ]);
+        $response = $this->postJson('/api/v1/csv-upload/books/' . $csvImport->id, ['csv_file' => $file]);
         $response->assertStatus(405);
     }
 
@@ -115,7 +111,7 @@ class BookImportCsvControllerTest extends TestCase
     public function testIndexEmpty()
     {
         CsvImport::factory()->create();
-        $response = $this->getJson('/api/v1/csv-upload/books');
+        $response = $this->getJson(route('books-importer.index'));
         $response->assertOk()
             ->assertJsonCount(0);
     }
@@ -126,7 +122,7 @@ class BookImportCsvControllerTest extends TestCase
     public function testShowNotFound()
     {
         $csvImport = CsvImport::factory()->create();
-        $response = $this->getJson('/api/v1/csv-upload/books/' . $csvImport->id);
+        $response = $this->getJson(route('books-importer.show', ['book' => $csvImport->id]));
         $response->assertNotFound();
     }
 
@@ -138,9 +134,7 @@ class BookImportCsvControllerTest extends TestCase
         Excel::fake();
         Storage::fake('local');
         $file = UploadedFile::fake()->image('avatar.jpg');
-        $response = $this->postJson('/api/v1/csv-upload/books', [
-            'file' => $file,
-        ]);
+        $response = $this->postJson(route('books-importer.store'), ['file' => $file]);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
             ->assertJsonStructure(['errors' => ['csv_file']]);
     }
@@ -153,9 +147,7 @@ class BookImportCsvControllerTest extends TestCase
         Excel::fake();
         Storage::fake('local');
         $file = UploadedFile::fake()->image('avatar.jpg');
-        $response = $this->postJson('/api/v1/csv-upload/books', [
-            'csv_file' => $file,
-        ]);
+        $response = $this->postJson(route('books-importer.store'), ['csv_file' => $file]);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
             ->assertJsonStructure(['errors' => ['csv_file']]);
     }
@@ -177,9 +169,7 @@ class BookImportCsvControllerTest extends TestCase
             'test.csv',
             implode("\n", $csv)
         );
-        $response = $this->postJson('/api/v1/csv-upload/books', [
-            'csv_file' => $file,
-        ]);
+        $response = $this->postJson(route('books-importer.store'), ['csv_file' => $file]);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
             ->assertJsonStructure(['errors' => ['csv_file']]);
     }
