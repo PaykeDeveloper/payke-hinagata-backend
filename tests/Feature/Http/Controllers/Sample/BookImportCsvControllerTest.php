@@ -60,7 +60,7 @@ class BookImportCsvControllerTest extends TestCase
         $response = $this->postJson(route('books-importer.store'), ['csv_file' => $file]);
         $response->assertOk()
             ->assertJsonPath('file_name_original', 'test.csv');
-        Storage::disk('local')->assertExists('import-csvs/'.$file->hashName());
+        Storage::disk('local')->assertExists('import-csvs/' . $file->hashName());
     }
 
     /**
@@ -162,7 +162,7 @@ class BookImportCsvControllerTest extends TestCase
         $csv = [
             'title, author, release_date',
         ];
-        for($i = 0; $i < 50000; $i++) {
+        for ($i = 0; $i < 50000; $i++) {
             $csv[] = '"book title","author name","2021-01-01"';
         }
         $file = UploadedFile::fake()->createWithContent(

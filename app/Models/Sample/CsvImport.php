@@ -52,7 +52,7 @@ class CsvImport extends Model
     public function getUplodedFileFullPath(): ?string
     {
         // TODO: 一旦ローカル環境を参照する形で実装。S3などの共通ディスク要考慮
-        $path = storage_path('app/'. $this->file_name_system);
+        $path = storage_path('app/' . $this->file_name_system);
         return $path;
     }
 }

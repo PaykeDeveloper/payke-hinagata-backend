@@ -19,13 +19,21 @@ use App\Models\Sample\CsvImport;
 use App\Models\Sample\CsvImportStatus;
 use DB;
 
-class BookImport implements WithEvents, WithCustomCsvSettings, WithHeadingRow, ToModel, WithValidation, WithChunkReading, ShouldQueue, SkipsOnFailure
+class BookImport implements
+    WithEvents,
+    WithCustomCsvSettings,
+    WithHeadingRow,
+    ToModel,
+    WithValidation,
+    WithChunkReading,
+    ShouldQueue,
+    SkipsOnFailure
 {
     public $timeout = 60 * 5;
     private $id = null;
     private $user_id = null;
 
-    function __construct ($id)
+    public function __construct($id)
     {
         $this->id = $id;
         $csv_import = CsvImport::firstWhere('id', $this->id);
@@ -35,16 +43,16 @@ class BookImport implements WithEvents, WithCustomCsvSettings, WithHeadingRow, T
     public function registerEvents(): array
     {
         return [
-            BeforeImport::class => function(BeforeImport $event) {
-                DB::transaction(function() {
+            BeforeImport::class => function (BeforeImport $event) {
+                DB::transaction(function () {
                     $csv_import = CsvImport::firstWhere('id', $this->id);
                     $csv_import->fill([
                         'import_status' => CsvImportStatus::RUNNING,
                     ])->save();
                 });
             },
-            AfterImport::class => function(AfterImport $event) {
-                DB::transaction(function() {
+            AfterImport::class => function (AfterImport $event) {
+                DB::transaction(function () {
                     $csv_import = CsvImport::firstWhere('id', $this->id);
                     if ($csv_import->import_status == CsvImportStatus::FAILED) {
                         return;
@@ -60,7 +68,7 @@ class BookImport implements WithEvents, WithCustomCsvSettings, WithHeadingRow, T
     public function onFailure(Failure ...$failures)
     {
         // XXX: 当該クラスはSkipsOnFailureを指定しているためエラーを無視し後続の取り込みは継続する。エラー行の情報などを出力しフィードバックするとより親切。
-        DB::transaction(function() {
+        DB::transaction(function () {
             $csv_import = CsvImport::firstWhere('id', $this->id);
             $csv_import->fill([
                 'import_status' => CsvImportStatus::FAILED,

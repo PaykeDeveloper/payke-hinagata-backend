@@ -35,6 +35,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('books.comments', BookCommentController::class);
         Route::post('/books/{book}/comments/create-async', [BookCommentController::class, 'storeAsync']);
         Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
-        Route::resource('/csv-upload/books', BookImportCsvController::class)->names('books-importer')->except(['edit', 'update', 'destroy']);
+        Route::resource('/csv-upload/books', BookImportCsvController::class)
+            ->names('books-importer')
+            ->except(['edit', 'update', 'destroy']);
     });
 });

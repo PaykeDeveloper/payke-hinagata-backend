@@ -72,7 +72,7 @@ class BookImportCsvController extends Controller
      * @param CsvImport $csvImport
      * @return Response
      */
-    public function show(BookImportCsvShowRequest $request, String $id): Response
+    public function show(BookImportCsvShowRequest $request, string $id): Response
     {
         $csvImport = CsvImport::find($id);
         return response($csvImport);
