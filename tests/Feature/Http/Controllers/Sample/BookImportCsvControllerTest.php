@@ -91,17 +91,17 @@ class BookImportCsvControllerTest extends TestCase
             ])
         );
         $response = $this->postJson('/api/v1/csv-upload/books/' . $csvImport->id, ['csv_file' => $file]);
-        $response->assertStatus(405);
+        $response->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
     }
 
     /**
-     * 削除ができる。
+     * 削除ができない。
      */
     public function testDestroySuccess()
     {
         $csvImport = CsvImport::factory()->create(['user_id' => $this->user->id]);
         $response = $this->deleteJson('/api/v1/csv-upload/books/' . $csvImport->id);
-        $response->assertStatus(405);
+        $response->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
         $this->assertNotNull(CsvImport::find($csvImport->id));
     }
 
