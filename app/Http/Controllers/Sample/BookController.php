@@ -15,6 +15,11 @@ use Illuminate\Http\Response;
 
 class BookController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Book::class, 'book');
+    }
+
     /**
      * @response [
      * {

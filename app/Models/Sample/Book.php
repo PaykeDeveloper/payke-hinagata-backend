@@ -4,6 +4,7 @@
 
 namespace App\Models\Sample;
 
+use App\Models\Common\AuthorizableModel;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @mixin IdeHelperBook
  */
-class Book extends Model
+class Book extends AuthorizableModel
 {
     use HasFactory;
 
