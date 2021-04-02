@@ -2,14 +2,14 @@ FROM php:7.4.16-fpm
 
 RUN apt-get update
 
-# composer
-COPY --from=composer:2.0.11 /usr/bin/composer /usr/bin/composer
-RUN apt-get install -y zip unzip
-
 # xdebug
 RUN pecl install xdebug-3.0.2
 RUN docker-php-ext-enable xdebug
 COPY ./docker/usr/local/etc/php/php.ini /usr/local/etc/php/php.ini
+
+# composer
+COPY --from=composer:2.0.11 /usr/bin/composer /usr/bin/composer
+RUN apt-get install -y zip unzip
 
 # mysql
 RUN docker-php-ext-install pdo_mysql
