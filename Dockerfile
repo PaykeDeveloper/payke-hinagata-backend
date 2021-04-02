@@ -11,6 +11,9 @@ RUN pecl install xdebug-3.0.2
 RUN docker-php-ext-enable xdebug
 COPY ./docker/usr/local/etc/php/php.ini /usr/local/etc/php/php.ini
 
+# mysql
+RUN docker-php-ext-install pdo_mysql
+
 # qcod/laravel-imageup
 RUN apt-get install -y \
         libfreetype6-dev \
@@ -18,7 +21,6 @@ RUN apt-get install -y \
         libpng-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
-RUN docker-php-ext-install pdo_mysql
 
 
 WORKDIR /var/www/html
