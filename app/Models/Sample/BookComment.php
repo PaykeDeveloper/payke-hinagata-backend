@@ -5,7 +5,6 @@
 namespace App\Models\Sample;
 
 use App\Models\IdeHelperBookComment;
-use App\Models\Traits\HasImageUploads;
 use App\Models\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +17,6 @@ class BookComment extends Model
 {
     use HasFactory;
     use UsesUuid;
-    use HasImageUploads;
 
     /**
      * デフォルトの設定
@@ -57,9 +55,6 @@ class BookComment extends Model
     /**
      * 画像アップロード用の設定
      */
-    protected static array $imageFields = [
-        'cover' => ['path' => 'book-comments'],
-    ];
     protected $hidden = ['cover'];
     protected $appends = ['cover_url'];
 
