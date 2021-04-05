@@ -3,6 +3,7 @@ includes:
 parameters:
     paths:
         - app
-    level: 5
+    level: 7
     ignoreErrors:
         - '#PHPDoc tag @mixin contains unknown class App\\Models\\[a-zA-Z0-9\\_]*IdeHelper[a-zA-Z0-9\\_]+#'
+    checkMissingIterableValueType: false
