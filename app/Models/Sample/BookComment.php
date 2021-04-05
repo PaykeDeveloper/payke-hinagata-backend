@@ -26,7 +26,7 @@ class BookComment extends Model implements HasMedia
      * @var string[]
      */
     protected $attributes = [
-        'description' => ''
+        'description' => '',
     ];
 
     /**
@@ -59,7 +59,6 @@ class BookComment extends Model implements HasMedia
      * 画像アップロード用の設定
      */
     private const COLLECTION_NAME = 'cover';
-    protected $hidden = [self::COLLECTION_NAME];
     protected $appends = ['cover_url'];
 
     /**
@@ -84,11 +83,10 @@ class BookComment extends Model implements HasMedia
         return $this->getFirstMediaUrl(self::COLLECTION_NAME);
     }
 
-    public function setCoverAttribute(?UploadedFile $value): void
+    private function saveCover(?UploadedFile $value): void
     {
         if ($value) {
-            $this->addMedia($value)
-                ->toMediaCollection(self::COLLECTION_NAME);
+            $this->addMedia($value)->toMediaCollection(self::COLLECTION_NAME);
         } else {
             $this->clearMediaCollection(self::COLLECTION_NAME);
         }
@@ -96,18 +94,24 @@ class BookComment extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this
-            ->addMediaCollection(self::COLLECTION_NAME)
-            ->singleFile();
+        $this->addMediaCollection(self::COLLECTION_NAME)->singleFile();
     }
 
-    public static function createWithBook(mixed $attributes, Book $book): BookComment
+    public static function createFromRequest(mixed $attributes, Book $book): BookComment
     {
         $comment = new self();
         $comment->fill($attributes);
         $comment->book_id = $book->id;
         $comment->slug = (string)Str::uuid();
         $comment->save();
+        $comment->saveCover($attributes['cover'] ?? null);
         return $comment;
+    }
+
+    public function updateFromRequest(mixed $attributes): BookComment
+    {
+        $this->update($attributes);
+        $this->saveCover($attributes['cover'] ?? null);
+        return $this;
     }
 }
