@@ -27,7 +27,6 @@ class CreateBookCommentsTable extends Migration
             $table->text('description');
             $table->unsignedTinyInteger('votes')->nullable();
             $table->uuid('slug')->unique();
-            $table->string('cover')->nullable();
             $table->timestampsTz();
             $table->softDeletes();
         });
