@@ -64,7 +64,7 @@ jobs:
       MAIL_PASSWORD: null
       MAIL_ENCRYPTION: null
       MAIL_FROM_ADDRESS: info@example.com
-      UPLOAD_DRIVER: public
+      MEDIA_DISK: public
       AWS_ACCESS_KEY_ID: null
       AWS_SECRET_ACCESS_KEY: null
       AWS_DEFAULT_REGION: null
@@ -75,7 +75,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4.16
+          php-version: 8.0.3
           coverage: xdebug
       - uses: actions/cache@v2
         with:
