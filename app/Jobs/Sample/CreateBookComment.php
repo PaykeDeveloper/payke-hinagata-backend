@@ -23,9 +23,9 @@ class CreateBookComment implements ShouldQueue
      * Create a new job instance.
      *
      * @param Book $book
-     * @param array $attributes
+     * @param mixed $attributes
      */
-    public function __construct(Book $book, array $attributes)
+    public function __construct(Book $book, mixed $attributes)
     {
         $this->book = $book;
         $this->attributes = $attributes;

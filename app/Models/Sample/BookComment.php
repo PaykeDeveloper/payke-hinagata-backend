@@ -4,13 +4,13 @@
 
 namespace App\Models\Sample;
 
-use App\Models\IdeHelperBookComment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @mixin IdeHelperBookComment
@@ -84,7 +84,7 @@ class BookComment extends Model implements HasMedia
         return $this->getFirstMediaUrl(self::COLLECTION_NAME);
     }
 
-    public function setCoverAttribute($value)
+    public function setCoverAttribute(?UploadedFile $value): void
     {
         if ($value) {
             $this->addMedia($value)
@@ -101,7 +101,7 @@ class BookComment extends Model implements HasMedia
             ->singleFile();
     }
 
-    public static function createWithBook(array $attributes, Book $book): BookComment
+    public static function createWithBook(mixed $attributes, Book $book): BookComment
     {
         $comment = new self();
         $comment->fill($attributes);
