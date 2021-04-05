@@ -12,6 +12,7 @@ use App\Http\Requests\Sample\Book\BookUpdateRequest;
 use App\Models\Sample\Book;
 use Exception;
 use Illuminate\Http\Response;
+use App\Models\User;
 
 class BookController extends Controller
 {
@@ -38,7 +39,7 @@ class BookController extends Controller
      */
     public function index(BookIndexRequest $request): Response
     {
-        $books = Book::whereUserId($request->user()->id)->get();
+        $books = Book::allOrWhereUserId($request->user());
         return response($books);
     }
 

@@ -9,6 +9,7 @@ class AuthorizablePolicy
 {
     private $base_permissions = [
         'viewAny', // index
+        'viewAnyAll', // can view all resources
         'view',    // show
         'create',  // store
         'update',  // update
