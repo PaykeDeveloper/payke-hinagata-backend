@@ -26,7 +26,7 @@ class BookCommentCreateRequest extends BookCommentIndexRequest
             'publish_date' => ['nullable', 'date'],
             'approved_at' => ['nullable', 'date', 'after:start_date'],
             'amount' => ['nullable', 'regex:/^\d+(\.\d{1,2})?$/'],
-            'column' => ['nullable', 'numeric'],
+            'column' => ['nullable', 'numeric', 'max:999999'],
             'choices' => ['nullable', Rule::in(FooBar::all())],
             'description' => ['string'],
             'votes' => ['nullable', 'integer', 'min:1', 'max:5'],
