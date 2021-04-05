@@ -38,6 +38,6 @@ class CreateBookComment implements ShouldQueue
      */
     public function handle()
     {
-        BookComment::createWithBook($this->attributes, $this->book);
+        BookComment::createFromRequest($this->attributes, $this->book);
     }
 }

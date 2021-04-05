@@ -84,7 +84,7 @@ class BookCommentController extends Controller
      */
     public function store(BookCommentCreateRequest $request, Book $book): Response
     {
-        $comment = BookComment::createWithBook($request->all(), $book);
+        $comment = BookComment::createFromRequest($request->all(), $book);
         return response($comment);
     }
 
@@ -143,7 +143,7 @@ class BookCommentController extends Controller
      */
     public function update(BookCommentUpdateRequest $request, Book $book, BookComment $comment): Response
     {
-        $comment->update($request->all());
+        $comment->updateFromRequest($request->all());
         return response($comment);
     }
 
