@@ -15,7 +15,7 @@ class BookUpdateRequest extends BookShowRequest
     {
         return [
             'title' => ['string', 'max:20'],
-            'author' => ['nullable', 'string'],
+            'author' => ['nullable', 'string', 'max:225'],
             'release_date' => ['nullable', 'date'],
         ];
     }

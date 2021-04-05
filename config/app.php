@@ -165,7 +165,6 @@ return [
         /*
          * Package Service Providers...
          */
-        QCod\ImageUp\ImageUpServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*

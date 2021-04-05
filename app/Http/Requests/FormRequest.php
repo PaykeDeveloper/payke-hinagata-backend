@@ -1,12 +1,10 @@
 <?php
 
-// FIXME: SAMPLE CODE
-
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest as BaseClass;
+use Illuminate\Foundation\Http\FormRequest as BaseFormRequest;
 
-class FormRequest extends BaseClass
+class FormRequest extends BaseFormRequest
 {
     protected array $casts = [];
 
@@ -44,12 +42,7 @@ class FormRequest extends BaseClass
         }
     }
 
-    /**
-     * @param mixed $input
-     * @param string $pattern
-     * @return mixed
-     */
-    private static function cast($input, string $pattern)
+    private static function cast(mixed $input, string $pattern): mixed
     {
         switch ($pattern) {
             case 'boolean':
