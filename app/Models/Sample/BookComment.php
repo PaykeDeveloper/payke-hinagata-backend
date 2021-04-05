@@ -9,14 +9,17 @@ use App\Models\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @mixin IdeHelperBookComment
  */
-class BookComment extends Model
+class BookComment extends Model implements HasMedia
 {
     use HasFactory;
     use UsesUuid;
+    use InteractsWithMedia;
 
     /**
      * デフォルトの設定
@@ -77,7 +80,14 @@ class BookComment extends Model
      */
     public function getCoverUrlAttribute(): ?string
     {
-        return $this->optionalImageUrl('cover');
+        return $this->getFirstMediaUrl('cover');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('cover')
+            ->singleFile();
     }
 
     public static function createWithBook(array $attributes, Book $book): BookComment
@@ -86,6 +96,8 @@ class BookComment extends Model
         $comment->fill($attributes);
         $comment->book_id = $book->id;
         $comment->save();
+        $comment->addMedia($attributes['cover'])
+            ->toMediaCollection('cover');
         return $comment;
     }
 }
