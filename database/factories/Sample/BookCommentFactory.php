@@ -36,7 +36,7 @@ class BookCommentFactory extends Factory
             'publish_date' => $publish_date,
             'approved_at' => $approved_at,
             'amount' => strval($this->faker->randomFloat(1, max: 99)),
-            'column' => $this->faker->randomFloat(3, max: 9999999),
+            'column' => $this->faker->randomFloat(3, max: 999999),
             'choices' => $this->faker->randomElement(FooBar::all()),
             'description' => $this->faker->paragraph(),
             'votes' => $this->faker->numberBetween(1, 5),
