@@ -31,7 +31,6 @@ class BookCommentFactory extends Factory
             ->format(DATE_ATOM);
 
         return [
-            'id' => $this->faker->uuid,
             'book_id' => Book::factory(),
             'confirmed' => $this->faker->boolean(),
             'publish_date' => $publish_date,
@@ -41,7 +40,7 @@ class BookCommentFactory extends Factory
             'choices' => $this->faker->randomElement(FooBar::all()),
             'description' => $this->faker->paragraph(),
             'votes' => $this->faker->numberBetween(1, 5),
-            'slug' => $this->faker->slug(),
+            'slug' => $this->faker->uuid,
         ];
     }
 }

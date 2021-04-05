@@ -7,6 +7,7 @@ namespace Tests\Feature\Http\Controllers\Sample;
 use App\Models\Sample\Book;
 use App\Models\Sample\BookComment;
 use App\Models\User;
+use Faker\Provider\Uuid;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -57,7 +58,6 @@ class BookCommentControllerTest extends TestCase
             'choices' => "bar",
             'description' => "Consequatur laborum vel quis",
             'votes' => 2,
-            'slug' => 'abc',
         ];
 
         $response = $this->postJson(route('books.comments.store', ['book' => $this->book->id]), $data);
@@ -80,7 +80,6 @@ class BookCommentControllerTest extends TestCase
             'choices' => "bar",
             'description' => "Consequatur laborum vel quis",
             'votes' => 2,
-            'slug' => 'abc',
         ];
 
         $response = $this->postJson("/api/v1/books/{$this->book->id}/comments/create-async", $data);
@@ -97,7 +96,7 @@ class BookCommentControllerTest extends TestCase
 
         $response = $this->getJson(route(
             'books.comments.show',
-            ['book' => $comment->book_id, 'comment' => $comment->id]
+            ['book' => $comment->book_id, 'comment' => $comment->slug]
         ));
 
         $response->assertOk()
@@ -114,7 +113,7 @@ class BookCommentControllerTest extends TestCase
 
         $response = $this->patchJson(route(
             'books.comments.update',
-            ['book' => $comment->book_id, 'comment' => $comment->id]
+            ['book' => $comment->book_id, 'comment' => $comment->slug]
         ), $data);
 
         $response->assertOk()
@@ -129,7 +128,7 @@ class BookCommentControllerTest extends TestCase
         $comment = BookComment::factory()->create(['book_id' => $this->book->id]);
         $data = ['votes' => 1];
 
-        $response = $this->patchJson("/api/v1/books/{$comment->book_id}/comments/{$comment->id}/update-async", $data);
+        $response = $this->patchJson("/api/v1/books/{$comment->book_id}/comments/{$comment->slug}/update-async", $data);
 
         $response->assertNoContent();
     }
@@ -143,11 +142,11 @@ class BookCommentControllerTest extends TestCase
 
         $response = $this->deleteJson(route(
             'books.comments.destroy',
-            ['book' => $comment->book_id, 'comment' => $comment->id]
+            ['book' => $comment->book_id, 'comment' => $comment->slug]
         ));
 
         $response->assertNoContent();
-        $result = Book::find($comment->id);
+        $result = BookComment::find($comment->id);
         $this->assertNull($result);
     }
 
@@ -182,7 +181,6 @@ class BookCommentControllerTest extends TestCase
             'choices' => "bar",
             'description' => "Consequatur laborum vel quis",
             'votes' => 2,
-            'slug' => 'abc',
         ];
 
         $response = $this->postJson(route('books.comments.store', ['book' => $book->id]), $data);
@@ -191,9 +189,9 @@ class BookCommentControllerTest extends TestCase
     }
 
     /**
-     * Slugを設定せず作成するとエラーになる。
+     * 誤ったchoicesが指定されるとエラーになる。
      */
-    public function testStoreRequiredSlug()
+    public function testStoreWrongChoices()
     {
         $data = [
             'confirmed' => true,
@@ -201,40 +199,15 @@ class BookCommentControllerTest extends TestCase
             'approved_at' => "2002-11-19T07:41:55.000000Z",
             'amount' => 95.4,
             'column' => 1073045.344,
-            'choices' => "bar",
+            'choices' => "test",
             'description' => "Consequatur laborum vel quis",
             'votes' => 2,
-//            'slug' => 'abc',
         ];
 
         $response = $this->postJson(route('books.comments.store', ['book' => $this->book->id]), $data);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonStructure(['errors' => ['slug']]);
-    }
-
-    /**
-     * Slugが重複する場合はエラーになる。
-     */
-    public function testStoreDuplicateSlug()
-    {
-        $bookComment = BookComment::factory()->create();
-        $data = [
-            'confirmed' => true,
-            'publish_date' => "1971-09-17",
-            'approved_at' => "2002-11-19T07:41:55.000000Z",
-            'amount' => 95.4,
-            'column' => 1073045.344,
-            'choices' => "bar",
-            'description' => "Consequatur laborum vel quis",
-            'votes' => 2,
-            'slug' => $bookComment->slug,
-        ];
-
-        $response = $this->postJson(route('books.comments.store', ['book' => $this->book->id]), $data);
-
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonStructure(['errors' => ['slug']]);
+            ->assertJsonStructure(['errors' => ['choices']]);
     }
 
     /**
@@ -267,20 +240,21 @@ class BookCommentControllerTest extends TestCase
     }
 
     /**
-     * SlugをNULLで更新するとエラーになる。
+     * Slugは更新できない。
      */
-    public function testUpdateNullSlug()
+    public function testUpdateDisableUpdateSlug()
     {
         $comment = BookComment::factory()->create(['book_id' => $this->book->id]);
-        $data = ['slug' => null];
+        $data = ['slug' => Uuid::uuid()];
 
         $response = $this->patchJson(route(
             'books.comments.update',
-            ['book' => $comment->book_id, 'comment' => $comment->id]
+            ['book' => $comment->book_id, 'comment' => $comment->slug]
         ), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonStructure(['errors' => ['slug']]);
+        $response->assertOk();
+        $result = BookComment::find($comment->id);
+        $this->assertEquals($comment->slug, $result->slug);
     }
 
     /**
