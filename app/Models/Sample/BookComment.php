@@ -5,10 +5,10 @@
 namespace App\Models\Sample;
 
 use App\Models\IdeHelperBookComment;
-use App\Models\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -18,7 +18,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class BookComment extends Model implements HasMedia
 {
     use HasFactory;
-    use UsesUuid;
     use InteractsWithMedia;
 
     /**
@@ -38,6 +37,7 @@ class BookComment extends Model implements HasMedia
 //    protected $keyType = 'string';
     protected $guarded = [
         'id',
+        'slug',
         'created_at',
         'updated_at',
     ];
@@ -58,16 +58,17 @@ class BookComment extends Model implements HasMedia
     /**
      * 画像アップロード用の設定
      */
-    protected $hidden = ['cover'];
+    private const COLLECTION_NAME = 'cover';
+    protected $hidden = [self::COLLECTION_NAME];
     protected $appends = ['cover_url'];
 
     /**
      * URLのキーをID以外に設定したい場合はここで指定する。
      */
-//    public function getRouteKeyName(): string
-//    {
-//        return 'slug';
-//    }
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     public function book(): BelongsTo
     {
@@ -80,13 +81,23 @@ class BookComment extends Model implements HasMedia
      */
     public function getCoverUrlAttribute(): ?string
     {
-        return $this->getFirstMediaUrl('cover');
+        return $this->getFirstMediaUrl(self::COLLECTION_NAME);
+    }
+
+    public function setCoverAttribute($value)
+    {
+        if ($value) {
+            $this->addMedia($value)
+                ->toMediaCollection(self::COLLECTION_NAME);
+        } else {
+            $this->clearMediaCollection(self::COLLECTION_NAME);
+        }
     }
 
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('cover')
+            ->addMediaCollection(self::COLLECTION_NAME)
             ->singleFile();
     }
 
@@ -95,9 +106,8 @@ class BookComment extends Model implements HasMedia
         $comment = new self();
         $comment->fill($attributes);
         $comment->book_id = $book->id;
+        $comment->slug = (string)Str::uuid();
         $comment->save();
-        $comment->addMedia($attributes['cover'])
-            ->toMediaCollection('cover');
         return $comment;
     }
 }

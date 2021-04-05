@@ -30,7 +30,7 @@ class BookCommentUpdateRequest extends BookCommentShowRequest
             'choices' => ['nullable', Rule::in(FooBar::all())],
             'description' => ['string'],
             'votes' => ['nullable', 'integer', 'min:1', 'max:5'],
-            'slug' => ['regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', Rule::unique('book_comments')->ignore($this->id)],
+//            'slug' => ['regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', Rule::unique('book_comments')->ignore($this->id)],
             'cover' => ['nullable', 'mimetypes:image/jpeg,image/png,image/bmp', 'max:1024'],
         ];
     }

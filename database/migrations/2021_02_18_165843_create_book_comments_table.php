@@ -16,7 +16,7 @@ class CreateBookCommentsTable extends Migration
     public function up()
     {
         Schema::create('book_comments', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->foreignId('book_id')->constrained();
             $table->boolean('confirmed')->nullable();
             $table->date('publish_date')->nullable();
@@ -26,7 +26,7 @@ class CreateBookCommentsTable extends Migration
             $table->enum('choices', \App\Models\Sample\FooBar::all())->nullable();
             $table->text('description');
             $table->unsignedTinyInteger('votes')->nullable();
-            $table->string('slug')->unique();
+            $table->uuid('slug')->unique();
             $table->string('cover')->nullable();
             $table->timestampsTz();
             $table->softDeletes();
