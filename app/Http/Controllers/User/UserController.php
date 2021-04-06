@@ -14,6 +14,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
+        // 最終的には有効にする
         // $this->authorizeResource(User::class, 'user');
     }
 

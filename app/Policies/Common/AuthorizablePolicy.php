@@ -36,9 +36,10 @@ class AuthorizablePolicy
         }
     }
 
-    public function baseName()
+    public function baseName(string $model)
     {
-        return strtolower(basename(strtr($this->model, '\\', '/')));
+        $modelName = $model ?? $this->model;
+        return strtolower(basename(strtr($modelName, '\\', '/')));
     }
 
     /**
@@ -46,7 +47,7 @@ class AuthorizablePolicy
      */
     public function createPermission($action)
     {
-        $base_name = str_replace('Policy', '', strtolower(basename(strtr(Book::class, '\\', '/'))));
+        $base_name = str_replace('Policy', '', strtolower(basename(strtr(static::class, '\\', '/'))));
 
         try {
             Permission::create([

@@ -4,6 +4,7 @@
 
 namespace App\Models\Sample;
 
+use App\Models\Common\AuthorizableModel;
 use App\Models\IdeHelperBookComment;
 use App\Models\Traits\HasImageUploads;
 use App\Models\Traits\UsesUuid;
@@ -14,11 +15,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @mixin IdeHelperBookComment
  */
-class BookComment extends Model
+class BookComment extends AuthorizableModel
 {
     use HasFactory;
     use UsesUuid;
     use HasImageUploads;
+
+    protected static $parentModel = Book::class;
 
     /**
      * デフォルトの設定

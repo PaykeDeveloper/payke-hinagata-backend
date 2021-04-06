@@ -3,13 +3,14 @@
 namespace Database\Seeders;
 
 use Database\Seeders\Sample\BookSeeder;
+use Database\Seeders\User\UserRoleSeeder;
 use Illuminate\Database\Seeder;
 use Throwable;
 
 class DatabaseSeeder extends Seeder
 {
     private const BASE_SEEDS = [
-
+        RoleSeeder::class,
     ];
 
     private const DUMMY_SEEDS = [

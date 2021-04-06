@@ -30,7 +30,7 @@ class BookCommentController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Book::class, 'book');
+        $this->authorizeResource(BookComment::class, 'comment');
     }
 
     /**

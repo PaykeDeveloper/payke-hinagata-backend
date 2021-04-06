@@ -4,16 +4,17 @@ namespace App\Policies;
 
 use App\Policies\Common\AuthorizablePolicy;
 use App\Models\Sample\Book;
+use App\Models\Sample\BookComment;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BookPolicy extends AuthorizablePolicy
+class BookCommentPolicy extends AuthorizablePolicy
 {
     use HandlesAuthorization;
 
     public function __construct()
     {
-        $this->model = Book::class;
+        $this->model = BookComment::class;
         parent::__construct();
     }
 
@@ -37,10 +38,10 @@ class BookPolicy extends AuthorizablePolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Book  $book
+     * @param  \App\Models\BookComment  $bookComment
      * @return mixed
      */
-    public function view(User $user, Book $book)
+    public function view(User $user, BookComment $bookComment)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
@@ -70,10 +71,10 @@ class BookPolicy extends AuthorizablePolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Book  $book
+     * @param  \App\Models\BookComment  $bookComment
      * @return mixed
      */
-    public function update(User $user, Book $book)
+    public function update(User $user, BookComment $bookComment)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
@@ -87,10 +88,10 @@ class BookPolicy extends AuthorizablePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Book  $book
+     * @param  \App\Models\BookComment  $bookComment
      * @return mixed
      */
-    public function delete(User $user, Book $book)
+    public function delete(User $user, BookComment $bookComment)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
@@ -104,10 +105,10 @@ class BookPolicy extends AuthorizablePolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Book  $book
+     * @param  \App\Models\BookComment  $bookComment
      * @return mixed
      */
-    public function restore(User $user, Book $book)
+    public function restore(User $user, BookComment $bookComment)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
@@ -121,10 +122,10 @@ class BookPolicy extends AuthorizablePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Book  $book
+     * @param  \App\Models\BookComment  $bookComment
      * @return mixed
      */
-    public function forceDelete(User $user, Book $book)
+    public function forceDelete(User $user, BookComment $bookComment)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
