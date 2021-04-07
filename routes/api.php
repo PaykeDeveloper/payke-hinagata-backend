@@ -34,7 +34,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user', [UserController::class, 'showMe']);
         Route::apiResource('users', UserController::class);
-        Route::apiResource('permissions', PermissionController::class);
+        Route::apiResource('permissions', PermissionController::class)->only(['index', 'show']);
 
         // FIXME: SAMPLE CODE
         Route::apiResource('books', BookController::class);

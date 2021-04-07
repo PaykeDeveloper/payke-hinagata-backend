@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserIndexRequest;
 use App\Http\Requests\User\UserShowRequest;
 use App\Http\Requests\User\UserShowMeRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use Illuminate\Http\Response;
 use App\Models\User;
 
@@ -150,11 +151,11 @@ class UserController extends Controller
     //  * @param Book $book
     //  * @return Response
     //  */
-    // public function update(BookUpdateRequest $request, Book $book): Response
-    // {
-    //     $book->update($request->all());
-    //     return response($book);
-    // }
+    public function update(UserUpdateRequest $request, User $user): Response
+    {
+        $user->update($request->all());
+        return response($user);
+    }
 
     // /**
     //  * @param BookShowRequest $request

@@ -13,8 +13,11 @@ class AuthorizablePolicy
         'view',    // show
         'viewAll', // can view all resource details
         'create',  // store
+        'createAll', // can store all resource
         'update',  // update
+        'updateAll', // can destory all resource
         'delete',  // destory
+        'deleteAll', // can destory all resource
     ];
 
     protected $model;
