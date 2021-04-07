@@ -99,7 +99,17 @@ class UserController extends Controller
      */
     public function show(UserShowRequest $request, User $user = null): Response
     {
-        return response($user ?? $request->user());
+        if ($user) {
+            // permissions の取得を行うと自動的にレスポンスに挿入される (permissions key)
+            $user->getDirectPermissions();
+            $response = $user;
+        } else {
+            // permissions の取得を行うと自動的にレスポンスに挿入される (permissions key)
+            $request->user()->getDirectPermissions();
+            $response = $request->user();
+        }
+
+        return response($response);
     }
 
     /**
@@ -120,6 +130,8 @@ class UserController extends Controller
      */
     public function showMe(UserShowMeRequest $request): Response
     {
+        // 取得だけ行うと自動的にレスポンスに挿入される (permissions key)
+        $request->user()->getDirectPermissions();
         return response($request->user());
     }
 
