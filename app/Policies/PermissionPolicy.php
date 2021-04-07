@@ -1,29 +1,29 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Policies;
 
+use App\Models\Permission;
+use App\Models\User;
 use App\Policies\Common\AuthorizablePolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use {{ namespacedModel }};
-use {{ namespacedUserModel }};
 
-class {{ class }} extends AuthorizablePolicy
+class PermissionPolicy extends AuthorizablePolicy
 {
     use HandlesAuthorization;
 
     public function __construct()
     {
-        $this->model = {{ model }}::class;
+        $this->model = Permission::class;
         parent::__construct();
     }
 
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \{{ namespacedUserModel }}  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function viewAny({{ user }} $user)
+    public function viewAny(User $user)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
@@ -36,11 +36,11 @@ class {{ class }} extends AuthorizablePolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \{{ namespacedUserModel }}  $user
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Permission  $permission
      * @return mixed
      */
-    public function view({{ user }} $user, {{ model }} ${{ modelVariable }})
+    public function view(User $user, Permission $permission)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
@@ -53,10 +53,10 @@ class {{ class }} extends AuthorizablePolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \{{ namespacedUserModel }}  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create({{ user }} $user)
+    public function create(User $user)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
@@ -69,11 +69,11 @@ class {{ class }} extends AuthorizablePolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \{{ namespacedUserModel }}  $user
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Permission  $permission
      * @return mixed
      */
-    public function update({{ user }} $user, {{ model }} ${{ modelVariable }})
+    public function update(User $user, Permission $permission)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
@@ -86,11 +86,11 @@ class {{ class }} extends AuthorizablePolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \{{ namespacedUserModel }}  $user
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Permission  $permission
      * @return mixed
      */
-    public function delete({{ user }} $user, {{ model }} ${{ modelVariable }})
+    public function delete(User $user, Permission $permission)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
@@ -103,11 +103,11 @@ class {{ class }} extends AuthorizablePolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \{{ namespacedUserModel }}  $user
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Permission  $permission
      * @return mixed
      */
-    public function restore({{ user }} $user, {{ model }} ${{ modelVariable }})
+    public function restore(User $user, Permission $permission)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
@@ -120,11 +120,11 @@ class {{ class }} extends AuthorizablePolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \{{ namespacedUserModel }}  $user
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Permission  $permission
      * @return mixed
      */
-    public function forceDelete({{ user }} $user, {{ model }} ${{ modelVariable }})
+    public function forceDelete(User $user, Permission $permission)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {

@@ -5,11 +5,9 @@
 namespace App\Models\Sample;
 
 use App\Models\Common\AuthorizableModel;
-use App\Models\IdeHelperBookComment;
 use App\Models\Traits\HasImageUploads;
 use App\Models\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**

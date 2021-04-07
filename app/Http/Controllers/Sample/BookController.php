@@ -12,7 +12,6 @@ use App\Http\Requests\Sample\Book\BookUpdateRequest;
 use App\Models\Sample\Book;
 use Exception;
 use Illuminate\Http\Response;
-use App\Models\User;
 
 class BookController extends Controller
 {

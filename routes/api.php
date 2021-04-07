@@ -5,6 +5,7 @@ use App\Http\Controllers\Sample\BookController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\PermissionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +34,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user', [UserController::class, 'showMe']);
         Route::apiResource('users', UserController::class);
+        Route::apiResource('permissions', PermissionController::class);
 
         // FIXME: SAMPLE CODE
         Route::apiResource('books', BookController::class);
