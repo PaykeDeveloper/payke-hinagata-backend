@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Common\AuthableModel;
+use App\Models\Traits\UserAllPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -12,10 +13,11 @@ use Spatie\Permission\Traits\HasRoles;
 /**
  * @mixin IdeHelperUser
  */
-class User extends Authenticatable
+class User extends AuthableModel
 {
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
+    use UserAllPermissions;
 
     /**
      * The attributes that are mass assignable.

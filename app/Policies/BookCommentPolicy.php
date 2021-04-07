@@ -27,7 +27,7 @@ class BookCommentPolicy extends AuthorizablePolicy
     public function viewAny(User $user)
     {
         foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
+            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
                 return true;
             }
         }
@@ -44,7 +44,7 @@ class BookCommentPolicy extends AuthorizablePolicy
     public function view(User $user, BookComment $bookComment)
     {
         foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
+            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
                 return true;
             }
         }
@@ -60,7 +60,7 @@ class BookCommentPolicy extends AuthorizablePolicy
     public function create(User $user)
     {
         foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
+            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
                 return true;
             }
         }
@@ -77,7 +77,7 @@ class BookCommentPolicy extends AuthorizablePolicy
     public function update(User $user, BookComment $bookComment)
     {
         foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
+            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
                 return true;
             }
         }
@@ -111,7 +111,7 @@ class BookCommentPolicy extends AuthorizablePolicy
     public function restore(User $user, BookComment $bookComment)
     {
         foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
+            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
                 return true;
             }
         }
@@ -128,7 +128,7 @@ class BookCommentPolicy extends AuthorizablePolicy
     public function forceDelete(User $user, BookComment $bookComment)
     {
         foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
+            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
                 return true;
             }
         }

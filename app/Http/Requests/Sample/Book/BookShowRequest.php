@@ -12,8 +12,8 @@ class BookShowRequest extends BookIndexRequest
     {
         parent::prepareForValidation();
 
-        // 全ての閲覧権限を持っている場合は無条件でパス
-        if ($this->user()->can('viewAnyAll_book')) {
+        // 全ての閲覧権限を持っている場合は権限判定をスキップ
+        if ($this->user()->can('viewAll_book')) {
             return;
         }
 

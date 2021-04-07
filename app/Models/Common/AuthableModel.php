@@ -3,10 +3,10 @@
 namespace App\Models\Common;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\User;
 
-class AuthorizableModel extends Model
+class AuthableModel extends Authenticatable
 {
     use HasFactory;
 

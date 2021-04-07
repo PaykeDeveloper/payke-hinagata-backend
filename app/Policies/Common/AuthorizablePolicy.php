@@ -11,6 +11,7 @@ class AuthorizablePolicy
         'viewAny', // index
         'viewAnyAll', // can view all resources
         'view',    // show
+        'viewAll', // can view all resource details
         'create',  // store
         'update',  // update
         'delete',  // destory
