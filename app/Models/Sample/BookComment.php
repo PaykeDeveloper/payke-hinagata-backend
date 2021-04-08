@@ -104,14 +104,18 @@ class BookComment extends Model implements HasMedia
         $comment->book_id = $book->id;
         $comment->slug = (string)Str::uuid();
         $comment->save();
-        $comment->saveCover($attributes['cover'] ?? null);
+        if (array_key_exists('cover', $attributes)) {
+            $comment->saveCover($attributes['cover']);
+        }
         return $comment;
     }
 
     public function updateFromRequest(mixed $attributes): BookComment
     {
         $this->update($attributes);
-        $this->saveCover($attributes['cover'] ?? null);
+        if (array_key_exists('cover', $attributes)) {
+            $this->saveCover($attributes['cover']);
+        }
         return $this;
     }
 }
