@@ -14,6 +14,7 @@
     </rule>
     <rule ref="Generic.Files.LineLength.TooLong">
         <exclude-pattern>config/scribe.php</exclude-pattern>
+        <exclude-pattern>config/media-library.php</exclude-pattern>
     </rule>
 
     <arg name="extensions" value="php"/>

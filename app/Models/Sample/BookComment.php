@@ -5,19 +5,20 @@
 namespace App\Models\Sample;
 
 use App\Models\Common\AuthorizableModel;
-use App\Models\Traits\HasImageUploads;
-use App\Models\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @mixin IdeHelperBookComment
  */
-class BookComment extends AuthorizableModel
+class BookComment extends AuthorizableModel implements HasMedia
 {
     use HasFactory;
-    use UsesUuid;
-    use HasImageUploads;
+    use InteractsWithMedia;
 
     protected static $parentModel = Book::class;
 
@@ -27,7 +28,7 @@ class BookComment extends AuthorizableModel
      * @var string[]
      */
     protected $attributes = [
-        'description' => ''
+        'description' => '',
     ];
 
     /**
@@ -38,6 +39,7 @@ class BookComment extends AuthorizableModel
 //    protected $keyType = 'string';
     protected $guarded = [
         'id',
+        'slug',
         'created_at',
         'updated_at',
     ];
@@ -58,19 +60,16 @@ class BookComment extends AuthorizableModel
     /**
      * 画像アップロード用の設定
      */
-    protected static array $imageFields = [
-        'cover' => ['path' => 'book-comments'],
-    ];
-    protected $hidden = ['cover'];
+    private const COLLECTION_NAME = 'cover';
     protected $appends = ['cover_url'];
 
     /**
      * URLのキーをID以外に設定したい場合はここで指定する。
      */
-//    public function getRouteKeyName(): string
-//    {
-//        return 'slug';
-//    }
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     public function book(): BelongsTo
     {
@@ -83,15 +82,38 @@ class BookComment extends AuthorizableModel
      */
     public function getCoverUrlAttribute(): ?string
     {
-        return $this->optionalImageUrl('cover');
+        return $this->getFirstMediaUrl(self::COLLECTION_NAME);
     }
 
-    public static function createWithBook(array $attributes, Book $book): BookComment
+    private function saveCover(?UploadedFile $value): void
+    {
+        if ($value) {
+            $this->addMedia($value)->toMediaCollection(self::COLLECTION_NAME);
+        } else {
+            $this->clearMediaCollection(self::COLLECTION_NAME);
+        }
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(self::COLLECTION_NAME)->singleFile();
+    }
+
+    public static function createFromRequest(mixed $attributes, Book $book): BookComment
     {
         $comment = new self();
         $comment->fill($attributes);
         $comment->book_id = $book->id;
+        $comment->slug = (string)Str::uuid();
         $comment->save();
+        $comment->saveCover($attributes['cover'] ?? null);
         return $comment;
+    }
+
+    public function updateFromRequest(mixed $attributes): BookComment
+    {
+        $this->update($attributes);
+        $this->saveCover($attributes['cover'] ?? null);
+        return $this;
     }
 }

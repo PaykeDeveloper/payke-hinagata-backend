@@ -44,7 +44,7 @@ class Book extends AuthorizableModel
         return $this->hasMany(BookComment::class);
     }
 
-    public static function createWithUser(array $attributes, User $user): Book
+    public static function createWithUser(mixed $attributes, User $user): Book
     {
         $book = new self();
         $book->fill($attributes);

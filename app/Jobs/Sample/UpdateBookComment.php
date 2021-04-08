@@ -22,9 +22,9 @@ class UpdateBookComment implements ShouldQueue
      * Create a new job instance.
      *
      * @param BookComment $comment
-     * @param array $attributes
+     * @param mixed $attributes
      */
-    public function __construct(BookComment $comment, array $attributes)
+    public function __construct(BookComment $comment, mixed $attributes)
     {
         $this->comment = $comment;
         $this->attributes = $attributes;
@@ -37,6 +37,6 @@ class UpdateBookComment implements ShouldQueue
      */
     public function handle()
     {
-        $this->comment->update($this->attributes);
+        $this->comment->updateFromRequest($this->attributes);
     }
 }

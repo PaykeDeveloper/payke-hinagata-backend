@@ -26,11 +26,11 @@ class BookCommentUpdateRequest extends BookCommentShowRequest
             'publish_date' => ['nullable', 'date'],
             'approved_at' => ['nullable', 'date', 'after:start_date'],
             'amount' => ['nullable', 'regex:/^\d+(\.\d{1,2})?$/'],
-            'column' => ['nullable', 'numeric'],
+            'column' => ['nullable', 'numeric', 'max:999999'],
             'choices' => ['nullable', Rule::in(FooBar::all())],
             'description' => ['string'],
             'votes' => ['nullable', 'integer', 'min:1', 'max:5'],
-            'slug' => ['regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', Rule::unique('book_comments')->ignore($this->id)],
+//            'slug' => ['regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', Rule::unique('book_comments')->ignore($this->id)],
             'cover' => ['nullable', 'mimetypes:image/jpeg,image/png,image/bmp', 'max:1024'],
         ];
     }
