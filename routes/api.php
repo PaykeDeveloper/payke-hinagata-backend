@@ -6,6 +6,7 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\Sample\CompanyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,5 +42,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('books.comments', BookCommentController::class);
         Route::post('/books/{book}/comments/create-async', [BookCommentController::class, 'storeAsync']);
         Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
+
+        Route::apiResource('companies', CompanyController::class);
     });
 });

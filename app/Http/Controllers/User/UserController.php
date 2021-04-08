@@ -7,6 +7,8 @@ use App\Http\Requests\User\UserIndexRequest;
 use App\Http\Requests\User\UserShowRequest;
 use App\Http\Requests\User\UserShowMeRequest;
 use App\Http\Requests\User\UserUpdateRequest;
+use App\Models\Sample\Company;
+use App\Models\Staff;
 use Illuminate\Http\Response;
 use App\Models\User;
 

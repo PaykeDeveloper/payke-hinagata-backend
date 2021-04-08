@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Common\AuthableModel;
+use App\Models\Sample\Staff;
 use App\Models\Traits\UserAllPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -49,7 +50,6 @@ class User extends AuthableModel
         'email_verified_at' => 'datetime',
     ];
 
-
     // FIXME: SAMPLE CODE
 
     protected static function boot()
@@ -65,5 +65,10 @@ class User extends AuthableModel
     public function books(): HasMany
     {
         return $this->hasMany(\App\Models\Sample\Book::class);
+    }
+
+    public function staff(): HasMany
+    {
+        return $this->hasMany(Staff::class);
     }
 }

@@ -9,7 +9,7 @@ use App\Models\User;
 
 /**
  * Authable 実装の継承用クラス
- * 
+ *
  * パーミッション付きの通常モデルはこれを継承させる
  */
 class AuthorizableModel extends Model

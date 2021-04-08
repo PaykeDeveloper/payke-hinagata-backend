@@ -28,16 +28,16 @@ class AuthorizablePolicy
             throw new \Exception('model クラスを指定してください');
         }
 
-        foreach ($this->base_permissions as $permission) {
-            try {
-                $base_name = str_replace('Policy', '', strtolower(basename(strtr($this->model, '\\', '/'))));
-                Permission::create([
-                    'name' => $permission . '_' . $base_name,
-                    'guard_name' => 'web',
-                ]);
-            } catch (\Exception $e) {
-            }
-        }
+        // foreach ($this->base_permissions as $permission) {
+        //     try {
+        //         $base_name = str_replace('Policy', '', strtolower(basename(strtr($this->model, '\\', '/'))));
+        //         Permission::updateOrCreate([
+        //             'name' => $permission . '_' . $base_name,
+        //             'guard_name' => 'web',
+        //         ]);
+        //     } catch (\Exception $e) {
+        //     }
+        // }
     }
 
     public function baseName(string $model)
@@ -53,12 +53,12 @@ class AuthorizablePolicy
     {
         $base_name = str_replace('Policy', '', strtolower(basename(strtr(static::class, '\\', '/'))));
 
-        try {
-            Permission::create([
-                'name' => $action . '_' . $base_name,
-                'guard_name' => 'web',
-            ]);
-        } catch (\Exception $e) {
-        }
+        // try {
+        //     Permission::create([
+        //         'name' => $action . '_' . $base_name,
+        //         'guard_name' => 'web',
+        //     ]);
+        // } catch (\Exception $e) {
+        // }
     }
 }

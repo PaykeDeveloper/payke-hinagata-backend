@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Models;
+// FIXME: SAMPLE CODE
+
+namespace App\Models\Sample;
 
 use App\Models\Common\AuthorizableModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +12,9 @@ class Company extends AuthorizableModel
 {
     use HasFactory;
 
-    public function staffs(): HasMany
+    protected $guarded = [];
+
+    public function staff(): HasMany
     {
         return $this->hasMany(Staff::class);
     }

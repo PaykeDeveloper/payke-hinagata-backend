@@ -74,7 +74,7 @@ trait Authorizable
             return static::allOrWhere($name, $arguments);
         } else {
             // それ以外はそのままコールし直す
-            return parent::{$name}($arguments);
+            return parent::{$name}(...$arguments);
         }
     }
 }
