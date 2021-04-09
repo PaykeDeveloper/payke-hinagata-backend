@@ -2,11 +2,11 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Requests\Sample\Company;
+namespace App\Http\Requests\Sample\Project;
 
 use Illuminate\Http\Response;
 
-class CompanyShowRequest extends CompanyIndexRequest
+class ProjectShowRequest extends CompanyIndexRequest
 {
     protected function prepareForValidation()
     {
@@ -17,13 +17,9 @@ class CompanyShowRequest extends CompanyIndexRequest
             return;
         }
 
-        // Company のスタッフは閲覧可能
         $data = $this->route('company');
-        foreach ($data->staff as $staff) {
-            if ($staff->user_id === $this->user()->id) {
-                return;
-            }
+        if ($data->user->id !== $this->user()->id) {
+            abort(Response::HTTP_NOT_FOUND);
         }
-        abort(Response::HTTP_NOT_FOUND);
     }
 }

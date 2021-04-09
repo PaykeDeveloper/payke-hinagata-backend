@@ -2,19 +2,19 @@
 
 namespace App\Policies;
 
-use Illuminate\Http\Response;
 use App\Models\Sample\Company;
+use App\Models\Sample\Project;
 use App\Models\User;
 use App\Policies\Common\AuthorizablePolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CompanyPolicy extends AuthorizablePolicy
+class ProjectPolicy extends AuthorizablePolicy
 {
     use HandlesAuthorization;
 
     public function __construct()
     {
-        $this->model = Company::class;
+        $this->model = Project::class;
         parent::__construct();
     }
 
@@ -26,38 +26,26 @@ class CompanyPolicy extends AuthorizablePolicy
      */
     public function viewAny(User $user)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
-        }
-        return false;
+        // ProjectMember があればここで Member かどうかのチェック
+        // この例では ProjectMember は用意しないので全許可
+        return true;
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\Project  $project
      * @return mixed
      */
-    public function view(User $user, Company $company)
+    public function view(User $user, Project $project)
     {
-        // Company のスタッフは閲覧可能
-        foreach ($company->staff as $staff) {
-            if ($staff->user_id === $user->id) {
-                return true;
-            }
-        }
-
-        // admin ユーザー
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
                 return true;
             }
         }
-
-        return abort(Response::HTTP_NOT_FOUND);
+        return false;
     }
 
     /**
@@ -80,10 +68,10 @@ class CompanyPolicy extends AuthorizablePolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\Project  $project
      * @return mixed
      */
-    public function update(User $user, Company $company)
+    public function update(User $user, Project $project)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
@@ -97,10 +85,10 @@ class CompanyPolicy extends AuthorizablePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\Project  $project
      * @return mixed
      */
-    public function delete(User $user, Company $company)
+    public function delete(User $user, Project $project)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
@@ -114,10 +102,10 @@ class CompanyPolicy extends AuthorizablePolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\Project  $project
      * @return mixed
      */
-    public function restore(User $user, Company $company)
+    public function restore(User $user, Project $project)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
@@ -131,10 +119,10 @@ class CompanyPolicy extends AuthorizablePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\Project  $project
      * @return mixed
      */
-    public function forceDelete(User $user, Company $company)
+    public function forceDelete(User $user, Project $project)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {

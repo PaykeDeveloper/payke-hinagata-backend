@@ -6,21 +6,41 @@ namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
-use App\Http\Requests\Sample\Company\CompanyIndexRequest;
-use App\Http\Requests\Sample\Company\CompanyShowRequest;
-use App\Models\Sample\Book;
+use App\Http\Requests\Sample\Project\ProjectIndexRequest;
+use App\Http\Requests\Sample\Project\ProjectShowRequest;
 use App\Models\Sample\Company;
-use DB;
-use Exception;
+use App\Models\Sample\Project;
 use Illuminate\Http\Response;
-use Log;
 
-class CompanyController extends Controller
+class ProjectController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Company::class, 'company');
+        $this->authorizeResource(Project::class, 'project');
     }
+
+    // /**
+    //  * Get the map of resource methods to ability names.
+    //  *
+    //  * @return array
+    //  */
+    // protected function resourceAbilityMap()
+    // {
+    //     return [
+    //         'show' => 'view',
+    //         'create' => 'create',
+    //         'store' => 'create',
+    //         'edit' => 'update',
+    //         'update' => 'update',
+    //         'destroy' => 'delete',
+    //         'viewAny' => 'viewAny',
+    //     ];
+    // }
+
+    // protected function resourceMethodsWithoutModels()
+    // {
+    //     return ['viewAny', 'create', 'store'];
+    // }
 
     /**
      * @response [
@@ -35,17 +55,12 @@ class CompanyController extends Controller
      * }
      * ]
      *
-     * @param CompanyIndexRequest $request
+     * @param ProjectIndexRequest $request
      * @return Response
      */
-    public function index(CompanyIndexRequest $request): Response
+    public function index(ProjectIndexRequest $request, Company $company): Response
     {
-        // Company の Staff の user_id が一致するもののみ表示
-        $companies = Company::whereHas('staff', function (Builder $query) use ($request) {
-            $query->where('user_id', '=', $request->user()->id);
-        })->get();
-
-        return response($companies);
+        return response($company->projects);
     }
 
     // /**
@@ -79,13 +94,13 @@ class CompanyController extends Controller
      * "updated_at": "2021-03-05T08:31:33.000000Z"
      * }
      *
-     * @param CompanyShowRequest $request
-     * @param Book $book
+     * @param ProjectShowRequest $request
+     * @param Project $project
      * @return Response
      */
-    public function show(CompanyShowRequest $request, Company $company): Response
+    public function show(ProjectShowRequest $request, Project $project): Response
     {
-        return response($company);
+        return response($project);
     }
 
     // /**

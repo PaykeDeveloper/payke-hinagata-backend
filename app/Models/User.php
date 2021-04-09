@@ -71,4 +71,19 @@ class User extends AuthableModel
     {
         return $this->hasMany(Staff::class);
     }
+
+    public function companies()
+    {
+        // get all company ids belonging to the user
+        $companies = [];
+        foreach ($this->staff()->get() as $staff) {
+            $companies[] = $staff->company;
+        }
+        // remove duplicates
+        $unique_companies = [];
+        foreach ($companies as $company) {
+            $unique_companies[$company->id] = $company;
+        }
+        return array_values($unique_companies);
+    }
 }
