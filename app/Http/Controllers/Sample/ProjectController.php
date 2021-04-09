@@ -98,7 +98,7 @@ class ProjectController extends Controller
      * @param Project $project
      * @return Response
      */
-    public function show(ProjectShowRequest $request, Project $project): Response
+    public function show(ProjectShowRequest $request, Company $company, Project $project): Response
     {
         return response($project);
     }

@@ -27,7 +27,8 @@ class ProjectPolicy extends AuthorizablePolicy
     public function viewAny(User $user)
     {
         // ProjectMember があればここで Member かどうかのチェック
-        // この例では ProjectMember は用意しないので全許可
+        // サンプルでは ProjectMember は用意しないので全許可
+        // Company の権限チェックは route 側で判定済み
         return true;
     }
 
@@ -40,12 +41,10 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function view(User $user, Project $project)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
-        }
-        return false;
+        // ProjectMember があればここで Member かどうかのチェック
+        // サンプルでは ProjectMember は用意しないので全許可
+        // Company の権限チェックは route 側で判定済み
+        return true;
     }
 
     /**
