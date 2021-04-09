@@ -20,6 +20,7 @@ return [
         'sanctum/csrf-cookie',
         'login',
         'logout',
+        'register',
         'forgot-password',
         'reset-password',
     ],
