@@ -45,6 +45,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
 
         Route::apiResource('companies', CompanyController::class);
-        Route::apiResource('companies.projects', ProjectController::class)->middleware('can:view,company');
+        Route::apiResource('companies.projects', ProjectController::class)
+            // projects へのアクセスは company の view 認可を通っている必要がある
+            ->middleware('can:view,company');
     });
 });
