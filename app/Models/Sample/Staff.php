@@ -5,14 +5,18 @@
 namespace App\Models\Sample;
 
 use App\Models\Common\AuthorizableModel;
+use App\Models\Traits\HasAllOrPermissions;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\Permission\Traits\HasRoles;
 
 class Staff extends AuthorizableModel
 {
-    use HasFactory;
+    use HasFactory, HasRoles, HasAllOrPermissions;
+
+    protected $guard_name = 'web';
 
     protected $guarded = [
         'id',

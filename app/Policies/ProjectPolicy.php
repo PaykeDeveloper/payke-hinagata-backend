@@ -1,11 +1,16 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Policies;
 
+use Illuminate\Http\Response;
 use App\Models\Sample\Company;
 use App\Models\Sample\Project;
+use App\Models\Sample\Staff;
 use App\Models\User;
 use App\Policies\Common\AuthorizablePolicy;
+use DB;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ProjectPolicy extends AuthorizablePolicy
@@ -26,9 +31,10 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function viewAny(User $user)
     {
-        // ProjectMember があればここで Member かどうかのチェック
-        // サンプルでは ProjectMember は用意しないので全許可
-        // Company の権限チェックは route 側で判定済み
+        // MEMO: 親リソースの Company の権限チェックは route 側で判定済み
+
+        // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
+
         return true;
     }
 
@@ -41,10 +47,23 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function view(User $user, Project $project)
     {
-        // ProjectMember があればここで Member かどうかのチェック
-        // サンプルでは ProjectMember は用意しないので全許可
-        // Company の権限チェックは route 側で判定済み
-        return true;
+        // MEMO: 親リソースの Company の権限チェックは route 側で判定済み
+
+        // FIXME: ProjectMember があればここで Member かどうかとそのパーミッションのチェックを行う
+
+        // Staff のパーミッションチェック
+        foreach ($project->findStaffByUser($user) as $staff) {
+            if ($staff->hasAllOrPermissionTo('view', 'project')) {
+                return true;
+            }
+        }
+
+        // User のパーミッションチェック (Admin)
+        if ($user->hasAllOrPermissionTo('view', 'project')) {
+            return true;
+        }
+
+        return abort(Response::HTTP_NOT_FOUND);
     }
 
     /**

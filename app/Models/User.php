@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Common\AuthableModel;
 use App\Models\Sample\Staff;
-use App\Models\Traits\UserAllPermissions;
+use App\Models\Traits\HasAllOrPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
@@ -18,7 +18,7 @@ class User extends AuthableModel
 {
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
-    use UserAllPermissions;
+    use HasAllOrPermissions;
 
     /**
      * The attributes that are mass assignable.

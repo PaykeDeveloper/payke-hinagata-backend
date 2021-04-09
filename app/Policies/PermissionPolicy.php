@@ -1,5 +1,7 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Policies;
 
 use App\Models\Permission;
