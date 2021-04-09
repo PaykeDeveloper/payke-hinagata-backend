@@ -17,31 +17,11 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Project::class, 'project');
+        $this->authorizeResource(Project::class, 'project', [
+            // viewAny は認可に必要な追加モデルを手動で渡すので abilityMap から除外
+            'except' => [ 'index' ],
+        ]);
     }
-
-    // /**
-    //  * Get the map of resource methods to ability names.
-    //  *
-    //  * @return array
-    //  */
-    // protected function resourceAbilityMap()
-    // {
-    //     return [
-    //         'show' => 'view',
-    //         'create' => 'create',
-    //         'store' => 'create',
-    //         'edit' => 'update',
-    //         'update' => 'update',
-    //         'destroy' => 'delete',
-    //         'viewAny' => 'viewAny',
-    //     ];
-    // }
-
-    // protected function resourceMethodsWithoutModels()
-    // {
-    //     return ['viewAny', 'create', 'store'];
-    // }
 
     /**
      * @response [
@@ -61,6 +41,9 @@ class ProjectController extends Controller
      */
     public function index(ProjectIndexRequest $request, Company $company): Response
     {
+        // viewAny へ手動で company を渡す
+        $this->authorize('viewAny', [Project::class, $company]);
+
         return response($company->projects);
     }
 

@@ -27,22 +27,30 @@ class ProjectPolicy extends AuthorizablePolicy
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\Sample\Company  $company
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user, Company $company)
     {
         // MEMO: 親リソースの Company の権限チェックは route 側で判定済み
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        return true;
+        // Staff のパーミッションチェック
+        foreach ($company->findStaffByUser($user) as $staff) {
+            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                return true;
+            }
+        }
+
+        return abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\Sample\Project  $project
      * @return mixed
      */
     public function view(User $user, Project $project)
@@ -86,7 +94,7 @@ class ProjectPolicy extends AuthorizablePolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\Sample\Project  $project
      * @return mixed
      */
     public function update(User $user, Project $project)
@@ -103,7 +111,7 @@ class ProjectPolicy extends AuthorizablePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\Sample\Project  $project
      * @return mixed
      */
     public function delete(User $user, Project $project)
@@ -120,7 +128,7 @@ class ProjectPolicy extends AuthorizablePolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\Sample\Project  $project
      * @return mixed
      */
     public function restore(User $user, Project $project)
@@ -137,7 +145,7 @@ class ProjectPolicy extends AuthorizablePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\Sample\Project  $project
      * @return mixed
      */
     public function forceDelete(User $user, Project $project)
