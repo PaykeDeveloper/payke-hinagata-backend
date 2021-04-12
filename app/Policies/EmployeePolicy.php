@@ -5,7 +5,6 @@
 namespace App\Policies;
 
 use Illuminate\Http\Response;
-use App\Models\Sample\Company;
 use App\Models\Sample\Employee;
 use App\Models\User;
 use App\Policies\Common\AuthorizablePolicy;
@@ -40,12 +39,12 @@ class EmployeePolicy extends AuthorizablePolicy
             }
         }
 
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // User パーミッションチェック (Admin)
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            return true;
         }
-        return false;
+
+        return abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -69,10 +68,8 @@ class EmployeePolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            return true;
         }
 
         return abort(Response::HTTP_NOT_FOUND);
@@ -90,7 +87,10 @@ class EmployeePolicy extends AuthorizablePolicy
         foreach ($user->companies() as $company) {
             foreach ($company->employees as $employee) {
                 if ($employee->user_id === $user->id) {
-                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                    $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                    $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+
+                    if ($viewPermission && $funcPermission) {
                         return true;
                     }
                 }
@@ -98,13 +98,13 @@ class EmployeePolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
 
-        return abort(Response::HTTP_NOT_FOUND);
+        return abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -120,7 +120,10 @@ class EmployeePolicy extends AuthorizablePolicy
         foreach ($user->companies() as $company) {
             foreach ($company->employees as $employee) {
                 if ($employee->user_id === $user->id) {
-                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                    $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                    $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+
+                    if ($viewPermission && $funcPermission) {
                         return true;
                     }
                 }
@@ -128,13 +131,13 @@ class EmployeePolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
 
-        return abort(Response::HTTP_NOT_FOUND);
+        return abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -150,7 +153,10 @@ class EmployeePolicy extends AuthorizablePolicy
         foreach ($user->companies() as $company) {
             foreach ($company->employees as $employee) {
                 if ($employee->user_id === $user->id) {
-                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                    $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                    $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+
+                    if ($viewPermission && $funcPermission) {
                         return true;
                     }
                 }
@@ -158,13 +164,13 @@ class EmployeePolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
 
-        return abort(Response::HTTP_NOT_FOUND);
+        return abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -180,7 +186,10 @@ class EmployeePolicy extends AuthorizablePolicy
         foreach ($user->companies() as $company) {
             foreach ($company->employees as $employee) {
                 if ($employee->user_id === $user->id) {
-                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                    $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                    $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+
+                    if ($viewPermission && $funcPermission) {
                         return true;
                     }
                 }
@@ -188,13 +197,13 @@ class EmployeePolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
 
-        return abort(Response::HTTP_NOT_FOUND);
+        return abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -210,7 +219,10 @@ class EmployeePolicy extends AuthorizablePolicy
         foreach ($user->companies() as $company) {
             foreach ($company->employees as $employee) {
                 if ($employee->user_id === $user->id) {
-                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                    $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                    $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+
+                    if ($viewPermission && $funcPermission) {
                         return true;
                     }
                 }
@@ -218,12 +230,12 @@ class EmployeePolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
 
-        return abort(Response::HTTP_NOT_FOUND);
+        return abort(Response::HTTP_FORBIDDEN);
     }
 }

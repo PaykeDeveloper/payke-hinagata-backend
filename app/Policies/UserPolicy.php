@@ -4,6 +4,7 @@
 
 namespace App\Policies;
 
+use Illuminate\Http\Response;
 use App\Policies\Common\AuthorizablePolicy;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -26,12 +27,10 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function viewAny(User $user)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            return true;
         }
-        return false;
+        return abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -43,12 +42,10 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function view(User $user, User $targetUser)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            return true;
         }
-        return false;
+        return abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -59,11 +56,6 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function create(User $user)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasPermissionTo(__FUNCTION__ . '_' . $this->baseName($model))) {
-                return true;
-            }
-        }
         return false;
     }
 
@@ -76,11 +68,13 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function update(User $user, User $targetUser)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // User パーミッションチェック (Admin)
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
+
         return false;
     }
 
@@ -93,11 +87,13 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function delete(User $user, User $targetUser)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // User パーミッションチェック (Admin)
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
+
         return false;
     }
 
@@ -110,11 +106,13 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function restore(User $user, User $targetUser)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // User パーミッションチェック (Admin)
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
+
         return false;
     }
 
@@ -127,11 +125,13 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function forceDelete(User $user, User $targetUser)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // User パーミッションチェック (Admin)
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
+
         return false;
     }
 

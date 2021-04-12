@@ -25,12 +25,14 @@ class {{ class }} extends AuthorizablePolicy
      */
     public function viewAny({{ user }} $user)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // FIXME: 個別のリソース権限チェック
+
+        // User パーミッションチェック (Admin)
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            return true;
         }
-        return false;
+
+        return abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -42,12 +44,14 @@ class {{ class }} extends AuthorizablePolicy
      */
     public function view({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // FIXME: 個別のリソース権限チェック
+
+        // User パーミッションチェック (Admin)
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            return true;
         }
-        return false;
+
+        return abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -58,12 +62,16 @@ class {{ class }} extends AuthorizablePolicy
      */
     public function create({{ user }} $user)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // FIXME: 個別のリソース権限チェック
+
+        // User パーミッションチェック (Admin)
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
-        return false;
+
+        return abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -75,12 +83,16 @@ class {{ class }} extends AuthorizablePolicy
      */
     public function update({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // FIXME: 個別のリソース権限チェック
+
+        // User パーミッションチェック (Admin)
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
-        return false;
+
+        return abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -92,12 +104,16 @@ class {{ class }} extends AuthorizablePolicy
      */
     public function delete({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // FIXME: 個別のリソース権限チェック
+
+        // User パーミッションチェック (Admin)
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
-        return false;
+
+        return abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -109,12 +125,16 @@ class {{ class }} extends AuthorizablePolicy
      */
     public function restore({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // FIXME: 個別のリソース権限チェック
+
+        // User パーミッションチェック (Admin)
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
-        return false;
+
+        return abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -126,11 +146,15 @@ class {{ class }} extends AuthorizablePolicy
      */
     public function forceDelete({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
-            }
+        // FIXME: 個別のリソース権限チェック
+
+        // User パーミッションチェック (Admin)
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        if ($viewPermission && $funcPermission) {
+            return true;
         }
-        return false;
+
+        return abort(Response::HTTP_FORBIDDEN);
     }
 }
