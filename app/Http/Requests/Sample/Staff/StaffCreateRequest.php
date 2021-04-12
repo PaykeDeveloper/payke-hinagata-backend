@@ -2,9 +2,9 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Requests\Sample\Company;
+namespace App\Http\Requests\Sample\Staff;
 
-class CompanyUpdateRequest extends CompanyShowRequest
+class StaffCreateRequest extends StaffIndexRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,7 @@ class CompanyUpdateRequest extends CompanyShowRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:20'],
+            'user_id' => ['required', 'string'],
             'roles' => ['array'],
         ];
     }

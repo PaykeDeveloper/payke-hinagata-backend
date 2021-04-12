@@ -6,17 +6,18 @@ namespace App\Policies;
 
 use Illuminate\Http\Response;
 use App\Models\Sample\Company;
+use App\Models\Sample\Staff;
 use App\Models\User;
 use App\Policies\Common\AuthorizablePolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CompanyPolicy extends AuthorizablePolicy
+class StaffPolicy extends AuthorizablePolicy
 {
     use HandlesAuthorization;
 
     public function __construct()
     {
-        $this->model = Company::class;
+        $this->model = Staff::class;
         parent::__construct();
     }
 
@@ -39,7 +40,6 @@ class CompanyPolicy extends AuthorizablePolicy
             }
         }
 
-        // User パーミッションチェック (Admin)
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
                 return true;
@@ -52,16 +52,18 @@ class CompanyPolicy extends AuthorizablePolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\Staff  $staff
      * @return mixed
      */
-    public function view(User $user, Company $company)
+    public function view(User $user, Staff $staff)
     {
-        // Staff のパーミッションチェック
-        foreach ($company->staff as $staff) {
-            if ($staff->user_id === $user->id) {
-                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
-                    return true;
+        // Staff のパーミッションチェック (Company に属する)
+        foreach ($user->companies() as $company) {
+            foreach ($company->staff as $staff) {
+                if ($staff->user_id === $user->id) {
+                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                        return true;
+                    }
                 }
             }
         }
@@ -109,16 +111,18 @@ class CompanyPolicy extends AuthorizablePolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\Staff $staff
      * @return mixed
      */
-    public function update(User $user, Company $company)
+    public function update(User $user, Staff $staff)
     {
-        // Staff のパーミッションチェック
-        foreach ($company->staff as $staff) {
-            if ($staff->user_id === $user->id) {
-                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
-                    return true;
+        // Staff のパーミッションチェック (Company に属する)
+        foreach ($user->companies() as $company) {
+            foreach ($company->staff as $staff) {
+                if ($staff->user_id === $user->id) {
+                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                        return true;
+                    }
                 }
             }
         }
@@ -137,16 +141,18 @@ class CompanyPolicy extends AuthorizablePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\Staff $staff
      * @return mixed
      */
-    public function delete(User $user, Company $company)
+    public function delete(User $user, Staff $staff)
     {
-        // Staff のパーミッションチェック
-        foreach ($company->staff as $staff) {
-            if ($staff->user_id === $user->id) {
-                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
-                    return true;
+        // Staff のパーミッションチェック (Company に属する)
+        foreach ($user->companies() as $company) {
+            foreach ($company->staff as $staff) {
+                if ($staff->user_id === $user->id) {
+                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                        return true;
+                    }
                 }
             }
         }
@@ -165,16 +171,18 @@ class CompanyPolicy extends AuthorizablePolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\Staff $staff
      * @return mixed
      */
-    public function restore(User $user, Company $company)
+    public function restore(User $user, Staff $staff)
     {
-        // Staff のパーミッションチェック
-        foreach ($company->staff as $staff) {
-            if ($staff->user_id === $user->id) {
-                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
-                    return true;
+        // Staff のパーミッションチェック (Company に属する)
+        foreach ($user->companies() as $company) {
+            foreach ($company->staff as $staff) {
+                if ($staff->user_id === $user->id) {
+                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                        return true;
+                    }
                 }
             }
         }
@@ -193,16 +201,18 @@ class CompanyPolicy extends AuthorizablePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\Staff $staff
      * @return mixed
      */
-    public function forceDelete(User $user, Company $company)
+    public function forceDelete(User $user, Staff $staff)
     {
-        // Staff のパーミッションチェック
-        foreach ($company->staff as $staff) {
-            if ($staff->user_id === $user->id) {
-                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
-                    return true;
+        // Staff のパーミッションチェック (Company に属する)
+        foreach ($user->companies() as $company) {
+            foreach ($company->staff as $staff) {
+                if ($staff->user_id === $user->id) {
+                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                        return true;
+                    }
                 }
             }
         }

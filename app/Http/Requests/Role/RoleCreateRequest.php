@@ -1,9 +1,8 @@
 <?php
 
+namespace App\Http\Requests\Role;
 
-namespace App\Http\Requests\User;
-
-class UserUpdateRequest extends UserShowRequest
+class RoleCreateRequest extends RoleIndexRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -13,7 +12,7 @@ class UserUpdateRequest extends UserShowRequest
     public function rules(): array
     {
         return [
-            'roles' => ['nullable', 'array']
+            'name' => ['required', 'string', 'max:20'],
         ];
     }
 }

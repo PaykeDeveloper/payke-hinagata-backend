@@ -10,18 +10,21 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\Sample\Company\CompanyIndexRequest;
 use App\Http\Requests\Sample\Company\CompanyShowRequest;
 use App\Http\Requests\Sample\Company\CompanyUpdateRequest;
+use App\Http\Requests\Sample\Staff\StaffCreateRequest;
 use App\Models\Sample\Book;
 use App\Models\Sample\Company;
+use App\Models\Sample\Staff;
+use App\Models\User;
 use DB;
 use Exception;
 use Illuminate\Http\Response;
 use Log;
 
-class CompanyController extends Controller
+class StaffController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Company::class, 'company');
+        $this->authorizeResource(Staff::class, 'staff');
     }
 
     /**
@@ -40,9 +43,14 @@ class CompanyController extends Controller
      * @param CompanyIndexRequest $request
      * @return Response
      */
-    public function index(CompanyIndexRequest $request): Response
+    public function index(CompanyIndexRequest $request, Company $company): Response
     {
-        return response(Company::listByPermissions($request->user()));
+        foreach ($company->staff as $staff) {
+            // 取得を行うと自動的にレスポンスに挿入される
+            $staff->getRoleNames();
+            $staff->getDirectPermissions();
+        }
+        return response($company->staff);
     }
 
     /**
@@ -59,10 +67,21 @@ class CompanyController extends Controller
      * @param CompanyCreateRequest $request
      * @return Response
      */
-    public function store(CompanyCreateRequest $request): Response
+    public function store(StaffCreateRequest $request, Company $company): Response
     {
-        $company = Company::create($request->all());
-        return response($company);
+        $userId = $request->input('user_id');
+        $user = User::find($userId);
+
+        // Staff として追加
+        $staff = Staff::createWithUserAndCompany($user, $company);
+
+        // Role を追加
+        $roles = $request->input('roles');
+        if ($roles) {
+            $staff->syncRoles($roles);
+        }
+
+        return response($staff);
     }
 
     /**
@@ -100,10 +119,16 @@ class CompanyController extends Controller
      * @param Company $company
      * @return Response
      */
-    public function update(CompanyUpdateRequest $request, Company $company): Response
+    public function update(CompanyUpdateRequest $request, Company $company, Staff $staff): Response
     {
-        $company->update($request->all());
-        return response($company);
+        // Role の更新
+        $roles = $request->input('roles');
+        if ($roles) {
+            $staff->syncRoles($roles);
+        }
+
+        $staff->update($request->all());
+        return response($staff);
     }
 
     /**
@@ -112,9 +137,9 @@ class CompanyController extends Controller
      * @return Response
      * @throws Exception
      */
-    public function destroy(CompanyShowRequest $request, Company $company): Response
+    public function destroy(CompanyShowRequest $request, Company $company, Staff $staff): Response
     {
-        $company->delete();
+        $staff->delete();
         return response(null, 204);
     }
 }

@@ -4,10 +4,13 @@ use App\Http\Controllers\Sample\BookCommentController;
 use App\Http\Controllers\Sample\BookController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TokenController;
-use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Sample\CompanyController;
 use App\Http\Controllers\Sample\ProjectController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Sample\StaffController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserRoleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,7 +39,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user', [UserController::class, 'showMe']);
         Route::apiResource('users', UserController::class);
-        Route::apiResource('permissions', PermissionController::class)->only(['index', 'show']);
+        Route::apiResource('roles', RoleController::class);
+        Route::apiResource('permissions', PermissionController::class)->only(['index']);
 
         // FIXME: SAMPLE CODE
         Route::apiResource('books', BookController::class);
@@ -45,7 +49,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
 
         Route::apiResource('companies', CompanyController::class);
+        Route::apiResource('companies.staff', StaffController::class);
         Route::apiResource('companies.projects', ProjectController::class);
-            // ->middleware('can:view,company');
     });
 });

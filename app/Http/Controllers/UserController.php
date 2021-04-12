@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserIndexRequest;
@@ -155,6 +155,12 @@ class UserController extends Controller
     //  */
     public function update(UserUpdateRequest $request, User $user): Response
     {
+        // Role の更新
+        $roles = $request->input('roles');
+        if ($roles) {
+            $user->syncRoles($roles);
+        }
+
         $user->update($request->all());
         return response($user);
     }
