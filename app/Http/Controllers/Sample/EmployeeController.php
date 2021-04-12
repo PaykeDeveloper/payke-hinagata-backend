@@ -5,26 +5,24 @@
 namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Sample\Company\CompanyCreateRequest;
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\Sample\Company\CompanyIndexRequest;
 use App\Http\Requests\Sample\Company\CompanyShowRequest;
 use App\Http\Requests\Sample\Company\CompanyUpdateRequest;
-use App\Http\Requests\Sample\Staff\StaffCreateRequest;
+use App\Http\Requests\Sample\Employee\EmployeeCreateRequest;
 use App\Models\Sample\Book;
 use App\Models\Sample\Company;
-use App\Models\Sample\Staff;
+use App\Models\Sample\Employee;
 use App\Models\User;
 use DB;
 use Exception;
 use Illuminate\Http\Response;
 use Log;
 
-class StaffController extends Controller
+class EmployeeController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Staff::class, 'staff');
+        $this->authorizeResource(Employee::class, 'employee');
     }
 
     /**
@@ -45,12 +43,12 @@ class StaffController extends Controller
      */
     public function index(CompanyIndexRequest $request, Company $company): Response
     {
-        foreach ($company->staff as $staff) {
+        foreach ($company->employees as $employee) {
             // 取得を行うと自動的にレスポンスに挿入される
-            $staff->getRoleNames();
-            $staff->getDirectPermissions();
+            $employee->getRoleNames();
+            $employee->getDirectPermissions();
         }
-        return response($company->staff);
+        return response($company->employees);
     }
 
     /**
@@ -64,24 +62,24 @@ class StaffController extends Controller
      * "updated_at": "2021-03-05T08:31:33.000000Z"
      * }
      *
-     * @param CompanyCreateRequest $request
+     * @param EmployeeCreateRequest $request
      * @return Response
      */
-    public function store(StaffCreateRequest $request, Company $company): Response
+    public function store(EmployeeCreateRequest $request, Company $company): Response
     {
         $userId = $request->input('user_id');
         $user = User::find($userId);
 
-        // Staff として追加
-        $staff = Staff::createWithUserAndCompany($user, $company);
+        // Employee として追加
+        $employee = Employee::createWithUserAndCompany($user, $company);
 
         // Role を追加
         $roles = $request->input('roles');
         if ($roles) {
-            $staff->syncRoles($roles);
+            $employee->syncRoles($roles);
         }
 
-        return response($staff);
+        return response($employee);
     }
 
     /**
@@ -119,16 +117,16 @@ class StaffController extends Controller
      * @param Company $company
      * @return Response
      */
-    public function update(CompanyUpdateRequest $request, Company $company, Staff $staff): Response
+    public function update(CompanyUpdateRequest $request, Company $company, Employee $employee): Response
     {
         // Role の更新
         $roles = $request->input('roles');
         if ($roles) {
-            $staff->syncRoles($roles);
+            $employee->syncRoles($roles);
         }
 
-        $staff->update($request->all());
-        return response($staff);
+        $employee->update($request->all());
+        return response($employee);
     }
 
     /**
@@ -137,9 +135,9 @@ class StaffController extends Controller
      * @return Response
      * @throws Exception
      */
-    public function destroy(CompanyShowRequest $request, Company $company, Staff $staff): Response
+    public function destroy(CompanyShowRequest $request, Company $company, Employee $employee): Response
     {
-        $staff->delete();
+        $employee->delete();
         return response(null, 204);
     }
 }

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Permission\Traits\HasRoles;
 
-class Staff extends AuthorizableModel
+class Employee extends AuthorizableModel
 {
     use HasFactory, HasRoles, HasAllOrPermissions;
 
@@ -35,11 +35,11 @@ class Staff extends AuthorizableModel
 
     public static function createWithUserAndCompany(User $user, Company $company, array $attributes = [])
     {
-        $staff = new Staff();
-        $staff->fill($attributes);
-        $staff->user_id = $user->id;
-        $staff->company_id = $company->id;
-        $staff->save();
-        return $staff;
+        $employee = new self();
+        $employee->fill($attributes);
+        $employee->user_id = $user->id;
+        $employee->company_id = $company->id;
+        $employee->save();
+        return $employee;
     }
 }

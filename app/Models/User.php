@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Common\AuthableModel;
-use App\Models\Sample\Staff;
+use App\Models\Sample\Employee;
 use App\Models\Traits\HasAllOrPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -67,17 +67,17 @@ class User extends AuthableModel
         return $this->hasMany(\App\Models\Sample\Book::class);
     }
 
-    public function staff(): HasMany
+    public function employees(): HasMany
     {
-        return $this->hasMany(Staff::class);
+        return $this->hasMany(Employee::class);
     }
 
     public function companies()
     {
         // get all company ids belonging to the user
         $companies = [];
-        foreach ($this->staff()->get() as $staff) {
-            $companies[] = $staff->company;
+        foreach ($this->employees()->get() as $employee) {
+            $companies[] = $employee->company;
         }
         // remove duplicates
         $unique_companies = [];

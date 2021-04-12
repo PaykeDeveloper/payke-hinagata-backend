@@ -6,18 +6,18 @@ namespace App\Policies;
 
 use Illuminate\Http\Response;
 use App\Models\Sample\Company;
-use App\Models\Sample\Staff;
+use App\Models\Sample\Employee;
 use App\Models\User;
 use App\Policies\Common\AuthorizablePolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class StaffPolicy extends AuthorizablePolicy
+class EmployeePolicy extends AuthorizablePolicy
 {
     use HandlesAuthorization;
 
     public function __construct()
     {
-        $this->model = Staff::class;
+        $this->model = Employee::class;
         parent::__construct();
     }
 
@@ -29,11 +29,11 @@ class StaffPolicy extends AuthorizablePolicy
      */
     public function viewAny(User $user)
     {
-        // Staff のパーミッションチェック (Company に属する)
+        // Employee のパーミッションチェック (Company に属する)
         foreach ($user->companies() as $company) {
-            foreach ($company->staff as $staff) {
-                if ($staff->user_id === $user->id) {
-                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            foreach ($company->employees as $employee) {
+                if ($employee->user_id === $user->id) {
+                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                         return true;
                     }
                 }
@@ -52,16 +52,16 @@ class StaffPolicy extends AuthorizablePolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Staff  $staff
+     * @param  \App\Models\Employee $employee
      * @return mixed
      */
-    public function view(User $user, Staff $staff)
+    public function view(User $user, Employee $employee)
     {
-        // Staff のパーミッションチェック (Company に属する)
+        // Employee のパーミッションチェック (Company に属する)
         foreach ($user->companies() as $company) {
-            foreach ($company->staff as $staff) {
-                if ($staff->user_id === $user->id) {
-                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            foreach ($company->employees as $employee) {
+                if ($employee->user_id === $user->id) {
+                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                         return true;
                     }
                 }
@@ -86,11 +86,11 @@ class StaffPolicy extends AuthorizablePolicy
      */
     public function create(User $user)
     {
-        // Staff のパーミッションチェック (Company に属する)
+        // Employee のパーミッションチェック (Company に属する)
         foreach ($user->companies() as $company) {
-            foreach ($company->staff as $staff) {
-                if ($staff->user_id === $user->id) {
-                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            foreach ($company->employees as $employee) {
+                if ($employee->user_id === $user->id) {
+                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                         return true;
                     }
                 }
@@ -111,16 +111,16 @@ class StaffPolicy extends AuthorizablePolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Staff $staff
+     * @param  \App\Models\Employee $employee
      * @return mixed
      */
-    public function update(User $user, Staff $staff)
+    public function update(User $user, Employee $employee)
     {
-        // Staff のパーミッションチェック (Company に属する)
+        // Employee のパーミッションチェック (Company に属する)
         foreach ($user->companies() as $company) {
-            foreach ($company->staff as $staff) {
-                if ($staff->user_id === $user->id) {
-                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            foreach ($company->employees as $employee) {
+                if ($employee->user_id === $user->id) {
+                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                         return true;
                     }
                 }
@@ -141,16 +141,16 @@ class StaffPolicy extends AuthorizablePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Staff $staff
+     * @param  \App\Models\Employee $employee
      * @return mixed
      */
-    public function delete(User $user, Staff $staff)
+    public function delete(User $user, Employee $employee)
     {
-        // Staff のパーミッションチェック (Company に属する)
+        // Employee のパーミッションチェック (Company に属する)
         foreach ($user->companies() as $company) {
-            foreach ($company->staff as $staff) {
-                if ($staff->user_id === $user->id) {
-                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            foreach ($company->employees as $employee) {
+                if ($employee->user_id === $user->id) {
+                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                         return true;
                     }
                 }
@@ -171,16 +171,16 @@ class StaffPolicy extends AuthorizablePolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Staff $staff
+     * @param  \App\Models\Employee $employee
      * @return mixed
      */
-    public function restore(User $user, Staff $staff)
+    public function restore(User $user, Employee $employee)
     {
-        // Staff のパーミッションチェック (Company に属する)
+        // Employee のパーミッションチェック (Company に属する)
         foreach ($user->companies() as $company) {
-            foreach ($company->staff as $staff) {
-                if ($staff->user_id === $user->id) {
-                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            foreach ($company->employees as $employee) {
+                if ($employee->user_id === $user->id) {
+                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                         return true;
                     }
                 }
@@ -201,16 +201,16 @@ class StaffPolicy extends AuthorizablePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Staff $staff
+     * @param  \App\Models\Employee $employee
      * @return mixed
      */
-    public function forceDelete(User $user, Staff $staff)
+    public function forceDelete(User $user, Employee $employee)
     {
-        // Staff のパーミッションチェック (Company に属する)
+        // Employee のパーミッションチェック (Company に属する)
         foreach ($user->companies() as $company) {
-            foreach ($company->staff as $staff) {
-                if ($staff->user_id === $user->id) {
-                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            foreach ($company->employees as $employee) {
+                if ($employee->user_id === $user->id) {
+                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                         return true;
                     }
                 }

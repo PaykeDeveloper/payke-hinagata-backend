@@ -7,7 +7,6 @@ namespace App\Policies;
 use Illuminate\Http\Response;
 use App\Models\Sample\Company;
 use App\Models\Sample\Project;
-use App\Models\Sample\Staff;
 use App\Models\User;
 use App\Policies\Common\AuthorizablePolicy;
 use DB;
@@ -36,9 +35,9 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Staff のパーミッションチェック
-        foreach ($company->findStaffByUser($user) as $staff) {
-            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Employee のパーミッションチェック
+        foreach ($company->findEmployeesByUser($user) as $employee) {
+            if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
@@ -64,9 +63,9 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Staff のパーミッションチェック
-        foreach ($project->findStaffByUser($user) as $staff) {
-            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Employee のパーミッションチェック
+        foreach ($company->findEmployeesByUser($user) as $employee) {
+            if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
@@ -91,10 +90,10 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Staff のパーミッションチェック
+        // Employee のパーミッションチェック
         foreach ($user->companies() as $company) {
-            foreach ($company->findStaffByUser($user) as $staff) {
-                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            foreach ($company->findEmployeesByUser($user) as $employee) {
+                if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                     return true;
                 }
             }
@@ -121,9 +120,9 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Staff のパーミッションチェック
-        foreach ($project->findStaffByUser($user) as $staff) {
-            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Employee のパーミッションチェック
+        foreach ($company->findEmployeesByUser($user) as $employee) {
+            if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
@@ -149,9 +148,9 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Staff のパーミッションチェック
-        foreach ($project->findStaffByUser($user) as $staff) {
-            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Employee のパーミッションチェック
+        foreach ($company->findEmployeesByUser($user) as $employee) {
+            if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
@@ -177,9 +176,9 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Staff のパーミッションチェック
-        foreach ($project->findStaffByUser($user) as $staff) {
-            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Employee のパーミッションチェック
+        foreach ($project->findEmployeesByUser($user) as $employee) {
+            if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
@@ -205,9 +204,9 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Staff のパーミッションチェック
-        foreach ($project->findStaffByUser($user) as $staff) {
-            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Employee のパーミッションチェック
+        foreach ($project->findEmployeesByUser($user) as $employee) {
+            if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }

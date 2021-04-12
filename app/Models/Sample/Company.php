@@ -18,17 +18,17 @@ class Company extends Model
 
     protected $guarded = [];
 
-    public function staff(): HasMany
+    public function employees(): HasMany
     {
-        return $this->hasMany(Staff::class);
+        return $this->hasMany(Employee::class);
     }
 
     /**
-     * 指定したユーザーの Staff を取得
+     * 指定したユーザーの Employee を取得
      */
-    public function findStaffByUser(User $user)
+    public function findEmployeeByUser(User $user)
     {
-        return $this->staff()->where('user_id', $user->id)->get();
+        return $this->employees()->where('user_id', $user->id)->get();
     }
 
     public function projects(): HasMany
@@ -46,8 +46,8 @@ class Company extends Model
             // ユーザー自体が全てを見れる権限があれば全てを返す
             return Company::all();
         } else {
-            // Company の Staff の user_id が一致するもののみ表示
-            return Company::whereHas('staff', function (Builder $query) use ($user) {
+            // Company の Employee の user_id が一致するもののみ表示
+            return Company::whereHas('employees', function (Builder $query) use ($user) {
                 $query->where('user_id', '=', $user->id);
             })->get();
         }

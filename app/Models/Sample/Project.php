@@ -27,11 +27,11 @@ class Project extends AuthorizableModel
     }
 
     /**
-     * 指定したユーザーの Staff を取得
+     * 指定したユーザーの Employee を取得
      */
-    public function findStaffByUser(User $user)
+    public function findEmployeesByUser(User $user)
     {
-        return $this->company->staff()->where('user_id', $user->id)->get();
+        return $this->company->employees()->where('user_id', $user->id)->get();
     }
 
     public static function createWithCompany(Company $company, array $attributes)

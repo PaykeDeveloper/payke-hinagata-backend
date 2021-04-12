@@ -28,11 +28,11 @@ class CompanyPolicy extends AuthorizablePolicy
      */
     public function viewAny(User $user)
     {
-        // Staff のパーミッションチェック (Company に属する)
+        // Employee のパーミッションチェック (Company に属する)
         foreach ($user->companies() as $company) {
-            foreach ($company->staff as $staff) {
-                if ($staff->user_id === $user->id) {
-                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            foreach ($company->employees as $employee) {
+                if ($employee->user_id === $user->id) {
+                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                         return true;
                     }
                 }
@@ -57,10 +57,10 @@ class CompanyPolicy extends AuthorizablePolicy
      */
     public function view(User $user, Company $company)
     {
-        // Staff のパーミッションチェック
-        foreach ($company->staff as $staff) {
-            if ($staff->user_id === $user->id) {
-                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Employee のパーミッションチェック
+        foreach ($company->employees as $employee) {
+            if ($employee->user_id === $user->id) {
+                if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                     return true;
                 }
             }
@@ -84,11 +84,11 @@ class CompanyPolicy extends AuthorizablePolicy
      */
     public function create(User $user)
     {
-        // Staff のパーミッションチェック (Company に属する)
+        // Employee のパーミッションチェック (Company に属する)
         foreach ($user->companies() as $company) {
-            foreach ($company->staff as $staff) {
-                if ($staff->user_id === $user->id) {
-                    if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            foreach ($company->employees as $employee) {
+                if ($employee->user_id === $user->id) {
+                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                         return true;
                     }
                 }
@@ -114,10 +114,10 @@ class CompanyPolicy extends AuthorizablePolicy
      */
     public function update(User $user, Company $company)
     {
-        // Staff のパーミッションチェック
-        foreach ($company->staff as $staff) {
-            if ($staff->user_id === $user->id) {
-                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Employee のパーミッションチェック
+        foreach ($company->employees as $employee) {
+            if ($employee->user_id === $user->id) {
+                if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                     return true;
                 }
             }
@@ -142,10 +142,10 @@ class CompanyPolicy extends AuthorizablePolicy
      */
     public function delete(User $user, Company $company)
     {
-        // Staff のパーミッションチェック
-        foreach ($company->staff as $staff) {
-            if ($staff->user_id === $user->id) {
-                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Employee のパーミッションチェック
+        foreach ($company->employees as $employee) {
+            if ($employee->user_id === $user->id) {
+                if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                     return true;
                 }
             }
@@ -170,10 +170,10 @@ class CompanyPolicy extends AuthorizablePolicy
      */
     public function restore(User $user, Company $company)
     {
-        // Staff のパーミッションチェック
-        foreach ($company->staff as $staff) {
-            if ($staff->user_id === $user->id) {
-                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Employee のパーミッションチェック
+        foreach ($company->employees as $employee) {
+            if ($employee->user_id === $user->id) {
+                if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                     return true;
                 }
             }
@@ -198,10 +198,10 @@ class CompanyPolicy extends AuthorizablePolicy
      */
     public function forceDelete(User $user, Company $company)
     {
-        // Staff のパーミッションチェック
-        foreach ($company->staff as $staff) {
-            if ($staff->user_id === $user->id) {
-                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Employee のパーミッションチェック
+        foreach ($company->employees as $employee) {
+            if ($employee->user_id === $user->id) {
+                if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                     return true;
                 }
             }
