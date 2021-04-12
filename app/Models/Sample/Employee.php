@@ -4,15 +4,15 @@
 
 namespace App\Models\Sample;
 
-use App\Models\Common\AuthorizableModel;
 use App\Models\Traits\HasAllOrPermissions;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Permission\Traits\HasRoles;
 
-class Employee extends AuthorizableModel
+class Employee extends Model
 {
     use HasFactory, HasRoles, HasAllOrPermissions;
 

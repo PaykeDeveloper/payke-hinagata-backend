@@ -4,7 +4,6 @@
 
 namespace App\Models\Sample;
 
-use App\Models\Traits\Authorizable;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Company extends Model
 {
-    use HasFactory, Authorizable;
+    use HasFactory;
 
     protected $guarded = [];
 
@@ -26,7 +25,7 @@ class Company extends Model
     /**
      * 指定したユーザーの Employee を取得
      */
-    public function findEmployeeByUser(User $user)
+    public function findEmployeesByUser(User $user)
     {
         return $this->employees()->where('user_id', $user->id)->get();
     }

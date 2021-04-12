@@ -4,8 +4,8 @@
 
 namespace App\Models\Sample;
 
-use App\Models\Common\AuthorizableModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
@@ -15,12 +15,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * @mixin IdeHelperBookComment
  */
-class BookComment extends AuthorizableModel implements HasMedia
+class BookComment extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
-
-    protected static $parentModel = Book::class;
 
     /**
      * デフォルトの設定
@@ -106,14 +104,18 @@ class BookComment extends AuthorizableModel implements HasMedia
         $comment->book_id = $book->id;
         $comment->slug = (string)Str::uuid();
         $comment->save();
-        $comment->saveCover($attributes['cover'] ?? null);
+        if (array_key_exists('cover', $attributes)) {
+            $comment->saveCover($attributes['cover']);
+        }
         return $comment;
     }
 
     public function updateFromRequest(mixed $attributes): BookComment
     {
         $this->update($attributes);
-        $this->saveCover($attributes['cover'] ?? null);
+        if (array_key_exists('cover', $attributes)) {
+            $this->saveCover($attributes['cover']);
+        }
         return $this;
     }
 }

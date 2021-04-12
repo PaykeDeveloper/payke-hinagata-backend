@@ -4,15 +4,12 @@
 
 namespace App\Models\Sample;
 
-use App\Models\Common\AuthorizableModel;
 use App\Models\User;
-use DB;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Project extends AuthorizableModel
+class Project extends Model
 {
     use HasFactory;
 

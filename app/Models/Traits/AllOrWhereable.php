@@ -5,38 +5,16 @@ namespace App\Models\Traits;
 use App\Models\User;
 
 /**
- * laravel-permission を自動的に生成する trait
+ * Model へ allOrWhereXXX の実装を追加する
+ * (whereXXX の派生)
  *
- * allOrWhereXXX の実装 (whereXXX の派生)
- * モデルと権限の階層化
+ * view か viewAny を持っているかどうかで
+ * 一覧を全て取得するのか
+ * 所属しているリソースのみの一覧を取得するのか
+ * を自動的に判定する
  */
-trait Authorizable
+trait AllOrWhereable
 {
-    protected static $parentModel;
-
-    public static function permissionModels()
-    {
-        $models = [static::baseName(static::class)];
-
-        // 親子関係が設定されてなければ自分自身のみ
-        if (!static::$parentModel) {
-            return $models;
-        }
-
-        // 親子関係が設定されている場合は全ての親を返す
-        $targetModel = static::$parentModel;
-        while ($targetModel) {
-            if (!is_subclass_of($targetModel, AuthorizableModel::class)) {
-                break;
-            }
-
-            array_push($models, static::baseName($targetModel));
-            $targetModel = $targetModel::$parentModel;
-        }
-
-        return $models;
-    }
-
     protected static function baseName(string $model)
     {
         return strtolower(basename(strtr($model, '\\', '/')));
@@ -56,9 +34,6 @@ trait Authorizable
 
         if ($user->can('viewAnyAll_' . strtolower(basename(strtr(static::class, '\\', '/'))))) {
             // 全ての閲覧権限を持っている場合は全データ取得
-            $data = static::all();
-        } elseif ($user->can('viewAnyAll_' . strtolower(basename(strtr(static::$parentModel, '\\', '/'))))) {
-            // 親が設定されている場合は親の権限を確認して権限がある場合も全データ取得
             $data = static::all();
         } else {
             $data = parent::{$action}($user->id)->get();
