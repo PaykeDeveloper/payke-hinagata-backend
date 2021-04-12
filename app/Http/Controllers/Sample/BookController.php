@@ -15,7 +15,6 @@ use Illuminate\Http\Response;
 
 class BookController extends Controller
 {
-
     /**
      * @response [
      * {
@@ -34,7 +33,7 @@ class BookController extends Controller
      */
     public function index(BookIndexRequest $request): Response
     {
-        $books = Book::allOrWhereUserId($request->user());
+        $books = Book::whereUserId($request->user()->id)->get();
         return response($books);
     }
 

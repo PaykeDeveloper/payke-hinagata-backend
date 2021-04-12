@@ -28,11 +28,6 @@ use Illuminate\Http\Response;
  */
 class BookCommentController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(BookComment::class, 'comment');
-    }
-
     /**
      * @response [
      * {
