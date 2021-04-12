@@ -2,8 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\URL;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,9 +30,34 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        ResetPassword::createUrlUsing(function ($user, string $token) {
+        ResetPassword::createUrlUsing(function (User $user, string $token) {
             $origin = config('constant.frontend_origin');
-            return "$origin/reset-password?token=" . $token;
+            return "$origin/reset-password?token=$token";
+        });
+
+        VerifyEmail::createUrlUsing(function (User $user) {
+            $origin = config('constant.frontend_origin');
+            $base_url = URL::temporarySignedRoute(
+                'verification.verify',
+                Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+                [
+                    'id' => $user->getKey(),
+                    'hash' => sha1($user->getEmailForVerification()),
+                ]
+            );
+
+            $path = null;
+            $query = null;
+            $url = parse_url($base_url);
+            if (is_array($url)) {
+                if (array_key_exists('path', $url)) {
+                    $path = $url['path'];
+                }
+                if (array_key_exists('query', $url)) {
+                    $query = $url['query'];
+                }
+            }
+            return "{$origin}{$path}?{$query}";
         });
     }
 }

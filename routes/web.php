@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get(\App\Providers\RouteServiceProvider::HOME, fn() => response(null, 204));
 
 if (!App::isProduction() && config('app.debug')) {
     Route::get('/', fn() => view('welcome'));
