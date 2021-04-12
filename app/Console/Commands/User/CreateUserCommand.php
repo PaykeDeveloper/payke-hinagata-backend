@@ -13,7 +13,7 @@ class CreateUserCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'user:create {email?} {password?}';
+    protected $signature = 'user:create {--name=} {--email=} {--password=}';
 
     /**
      * The console command description.
@@ -39,10 +39,14 @@ class CreateUserCommand extends Command
      */
     public function handle(): int
     {
-        $email = $this->argument("email");
-        $password = $this->argument("password");
-        $password_confirmation = $this->argument("password");
+        $name = $this->option("name");
+        $email = $this->option("email");
+        $password = $this->option("password");
+        $password_confirmation = $this->option("password");
 
+        while ($name === null) {
+            $name = $this->ask('What is the name?');
+        }
         while ($email === null) {
             $email = $this->ask('What is the email?');
         }
@@ -53,8 +57,6 @@ class CreateUserCommand extends Command
             $password_confirmation = $this->secret('Retype the password.');
         }
 
-        $name = is_string($email) ? strstr($email, '@', true) : null;
-
         $attributes = [
             'name' => $name,
             'email' => $email,
@@ -64,7 +66,8 @@ class CreateUserCommand extends Command
 
         try {
             $action = new CreateNewUser();
-            $action->create($attributes);
+            $user = $action->create($attributes);
+            $user->markEmailAsVerified();
         } catch (ValidationException $e) {
             foreach ($e->validator->errors()->all() as $error) {
                 $this->error($error);
