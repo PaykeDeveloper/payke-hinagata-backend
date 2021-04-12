@@ -32,7 +32,7 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function viewAny(User $user, Company $company)
     {
-        // MEMO: 親リソースの Company の権限チェックは route 側で判定済み
+        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
@@ -44,7 +44,7 @@ class ProjectPolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        if ($user->hasAllOrPermissionTo('view', 'project')) {
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
             return true;
         }
 
@@ -60,19 +60,19 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function view(User $user, Project $project)
     {
-        // MEMO: 親リソースの Company の権限チェックは route 側で判定済み
+        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
-        // FIXME: ProjectMember があればここで Member かどうかとそのパーミッションのチェックを行う
+        // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
         // Staff のパーミッションチェック
         foreach ($project->findStaffByUser($user) as $staff) {
-            if ($staff->hasAllOrPermissionTo('view', 'project')) {
+            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
 
         // User パーミッションチェック (Admin)
-        if ($user->hasAllOrPermissionTo('view', 'project')) {
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
             return true;
         }
 
@@ -87,12 +87,25 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function create(User $user)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
-                return true;
+        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+
+        // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
+
+        // Staff のパーミッションチェック
+        foreach ($user->companies() as $company) {
+            foreach ($company->findStaffByUser($user) as $staff) {
+                if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                    return true;
+                }
             }
         }
-        return false;
+
+        // User パーミッションチェック (Admin)
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            return true;
+        }
+
+        return abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -104,12 +117,23 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function update(User $user, Project $project)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
+        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+
+        // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
+
+        // Staff のパーミッションチェック
+        foreach ($project->findStaffByUser($user) as $staff) {
+            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
-        return false;
+
+        // User パーミッションチェック (Admin)
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            return true;
+        }
+
+        return abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -121,12 +145,23 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function delete(User $user, Project $project)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
+        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+
+        // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
+
+        // Staff のパーミッションチェック
+        foreach ($project->findStaffByUser($user) as $staff) {
+            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
-        return false;
+
+        // User パーミッションチェック (Admin)
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            return true;
+        }
+
+        return abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -138,12 +173,23 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function restore(User $user, Project $project)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
+        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+
+        // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
+
+        // Staff のパーミッションチェック
+        foreach ($project->findStaffByUser($user) as $staff) {
+            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
-        return false;
+
+        // User パーミッションチェック (Admin)
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            return true;
+        }
+
+        return abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -155,11 +201,22 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function forceDelete(User $user, Project $project)
     {
-        foreach ($this->model::permissionModels() as $model) {
-            if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
+        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+
+        // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
+
+        // Staff のパーミッションチェック
+        foreach ($project->findStaffByUser($user) as $staff) {
+            if ($staff->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
-        return false;
+
+        // User パーミッションチェック (Admin)
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            return true;
+        }
+
+        return abort(Response::HTTP_NOT_FOUND);
     }
 }

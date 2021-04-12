@@ -5,6 +5,7 @@
 namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Sample\Project\ProjectCreateRequest;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\Sample\Project\ProjectIndexRequest;
 use App\Http\Requests\Sample\Project\ProjectShowRequest;
@@ -17,6 +18,10 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
+        // Company (親リソース) の Policy 適用
+        $this->middleware('can:view,company');
+
+        // 自身の Policy 適用
         $this->authorizeResource(Project::class, 'project', [
             // viewAny は認可に必要な追加モデルを手動で渡すので abilityMap から除外
             'except' => [ 'index' ],
@@ -47,25 +52,25 @@ class ProjectController extends Controller
         return response($company->projects);
     }
 
-    // /**
-    //  * @response {
-    //  * "id": 2,
-    //  * "user_id": 1,
-    //  * "title": "Title 1",
-    //  * "author": "Author 1",
-    //  * "release_date": "2021-03-16",
-    //  * "created_at": "2021-03-05T08:31:33.000000Z",
-    //  * "updated_at": "2021-03-05T08:31:33.000000Z"
-    //  * }
-    //  *
-    //  * @param BookCreateRequest $request
-    //  * @return Response
-    //  */
-    // public function store(BookCreateRequest $request): Response
-    // {
-    //     $book = Book::createWithUser($request->all(), $request->user());
-    //     return response($book);
-    // }
+    /**
+     * @response {
+     * "id": 2,
+     * "user_id": 1,
+     * "title": "Title 1",
+     * "author": "Author 1",
+     * "release_date": "2021-03-16",
+     * "created_at": "2021-03-05T08:31:33.000000Z",
+     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     * }
+     *
+     * @param ProjectCreateRequest $request
+     * @return Response
+     */
+    public function store(ProjectCreateRequest $request, Company $company): Response
+    {
+        $project = Project::createWithCompany($company, $request->all());
+        return response($project);
+    }
 
     /**
      * @response {
@@ -79,6 +84,7 @@ class ProjectController extends Controller
      * }
      *
      * @param ProjectShowRequest $request
+     * @param Company $company
      * @param Project $project
      * @return Response
      */
@@ -108,15 +114,16 @@ class ProjectController extends Controller
     //     return response($book);
     // }
 
-    // /**
-    //  * @param BookShowRequest $request
-    //  * @param Book $book
-    //  * @return Response
-    //  * @throws Exception
-    //  */
-    // public function destroy(BookShowRequest $request, Book $book): Response
-    // {
-    //     $book->delete();
-    //     return response(null, 204);
-    // }
+    /**
+     * @param ProjectShowRequest $request
+     * @param Company $company
+     * @param Project $project
+     * @return Response
+     * @throws Exception
+     */
+    public function destroy(ProjectShowRequest $request, Company $company, Project $project): Response
+    {
+        $project->delete();
+        return response(null, 204);
+    }
 }

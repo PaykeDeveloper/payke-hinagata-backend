@@ -26,7 +26,7 @@ class CompanyPolicy extends AuthorizablePolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function viewAny(User $user, Company $company)
+    public function viewAny(User $user)
     {
         foreach ($this->model::permissionModels() as $model) {
             if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($model))) {
