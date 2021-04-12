@@ -16,7 +16,6 @@ return [
     */
 
     'paths' => [
-        \App\Providers\RouteServiceProvider::HOME,
         'api/*',
         'sanctum/csrf-cookie',
         'login',
@@ -25,6 +24,7 @@ return [
         'forgot-password',
         'reset-password',
         'email/verify/*',
+        \App\Providers\RouteServiceProvider::HOME,
     ],
 
     'allowed_methods' => ['*'],
