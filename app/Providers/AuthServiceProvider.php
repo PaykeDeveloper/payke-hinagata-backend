@@ -45,8 +45,19 @@ class AuthServiceProvider extends ServiceProvider
                     'hash' => sha1($user->getEmailForVerification()),
                 ]
             );
+
+            $path = null;
+            $query = null;
             $url = parse_url($base_url);
-            return "$origin{$url['path']}?{$url['query']}";
+            if (is_array($url)) {
+                if (array_key_exists('path', $url)) {
+                    $path = $url['path'];
+                }
+                if (array_key_exists('query', $url)) {
+                    $query = $url['query'];
+                }
+            }
+            return "{$origin}{$path}?{$query}";
         });
     }
 }
