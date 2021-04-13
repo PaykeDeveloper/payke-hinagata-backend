@@ -6,10 +6,8 @@ namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sample\Project\ProjectCreateRequest;
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\Sample\Project\ProjectIndexRequest;
 use App\Http\Requests\Sample\Project\ProjectShowRequest;
-use App\Models\Permission;
 use App\Models\Sample\Company;
 use App\Models\Sample\Project;
 use Illuminate\Http\Response;

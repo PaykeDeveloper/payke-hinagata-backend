@@ -13,10 +13,8 @@ use App\Models\Sample\Book;
 use App\Models\Sample\Company;
 use App\Models\Sample\Employee;
 use App\Models\User;
-use DB;
 use Exception;
 use Illuminate\Http\Response;
-use Log;
 
 class EmployeeController extends Controller
 {

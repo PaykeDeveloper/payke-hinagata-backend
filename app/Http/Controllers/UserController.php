@@ -62,26 +62,6 @@ class UserController extends Controller
         return response(User::allOrWhereId($request->user()));
     }
 
-    // /**
-    //  * @response {
-    //  * "id": 2,
-    //  * "user_id": 1,
-    //  * "title": "Title 1",
-    //  * "author": "Author 1",
-    //  * "release_date": "2021-03-16",
-    //  * "created_at": "2021-03-05T08:31:33.000000Z",
-    //  * "updated_at": "2021-03-05T08:31:33.000000Z"
-    //  * }
-    //  *
-    //  * @param BookCreateRequest $request
-    //  * @return Response
-    //  */
-    // public function store(BookCreateRequest $request): Response
-    // {
-    //     $book = Book::createWithUser($request->all(), $request->user());
-    //     return response($book);
-    // }
-
     /**
      * @response {
      * "id": 1,
@@ -136,21 +116,21 @@ class UserController extends Controller
         return response($request->user());
     }
 
-    // /**
-    //  * @response {
-    //  * "id": 2,
-    //  * "user_id": 1,
-    //  * "title": "Title 1",
-    //  * "author": "Author 1",
-    //  * "release_date": "2021-03-16",
-    //  * "created_at": "2021-03-05T08:31:33.000000Z",
-    //  * "updated_at": "2021-03-05T08:31:33.000000Z"
-    //  * }
-    //  *
-    //  * @param BookUpdateRequest $request
-    //  * @param Book $book
-    //  * @return Response
-    //  */
+    /**
+     * @response {
+     * "id": 2,
+     * "user_id": 1,
+     * "title": "Title 1",
+     * "author": "Author 1",
+     * "release_date": "2021-03-16",
+     * "created_at": "2021-03-05T08:31:33.000000Z",
+     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     * }
+     *
+     * @param BookUpdateRequest $request
+     * @param Book $book
+     * @return Response
+     */
     public function update(UserUpdateRequest $request, User $user): Response
     {
         // Role の更新
@@ -162,16 +142,4 @@ class UserController extends Controller
         $user->update($request->all());
         return response($user);
     }
-
-    // /**
-    //  * @param BookShowRequest $request
-    //  * @param Book $book
-    //  * @return Response
-    //  * @throws Exception
-    //  */
-    // public function destroy(BookShowRequest $request, Book $book): Response
-    // {
-    //     $book->delete();
-    //     return response(null, 204);
-    // }
 }

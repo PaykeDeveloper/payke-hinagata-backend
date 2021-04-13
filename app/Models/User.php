@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Common\AuthableModel;
 use App\Models\Sample\Employee;
+use App\Models\Traits\AllOrWhereable;
 use App\Models\Traits\HasAllOrPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,7 +19,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
-    use HasAllOrPermissions;
+    use HasAllOrPermissions, AllOrWhereable;
 
     /**
      * The attributes that are mass assignable.

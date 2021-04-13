@@ -6,16 +6,13 @@ namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sample\Company\CompanyCreateRequest;
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\Sample\Company\CompanyIndexRequest;
 use App\Http\Requests\Sample\Company\CompanyShowRequest;
 use App\Http\Requests\Sample\Company\CompanyUpdateRequest;
 use App\Models\Sample\Book;
 use App\Models\Sample\Company;
-use DB;
 use Exception;
 use Illuminate\Http\Response;
-use Log;
 
 class CompanyController extends Controller
 {
