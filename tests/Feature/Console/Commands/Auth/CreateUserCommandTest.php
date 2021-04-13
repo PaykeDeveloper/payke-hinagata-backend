@@ -12,6 +12,10 @@ class CreateUserCommandTest extends TestCase
     use WithFaker;
 
     /**
+     * [正常系]
+     */
+
+    /**
      * オプション有りでコマンドが正常終了する。
      */
     public function testUserCreateWithOptions()
