@@ -28,7 +28,7 @@ class RegisteredUserControllerTest extends TestCase
         ]);
 
         $email = $invitation->email;
-        $password = $this->faker->password;
+        $password = $this->faker->password(minLength: 8);
         $data = [
             'name' => $this->faker->name,
             'email' => $email,

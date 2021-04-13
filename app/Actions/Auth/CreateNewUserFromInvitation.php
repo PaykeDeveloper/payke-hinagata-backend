@@ -29,7 +29,7 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
         if (isset($merged_input['token'])) {
             $merged_input['token'] = hash('sha256', $merged_input['token']);
         }
-        Validator::make($merged_input, [
+        $validated_input = Validator::make($merged_input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -52,9 +52,9 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
         ])->validate();
 
         $user = User::create([
-            'name' => $merged_input['name'],
-            'email' => $merged_input['email'],
-            'password' => Hash::make($merged_input['password']),
+            'name' => $validated_input['name'],
+            'email' => $validated_input['email'],
+            'password' => Hash::make($validated_input['password']),
             'locale' => request()->getPreferredLanguage(),
         ]);
         $user->markEmailAsVerified();
