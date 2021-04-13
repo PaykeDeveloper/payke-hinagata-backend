@@ -2,9 +2,6 @@
 
 namespace App\Policies\Common;
 
-use App\Models\User;
-use Spatie\Permission\Models\Permission;
-
 class AuthorizablePolicy
 {
     protected $model;
