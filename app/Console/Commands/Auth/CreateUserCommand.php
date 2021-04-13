@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\User;
+namespace App\Console\Commands\Auth;
 
 use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Console\Command;
