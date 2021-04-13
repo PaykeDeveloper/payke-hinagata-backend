@@ -25,11 +25,24 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        $merged_input = $input;
-        if (isset($merged_input['token'])) {
-            $merged_input['token'] = hash('sha256', $merged_input['token']);
-        }
-        $validated_input = Validator::make($merged_input, [
+        $validated_input = $this->validateInput($input);
+        $user = User::create([
+            'name' => $validated_input['name'],
+            'email' => $validated_input['email'],
+            'password' => Hash::make($validated_input['password']),
+            'locale' => request()->getPreferredLanguage(),
+        ]);
+        $user->markEmailAsVerified();
+        return $user;
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    private function validateInput(array $input): array
+    {
+        $updated_input = $this->updateInput($input);
+        $validator = Validator::make($updated_input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -44,20 +57,24 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
             'password' => $this->passwordRules(),
             'token' => [
                 'required',
-                Rule::exists(Invitation::class)->where(function ($query) use ($merged_input) {
+                Rule::exists(Invitation::class)->where(function ($query) use ($updated_input) {
                     return $query
-                        ->where('email', $merged_input['email'] ?? null);
+                        ->where('email', $updated_input['email'] ?? null);
                 }),
             ],
-        ])->validate();
-
-        $user = User::create([
-            'name' => $validated_input['name'],
-            'email' => $validated_input['email'],
-            'password' => Hash::make($validated_input['password']),
-            'locale' => request()->getPreferredLanguage(),
+        ], messages: [
+            'email.exists' => __('Email Address Needed for an Invitation.')
         ]);
-        $user->markEmailAsVerified();
-        return $user;
+
+        return $validator->validate();
+    }
+
+    private function updateInput(array $input): array
+    {
+        $updated_input = $input;
+        if (isset($input['token'])) {
+            $updated_input['token'] = hash('sha256', $input['token']);
+        }
+        return $updated_input;
     }
 }

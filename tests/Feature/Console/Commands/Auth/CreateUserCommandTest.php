@@ -22,7 +22,7 @@ class CreateUserCommandTest extends TestCase
     {
         $name = $this->faker->userName;
         $email = $this->faker->unique()->email;
-        $password = $this->faker->password(minLength: 8);
+        $password = $this->faker->slug;
         $console = $this->artisan("user:create --name=\"$name\" --email=\"$email\" --password=\"$password\"");
         $console->assertExitCode(0);
     }
