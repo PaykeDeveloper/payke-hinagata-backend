@@ -33,7 +33,7 @@ class CreateUserCommandTest extends TestCase
     public function testUserCreateWithoutOptions()
     {
         $email = $this->faker->unique()->email;
-        $password = $this->faker->password;
+        $password = $this->faker->slug;
         $console = $this->artisan('user:create');
         $console->expectsQuestion('What is the name?', $this->faker->userName);
         $console->expectsQuestion('What is the email?', $email);
