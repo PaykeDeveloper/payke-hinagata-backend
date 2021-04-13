@@ -2,7 +2,6 @@
 
 namespace App\Notifications\Auth;
 
-use App\Models\Auth\Invitation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -11,6 +10,7 @@ class InvitationUser extends Notification
 {
     use Queueable;
 
+    private string $username;
     private string $token;
 
     /**
@@ -18,18 +18,19 @@ class InvitationUser extends Notification
      *
      * @return void
      */
-    public function __construct(string $token)
+    public function __construct(string $username, string $token)
     {
+        $this->username = $username;
         $this->token = $token;
     }
 
     /**
      * Get the notification's delivery channels.
      *
-     * @param Invitation $invitation
+     * @param mixed $notifiable
      * @return array
      */
-    public function via(Invitation $invitation): array
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
@@ -37,35 +38,34 @@ class InvitationUser extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param Invitation $invitation
+     * @param mixed $notifiable
      * @return MailMessage
      */
-    public function toMail(Invitation $invitation): MailMessage
+    public function toMail(mixed $notifiable): MailMessage
     {
-        $name = $invitation->user->name;
         $origin = config('constant.frontend_origin');
         $url = "$origin/register?token={$this->token}";
-        return $this->buildMailMessage($name, $url);
+        return $this->buildMailMessage($this->username, $url);
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param Invitation $invitation
+     * @param mixed $notifiable
      * @return array
      */
-    public function toArray(Invitation $invitation): array
+    public function toArray(mixed $notifiable): array
     {
         return [
             //
         ];
     }
 
-    protected function buildMailMessage(string $name, string $url): MailMessage
+    protected function buildMailMessage(string $username, string $url): MailMessage
     {
         return (new MailMessage())
             ->subject(__('Invitation instructions'))
-            ->line(__('You are invited from :name.', ['name' => $name]))
+            ->line(__('You are invited from :name.', ['name' => $username]))
             ->line(__('Please click the button below to create your account.'))
             ->action(__('Sign up'), $url);
     }

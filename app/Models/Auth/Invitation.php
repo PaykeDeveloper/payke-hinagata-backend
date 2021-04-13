@@ -7,7 +7,6 @@ use App\Notifications\Auth\InvitationUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
 /**
@@ -16,7 +15,6 @@ use Illuminate\Support\Str;
 class Invitation extends Model
 {
     use HasFactory;
-    use Notifiable;
 
     protected $attributes = [
         'status' => InvitationStatus::PENDING,
@@ -33,7 +31,9 @@ class Invitation extends Model
 
     private function sendInvitationNotification(string $token, string $locale)
     {
-        $this->notify((new InvitationUser($token))->locale($locale));
+        $username = $this->user->name;
+        \Notification::route('mail', $this->email)
+            ->notify((new InvitationUser($username, $token))->locale($locale));
     }
 
     public static function createFromRequest(array $attributes, User $user): Invitation
