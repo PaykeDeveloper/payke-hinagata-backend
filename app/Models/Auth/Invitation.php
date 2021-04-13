@@ -36,10 +36,11 @@ class Invitation extends Model
         $this->notify((new InvitationUser($token))->locale($locale));
     }
 
-    public function createFromRequest(array $attributes): Invitation
+    public static function createFromRequest(array $attributes, User $user): Invitation
     {
         $invitation = new self();
         $invitation->fill($attributes);
+        $invitation->user_id = $user->id;
         $token = Str::random(60);
         $invitation->token = hash('sha256', $token);
         $invitation->save();

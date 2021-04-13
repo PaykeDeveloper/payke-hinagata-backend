@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\Invitation\InvitationCreateRequest;
 use App\Http\Requests\Auth\Invitation\InvitationDestroyRequest;
 use App\Http\Requests\Auth\Invitation\InvitationShowRequest;
 use App\Models\Auth\Invitation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Str;
 
 class InvitationController extends Controller
 {
@@ -25,15 +25,12 @@ class InvitationController extends Controller
 
     /**
      *
-     * @param Request $request
+     * @param InvitationCreateRequest $request
      * @return Response
      */
-    public function store(Request $request): Response
+    public function store(InvitationCreateRequest $request): Response
     {
-        $token = Str::random(60);
-        $attributes = $request->all() + ['token' => $token];
-        $invitation = Invitation::create($attributes);
-        $invitation->sendInvitationNotification($token, $request->getPreferredLanguage());
+        $invitation = Invitation::createFromRequest($request->all(), $request->user());
         return response($invitation);
     }
 

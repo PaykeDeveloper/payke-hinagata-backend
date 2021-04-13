@@ -53,7 +53,7 @@ class BookController extends Controller
      */
     public function store(BookCreateRequest $request): Response
     {
-        $book = Book::createWithUser($request->all(), $request->user());
+        $book = Book::createFromRequest($request->all(), $request->user());
         return response($book);
     }
 

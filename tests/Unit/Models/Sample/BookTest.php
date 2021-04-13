@@ -35,7 +35,7 @@ class BookTest extends TestCase
     public function testCreateWithUserSuccess()
     {
         $user = User::factory()->create();
-        $book = Book::createWithUser(['title' => 'abc'], $user);
+        $book = Book::createFromRequest(['title' => 'abc'], $user);
 
         $this->assertNotNull($book);
     }

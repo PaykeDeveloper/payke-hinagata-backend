@@ -4,9 +4,9 @@ namespace App\Models\Auth;
 
 final class InvitationStatus
 {
-    public const PENDING = 0;
-    public const APPROVED = 1;
-    public const DENIED = 2;
+    public const PENDING = 'pending';
+    public const APPROVED = 'approved';
+    public const DENIED = 'denied';
 
     public static function all(): array
     {
