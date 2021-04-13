@@ -20,20 +20,36 @@ class EmployeeController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Employee::class, 'employee');
+        // Company (親リソース) の Policy 適用
+        $this->middleware('can:view,company');
+
+        // Policy は追加パラメータが必要なので authorizeResource ではなく手動で呼び出す
     }
 
     /**
      * @response [
-     * {
-     * "id": 2,
-     * "user_id": 1,
-     * "title": "Title 1",
-     * "author": "Author 1",
-     * "release_date": "2021-03-16",
-     * "created_at": "2021-03-05T08:31:33.000000Z",
-     * "updated_at": "2021-03-05T08:31:33.000000Z"
-     * }
+     *   {
+     *     "id": 5,
+     *     "user_id": 2,
+     *     "company_id": 18,
+     *     "created_at": "2021-04-13T04:52:40.000000Z",
+     *     "updated_at": "2021-04-13T04:52:40.000000Z",
+     *     "permissions": [],
+     *     "roles": [
+     *       {
+     *         "id": 9,
+     *         "name": "Company Manager",
+     *         "guard_name": "web",
+     *         "created_at": "2021-04-13T02:55:12.000000Z",
+     *         "updated_at": "2021-04-13T02:55:12.000000Z",
+     *         "pivot": {
+     *           "model_id": 5,
+     *           "role_id": 9,
+     *           "model_type": "App\\Models\\Sample\\Employee"
+     *         }
+     *       }
+     *     ]
+     *   }
      * ]
      *
      * @param CompanyIndexRequest $request
@@ -41,6 +57,9 @@ class EmployeeController extends Controller
      */
     public function index(CompanyIndexRequest $request, Company $company): Response
     {
+        // Policy の呼び出し (追加パラメータを渡す為手動実行)
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $company]);
+
         foreach ($company->employees as $employee) {
             // 取得を行うと自動的にレスポンスに挿入される
             $employee->getRoleNames();
@@ -51,13 +70,25 @@ class EmployeeController extends Controller
 
     /**
      * @response {
-     * "id": 2,
-     * "user_id": 1,
-     * "title": "Title 1",
-     * "author": "Author 1",
-     * "release_date": "2021-03-16",
-     * "created_at": "2021-03-05T08:31:33.000000Z",
-     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     *   "user_id": 3,
+     *   "company_id": 18,
+     *   "updated_at": "2021-04-13T06:04:44.000000Z",
+     *   "created_at": "2021-04-13T06:04:44.000000Z",
+     *   "id": 7,
+     *   "roles": [
+     *     {
+     *       "id": 9,
+     *       "name": "Company Manager",
+     *       "guard_name": "web",
+     *       "created_at": "2021-04-13T02:55:12.000000Z",
+     *       "updated_at": "2021-04-13T02:55:12.000000Z",
+     *       "pivot": {
+     *         "model_id": 7,
+     *         "role_id": 9,
+     *         "model_type": "App\\Models\\Sample\\Employee"
+     *       }
+     *     }
+     *   ]
      * }
      *
      * @param EmployeeCreateRequest $request
@@ -65,6 +96,9 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeCreateRequest $request, Company $company): Response
     {
+        // Policy の呼び出し (追加パラメータを渡す為手動実行)
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $company]);
+
         $userId = $request->input('user_id');
         $user = User::find($userId);
 
@@ -73,42 +107,46 @@ class EmployeeController extends Controller
 
         // Role を追加
         $roles = $request->input('roles');
-        if ($roles) {
+        if (!is_null($roles)) {
             $employee->syncRoles($roles);
         }
+
+        // 取得を行うと自動的にレスポンスに挿入される
+        $employee->getAllPermissions();
 
         return response($employee);
     }
 
     /**
      * @response {
-     * "id": 2,
-     * "user_id": 1,
-     * "title": "Title 1",
-     * "author": "Author 1",
-     * "release_date": "2021-03-16",
-     * "created_at": "2021-03-05T08:31:33.000000Z",
-     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     *   "id": 7,
+     *   "user_id": 3,
+     *   "company_id": 18,
+     *   "created_at": "2021-04-13T06:04:44.000000Z",
+     *   "updated_at": "2021-04-13T06:04:44.000000Z"
      * }
      *
      * @param CompanyShowRequest $request
      * @param Book $book
      * @return Response
      */
-    public function show(CompanyShowRequest $request, Company $company): Response
+    public function show(CompanyShowRequest $request, Company $company, Employee $employee): Response
     {
-        return response($company);
+        // Policy の呼び出し (追加パラメータを渡す為手動実行)
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $company, $employee]);
+
+        return response($employee);
     }
 
     /**
      * @response {
-     * "id": 2,
-     * "user_id": 1,
-     * "title": "Title 1",
-     * "author": "Author 1",
-     * "release_date": "2021-03-16",
-     * "created_at": "2021-03-05T08:31:33.000000Z",
-     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     *   "id": 7,
+     *   "user_id": 3,
+     *   "company_id": 18,
+     *   "created_at": "2021-04-13T06:04:44.000000Z",
+     *   "updated_at": "2021-04-13T06:04:44.000000Z",
+     *   "roles": [],
+     *   "permissions": []
      * }
      *
      * @param CompanyUpdateRequest $request
@@ -117,13 +155,20 @@ class EmployeeController extends Controller
      */
     public function update(CompanyUpdateRequest $request, Company $company, Employee $employee): Response
     {
+        // Policy の呼び出し (追加パラメータを渡す為手動実行)
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $company, $employee]);
+
         // Role の更新
         $roles = $request->input('roles');
-        if ($roles) {
+        if (!is_null($roles)) {
             $employee->syncRoles($roles);
         }
 
+        // 取得を行うと自動的にレスポンスに挿入される
+        $employee->getAllPermissions();
+
         $employee->update($request->all());
+
         return response($employee);
     }
 
@@ -135,6 +180,12 @@ class EmployeeController extends Controller
      */
     public function destroy(CompanyShowRequest $request, Company $company, Employee $employee): Response
     {
+        // Policy の呼び出し (追加パラメータを渡す為手動実行)
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $company, $employee]);
+
+        // ロールの割り当て解除
+        $employee->roles()->detach();
+
         $employee->delete();
         return response(null, 204);
     }

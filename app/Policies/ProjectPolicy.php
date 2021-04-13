@@ -83,21 +83,19 @@ class ProjectPolicy extends AuthorizablePolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Company $company)
     {
         // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
         // Employee のパーミッションチェック
-        foreach ($user->companies() as $company) {
-            foreach ($company->findEmployeesByUser($user) as $employee) {
-                $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        foreach ($company->findEmployeesByUser($user) as $employee) {
+            $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
+            $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
-                if ($viewPermission && $funcPermission) {
-                    return true;
-                }
+            if ($viewPermission && $funcPermission) {
+                return true;
             }
         }
 
