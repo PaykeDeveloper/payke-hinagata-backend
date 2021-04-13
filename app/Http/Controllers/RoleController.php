@@ -15,10 +15,12 @@ class RoleController extends Controller
 {
     public function __construct()
     {
-        // $this->authorizeResource(Role::class, 'role');
+        $this->authorizeResource(Role::class, 'role');
     }
 
     /**
+     * ロールの一覧 (Super Admin のみ実行可能)
+     *
      * @param RoleIndexRequest $request
      * @return Response
      */
@@ -32,38 +34,5 @@ class RoleController extends Controller
         }
 
         return response($roles);
-    }
-
-    /**
-     * @param RoleCreateRequest $request
-     * @return Response
-     */
-    public function store(RoleCreateRequest $request): Response
-    {
-        $role = Role::create(array_merge(['guard_name' => 'web'], $request->all()));
-        return response($role);
-    }
-
-    /**
-     * @param BookUpdateRequest $request
-     * @param Role $role
-     * @return Response
-     */
-    public function update(RoleUpdateRequest $request, Role $role): Response
-    {
-        $role->syncPermissions($request->input('permissions'));
-        return response($role);
-    }
-
-    /**
-     * @param RoleShowRequest $request
-     * @param Role $role
-     * @return Response
-     * @throws Exception
-     */
-    public function destroy(RoleShowRequest $request, Role $role): Response
-    {
-        $role->delete();
-        return response(null, 204);
     }
 }
