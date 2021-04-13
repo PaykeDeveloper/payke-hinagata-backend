@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Auth\StatusController;
+use App\Http\Controllers\Auth\TokenController;
 use App\Http\Controllers\Sample\BookCommentController;
 use App\Http\Controllers\Sample\BookController;
-use App\Http\Controllers\StatusController;
-use App\Http\Controllers\TokenController;
 use Illuminate\Support\Facades\Route;
 
 /*
