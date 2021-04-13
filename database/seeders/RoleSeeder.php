@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\User;
+namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -15,16 +15,17 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::factory()->create();
         $data_set = [
-            1 => 'Super Admin'
+            'Super Admin',
         ];
 
-        foreach ($data_set as $key => $value) {
-            $user = User::find($key);
-
-            Role::create(['name' => $value]);
-            $user->assignRole($value);
+        foreach ($data_set as $i => $value) {
+            Role::updateOrCreate([
+                'id' => $i + 1,
+            ], [
+                'name' => $value,
+                'guard_name' => 'web',
+            ]);
         }
     }
 }
