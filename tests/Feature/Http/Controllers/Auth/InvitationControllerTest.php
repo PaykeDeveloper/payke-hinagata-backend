@@ -78,9 +78,8 @@ class InvitationControllerTest extends TestCase
      */
     public function testDestroySuccess()
     {
-        $invitation = Invitation::factory()->create([
+        $invitation = Invitation::factory()->pending()->create([
             'user_id' => $this->user->id,
-            'status' => InvitationStatus::PENDING,
         ]);
 
         $response = $this->deleteJson(route('invitations.destroy', ['invitation' => $invitation->id]));

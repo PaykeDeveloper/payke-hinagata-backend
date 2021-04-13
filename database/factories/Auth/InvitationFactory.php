@@ -26,9 +26,16 @@ class InvitationFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'email' => $this->faker->word(),
+            'email' => $this->faker->unique()->email,
             'token' => Str::random(60),
             'status' => $this->faker->randomElement(InvitationStatus::all()),
         ];
+    }
+
+    public function pending(): InvitationFactory
+    {
+        return $this->state(fn(array $attributed) => [
+            'status' => InvitationStatus::PENDING,
+        ]);
     }
 }
