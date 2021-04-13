@@ -1,9 +1,12 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Auth;
 
 use App\Models\Auth\Invitation;
+use App\Models\Auth\InvitationStatus;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class InvitationFactory extends Factory
 {
@@ -22,7 +25,10 @@ class InvitationFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => User::factory(),
+            'email' => $this->faker->word(),
+            'token' => Str::random(60),
+            'status' => $this->faker->randomElement(InvitationStatus::all()),
         ];
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Auth\InvitationStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,7 @@ class CreateInvitationsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('email');
             $table->string('token');
+            $table->enum('status', InvitationStatus::all());
             $table->timestampsTz();
             $table->unique(['user_id', 'email']);
         });
