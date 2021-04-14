@@ -61,17 +61,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     }
 
     // FIXME: SAMPLE CODE
-
-    protected static function boot()
-    {
-        parent::boot();
-        self::deleting(function ($check) {
-            foreach ($check->books as $book) {
-                $book->delete();
-            }
-        });
-    }
-
     public function books(): HasMany
     {
         return $this->hasMany(Book::class);
