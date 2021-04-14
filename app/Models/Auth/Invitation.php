@@ -35,9 +35,8 @@ class Invitation extends Model
 
     private function sendInvitationNotification(string $token, string $locale)
     {
-        $username = $this->user->name;
         \Notification::route('mail', $this->email)
-            ->notify((new InvitationUser($username, $token))->locale($locale));
+            ->notify((new InvitationUser($this, $token))->locale($locale));
     }
 
     public static function createFromRequest(array $attributes, User $user): Invitation

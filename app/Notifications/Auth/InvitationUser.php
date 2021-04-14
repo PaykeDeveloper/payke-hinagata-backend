@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Auth;
 
+use App\Models\Auth\Invitation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -10,7 +11,7 @@ class InvitationUser extends Notification
 {
     use Queueable;
 
-    private string $username;
+    private Invitation $invitation;
     private string $token;
 
     /**
@@ -18,9 +19,9 @@ class InvitationUser extends Notification
      *
      * @return void
      */
-    public function __construct(string $username, string $token)
+    public function __construct(Invitation $invitation, string $token)
     {
-        $this->username = $username;
+        $this->invitation = $invitation;
         $this->token = $token;
     }
 
@@ -43,9 +44,10 @@ class InvitationUser extends Notification
      */
     public function toMail(mixed $notifiable): MailMessage
     {
+        $invitation = $this->invitation;
         $origin = config('constant.frontend_origin');
-        $url = "$origin/register?token={$this->token}";
-        return $this->buildMailMessage($this->username, $url);
+        $url = "$origin/register?id={$invitation->id}&token={$this->token}";
+        return $this->buildMailMessage($invitation->user->name, $url);
     }
 
     /**

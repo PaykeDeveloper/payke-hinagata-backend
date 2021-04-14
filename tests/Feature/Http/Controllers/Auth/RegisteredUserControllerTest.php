@@ -28,13 +28,12 @@ class RegisteredUserControllerTest extends TestCase
             'token' => hash('sha256', $token),
         ]);
 
-        $email = $invitation->email;
         $password = $this->faker->password(minLength: 8);
         $data = [
             'name' => $this->faker->name,
-            'email' => $email,
             'password' => $password,
             'password_confirmation' => $password,
+            'id' => $invitation->id,
             'token' => $token,
         ];
 
@@ -53,22 +52,22 @@ class RegisteredUserControllerTest extends TestCase
     public function testStoreWrongEmail()
     {
         $token = Str::random(60);
-        Invitation::factory()->pending()->create([
+        $invitation = Invitation::factory()->pending()->create([
             'token' => hash('sha256', $token),
         ]);
 
         $password = $this->faker->password(minLength: 8);
         $data = [
             'name' => $this->faker->name,
-            'email' => $this->faker->email,
             'password' => $password,
             'password_confirmation' => $password,
-            'token' => $token,
+            'id' => $invitation->id,
+            'token' => "{$token}test",
         ];
 
         $response = $this->postJson('register', $data);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonStructure(['errors' => ['email']]);
+            ->assertJsonStructure(['errors' => ['token']]);
     }
 }

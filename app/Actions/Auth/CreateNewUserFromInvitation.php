@@ -26,14 +26,13 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
     public function create(array $input): User
     {
         $validated_input = $this->validateInput($input);
-        $user = User::create([
+        $invitation = Invitation::find($validated_input['id']);
+        return User::create([
             'name' => $validated_input['name'],
-            'email' => $validated_input['email'],
+            'email' => $invitation->email,
             'password' => Hash::make($validated_input['password']),
             'locale' => request()->getPreferredLanguage(),
         ]);
-        $user->markEmailAsVerified();
-        return $user;
     }
 
     /**
@@ -44,26 +43,19 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
         $updated_input = $this->updateInput($input);
         $validator = Validator::make($updated_input, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique(User::class),
-                Rule::exists(Invitation::class)->where(function ($query) {
-                    return $query->where('status', InvitationStatus::PENDING);
-                }),
-            ],
             'password' => $this->passwordRules(),
+            'id' => ['required', 'integer'],
             'token' => [
                 'required',
+                'string',
                 Rule::exists(Invitation::class)->where(function ($query) use ($updated_input) {
                     return $query
-                        ->where('email', $updated_input['email'] ?? null);
+                        ->where('id', $updated_input['id'] ?? null)
+                        ->where('status', InvitationStatus::PENDING);
                 }),
             ],
         ], messages: [
-            'email.exists' => __('Email Address Needed for an Invitation.')
+            'token.exists' => __('Register from an Invitation email.')
         ]);
 
         return $validator->validate();
