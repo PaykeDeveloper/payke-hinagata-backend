@@ -34,9 +34,9 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($division->findEmployeesByUser($user) as $employee) {
-            if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Member のパーミッションチェック
+        foreach ($division->findMembersByUser($user) as $member) {
+            if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
@@ -62,9 +62,9 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($project->findEmployeesByUser($user) as $employee) {
-            if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Member のパーミッションチェック
+        foreach ($project->findMembersByUser($user) as $member) {
+            if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
         }
@@ -89,10 +89,10 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($division->findEmployeesByUser($user) as $employee) {
-            $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-            $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($division->findMembersByUser($user) as $member) {
+            $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+            $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
             if ($viewPermission && $funcPermission) {
                 return true;
@@ -122,10 +122,10 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($project->findEmployeesByUser($user) as $employee) {
-            $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-            $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($project->findMembersByUser($user) as $member) {
+            $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+            $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
             if ($viewPermission && $funcPermission) {
                 return true;
@@ -155,10 +155,10 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($project->findEmployeesByUser($user) as $employee) {
-            $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-            $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($project->findMembersByUser($user) as $member) {
+            $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+            $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
             if ($viewPermission && $funcPermission) {
                 return true;
@@ -188,10 +188,10 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($project->findEmployeesByUser($user) as $employee) {
-            $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-            $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($project->findMembersByUser($user) as $member) {
+            $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+            $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
             if ($viewPermission && $funcPermission) {
                 return true;
@@ -221,10 +221,10 @@ class ProjectPolicy extends AuthorizablePolicy
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($project->findEmployeesByUser($user) as $employee) {
-            $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-            $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($project->findMembersByUser($user) as $member) {
+            $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+            $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
             if ($viewPermission && $funcPermission) {
                 return true;

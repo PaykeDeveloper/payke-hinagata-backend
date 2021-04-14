@@ -26,7 +26,7 @@ class PermissionSeeder extends Seeder
         'user',
         'permission',
         'division',
-        'employee',
+        'member',
         'project',
     ];
 

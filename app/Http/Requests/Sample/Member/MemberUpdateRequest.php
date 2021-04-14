@@ -2,9 +2,9 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Requests\Sample\Employee;
+namespace App\Http\Requests\Sample\Member;
 
-class EmployeeUpdateRequest extends EmployeeShowRequest
+class MemberUpdateRequest extends MemberShowRequest
 {
     /**
      * Get the validation rules that apply to the request.

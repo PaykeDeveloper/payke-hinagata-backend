@@ -6,18 +6,18 @@ namespace App\Policies;
 
 use App\Models\Sample\Division;
 use Illuminate\Http\Response;
-use App\Models\Sample\Employee;
+use App\Models\Sample\Member;
 use App\Models\User;
 use App\Policies\Common\AuthorizablePolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class EmployeePolicy extends AuthorizablePolicy
+class MemberPolicy extends AuthorizablePolicy
 {
     use HandlesAuthorization;
 
     public function __construct()
     {
-        $this->model = Employee::class;
+        $this->model = Member::class;
         parent::__construct();
     }
 
@@ -29,10 +29,10 @@ class EmployeePolicy extends AuthorizablePolicy
      */
     public function viewAny(User $user, Division $division)
     {
-        // Employee のパーミッションチェック (Division に属する)
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Member のパーミッションチェック (Division に属する)
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                     return true;
                 }
             }
@@ -50,15 +50,15 @@ class EmployeePolicy extends AuthorizablePolicy
      * Determine whether the user can view the model.
      *
      * @param  User  $user
-     * @param  Employee $employee
+     * @param  Member $member
      * @return mixed
      */
-    public function view(User $user, Division $division, Employee $employee)
+    public function view(User $user, Division $division, Member $member)
     {
-        // Employee のパーミッションチェック (Division に属する)
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Member のパーミッションチェック (Division に属する)
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                     return true;
                 }
             }
@@ -80,11 +80,11 @@ class EmployeePolicy extends AuthorizablePolicy
      */
     public function create(User $user, Division $division)
     {
-        // Employee のパーミッションチェック (Division に属する)
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック (Division に属する)
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -106,16 +106,16 @@ class EmployeePolicy extends AuthorizablePolicy
      * Determine whether the user can update the model.
      *
      * @param  User  $user
-     * @param  Employee $employee
+     * @param  Member $member
      * @return mixed
      */
-    public function update(User $user, Division $division, Employee $employee)
+    public function update(User $user, Division $division, Member $member)
     {
-        // Employee のパーミッションチェック (Division に属する)
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック (Division に属する)
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -137,16 +137,16 @@ class EmployeePolicy extends AuthorizablePolicy
      * Determine whether the user can delete the model.
      *
      * @param  User  $user
-     * @param  Employee $employee
+     * @param  Member $member
      * @return mixed
      */
-    public function delete(User $user, Division $division, Employee $employee)
+    public function delete(User $user, Division $division, Member $member)
     {
-        // Employee のパーミッションチェック (Division に属する)
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック (Division に属する)
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -168,16 +168,16 @@ class EmployeePolicy extends AuthorizablePolicy
      * Determine whether the user can restore the model.
      *
      * @param  User  $user
-     * @param  Employee $employee
+     * @param  Member $member
      * @return mixed
      */
-    public function restore(User $user, Division $division, Employee $employee)
+    public function restore(User $user, Division $division, Member $member)
     {
-        // Employee のパーミッションチェック (Division に属する)
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック (Division に属する)
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -199,16 +199,16 @@ class EmployeePolicy extends AuthorizablePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  User  $user
-     * @param  Employee $employee
+     * @param  Member $member
      * @return mixed
      */
-    public function forceDelete(User $user, Division $division, Employee $employee)
+    public function forceDelete(User $user, Division $division, Member $member)
     {
-        // Employee のパーミッションチェック (Division に属する)
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック (Division に属する)
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
                 if ($viewPermission && $funcPermission) {
                     return true;

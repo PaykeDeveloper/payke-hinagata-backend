@@ -2,24 +2,24 @@
 
 namespace App\Console\Commands\Division;
 
-use App\Models\Sample\Employee;
+use App\Models\Sample\Member;
 use Illuminate\Console\Command;
 
-class RemoveEmployeeCommand extends Command
+class RemoveMemberCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'division:remove-employee {employeeId?}';
+    protected $signature = 'division:remove-member {memberId?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Remove an employee from a division';
+    protected $description = 'Remove an member from a division';
 
     /**
      * Create a new command instance.
@@ -38,26 +38,26 @@ class RemoveEmployeeCommand extends Command
      */
     public function handle()
     {
-        $employeeId = $this->argument('employeeId');
+        $memberId = $this->argument('memberId');
 
-        while ($employeeId === null) {
-            $employeeId = $this->ask('What is the employee id?');
+        while ($memberId === null) {
+            $memberId = $this->ask('What is the member id?');
         }
 
         /**
-         * @var Employee|null
+         * @var Member|null
          */
-        $employee = Employee::find($employeeId);
+        $member = Member::find($memberId);
 
-        if (!$employee) {
-            $this->error('employee is not found');
+        if (!$member) {
+            $this->error('member is not found');
             return 1;
         }
 
         // ロールの割り当て解除
-        $employee->roles()->detach();
+        $member->roles()->detach();
 
-        $employee->delete();
+        $member->delete();
 
         return 0;
     }

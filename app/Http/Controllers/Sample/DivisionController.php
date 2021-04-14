@@ -61,7 +61,7 @@ class DivisionController extends Controller
      *   "name": "テストカンパニー",
      *   "created_at": "2021-04-13T04:12:36.000000Z",
      *   "updated_at": "2021-04-13T04:12:36.000000Z",
-     *   "employees": [
+     *   "members": [
      *     {
      *       "id": 5,
      *       "user_id": 2,
@@ -79,7 +79,7 @@ class DivisionController extends Controller
      *           "pivot": {
      *             "model_id": 5,
      *             "role_id": 9,
-     *             "model_type": "App\\Models\\Sample\\Employee"
+     *             "model_type": "App\\Models\\Sample\\Member"
      *           }
      *         }
      *       ]
@@ -102,7 +102,7 @@ class DivisionController extends Controller
      *   "name": "companpdafawefd)",
      *   "created_at": "2021-04-13T04:12:36.000000Z",
      *   "updated_at": "2021-04-13T09:33:04.000000Z",
-     *   "employees": [
+     *   "members": [
      *     {
      *       "id": 5,
      *       "user_id": 2,
@@ -120,7 +120,7 @@ class DivisionController extends Controller
      *           "pivot": {
      *             "model_id": 5,
      *             "role_id": 9,
-     *             "model_type": "App\\Models\\Sample\\Employee"
+     *             "model_type": "App\\Models\\Sample\\Member"
      *           }
      *         }
      *       ]

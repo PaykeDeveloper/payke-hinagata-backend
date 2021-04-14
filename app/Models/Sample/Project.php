@@ -25,11 +25,11 @@ class Project extends Model
     }
 
     /**
-     * 指定したユーザーの Employee を取得
+     * 指定したユーザーの Member を取得
      */
-    public function findEmployeesByUser(User $user): Collection
+    public function findMembersByUser(User $user): Collection
     {
-        return $this->division->employees()->where('user_id', $user->id)->get();
+        return $this->division->members()->where('user_id', $user->id)->get();
     }
 
     public static function createWithDivision(Division $division, array $attributes): Project

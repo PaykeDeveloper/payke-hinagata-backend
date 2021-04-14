@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Permission\Traits\HasRoles;
 
-class Employee extends Model
+class Member extends Model
 {
     use HasFactory, HasRoles, HasAllOrPermissions;
 
@@ -34,13 +34,13 @@ class Employee extends Model
         return $this->belongsTo(Division::class);
     }
 
-    public static function createWithUserAndDivision(User $user, Division $division, array $attributes = []): Employee
+    public static function createWithUserAndDivision(User $user, Division $division, array $attributes = []): Member
     {
-        $employee = new self();
-        $employee->fill($attributes);
-        $employee->user_id = $user->id;
-        $employee->division_id = $division->id;
-        $employee->save();
-        return $employee;
+        $member = new self();
+        $member->fill($attributes);
+        $member->user_id = $user->id;
+        $member->division_id = $division->id;
+        $member->save();
+        return $member;
     }
 }

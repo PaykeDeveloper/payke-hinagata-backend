@@ -9,7 +9,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Sample\DivisionController;
 use App\Http\Controllers\Sample\ProjectController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\Sample\EmployeeController;
+use App\Http\Controllers\Sample\MemberController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use Illuminate\Support\Facades\Route;
@@ -51,7 +51,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
 
         Route::apiResource('divisions', DivisionController::class);
-        Route::apiResource('divisions.employees', EmployeeController::class);
+        Route::apiResource('divisions.members', MemberController::class);
         Route::apiResource('divisions.projects', ProjectController::class);
     });
 });

@@ -2,11 +2,11 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Requests\Sample\Employee;
+namespace App\Http\Requests\Sample\Member;
 
 use App\Http\Requests\FormRequest;
 
-class EmployeeIndexRequest extends FormRequest
+class MemberIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

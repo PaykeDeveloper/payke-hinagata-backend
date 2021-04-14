@@ -28,11 +28,11 @@ class DivisionPolicy extends AuthorizablePolicy
      */
     public function viewAny(User $user)
     {
-        // Employee のパーミッションチェック (Division に属する)
+        // Member のパーミッションチェック (Division に属する)
         foreach ($user->divisions() as $division) {
-            foreach ($division->employees as $employee) {
-                if ($employee->user_id === $user->id) {
-                    if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+            foreach ($division->members as $member) {
+                if ($member->user_id === $user->id) {
+                    if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                         return true;
                     }
                 }
@@ -56,10 +56,10 @@ class DivisionPolicy extends AuthorizablePolicy
      */
     public function view(User $user, Division $division)
     {
-        // Employee のパーミッションチェック
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Member のパーミッションチェック
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                     return true;
                 }
             }
@@ -81,12 +81,12 @@ class DivisionPolicy extends AuthorizablePolicy
      */
     public function create(User $user)
     {
-        // Employee のパーミッションチェック (Division に属する)
+        // Member のパーミッションチェック (Division に属する)
         foreach ($user->divisions() as $division) {
-            foreach ($division->employees as $employee) {
-                if ($employee->user_id === $user->id) {
-                    $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                    $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+            foreach ($division->members as $member) {
+                if ($member->user_id === $user->id) {
+                    $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                    $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
                     if ($viewPermission && $funcPermission) {
                         return true;
@@ -114,11 +114,11 @@ class DivisionPolicy extends AuthorizablePolicy
      */
     public function update(User $user, Division $division)
     {
-        // Employee のパーミッションチェック
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -145,11 +145,11 @@ class DivisionPolicy extends AuthorizablePolicy
      */
     public function delete(User $user, Division $division)
     {
-        // Employee のパーミッションチェック
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -176,11 +176,11 @@ class DivisionPolicy extends AuthorizablePolicy
      */
     public function restore(User $user, Division $division)
     {
-        // Employee のパーミッションチェック
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -207,11 +207,11 @@ class DivisionPolicy extends AuthorizablePolicy
      */
     public function forceDelete(User $user, Division $division)
     {
-        // Employee のパーミッションチェック
-        foreach ($division->employees as $employee) {
-            if ($employee->user_id === $user->id) {
-                $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($division->members as $member) {
+            if ($member->user_id === $user->id) {
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
                 if ($viewPermission && $funcPermission) {
                     return true;

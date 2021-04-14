@@ -17,17 +17,17 @@ class Division extends Model
 
     protected $guarded = [];
 
-    public function employees(): HasMany
+    public function members(): HasMany
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(Member::class);
     }
 
     /**
-     * 指定したユーザーの Employee を取得
+     * 指定したユーザーの Member を取得
      */
-    public function findEmployeesByUser(User $user): Collection
+    public function findMembersByUser(User $user): Collection
     {
-        return $this->employees()->where('user_id', $user->id)->get();
+        return $this->members()->where('user_id', $user->id)->get();
     }
 
     public function projects(): HasMany
@@ -45,8 +45,8 @@ class Division extends Model
             // ユーザー自体が全てを見れる権限があれば全てを返す
             return self::all();
         } else {
-            // Division の Employee の user_id が一致するもののみ表示
-            return self::whereHas('employees', function (Builder $query) use ($user) {
+            // Division の Member の user_id が一致するもののみ表示
+            return self::whereHas('members', function (Builder $query) use ($user) {
                 $query->where('user_id', '=', $user->id);
             })->get();
         }

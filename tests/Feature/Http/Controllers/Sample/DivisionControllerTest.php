@@ -93,12 +93,12 @@ class DivisionControllerTest extends TestCase
         $this->assertNull($result);
     }
 
-    public function testIndexSuccessUserViewAnyAsEmployee()
+    public function testIndexSuccessUserViewAnyAsMember()
     {
         $division = Division::create(['name' => 'test']);
 
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$division->id} {$this->user->email} 'Test Division Manager'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$division->id} {$this->user->email} 'Test Division Manager'");
 
         $response = $this->getJson(route('divisions.index'));
 
@@ -107,12 +107,12 @@ class DivisionControllerTest extends TestCase
             ->assertJsonFragment($division->toArray());
     }
 
-    public function testShowSuccessAsEmployee()
+    public function testShowSuccessAsMember()
     {
         $division = Division::create(['name' => 'test']);
 
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$division->id} {$this->user->email} 'Test Division Manager'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$division->id} {$this->user->email} 'Test Division Manager'");
 
         $response = $this->getJson(route('divisions.show', $division->id));
 
@@ -123,12 +123,12 @@ class DivisionControllerTest extends TestCase
     /**
      * 更新ができる。
      */
-    public function testUpdateSuccessAsEmployee()
+    public function testUpdateSuccessAsMember()
     {
         $division = Division::create(['name' => 'test']);
 
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$division->id} {$this->user->email} 'Test Division Manager'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$division->id} {$this->user->email} 'Test Division Manager'");
 
         $data = ['name' => 'new division name'];
 
@@ -143,15 +143,15 @@ class DivisionControllerTest extends TestCase
      */
 
     /**
-     * Employeeではない別のカンパニーにアクセスするとエラーになる。
+     * Memberではない別のカンパニーにアクセスするとエラーになる。
      */
-    public function testShowNotFoundAsEmployee()
+    public function testShowNotFoundAsMember()
     {
         $division = Division::create(['name' => 'test']);
         $division2 = Division::create(['name' => 'another']);
 
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$division->id} {$this->user->email} 'Test Division Manager'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$division->id} {$this->user->email} 'Test Division Manager'");
 
         $response = $this->getJson(route('divisions.show', $division2->id));
 
@@ -161,12 +161,12 @@ class DivisionControllerTest extends TestCase
     /**
      * viewAny 権限がないとエラー
      */
-    public function testIndexNotFoundNoPermissionAsEmployee()
+    public function testIndexNotFoundNoPermissionAsMember()
     {
         $division = Division::create(['name' => 'test']);
 
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$division->id} {$this->user->email}");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$division->id} {$this->user->email}");
 
         $response = $this->getJson(route('divisions.index', $division->id));
 
@@ -176,12 +176,12 @@ class DivisionControllerTest extends TestCase
     /**
      * view 権限がないとエラー
      */
-    public function testShowNotFoundNoPermissionAsEmployee()
+    public function testShowNotFoundNoPermissionAsMember()
     {
         $division = Division::create(['name' => 'test']);
 
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$division->id} {$this->user->email}");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$division->id} {$this->user->email}");
 
         $response = $this->getJson(route('divisions.show', $division->id));
 
@@ -191,12 +191,12 @@ class DivisionControllerTest extends TestCase
     /**
      * update 権限がないとエラー 403
      */
-    public function testUpdateForbiddenNoPermissionAsEmployee()
+    public function testUpdateForbiddenNoPermissionAsMember()
     {
         $division = Division::create(['name' => 'test']);
 
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$division->id} {$this->user->email}");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$division->id} {$this->user->email}");
 
         $response = $this->patchJson(route('divisions.update', $division->id));
 
@@ -206,12 +206,12 @@ class DivisionControllerTest extends TestCase
     /**
      * destroy 権限がないとエラー 403
      */
-    public function testDestroyForbiddenNoPermissionAsEmployee()
+    public function testDestroyForbiddenNoPermissionAsMember()
     {
         $division = Division::create(['name' => 'test']);
 
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$division->id} {$this->user->email}");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$division->id} {$this->user->email}");
 
         $response = $this->deleteJson(route('divisions.destroy', $division->id));
 

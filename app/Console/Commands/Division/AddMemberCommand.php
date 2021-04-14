@@ -3,25 +3,25 @@
 namespace App\Console\Commands\Division;
 
 use App\Models\Sample\Division;
-use App\Models\Sample\Employee;
+use App\Models\Sample\Member;
 use App\Models\User;
 use Illuminate\Console\Command;
 
-class AddEmployeeCommand extends Command
+class AddMemberCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'division:add-employee {divisionId?} {email?} {roles?}';
+    protected $signature = 'division:add-member {divisionId?} {email?} {roles?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add division\'s employee';
+    protected $description = 'Add division\'s member';
 
     /**
      * Create a new command instance.
@@ -75,8 +75,8 @@ class AddEmployeeCommand extends Command
 
         $roles = explode(',', $rolesString);
 
-        $employee = Employee::createWithUserAndDivision($user, $division);
-        $employee->syncRoles($roles);
+        $member = Member::createWithUserAndDivision($user, $division);
+        $member->syncRoles($roles);
 
         return 0;
     }

@@ -112,10 +112,10 @@ class ProjectControllerTest extends TestCase
         $this->assertNull($result);
     }
 
-    public function testIndexSuccessAsEmployee()
+    public function testIndexSuccessAsMember()
     {
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Division Manager'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Division Manager'");
 
         $response = $this->getJson(route('divisions.projects.index', [
             'division' => $this->division->id,
@@ -126,10 +126,10 @@ class ProjectControllerTest extends TestCase
             ->assertJsonFragment($this->project->toArray());
     }
 
-    public function testShowSuccessAsEmployee()
+    public function testShowSuccessAsMember()
     {
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Division Manager'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Division Manager'");
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
@@ -143,10 +143,10 @@ class ProjectControllerTest extends TestCase
     /**
      * 更新ができる。
      */
-    public function testUpdateSuccessAsEmployee()
+    public function testUpdateSuccessAsMember()
     {
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Division Manager'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Division Manager'");
 
         $data = ['name' => 'new project name'];
 
@@ -164,16 +164,16 @@ class ProjectControllerTest extends TestCase
      */
 
     /**
-     * Employeeではない別のカンパニーにアクセスするとエラーになる。
+     * Memberではない別のカンパニーにアクセスするとエラーになる。
      */
-    public function testShowNotFoundAsEmployee()
+    public function testShowNotFoundAsMember()
     {
         // Division の作成とプロジェクトの作成
         $otherDivision = Division::create(['name' => 'other test division']);
         $otherProject = Project::createWithDivision($otherDivision, ['name' => 'other test project']);
 
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Division Manager'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Division Manager'");
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $otherDivision->id,
@@ -186,10 +186,10 @@ class ProjectControllerTest extends TestCase
     /**
      * viewAny 権限がないとエラー
      */
-    public function testIndexNotFoundNoPermissionAsEmployee()
+    public function testIndexNotFoundNoPermissionAsMember()
     {
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Division Role'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Division Role'");
 
         $response = $this->getJson(route('divisions.projects.index', $this->division->id));
 
@@ -199,10 +199,10 @@ class ProjectControllerTest extends TestCase
     /**
      * view 権限がないとエラー
      */
-    public function testShowNotFoundNoPermissionAsEmployee()
+    public function testShowNotFoundNoPermissionAsMember()
     {
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Division Role'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Division Role'");
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
@@ -215,10 +215,10 @@ class ProjectControllerTest extends TestCase
     /**
      * update 権限がないとエラー 403
      */
-    public function testUpdateForbiddenNoPermissionAsEmployee()
+    public function testUpdateForbiddenNoPermissionAsMember()
     {
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Division Role'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Division Role'");
 
         $response = $this->patchJson(route('divisions.projects.update', [
             'division' => $this->division->id,
@@ -231,10 +231,10 @@ class ProjectControllerTest extends TestCase
     /**
      * destroy 権限がないとエラー 403
      */
-    public function testDestroyForbiddenNoPermissionAsEmployee()
+    public function testDestroyForbiddenNoPermissionAsMember()
     {
-        // employee 経由でのアクセス
-        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Division Role'");
+        // member 経由でのアクセス
+        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Division Role'");
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
@@ -293,7 +293,7 @@ class ProjectControllerTest extends TestCase
      */
     public function testUpdateNotFoundParentView()
     {
-        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Project Role'");
+        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Project Role'");
 
         $data = [ 'name' => 'foo' ];
 
@@ -310,7 +310,7 @@ class ProjectControllerTest extends TestCase
      */
     public function testDestroyNotFoundParentView()
     {
-        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Project Role'");
+        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Project Role'");
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,

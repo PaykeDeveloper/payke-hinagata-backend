@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Sample\Employee;
+use App\Models\Sample\Member;
 use App\Models\Traits\HasAllOrPermissions;
 use App\Models\Auth\Invitation;
 use App\Models\Sample\Book;
@@ -72,17 +72,17 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         return $this->hasMany(Book::class);
     }
 
-    public function employees(): HasMany
+    public function members(): HasMany
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(Member::class);
     }
 
     public function divisions(): array
     {
         // get all division ids belonging to the user
         $divisions = [];
-        foreach ($this->employees()->get() as $employee) {
-            $divisions[] = $employee->division;
+        foreach ($this->members()->get() as $member) {
+            $divisions[] = $member->division;
         }
         // remove duplicates
         $unique_divisions = [];

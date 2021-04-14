@@ -8,14 +8,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Sample\Division\DivisionIndexRequest;
 use App\Http\Requests\Sample\Division\DivisionShowRequest;
 use App\Http\Requests\Sample\Division\DivisionUpdateRequest;
-use App\Http\Requests\Sample\Employee\EmployeeCreateRequest;
+use App\Http\Requests\Sample\Member\MemberCreateRequest;
 use App\Models\Sample\Division;
-use App\Models\Sample\Employee;
+use App\Models\Sample\Member;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Response;
 
-class EmployeeController extends Controller
+class MemberController extends Controller
 {
     public function __construct()
     {
@@ -44,7 +44,7 @@ class EmployeeController extends Controller
      *         "pivot": {
      *           "model_id": 5,
      *           "role_id": 9,
-     *           "model_type": "App\\Models\\Sample\\Employee"
+     *           "model_type": "App\\Models\\Sample\\Member"
      *         }
      *       }
      *     ]
@@ -57,14 +57,14 @@ class EmployeeController extends Controller
     public function index(DivisionIndexRequest $request, Division $division): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $division]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division]);
 
-        foreach ($division->employees as $employee) {
+        foreach ($division->members as $member) {
             // 取得を行うと自動的にレスポンスに挿入される
-            $employee->getRoleNames();
-            $employee->getDirectPermissions();
+            $member->getRoleNames();
+            $member->getDirectPermissions();
         }
-        return response($division->employees);
+        return response($division->members);
     }
 
     /**
@@ -84,19 +84,19 @@ class EmployeeController extends Controller
      *       "pivot": {
      *         "model_id": 7,
      *         "role_id": 9,
-     *         "model_type": "App\\Models\\Sample\\Employee"
+     *         "model_type": "App\\Models\\Sample\\Member"
      *       }
      *     }
      *   ]
      * }
      *
-     * @param EmployeeCreateRequest $request
+     * @param MemberCreateRequest $request
      * @return Response
      */
-    public function store(EmployeeCreateRequest $request, Division $division): Response
+    public function store(MemberCreateRequest $request, Division $division): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $division]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division]);
 
         $userId = $request->input('user_id');
 
@@ -105,19 +105,19 @@ class EmployeeController extends Controller
          */
         $user = User::find($userId);
 
-        // Employee として追加
-        $employee = Employee::createWithUserAndDivision($user, $division);
+        // Member として追加
+        $member = Member::createWithUserAndDivision($user, $division);
 
         // Role を追加
         $roles = $request->input('roles');
         if (!is_null($roles)) {
-            $employee->syncRoles($roles);
+            $member->syncRoles($roles);
         }
 
         // 取得を行うと自動的にレスポンスに挿入される
-        $employee->getAllPermissions();
+        $member->getAllPermissions();
 
-        return response($employee);
+        return response($member);
     }
 
     /**
@@ -131,15 +131,15 @@ class EmployeeController extends Controller
      *
      * @param DivisionShowRequest $request
      * @param Division $division
-     * @param Employee $employee
+     * @param Member $member
      * @return Response
      */
-    public function show(DivisionShowRequest $request, Division $division, Employee $employee): Response
+    public function show(DivisionShowRequest $request, Division $division, Member $member): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $division, $employee]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division, $member]);
 
-        return response($employee);
+        return response($member);
     }
 
     /**
@@ -157,23 +157,23 @@ class EmployeeController extends Controller
      * @param Division $division
      * @return Response
      */
-    public function update(DivisionUpdateRequest $request, Division $division, Employee $employee): Response
+    public function update(DivisionUpdateRequest $request, Division $division, Member $member): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $division, $employee]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division, $member]);
 
         // Role の更新
         $roles = $request->input('roles');
         if (!is_null($roles)) {
-            $employee->syncRoles($roles);
+            $member->syncRoles($roles);
         }
 
         // 取得を行うと自動的にレスポンスに挿入される
-        $employee->getAllPermissions();
+        $member->getAllPermissions();
 
-        $employee->update($request->all());
+        $member->update($request->all());
 
-        return response($employee);
+        return response($member);
     }
 
     /**
@@ -182,15 +182,15 @@ class EmployeeController extends Controller
      * @return Response
      * @throws Exception
      */
-    public function destroy(DivisionShowRequest $request, Division $division, Employee $employee): Response
+    public function destroy(DivisionShowRequest $request, Division $division, Member $member): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $division, $employee]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division, $member]);
 
         // ロールの割り当て解除
-        $employee->roles()->detach();
+        $member->roles()->detach();
 
-        $employee->delete();
+        $member->delete();
         return response(null, 204);
     }
 }
