@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Permission;
 use Database\Seeders\Sample\BookSeeder;
-use Database\Seeders\User\UserRoleSeeder;
 use Illuminate\Database\Seeder;
 use Throwable;
 
