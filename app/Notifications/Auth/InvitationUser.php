@@ -47,7 +47,7 @@ class InvitationUser extends Notification
         $invitation = $this->invitation;
         $origin = config('constant.frontend_origin');
         $url = "$origin/register?id={$invitation->id}&token={$this->token}";
-        return $this->buildMailMessage($invitation->create_user->name, $url);
+        return $this->buildMailMessage($url);
     }
 
     /**
@@ -63,7 +63,7 @@ class InvitationUser extends Notification
         ];
     }
 
-    protected function buildMailMessage(string $username, string $url): MailMessage
+    protected function buildMailMessage(string $url): MailMessage
     {
         /** @var string $subject */
         $subject = __('Invitation instructions');
@@ -71,7 +71,7 @@ class InvitationUser extends Notification
         $action = __('Sign up');
         return (new MailMessage())
             ->subject($subject)
-            ->line(__('You are invited from :name.', ['name' => $username]))
+            ->line(__('You are invited to :name.', ['name' => config('app.name')]))
             ->line(__('Please click the button below to create your account.'))
             ->action($action, $url);
     }
