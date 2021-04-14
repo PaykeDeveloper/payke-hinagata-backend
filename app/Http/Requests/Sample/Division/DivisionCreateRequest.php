@@ -2,9 +2,9 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Requests\Sample\Company;
+namespace App\Http\Requests\Sample\Division;
 
-class CompanyCreateRequest extends CompanyIndexRequest
+class DivisionCreateRequest extends DivisionIndexRequest
 {
     /**
      * Get the validation rules that apply to the request.

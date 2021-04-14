@@ -5,7 +5,7 @@ use App\Http\Controllers\Sample\BookController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\Sample\CompanyController;
+use App\Http\Controllers\Sample\DivisionController;
 use App\Http\Controllers\Sample\ProjectController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Sample\EmployeeController;
@@ -48,8 +48,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/books/{book}/comments/create-async', [BookCommentController::class, 'storeAsync']);
         Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
 
-        Route::apiResource('companies', CompanyController::class);
-        Route::apiResource('companies.employees', EmployeeController::class);
-        Route::apiResource('companies.projects', ProjectController::class);
+        Route::apiResource('divisions', DivisionController::class);
+        Route::apiResource('divisions.employees', EmployeeController::class);
+        Route::apiResource('divisions.projects', ProjectController::class);
     });
 });

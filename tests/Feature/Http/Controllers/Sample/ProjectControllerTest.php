@@ -4,7 +4,7 @@
 
 namespace Tests\Feature\Http\Controllers\Sample;
 
-use App\Models\Sample\Company;
+use App\Models\Sample\Division;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -15,7 +15,7 @@ use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 /**
- * @group company
+ * @group division
  * @group project
  */
 class ProjectControllerTest extends TestCase
@@ -31,24 +31,24 @@ class ProjectControllerTest extends TestCase
         $this->seed('PermissionSeeder');
 
         // 正常系ロール
-        $this->artisan('role:add "Test Company Manager"');
+        $this->artisan('role:add "Test Division Manager"');
         $projectPerms = 'viewAny_project,view_project,update_project,create_project,delete_project';
-        $permissions = 'view_company,view_project,' . $projectPerms;
-        $this->artisan('role:sync-permissions "Test Company Manager" ' . $permissions);
+        $permissions = 'view_division,view_project,' . $projectPerms;
+        $this->artisan('role:sync-permissions "Test Division Manager" ' . $permissions);
 
-        // Company だけが見えるロール
-        $this->artisan('role:add "Test Only Company Role"');
-        $permissions = 'view_company';
-        $this->artisan('role:sync-permissions "Test Only Company Role" ' . $permissions);
+        // Division だけが見えるロール
+        $this->artisan('role:add "Test Only Division Role"');
+        $permissions = 'view_division';
+        $this->artisan('role:sync-permissions "Test Only Division Role" ' . $permissions);
 
-        // Company が見えないロール
+        // Division が見えないロール
         $this->artisan('role:add "Test Only Project Role"');
         $permissions = $projectPerms;
         $this->artisan('role:sync-permissions "Test Only Project Role" ' . $permissions);
 
-        // Company の作成とプロジェクトの作成
-        $this->company = Company::create(['name' => 'test']);
-        $this->project = Project::createWithCompany($this->company, ['name' => 'test project']);
+        // Division の作成とプロジェクトの作成
+        $this->division = Division::create(['name' => 'test']);
+        $this->project = Project::createWithDivision($this->division, ['name' => 'test project']);
 
         $this->user = User::factory()->create();
         $this->actingAs($this->user);
@@ -60,9 +60,9 @@ class ProjectControllerTest extends TestCase
 
     public function testIndexSuccessAsUser()
     {
-        $this->user->givePermissionTo(['view_company', 'viewAny_project']);
+        $this->user->givePermissionTo(['view_division', 'viewAny_project']);
 
-        $response = $this->getJson(route('companies.projects.index', ['company' => $this->company->id]));
+        $response = $this->getJson(route('divisions.projects.index', ['division' => $this->division->id]));
 
         $response->assertOk()
             ->assertJsonCount(1)
@@ -71,10 +71,10 @@ class ProjectControllerTest extends TestCase
 
     public function testShowSuccessAsUser()
     {
-        $this->user->givePermissionTo(['view_company', 'view_project']);
+        $this->user->givePermissionTo(['view_division', 'view_project']);
 
-        $response = $this->getJson(route('companies.projects.show', [
-            'company' => $this->company->id,
+        $response = $this->getJson(route('divisions.projects.show', [
+            'division' => $this->division->id,
             'project' => $this->project->id,
         ]));
 
@@ -84,12 +84,12 @@ class ProjectControllerTest extends TestCase
 
     public function testUpdateSuccessAsUser()
     {
-        $this->user->givePermissionTo(['view_company', 'view_project', 'update_project']);
+        $this->user->givePermissionTo(['view_division', 'view_project', 'update_project']);
 
         $data = [ 'name' => 'foo' ];
 
-        $response = $this->putJson(route('companies.projects.update', [
-            'company' => $this->company->id,
+        $response = $this->putJson(route('divisions.projects.update', [
+            'division' => $this->division->id,
             'project' => $this->project->id,
         ]), $data);
 
@@ -99,10 +99,10 @@ class ProjectControllerTest extends TestCase
 
     public function testDestroySuccessAsUser()
     {
-        $this->user->givePermissionTo(['view_company', 'view_project', 'delete_project']);
+        $this->user->givePermissionTo(['view_division', 'view_project', 'delete_project']);
 
-        $response = $this->deleteJson(route('companies.projects.destroy', [
-            'company' => $this->company->id,
+        $response = $this->deleteJson(route('divisions.projects.destroy', [
+            'division' => $this->division->id,
             'project' => $this->project->id,
         ]));
 
@@ -115,10 +115,10 @@ class ProjectControllerTest extends TestCase
     public function testIndexSuccessAsEmployee()
     {
         // employee 経由でのアクセス
-        $this->artisan("company:add-employee {$this->company->id} {$this->user->email} 'Test Company Manager'");
+        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Division Manager'");
 
-        $response = $this->getJson(route('companies.projects.index', [
-            'company' => $this->company->id,
+        $response = $this->getJson(route('divisions.projects.index', [
+            'division' => $this->division->id,
         ]));
 
         $response->assertOk()
@@ -129,10 +129,10 @@ class ProjectControllerTest extends TestCase
     public function testShowSuccessAsEmployee()
     {
         // employee 経由でのアクセス
-        $this->artisan("company:add-employee {$this->company->id} {$this->user->email} 'Test Company Manager'");
+        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Division Manager'");
 
-        $response = $this->getJson(route('companies.projects.show', [
-            'company' => $this->company->id,
+        $response = $this->getJson(route('divisions.projects.show', [
+            'division' => $this->division->id,
             'project' => $this->project->id,
         ]));
 
@@ -146,12 +146,12 @@ class ProjectControllerTest extends TestCase
     public function testUpdateSuccessAsEmployee()
     {
         // employee 経由でのアクセス
-        $this->artisan("company:add-employee {$this->company->id} {$this->user->email} 'Test Company Manager'");
+        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Division Manager'");
 
         $data = ['name' => 'new project name'];
 
-        $response = $this->patchJson(route('companies.projects.update', [
-            'company' => $this->company->id,
+        $response = $this->patchJson(route('divisions.projects.update', [
+            'division' => $this->division->id,
             'project' => $this->project->id,
         ]), $data);
 
@@ -168,15 +168,15 @@ class ProjectControllerTest extends TestCase
      */
     public function testShowNotFoundAsEmployee()
     {
-        // Company の作成とプロジェクトの作成
-        $otherCompany = Company::create(['name' => 'other test company']);
-        $otherProject = Project::createWithCompany($otherCompany, ['name' => 'other test project']);
+        // Division の作成とプロジェクトの作成
+        $otherDivision = Division::create(['name' => 'other test division']);
+        $otherProject = Project::createWithDivision($otherDivision, ['name' => 'other test project']);
 
         // employee 経由でのアクセス
-        $this->artisan("company:add-employee {$this->company->id} {$this->user->email} 'Test Company Manager'");
+        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Division Manager'");
 
-        $response = $this->getJson(route('companies.projects.show', [
-            'company' => $otherCompany->id,
+        $response = $this->getJson(route('divisions.projects.show', [
+            'division' => $otherDivision->id,
             'project' => $otherProject->id
         ]));
 
@@ -189,9 +189,9 @@ class ProjectControllerTest extends TestCase
     public function testIndexNotFoundNoPermissionAsEmployee()
     {
         // employee 経由でのアクセス
-        $this->artisan("company:add-employee {$this->company->id} {$this->user->email} 'Test Only Company Role'");
+        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Division Role'");
 
-        $response = $this->getJson(route('companies.projects.index', $this->company->id));
+        $response = $this->getJson(route('divisions.projects.index', $this->division->id));
 
         $response->assertNotFound();
     }
@@ -202,10 +202,10 @@ class ProjectControllerTest extends TestCase
     public function testShowNotFoundNoPermissionAsEmployee()
     {
         // employee 経由でのアクセス
-        $this->artisan("company:add-employee {$this->company->id} {$this->user->email} 'Test Only Company Role'");
+        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Division Role'");
 
-        $response = $this->getJson(route('companies.projects.show', [
-            'company' => $this->company->id,
+        $response = $this->getJson(route('divisions.projects.show', [
+            'division' => $this->division->id,
             'project' => $this->project->id
         ]));
 
@@ -218,10 +218,10 @@ class ProjectControllerTest extends TestCase
     public function testUpdateForbiddenNoPermissionAsEmployee()
     {
         // employee 経由でのアクセス
-        $this->artisan("company:add-employee {$this->company->id} {$this->user->email} 'Test Only Company Role'");
+        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Division Role'");
 
-        $response = $this->patchJson(route('companies.projects.update', [
-            'company' => $this->company->id,
+        $response = $this->patchJson(route('divisions.projects.update', [
+            'division' => $this->division->id,
             'project' => $this->project->id
         ]));
 
@@ -234,10 +234,10 @@ class ProjectControllerTest extends TestCase
     public function testDestroyForbiddenNoPermissionAsEmployee()
     {
         // employee 経由でのアクセス
-        $this->artisan("company:add-employee {$this->company->id} {$this->user->email} 'Test Only Company Role'");
+        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Division Role'");
 
-        $response = $this->deleteJson(route('companies.projects.destroy', [
-            'company' => $this->company->id,
+        $response = $this->deleteJson(route('divisions.projects.destroy', [
+            'division' => $this->division->id,
             'project' => $this->project->id
         ]));
 
@@ -245,13 +245,13 @@ class ProjectControllerTest extends TestCase
     }
 
     /**
-     * Company の view がないとエラー
+     * Division の view がないとエラー
      */
     public function testIndexNotFoundNoParentViewAsUser()
     {
         $this->user->givePermissionTo(['viewAny_project']);
 
-        $response = $this->getJson(route('companies.projects.index', ['company' => $this->company->id]));
+        $response = $this->getJson(route('divisions.projects.index', ['division' => $this->division->id]));
 
         $response->assertNotFound();
     }
@@ -261,12 +261,12 @@ class ProjectControllerTest extends TestCase
      */
     public function testUpdateForbiddenAsUser()
     {
-        $this->user->givePermissionTo(['view_company', 'update_company']);
+        $this->user->givePermissionTo(['view_division', 'update_division']);
 
         $data = [ 'name' => 'foo' ];
 
-        $response = $this->putJson(route('companies.projects.update', [
-            'company' => $this->company->id,
+        $response = $this->putJson(route('divisions.projects.update', [
+            'division' => $this->division->id,
             'project' => $this->project->id
         ]), $data);
 
@@ -278,10 +278,10 @@ class ProjectControllerTest extends TestCase
      */
     public function testDestroyForbiddenAsUser()
     {
-        $this->user->givePermissionTo(['view_company','delete_company']);
+        $this->user->givePermissionTo(['view_division','delete_division']);
 
-        $response = $this->deleteJson(route('companies.projects.destroy', [
-            'company' => $this->company->id,
+        $response = $this->deleteJson(route('divisions.projects.destroy', [
+            'division' => $this->division->id,
             'project' => $this->project->id
         ]));
 
@@ -293,12 +293,12 @@ class ProjectControllerTest extends TestCase
      */
     public function testUpdateNotFoundParentView()
     {
-        $this->artisan("company:add-employee {$this->company->id} {$this->user->email} 'Test Only Project Role'");
+        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Project Role'");
 
         $data = [ 'name' => 'foo' ];
 
-        $response = $this->putJson(route('companies.projects.update', [
-            'company' => $this->company->id,
+        $response = $this->putJson(route('divisions.projects.update', [
+            'division' => $this->division->id,
             'project' => $this->project->id
         ]), $data);
 
@@ -310,10 +310,10 @@ class ProjectControllerTest extends TestCase
      */
     public function testDestroyNotFoundParentView()
     {
-        $this->artisan("company:add-employee {$this->company->id} {$this->user->email} 'Test Only Project Role'");
+        $this->artisan("division:add-employee {$this->division->id} {$this->user->email} 'Test Only Project Role'");
 
-        $response = $this->deleteJson(route('companies.projects.destroy', [
-            'company' => $this->company->id,
+        $response = $this->deleteJson(route('divisions.projects.destroy', [
+            'division' => $this->division->id,
             'project' => $this->project->id
         ]));
 

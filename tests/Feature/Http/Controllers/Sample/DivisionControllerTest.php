@@ -1,0 +1,250 @@
+<?php
+
+// FIXME: SAMPLE CODE
+
+namespace Tests\Feature\Http\Controllers\Sample;
+
+use App\Models\Sample\Division;
+use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
+
+/**
+ * @group division
+ */
+class DivisionControllerTest extends TestCase
+{
+    use DatabaseMigrations;
+
+    private User $user;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed('PermissionSeeder');
+
+        // ロールの作成
+        $this->artisan('role:add "Test Division Manager"');
+        $this->artisan('role:sync-permissions "Test Division Manager" viewAny_division,view_division,update_division');
+
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
+    }
+
+    /**
+     * [正常系]
+     */
+
+    public function testIndexSuccessAsUser()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        $this->user->givePermissionTo(['viewAnyAll_division']);
+
+        $response = $this->getJson(route('divisions.index'));
+
+        $response->assertOk()
+            ->assertJsonCount(1)
+            ->assertJsonFragment($division->toArray());
+    }
+
+    public function testShowSuccessAsUser()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        $this->user->givePermissionTo(['viewAll_division']);
+
+        $response = $this->getJson(route('divisions.show', ['division' => $division->id]));
+
+        $response->assertOk()
+            ->assertJsonFragment($division->toArray());
+    }
+
+    public function testUpdateSuccessAsUser()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        $this->user->givePermissionTo(['view_division', 'update_division']);
+
+        $data = [ 'name' => 'foo' ];
+
+        $response = $this->putJson(route('divisions.update', ['division' => $division->id]), $data);
+
+        $response->assertOk()
+            ->assertJson($data);
+    }
+
+    public function testDestroySuccessAsUser()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        $this->user->givePermissionTo(['view_division', 'delete_division']);
+
+        $response = $this->deleteJson(route('divisions.destroy', ['division' => $division->id]));
+
+        $response->assertNoContent();
+
+        $result = Division::find($division->id);
+        $this->assertNull($result);
+    }
+
+    public function testIndexSuccessUserViewAnyAsEmployee()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        // employee 経由でのアクセス
+        $this->artisan("division:add-employee {$division->id} {$this->user->email} 'Test Division Manager'");
+
+        $response = $this->getJson(route('divisions.index'));
+
+        $response->assertOk()
+            ->assertJsonCount(1)
+            ->assertJsonFragment($division->toArray());
+    }
+
+    public function testShowSuccessAsEmployee()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        // employee 経由でのアクセス
+        $this->artisan("division:add-employee {$division->id} {$this->user->email} 'Test Division Manager'");
+
+        $response = $this->getJson(route('divisions.show', $division->id));
+
+        $response->assertOk()
+            ->assertJson($division->toArray());
+    }
+
+    /**
+     * 更新ができる。
+     */
+    public function testUpdateSuccessAsEmployee()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        // employee 経由でのアクセス
+        $this->artisan("division:add-employee {$division->id} {$this->user->email} 'Test Division Manager'");
+
+        $data = ['name' => 'new division name'];
+
+        $response = $this->patchJson(route('divisions.update', ['division' => $division->id]), $data);
+
+        $response->assertOk()
+            ->assertJson($data);
+    }
+
+    /**
+     * [準正常系]
+     */
+
+    /**
+     * Employeeではない別のカンパニーにアクセスするとエラーになる。
+     */
+    public function testShowNotFoundAsEmployee()
+    {
+        $division = Division::create(['name' => 'test']);
+        $division2 = Division::create(['name' => 'another']);
+
+        // employee 経由でのアクセス
+        $this->artisan("division:add-employee {$division->id} {$this->user->email} 'Test Division Manager'");
+
+        $response = $this->getJson(route('divisions.show', $division2->id));
+
+        $response->assertNotFound();
+    }
+
+    /**
+     * viewAny 権限がないとエラー
+     */
+    public function testIndexNotFoundNoPermissionAsEmployee()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        // employee 経由でのアクセス
+        $this->artisan("division:add-employee {$division->id} {$this->user->email}");
+
+        $response = $this->getJson(route('divisions.index', $division->id));
+
+        $response->assertNotFound();
+    }
+
+    /**
+     * view 権限がないとエラー
+     */
+    public function testShowNotFoundNoPermissionAsEmployee()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        // employee 経由でのアクセス
+        $this->artisan("division:add-employee {$division->id} {$this->user->email}");
+
+        $response = $this->getJson(route('divisions.show', $division->id));
+
+        $response->assertNotFound();
+    }
+
+    /**
+     * update 権限がないとエラー 403
+     */
+    public function testUpdateForbiddenNoPermissionAsEmployee()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        // employee 経由でのアクセス
+        $this->artisan("division:add-employee {$division->id} {$this->user->email}");
+
+        $response = $this->patchJson(route('divisions.update', $division->id));
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * destroy 権限がないとエラー 403
+     */
+    public function testDestroyForbiddenNoPermissionAsEmployee()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        // employee 経由でのアクセス
+        $this->artisan("division:add-employee {$division->id} {$this->user->email}");
+
+        $response = $this->deleteJson(route('divisions.destroy', $division->id));
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * update はあっても view がない場合はエラー
+     */
+    public function testUpdateForbiddenAsUser()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        $this->user->givePermissionTo(['update_division']);
+
+        $data = [ 'name' => 'foo' ];
+
+        $response = $this->putJson(route('divisions.update', ['division' => $division->id]), $data);
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * destroy はあっても view がない場合はエラー
+     */
+    public function testDestroyForbiddenAsUser()
+    {
+        $division = Division::create(['name' => 'test']);
+
+        $this->user->givePermissionTo(['delete_division']);
+
+        $response = $this->deleteJson(route('divisions.destroy', ['division' => $division->id]));
+
+        $response->assertForbidden();
+    }
+}

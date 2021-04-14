@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Company extends Model
+class Division extends Model
 {
     use HasFactory;
 
@@ -41,12 +41,12 @@ class Company extends Model
      */
     public static function listByPermissions(User $user): Collection
     {
-        if ($user->hasPermissionTo('viewAnyAll_company')) {
+        if ($user->hasPermissionTo('viewAnyAll_division')) {
             // ユーザー自体が全てを見れる権限があれば全てを返す
-            return Company::all();
+            return self::all();
         } else {
-            // Company の Employee の user_id が一致するもののみ表示
-            return Company::whereHas('employees', function (Builder $query) use ($user) {
+            // Division の Employee の user_id が一致するもののみ表示
+            return self::whereHas('employees', function (Builder $query) use ($user) {
                 $query->where('user_id', '=', $user->id);
             })->get();
         }

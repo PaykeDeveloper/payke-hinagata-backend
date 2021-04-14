@@ -2,11 +2,11 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Requests\Sample\Company;
+namespace App\Http\Requests\Sample\Division;
 
 use App\Http\Requests\FormRequest;
 
-class CompanyIndexRequest extends FormRequest
+class DivisionIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

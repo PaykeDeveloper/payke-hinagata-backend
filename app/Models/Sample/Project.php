@@ -19,9 +19,9 @@ class Project extends Model
         'updated_at',
     ];
 
-    public function company(): BelongsTo
+    public function division(): BelongsTo
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Division::class);
     }
 
     /**
@@ -29,14 +29,14 @@ class Project extends Model
      */
     public function findEmployeesByUser(User $user): Collection
     {
-        return $this->company->employees()->where('user_id', $user->id)->get();
+        return $this->division->employees()->where('user_id', $user->id)->get();
     }
 
-    public static function createWithCompany(Company $company, array $attributes): Project
+    public static function createWithDivision(Division $division, array $attributes): Project
     {
         $project = new Project();
         $project->fill($attributes);
-        $company->projects()->save($project);
+        $division->projects()->save($project);
         return $project;
     }
 }

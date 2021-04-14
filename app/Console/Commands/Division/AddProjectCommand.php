@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Console\Commands\Company;
+namespace App\Console\Commands\Division;
 
-use App\Models\Sample\Company;
+use App\Models\Sample\Division;
 use App\Models\Sample\Project;
 use Illuminate\Console\Command;
 
@@ -13,14 +13,14 @@ class AddProjectCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'company:add-project {companyId?} {projectName?}';
+    protected $signature = 'division:add-project {divisionId?} {projectName?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add a project to a company';
+    protected $description = 'Add a project to a division';
 
     /**
      * Create a new command instance.
@@ -39,11 +39,11 @@ class AddProjectCommand extends Command
      */
     public function handle()
     {
-        $companyId = $this->argument('companyId');
+        $divisionId = $this->argument('divisionId');
         $projectName = $this->argument('projectName');
 
-        while ($companyId === null) {
-            $companyId = $this->ask('What is the company id?');
+        while ($divisionId === null) {
+            $divisionId = $this->ask('What is the division id?');
         }
 
         while ($projectName === null) {
@@ -51,16 +51,16 @@ class AddProjectCommand extends Command
         }
 
         /**
-         * @var Company|null
+         * @var Division|null
          */
-        $company = Company::find($companyId);
+        $division = Division::find($divisionId);
 
-        if (!$company) {
-            $this->error('company is not found');
+        if (!$division) {
+            $this->error('division is not found');
             return 1;
         }
 
-        Project::createWithCompany($company, ['name' => $projectName]);
+        Project::createWithDivision($division, ['name' => $projectName]);
 
         return 0;
     }

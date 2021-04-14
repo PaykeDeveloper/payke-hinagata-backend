@@ -25,7 +25,7 @@ class PermissionSeeder extends Seeder
     private $resources = [
         'user',
         'permission',
-        'company',
+        'division',
         'employee',
         'project',
     ];

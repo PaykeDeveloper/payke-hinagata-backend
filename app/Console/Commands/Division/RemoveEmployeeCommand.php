@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Company;
+namespace App\Console\Commands\Division;
 
 use App\Models\Sample\Employee;
 use Illuminate\Console\Command;
@@ -12,14 +12,14 @@ class RemoveEmployeeCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'company:remove-employee {employeeId?}';
+    protected $signature = 'division:remove-employee {employeeId?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Remove an employee from a company';
+    protected $description = 'Remove an employee from a division';
 
     /**
      * Create a new command instance.

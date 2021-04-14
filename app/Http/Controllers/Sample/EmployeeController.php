@@ -5,11 +5,11 @@
 namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Sample\Company\CompanyIndexRequest;
-use App\Http\Requests\Sample\Company\CompanyShowRequest;
-use App\Http\Requests\Sample\Company\CompanyUpdateRequest;
+use App\Http\Requests\Sample\Division\DivisionIndexRequest;
+use App\Http\Requests\Sample\Division\DivisionShowRequest;
+use App\Http\Requests\Sample\Division\DivisionUpdateRequest;
 use App\Http\Requests\Sample\Employee\EmployeeCreateRequest;
-use App\Models\Sample\Company;
+use App\Models\Sample\Division;
 use App\Models\Sample\Employee;
 use App\Models\User;
 use Exception;
@@ -19,8 +19,8 @@ class EmployeeController extends Controller
 {
     public function __construct()
     {
-        // Company (親リソース) の Policy 適用
-        $this->middleware('can:view,company');
+        // Division (親リソース) の Policy 適用
+        $this->middleware('can:view,division');
 
         // Policy は追加パラメータが必要なので authorizeResource ではなく手動で呼び出す
     }
@@ -30,14 +30,14 @@ class EmployeeController extends Controller
      *   {
      *     "id": 5,
      *     "user_id": 2,
-     *     "company_id": 18,
+     *     "division_id": 18,
      *     "created_at": "2021-04-13T04:52:40.000000Z",
      *     "updated_at": "2021-04-13T04:52:40.000000Z",
      *     "permissions": [],
      *     "roles": [
      *       {
      *         "id": 9,
-     *         "name": "Company Manager",
+     *         "name": "Division Manager",
      *         "guard_name": "web",
      *         "created_at": "2021-04-13T02:55:12.000000Z",
      *         "updated_at": "2021-04-13T02:55:12.000000Z",
@@ -51,33 +51,33 @@ class EmployeeController extends Controller
      *   }
      * ]
      *
-     * @param CompanyIndexRequest $request
+     * @param DivisionIndexRequest $request
      * @return Response
      */
-    public function index(CompanyIndexRequest $request, Company $company): Response
+    public function index(DivisionIndexRequest $request, Division $division): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $company]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $division]);
 
-        foreach ($company->employees as $employee) {
+        foreach ($division->employees as $employee) {
             // 取得を行うと自動的にレスポンスに挿入される
             $employee->getRoleNames();
             $employee->getDirectPermissions();
         }
-        return response($company->employees);
+        return response($division->employees);
     }
 
     /**
      * @response {
      *   "user_id": 3,
-     *   "company_id": 18,
+     *   "division_id": 18,
      *   "updated_at": "2021-04-13T06:04:44.000000Z",
      *   "created_at": "2021-04-13T06:04:44.000000Z",
      *   "id": 7,
      *   "roles": [
      *     {
      *       "id": 9,
-     *       "name": "Company Manager",
+     *       "name": "Division Manager",
      *       "guard_name": "web",
      *       "created_at": "2021-04-13T02:55:12.000000Z",
      *       "updated_at": "2021-04-13T02:55:12.000000Z",
@@ -93,10 +93,10 @@ class EmployeeController extends Controller
      * @param EmployeeCreateRequest $request
      * @return Response
      */
-    public function store(EmployeeCreateRequest $request, Company $company): Response
+    public function store(EmployeeCreateRequest $request, Division $division): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $company]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $division]);
 
         $userId = $request->input('user_id');
 
@@ -106,7 +106,7 @@ class EmployeeController extends Controller
         $user = User::find($userId);
 
         // Employee として追加
-        $employee = Employee::createWithUserAndCompany($user, $company);
+        $employee = Employee::createWithUserAndDivision($user, $division);
 
         // Role を追加
         $roles = $request->input('roles');
@@ -124,20 +124,20 @@ class EmployeeController extends Controller
      * @response {
      *   "id": 7,
      *   "user_id": 3,
-     *   "company_id": 18,
+     *   "division_id": 18,
      *   "created_at": "2021-04-13T06:04:44.000000Z",
      *   "updated_at": "2021-04-13T06:04:44.000000Z"
      * }
      *
-     * @param CompanyShowRequest $request
-     * @param Company $company
+     * @param DivisionShowRequest $request
+     * @param Division $division
      * @param Employee $employee
      * @return Response
      */
-    public function show(CompanyShowRequest $request, Company $company, Employee $employee): Response
+    public function show(DivisionShowRequest $request, Division $division, Employee $employee): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $company, $employee]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $division, $employee]);
 
         return response($employee);
     }
@@ -146,21 +146,21 @@ class EmployeeController extends Controller
      * @response {
      *   "id": 7,
      *   "user_id": 3,
-     *   "company_id": 18,
+     *   "division_id": 18,
      *   "created_at": "2021-04-13T06:04:44.000000Z",
      *   "updated_at": "2021-04-13T06:04:44.000000Z",
      *   "roles": [],
      *   "permissions": []
      * }
      *
-     * @param CompanyUpdateRequest $request
-     * @param Company $company
+     * @param DivisionUpdateRequest $request
+     * @param Division $division
      * @return Response
      */
-    public function update(CompanyUpdateRequest $request, Company $company, Employee $employee): Response
+    public function update(DivisionUpdateRequest $request, Division $division, Employee $employee): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $company, $employee]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $division, $employee]);
 
         // Role の更新
         $roles = $request->input('roles');
@@ -177,15 +177,15 @@ class EmployeeController extends Controller
     }
 
     /**
-     * @param CompanyShowRequest $request
-     * @param Company $company
+     * @param DivisionShowRequest $request
+     * @param Division $division
      * @return Response
      * @throws Exception
      */
-    public function destroy(CompanyShowRequest $request, Company $company, Employee $employee): Response
+    public function destroy(DivisionShowRequest $request, Division $division, Employee $employee): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $company, $employee]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $division, $employee]);
 
         // ロールの割り当て解除
         $employee->roles()->detach();

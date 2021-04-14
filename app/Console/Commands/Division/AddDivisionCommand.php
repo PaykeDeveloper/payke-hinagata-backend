@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands\Company;
+namespace App\Console\Commands\Division;
 
-use App\Models\Sample\Company;
+use App\Models\Sample\Division;
 use Illuminate\Console\Command;
 
-class AddCompanyCommand extends Command
+class AddDivisionCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'company:add {companyName?}';
+    protected $signature = 'division:add {divisionName?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add company';
+    protected $description = 'Add division';
 
     /**
      * Create a new command instance.
@@ -38,13 +38,13 @@ class AddCompanyCommand extends Command
      */
     public function handle()
     {
-        $name = $this->argument('companyName');
+        $name = $this->argument('divisionName');
 
         while ($name === null) {
-            $name = $this->ask('What is the company name?');
+            $name = $this->ask('What is the division name?');
         }
 
-        Company::create(['name' => $name]);
+        Division::create(['name' => $name]);
         return 0;
     }
 }

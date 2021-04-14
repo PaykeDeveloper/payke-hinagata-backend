@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands\Company;
+namespace App\Console\Commands\Division;
 
-use App\Models\Sample\Company;
+use App\Models\Sample\Division;
 use Illuminate\Console\Command;
 
-class RemoveCompanyCommand extends Command
+class RemoveDivisionCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'company:remove {companyId?}';
+    protected $signature = 'division:remove {divisionId?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Remove company';
+    protected $description = 'Remove division';
 
     /**
      * Create a new command instance.
@@ -38,23 +38,23 @@ class RemoveCompanyCommand extends Command
      */
     public function handle()
     {
-        $companyId = $this->argument('companyId');
+        $divisionId = $this->argument('divisionId');
 
-        while ($companyId === null) {
-            $companyId = $this->ask('What is the company id?');
+        while ($divisionId === null) {
+            $divisionId = $this->ask('What is the division id?');
         }
 
         /**
-         * @var Company|null
+         * @var Division|null
          */
-        $company = Company::find($companyId);
+        $division = Division::find($divisionId);
 
-        if (!$company) {
-            $this->error('company is not found');
+        if (!$division) {
+            $this->error('division is not found');
             return 1;
         }
 
-        $company->delete();
+        $division->delete();
         return 0;
     }
 }

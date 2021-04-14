@@ -74,19 +74,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Employee::class);
     }
 
-    public function companies(): array
+    public function divisions(): array
     {
-        // get all company ids belonging to the user
-        $companies = [];
+        // get all division ids belonging to the user
+        $divisions = [];
         foreach ($this->employees()->get() as $employee) {
-            $companies[] = $employee->company;
+            $divisions[] = $employee->division;
         }
         // remove duplicates
-        $unique_companies = [];
-        foreach ($companies as $company) {
-            $unique_companies[$company->id] = $company;
+        $unique_divisions = [];
+        foreach ($divisions as $division) {
+            $unique_divisions[$division->id] = $division;
         }
-        return array_values($unique_companies);
+        return array_values($unique_divisions);
     }
 
     /**

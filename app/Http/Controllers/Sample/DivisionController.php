@@ -5,20 +5,19 @@
 namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Sample\Company\CompanyCreateRequest;
-use App\Http\Requests\Sample\Company\CompanyIndexRequest;
-use App\Http\Requests\Sample\Company\CompanyShowRequest;
-use App\Http\Requests\Sample\Company\CompanyUpdateRequest;
-use App\Models\Sample\Book;
-use App\Models\Sample\Company;
+use App\Http\Requests\Sample\Division\DivisionCreateRequest;
+use App\Http\Requests\Sample\Division\DivisionIndexRequest;
+use App\Http\Requests\Sample\Division\DivisionShowRequest;
+use App\Http\Requests\Sample\Division\DivisionUpdateRequest;
+use App\Models\Sample\Division;
 use Exception;
 use Illuminate\Http\Response;
 
-class CompanyController extends Controller
+class DivisionController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Company::class, 'company');
+        $this->authorizeResource(Division::class, 'division');
     }
 
     /**
@@ -31,29 +30,29 @@ class CompanyController extends Controller
      *   }
      * ]
      *
-     * @param CompanyIndexRequest $request
+     * @param DivisionIndexRequest $request
      * @return Response
      */
-    public function index(CompanyIndexRequest $request): Response
+    public function index(DivisionIndexRequest $request): Response
     {
-        return response(Company::listByPermissions($request->user()));
+        return response(Division::listByPermissions($request->user()));
     }
 
     /**
      * @response {
-     *   "name": "brand new company",
+     *   "name": "brand new division",
      *   "updated_at": "2021-04-13T04:04:49.000000Z",
      *   "created_at": "2021-04-13T04:04:49.000000Z",
      *   "id": 16
      * }
      *
-     * @param CompanyCreateRequest $request
+     * @param DivisionCreateRequest $request
      * @return Response
      */
-    public function store(CompanyCreateRequest $request): Response
+    public function store(DivisionCreateRequest $request): Response
     {
-        $company = Company::create($request->all());
-        return response($company);
+        $division = Division::create($request->all());
+        return response($division);
     }
 
     /**
@@ -66,14 +65,14 @@ class CompanyController extends Controller
      *     {
      *       "id": 5,
      *       "user_id": 2,
-     *       "company_id": 18,
+     *       "division_id": 18,
      *       "created_at": "2021-04-13T04:52:40.000000Z",
      *       "updated_at": "2021-04-13T04:52:40.000000Z",
      *       "permissions": [],
      *       "roles": [
      *         {
      *           "id": 9,
-     *           "name": "Company Manager",
+     *           "name": "Division Manager",
      *           "guard_name": "web",
      *           "created_at": "2021-04-13T02:55:12.000000Z",
      *           "updated_at": "2021-04-13T02:55:12.000000Z",
@@ -88,13 +87,13 @@ class CompanyController extends Controller
      *   ]
      * }
      *
-     * @param CompanyShowRequest $request
-     * @param Company $company
+     * @param DivisionShowRequest $request
+     * @param Division $division
      * @return Response
      */
-    public function show(CompanyShowRequest $request, Company $company): Response
+    public function show(DivisionShowRequest $request, Division $division): Response
     {
-        return response($company);
+        return response($division);
     }
 
     /**
@@ -107,14 +106,14 @@ class CompanyController extends Controller
      *     {
      *       "id": 5,
      *       "user_id": 2,
-     *       "company_id": 18,
+     *       "division_id": 18,
      *       "created_at": "2021-04-13T04:52:40.000000Z",
      *       "updated_at": "2021-04-13T04:52:40.000000Z",
      *       "permissions": [],
      *       "roles": [
      *         {
      *           "id": 9,
-     *           "name": "Company Manager",
+     *           "name": "Division Manager",
      *           "guard_name": "web",
      *           "created_at": "2021-04-13T02:55:12.000000Z",
      *           "updated_at": "2021-04-13T02:55:12.000000Z",
@@ -129,25 +128,25 @@ class CompanyController extends Controller
      *   ]
      * }
      *
-     * @param CompanyUpdateRequest $request
-     * @param Company $company
+     * @param DivisionUpdateRequest $request
+     * @param Division $division
      * @return Response
      */
-    public function update(CompanyUpdateRequest $request, Company $company): Response
+    public function update(DivisionUpdateRequest $request, Division $division): Response
     {
-        $company->update($request->all());
-        return response($company);
+        $division->update($request->all());
+        return response($division);
     }
 
     /**
-     * @param CompanyShowRequest $request
-     * @param Company $company
+     * @param DivisionShowRequest $request
+     * @param Division $division
      * @return Response
      * @throws Exception
      */
-    public function destroy(CompanyShowRequest $request, Company $company): Response
+    public function destroy(DivisionShowRequest $request, Division $division): Response
     {
-        $company->delete();
+        $division->delete();
         return response(null, 204);
     }
 }

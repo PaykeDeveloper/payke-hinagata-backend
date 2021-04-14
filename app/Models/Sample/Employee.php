@@ -29,17 +29,17 @@ class Employee extends Model
         return $this->hasOne(User::class);
     }
 
-    public function company(): BelongsTo
+    public function division(): BelongsTo
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Division::class);
     }
 
-    public static function createWithUserAndCompany(User $user, Company $company, array $attributes = []): Employee
+    public static function createWithUserAndDivision(User $user, Division $division, array $attributes = []): Employee
     {
         $employee = new self();
         $employee->fill($attributes);
         $employee->user_id = $user->id;
-        $employee->company_id = $company->id;
+        $employee->division_id = $division->id;
         $employee->save();
         return $employee;
     }

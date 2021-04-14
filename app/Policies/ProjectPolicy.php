@@ -5,7 +5,7 @@
 namespace App\Policies;
 
 use Illuminate\Http\Response;
-use App\Models\Sample\Company;
+use App\Models\Sample\Division;
 use App\Models\Sample\Project;
 use App\Models\User;
 use App\Policies\Common\AuthorizablePolicy;
@@ -25,17 +25,17 @@ class ProjectPolicy extends AuthorizablePolicy
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Sample\Company  $company
+     * @param  \App\Models\Sample\Division  $division
      * @return mixed
      */
-    public function viewAny(User $user, Company $company)
+    public function viewAny(User $user, Division $division)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
         // Employee のパーミッションチェック
-        foreach ($company->findEmployeesByUser($user) as $employee) {
+        foreach ($division->findEmployeesByUser($user) as $employee) {
             if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
                 return true;
             }
@@ -58,7 +58,7 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function view(User $user, Project $project)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
@@ -83,14 +83,14 @@ class ProjectPolicy extends AuthorizablePolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user, Company $company)
+    public function create(User $user, Division $division)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
         // Employee のパーミッションチェック
-        foreach ($company->findEmployeesByUser($user) as $employee) {
+        foreach ($division->findEmployeesByUser($user) as $employee) {
             $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
             $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
 
@@ -118,7 +118,7 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function update(User $user, Project $project)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
@@ -151,7 +151,7 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function delete(User $user, Project $project)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
@@ -184,7 +184,7 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function restore(User $user, Project $project)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
@@ -217,7 +217,7 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function forceDelete(User $user, Project $project)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 

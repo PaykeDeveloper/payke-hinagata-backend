@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Console\Commands\Company;
+namespace App\Console\Commands\Division;
 
-use App\Models\Sample\Company;
+use App\Models\Sample\Division;
 use App\Models\Sample\Employee;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -14,14 +14,14 @@ class AddEmployeeCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'company:add-employee {companyId?} {email?} {roles?}';
+    protected $signature = 'division:add-employee {divisionId?} {email?} {roles?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add company\'s employee';
+    protected $description = 'Add division\'s employee';
 
     /**
      * Create a new command instance.
@@ -40,12 +40,12 @@ class AddEmployeeCommand extends Command
      */
     public function handle()
     {
-        $companyId = $this->argument('companyId');
+        $divisionId = $this->argument('divisionId');
         $email = $this->argument("email");
         $rolesString = $this->argument("roles");
 
-        while ($companyId === null) {
-            $companyId = $this->ask('What is the company id?');
+        while ($divisionId === null) {
+            $divisionId = $this->ask('What is the division id?');
         }
 
         while ($email === null) {
@@ -53,12 +53,12 @@ class AddEmployeeCommand extends Command
         }
 
         /**
-         * @var Company|null
+         * @var Division|null
          */
-        $company = Company::find($companyId);
+        $division = Division::find($divisionId);
 
-        if (!$company) {
-            $this->error('company is not found');
+        if (!$division) {
+            $this->error('division is not found');
             return 1;
         }
 
@@ -75,7 +75,7 @@ class AddEmployeeCommand extends Command
 
         $roles = explode(',', $rolesString);
 
-        $employee = Employee::createWithUserAndCompany($user, $company);
+        $employee = Employee::createWithUserAndDivision($user, $division);
         $employee->syncRoles($roles);
 
         return 0;
