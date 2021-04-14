@@ -23,15 +23,12 @@ class CompanyController extends Controller
 
     /**
      * @response [
-     * {
-     * "id": 2,
-     * "user_id": 1,
-     * "title": "Title 1",
-     * "author": "Author 1",
-     * "release_date": "2021-03-16",
-     * "created_at": "2021-03-05T08:31:33.000000Z",
-     * "updated_at": "2021-03-05T08:31:33.000000Z"
-     * }
+     *   {
+     *     "id": 18,
+     *     "name": "companpdafawefd)",
+     *     "created_at": "2021-04-13T04:12:36.000000Z",
+     *     "updated_at": "2021-04-13T09:33:04.000000Z"
+     *   }
      * ]
      *
      * @param CompanyIndexRequest $request
@@ -44,13 +41,10 @@ class CompanyController extends Controller
 
     /**
      * @response {
-     * "id": 2,
-     * "user_id": 1,
-     * "title": "Title 1",
-     * "author": "Author 1",
-     * "release_date": "2021-03-16",
-     * "created_at": "2021-03-05T08:31:33.000000Z",
-     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     *   "name": "brand new company",
+     *   "updated_at": "2021-04-13T04:04:49.000000Z",
+     *   "created_at": "2021-04-13T04:04:49.000000Z",
+     *   "id": 16
      * }
      *
      * @param CompanyCreateRequest $request
@@ -64,17 +58,38 @@ class CompanyController extends Controller
 
     /**
      * @response {
-     * "id": 2,
-     * "user_id": 1,
-     * "title": "Title 1",
-     * "author": "Author 1",
-     * "release_date": "2021-03-16",
-     * "created_at": "2021-03-05T08:31:33.000000Z",
-     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     *   "id": 18,
+     *   "name": "テストカンパニー",
+     *   "created_at": "2021-04-13T04:12:36.000000Z",
+     *   "updated_at": "2021-04-13T04:12:36.000000Z",
+     *   "employees": [
+     *     {
+     *       "id": 5,
+     *       "user_id": 2,
+     *       "company_id": 18,
+     *       "created_at": "2021-04-13T04:52:40.000000Z",
+     *       "updated_at": "2021-04-13T04:52:40.000000Z",
+     *       "permissions": [],
+     *       "roles": [
+     *         {
+     *           "id": 9,
+     *           "name": "Company Manager",
+     *           "guard_name": "web",
+     *           "created_at": "2021-04-13T02:55:12.000000Z",
+     *           "updated_at": "2021-04-13T02:55:12.000000Z",
+     *           "pivot": {
+     *             "model_id": 5,
+     *             "role_id": 9,
+     *             "model_type": "App\\Models\\Sample\\Employee"
+     *           }
+     *         }
+     *       ]
+     *     }
+     *   ]
      * }
      *
      * @param CompanyShowRequest $request
-     * @param Book $book
+     * @param Company $company
      * @return Response
      */
     public function show(CompanyShowRequest $request, Company $company): Response
@@ -84,13 +99,34 @@ class CompanyController extends Controller
 
     /**
      * @response {
-     * "id": 2,
-     * "user_id": 1,
-     * "title": "Title 1",
-     * "author": "Author 1",
-     * "release_date": "2021-03-16",
-     * "created_at": "2021-03-05T08:31:33.000000Z",
-     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     *   "id": 18,
+     *   "name": "companpdafawefd)",
+     *   "created_at": "2021-04-13T04:12:36.000000Z",
+     *   "updated_at": "2021-04-13T09:33:04.000000Z",
+     *   "employees": [
+     *     {
+     *       "id": 5,
+     *       "user_id": 2,
+     *       "company_id": 18,
+     *       "created_at": "2021-04-13T04:52:40.000000Z",
+     *       "updated_at": "2021-04-13T04:52:40.000000Z",
+     *       "permissions": [],
+     *       "roles": [
+     *         {
+     *           "id": 9,
+     *           "name": "Company Manager",
+     *           "guard_name": "web",
+     *           "created_at": "2021-04-13T02:55:12.000000Z",
+     *           "updated_at": "2021-04-13T02:55:12.000000Z",
+     *           "pivot": {
+     *             "model_id": 5,
+     *             "role_id": 9,
+     *             "model_type": "App\\Models\\Sample\\Employee"
+     *           }
+     *         }
+     *       ]
+     *     }
+     *   ]
      * }
      *
      * @param CompanyUpdateRequest $request
