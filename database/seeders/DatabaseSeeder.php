@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Auth\InvitationSeeder;
 use Database\Seeders\Sample\BookSeeder;
 use Illuminate\Database\Seeder;
 use Throwable;
@@ -13,6 +14,8 @@ class DatabaseSeeder extends Seeder
     ];
 
     private const DUMMY_SEEDS = [
+        UserSeeder::class,
+        InvitationSeeder::class,
         // FIXME: SAMPLE CODE
         BookSeeder::class,
     ];

@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\InvitationController;
+use App\Http\Controllers\Auth\StatusController;
+use App\Http\Controllers\Auth\TokenController;
 use App\Http\Controllers\Sample\BookCommentController;
 use App\Http\Controllers\Sample\BookController;
-use App\Http\Controllers\StatusController;
-use App\Http\Controllers\TokenController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +31,8 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('/status', StatusController::class);
     Route::middleware('auth:sanctum')->group(function () {
+        Route::apiResource('invitations', InvitationController::class, ['except' => ['update']]);
+
         // FIXME: SAMPLE CODE
         Route::apiResource('books', BookController::class);
         Route::apiResource('books.comments', BookCommentController::class);

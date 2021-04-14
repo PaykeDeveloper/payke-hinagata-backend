@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth\Token;
 
 use App\Models\Common\ClientApp;
 use App\Models\Common\PlatformType;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Http\Requests\LoginRequest;
 
-class TokenRequest extends LoginRequest
+class TokenCreateRequest extends LoginRequest
 {
     /**
      * Get the validation rules that apply to the request.
