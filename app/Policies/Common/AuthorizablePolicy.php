@@ -4,6 +4,7 @@ namespace App\Policies\Common;
 
 class AuthorizablePolicy
 {
+    /** @var string */
     protected $model;
 
     public function __construct()
@@ -13,7 +14,7 @@ class AuthorizablePolicy
         }
     }
 
-    public function baseName(string $model)
+    public function baseName(string $model): string
     {
         $modelName = $model ?? $this->model;
         return strtolower(basename(strtr($modelName, '\\', '/')));

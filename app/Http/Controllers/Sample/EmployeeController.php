@@ -9,7 +9,6 @@ use App\Http\Requests\Sample\Company\CompanyIndexRequest;
 use App\Http\Requests\Sample\Company\CompanyShowRequest;
 use App\Http\Requests\Sample\Company\CompanyUpdateRequest;
 use App\Http\Requests\Sample\Employee\EmployeeCreateRequest;
-use App\Models\Sample\Book;
 use App\Models\Sample\Company;
 use App\Models\Sample\Employee;
 use App\Models\User;
@@ -100,6 +99,10 @@ class EmployeeController extends Controller
         $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Employee::class, $company]);
 
         $userId = $request->input('user_id');
+
+        /**
+         * @var User|null
+         */
         $user = User::find($userId);
 
         // Employee として追加
@@ -127,7 +130,8 @@ class EmployeeController extends Controller
      * }
      *
      * @param CompanyShowRequest $request
-     * @param Book $book
+     * @param Company $company
+     * @param Employee $employee
      * @return Response
      */
     public function show(CompanyShowRequest $request, Company $company, Employee $employee): Response

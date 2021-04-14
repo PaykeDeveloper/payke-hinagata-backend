@@ -16,6 +16,7 @@ class Employee extends Model
 {
     use HasFactory, HasRoles, HasAllOrPermissions;
 
+    /** @var string */
     protected $guard_name = 'web';
 
     protected $guarded = [
@@ -33,7 +34,7 @@ class Employee extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public static function createWithUserAndCompany(User $user, Company $company, array $attributes = [])
+    public static function createWithUserAndCompany(User $user, Company $company, array $attributes = []): Employee
     {
         $employee = new self();
         $employee->fill($attributes);

@@ -44,6 +44,9 @@ class RemoveEmployeeCommand extends Command
             $employeeId = $this->ask('What is the employee id?');
         }
 
+        /**
+         * @var Employee|null
+         */
         $employee = Employee::find($employeeId);
 
         if (!$employee) {
@@ -55,6 +58,7 @@ class RemoveEmployeeCommand extends Command
         $employee->roles()->detach();
 
         $employee->delete();
+
         return 0;
     }
 }

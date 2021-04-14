@@ -23,7 +23,7 @@ class CompanyPolicy extends AuthorizablePolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
+     * @param  User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -44,14 +44,14 @@ class CompanyPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_NOT_FOUND);
+        abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  User  $user
+     * @param  Company  $company
      * @return mixed
      */
     public function view(User $user, Company $company)
@@ -70,7 +70,7 @@ class CompanyPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_NOT_FOUND);
+        abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -102,14 +102,14 @@ class CompanyPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  User  $user
+     * @param  Company  $company
      * @return mixed
      */
     public function update(User $user, Company $company)
@@ -133,14 +133,14 @@ class CompanyPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  User  $user
+     * @param  Company  $company
      * @return mixed
      */
     public function delete(User $user, Company $company)
@@ -164,14 +164,14 @@ class CompanyPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  User  $user
+     * @param  Company  $company
      * @return mixed
      */
     public function restore(User $user, Company $company)
@@ -195,14 +195,14 @@ class CompanyPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  User  $user
+     * @param  Company  $company
      * @return mixed
      */
     public function forceDelete(User $user, Company $company)
@@ -226,6 +226,6 @@ class CompanyPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 }

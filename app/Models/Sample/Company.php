@@ -6,6 +6,7 @@ namespace App\Models\Sample;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -24,7 +25,7 @@ class Company extends Model
     /**
      * 指定したユーザーの Employee を取得
      */
-    public function findEmployeesByUser(User $user)
+    public function findEmployeesByUser(User $user): Collection
     {
         return $this->employees()->where('user_id', $user->id)->get();
     }
@@ -38,7 +39,7 @@ class Company extends Model
      * 一覧取得
      * 権限によって取得される内容が自動的に可変する
      */
-    public static function listByPermissions(User $user)
+    public static function listByPermissions(User $user): Collection
     {
         if ($user->hasPermissionTo('viewAnyAll_company')) {
             // ユーザー自体が全てを見れる権限があれば全てを返す

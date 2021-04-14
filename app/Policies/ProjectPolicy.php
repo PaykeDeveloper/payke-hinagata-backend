@@ -46,7 +46,7 @@ class ProjectPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_NOT_FOUND);
+        abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -74,7 +74,7 @@ class ProjectPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_NOT_FOUND);
+        abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -106,7 +106,7 @@ class ProjectPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -139,7 +139,7 @@ class ProjectPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -172,7 +172,7 @@ class ProjectPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -205,7 +205,7 @@ class ProjectPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -238,6 +238,6 @@ class ProjectPolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 }

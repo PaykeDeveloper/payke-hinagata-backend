@@ -30,7 +30,7 @@ class UserPolicy extends AuthorizablePolicy
         if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
             return true;
         }
-        return abort(Response::HTTP_NOT_FOUND);
+        abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -45,7 +45,7 @@ class UserPolicy extends AuthorizablePolicy
         if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
             return true;
         }
-        return abort(Response::HTTP_NOT_FOUND);
+        abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -135,7 +135,7 @@ class UserPolicy extends AuthorizablePolicy
         return false;
     }
 
-    public function showMe(User $user)
+    public function showMe(User $user): bool
     {
         return true;
     }

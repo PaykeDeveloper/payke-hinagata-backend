@@ -44,6 +44,9 @@ class RemoveCompanyCommand extends Command
             $companyId = $this->ask('What is the company id?');
         }
 
+        /**
+         * @var Company|null
+         */
         $company = Company::find($companyId);
 
         if (!$company) {

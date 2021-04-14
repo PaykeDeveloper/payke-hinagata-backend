@@ -50,9 +50,12 @@ class AddProjectCommand extends Command
             $projectName = $this->ask('What is the project name?');
         }
 
+        /**
+         * @var Company|null
+         */
         $company = Company::find($companyId);
 
-        if (!$companyId) {
+        if (!$company) {
             $this->error('company is not found');
             return 1;
         }

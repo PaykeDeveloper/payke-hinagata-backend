@@ -52,9 +52,12 @@ class AddEmployeeCommand extends Command
             $email = $this->ask('What is the email?');
         }
 
+        /**
+         * @var Company|null
+         */
         $company = Company::find($companyId);
 
-        if (!$companyId) {
+        if (!$company) {
             $this->error('company is not found');
             return 1;
         }
@@ -63,6 +66,10 @@ class AddEmployeeCommand extends Command
 
         if (!$user) {
             $this->error('user is not found');
+            return 1;
+        }
+
+        if (!is_string($rolesString)) {
             return 1;
         }
 

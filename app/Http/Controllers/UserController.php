@@ -74,7 +74,7 @@ class UserController extends Controller
      * "updated_at": "2021-03-25T01:48:01.000000Z"
      * }
      *
-     * @param BookShowRequest $request
+     * @param UserShowRequest $request
      * @param User $user
      * @return Response
      */
@@ -127,8 +127,8 @@ class UserController extends Controller
      * "updated_at": "2021-03-05T08:31:33.000000Z"
      * }
      *
-     * @param BookUpdateRequest $request
-     * @param Book $book
+     * @param UserUpdateRequest $request
+     * @param User $user
      * @return Response
      */
     public function update(UserUpdateRequest $request, User $user): Response

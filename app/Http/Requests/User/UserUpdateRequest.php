@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Requests\User;
 
 class UserUpdateRequest extends UserShowRequest

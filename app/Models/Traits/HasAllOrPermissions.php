@@ -8,7 +8,7 @@ trait HasAllOrPermissions
      * hasPermissionTo の拡張
      * {action}_{model} に加えて {action}All_{model} のパーミッションも考慮する
      */
-    public function hasAllOrPermissionTo(string $action, $resource)
+    public function hasAllOrPermissionTo(string $action, string $resource): bool
     {
         if ($this->hasPermissionTo($action . '_' . $resource)) {
             // 通常権限

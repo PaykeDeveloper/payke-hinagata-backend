@@ -9,7 +9,7 @@ class RolePolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return false;
     }

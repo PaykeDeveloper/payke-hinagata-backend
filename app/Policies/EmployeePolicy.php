@@ -24,7 +24,7 @@ class EmployeePolicy extends AuthorizablePolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
+     * @param  User  $user
      * @return mixed
      */
     public function viewAny(User $user, Company $company)
@@ -43,14 +43,14 @@ class EmployeePolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_NOT_FOUND);
+        abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Employee $employee
+     * @param  User  $user
+     * @param  Employee $employee
      * @return mixed
      */
     public function view(User $user, Company $company, Employee $employee)
@@ -69,13 +69,13 @@ class EmployeePolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_NOT_FOUND);
+        abort(Response::HTTP_NOT_FOUND);
     }
 
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
+     * @param  User  $user
      * @return mixed
      */
     public function create(User $user, Company $company)
@@ -99,14 +99,14 @@ class EmployeePolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Employee $employee
+     * @param  User  $user
+     * @param  Employee $employee
      * @return mixed
      */
     public function update(User $user, Company $company, Employee $employee)
@@ -130,14 +130,14 @@ class EmployeePolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Employee $employee
+     * @param  User  $user
+     * @param  Employee $employee
      * @return mixed
      */
     public function delete(User $user, Company $company, Employee $employee)
@@ -161,14 +161,14 @@ class EmployeePolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Employee $employee
+     * @param  User  $user
+     * @param  Employee $employee
      * @return mixed
      */
     public function restore(User $user, Company $company, Employee $employee)
@@ -192,14 +192,14 @@ class EmployeePolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Employee $employee
+     * @param  User  $user
+     * @param  Employee $employee
      * @return mixed
      */
     public function forceDelete(User $user, Company $company, Employee $employee)
@@ -223,6 +223,6 @@ class EmployeePolicy extends AuthorizablePolicy
             return true;
         }
 
-        return abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_FORBIDDEN);
     }
 }

@@ -12,6 +12,7 @@ use App\Http\Requests\Sample\Project\ProjectUpdateRequest;
 use App\Models\Sample\Company;
 use App\Models\Sample\Project;
 use Illuminate\Http\Response;
+use Exception;
 
 class ProjectController extends Controller
 {

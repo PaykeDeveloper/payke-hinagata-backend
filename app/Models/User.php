@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Models\Sample\Employee;
-use App\Models\Traits\AllOrWhereable;
 use App\Models\Traits\HasAllOrPermissions;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
@@ -20,7 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
-    use HasAllOrPermissions, AllOrWhereable;
+    use HasAllOrPermissions;
 
     /**
      * The attributes that are mass assignable.
@@ -74,7 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Employee::class);
     }
 
-    public function companies()
+    public function companies(): array
     {
         // get all company ids belonging to the user
         $companies = [];
@@ -87,5 +87,18 @@ class User extends Authenticatable implements MustVerifyEmail
             $unique_companies[$company->id] = $company;
         }
         return array_values($unique_companies);
+    }
+
+    /**
+     * 全閲覧権限がある場合は全て、それ以外は Id で絞り込む
+     */
+    public static function allOrWhereId(User $user): Collection
+    {
+        if ($user->can('viewAnyAll_' . strtolower(basename(strtr(static::class, '\\', '/'))))) {
+            // 全ての閲覧権限を持っている場合は全データ取得
+            return static::all();
+        } else {
+            return static::whereId($user->id)->get();
+        }
     }
 }
