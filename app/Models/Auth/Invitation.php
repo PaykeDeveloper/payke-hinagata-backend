@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
+use Notification;
 
 /**
  * @mixin IdeHelperInvitation
@@ -27,16 +28,18 @@ class Invitation extends Model
 
     protected $hidden = [
         'token',
+        'create_user',
     ];
 
-    public function user(): BelongsTo
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function create_user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     private function sendInvitationNotification(string $token, string $locale): void
     {
-        \Notification::route('mail', $this->email)
+        Notification::route('mail', $this->email)
             ->notify((new InvitationUser($this, $token))->locale($locale));
     }
 
@@ -44,9 +47,9 @@ class Invitation extends Model
     {
         $invitation = new self();
         $invitation->fill($attributes);
-        $invitation->user_id = $user->id;
         $token = Str::random(60);
         $invitation->token = hash('sha256', $token);
+        $invitation->created_by = $user->id;
         $invitation->save();
         $invitation->sendInvitationNotification($token, $attributes['locale']);
         return $invitation;

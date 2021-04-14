@@ -47,7 +47,7 @@ class InvitationUser extends Notification
         $invitation = $this->invitation;
         $origin = config('constant.frontend_origin');
         $url = "$origin/register?id={$invitation->id}&token={$this->token}";
-        return $this->buildMailMessage($invitation->user->name, $url);
+        return $this->buildMailMessage($invitation->create_user->name, $url);
     }
 
     /**

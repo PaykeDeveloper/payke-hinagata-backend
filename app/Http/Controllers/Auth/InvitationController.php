@@ -14,12 +14,13 @@ class InvitationController extends Controller
 {
     /**
      * @response [{
-     * "id":9,
-     * "user_id":1,
-     * "email":"aaaaa@example.com",
+     * "id":1,
      * "status":"pending",
-     * "created_at":"2021-04-14T03:19:50.000000Z",
-     * "updated_at":"2021-04-14T03:19:50.000000Z"
+     * "name":"Ova Ankunding",
+     * "email":"jayden.goodwin@nicolas.org",
+     * "created_by":1,
+     * "updated_at":"2021-04-14T07:55:48.000000Z",
+     * "created_at":"2021-04-14T07:55:48.000000Z",
      * }]
      *
      * @param Request $request
@@ -33,12 +34,13 @@ class InvitationController extends Controller
 
     /**
      * @response {
-     * "id":9,
-     * "user_id":1,
-     * "email":"aaaaa@example.com",
+     * "id":1,
      * "status":"pending",
-     * "created_at":"2021-04-14T03:19:50.000000Z",
-     * "updated_at":"2021-04-14T03:19:50.000000Z"
+     * "name":"Ova Ankunding",
+     * "email":"jayden.goodwin@nicolas.org",
+     * "created_by":1,
+     * "updated_at":"2021-04-14T07:55:48.000000Z",
+     * "created_at":"2021-04-14T07:55:48.000000Z",
      * }
      *
      * @param InvitationCreateRequest $request
@@ -52,12 +54,13 @@ class InvitationController extends Controller
 
     /**
      * @response {
-     * "id":9,
-     * "user_id":1,
-     * "email":"aaaaa@example.com",
+     * "id":1,
      * "status":"pending",
-     * "created_at":"2021-04-14T03:19:50.000000Z",
-     * "updated_at":"2021-04-14T03:19:50.000000Z"
+     * "name":"Ova Ankunding",
+     * "email":"jayden.goodwin@nicolas.org",
+     * "created_by":1,
+     * "updated_at":"2021-04-14T07:55:48.000000Z",
+     * "created_at":"2021-04-14T07:55:48.000000Z",
      * }
      *
      * @param Request $request
@@ -71,12 +74,13 @@ class InvitationController extends Controller
 
     /**
      * @response {
-     * "id":9,
-     * "user_id":1,
-     * "email":"aaaaa@example.com",
+     * "id":1,
      * "status":"pending",
-     * "created_at":"2021-04-14T03:19:50.000000Z",
-     * "updated_at":"2021-04-14T03:19:50.000000Z"
+     * "name":"Ova Ankunding",
+     * "email":"jayden.goodwin@nicolas.org",
+     * "created_by":1,
+     * "updated_at":"2021-04-14T07:55:48.000000Z",
+     * "created_at":"2021-04-14T07:55:48.000000Z",
      * }
      *
      * @param InvitationUpdateRequest $request
