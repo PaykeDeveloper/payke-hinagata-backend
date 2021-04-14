@@ -12,11 +12,6 @@ class BookCommentShowRequest extends BookCommentIndexRequest
     {
         parent::prepareForValidation();
 
-        // 全ての閲覧権限を持っている場合は権限判定をスキップ
-        if ($this->user()->can('viewAll_bookComment')) {
-            return;
-        }
-
         $book = $this->route('book');
         $comment = $this->route('comment');
         if ($book->id !== $comment->book_id) {

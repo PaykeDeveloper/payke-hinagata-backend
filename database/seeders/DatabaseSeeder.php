@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
 use Database\Seeders\Sample\BookSeeder;
 use Database\Seeders\User\UserRoleSeeder;
 use Illuminate\Database\Seeder;
@@ -11,6 +12,7 @@ class DatabaseSeeder extends Seeder
 {
     private const BASE_SEEDS = [
         RoleSeeder::class,
+        Permission::class,
     ];
 
     private const DUMMY_SEEDS = [
