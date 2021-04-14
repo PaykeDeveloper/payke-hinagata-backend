@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\InvitationController;
+use App\Http\Controllers\Auth\StatusController;
+use App\Http\Controllers\Auth\TokenController;
 use App\Http\Controllers\Sample\BookCommentController;
 use App\Http\Controllers\Sample\BookController;
-use App\Http\Controllers\StatusController;
-use App\Http\Controllers\TokenController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Sample\DivisionController;
 use App\Http\Controllers\Sample\ProjectController;
@@ -41,6 +42,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('users', UserController::class)->only(['index', 'show', 'update']);
         Route::apiResource('roles', RoleController::class)->only(['index']);
         Route::apiResource('permissions', PermissionController::class)->only(['index']);
+        Route::apiResource('invitations', InvitationController::class, ['except' => ['update']]);
 
         // FIXME: SAMPLE CODE
         Route::apiResource('books', BookController::class);

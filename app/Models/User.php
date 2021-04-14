@@ -4,8 +4,11 @@ namespace App\Models;
 
 use App\Models\Sample\Employee;
 use App\Models\Traits\HasAllOrPermissions;
+use App\Models\Auth\Invitation;
+use App\Models\Sample\Book;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
@@ -16,7 +19,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * @mixin IdeHelperUser
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
@@ -31,6 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'locale',
     ];
 
     /**
@@ -52,21 +56,20 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    // FIXME: SAMPLE CODE
-
-    protected static function boot()
+    public function preferredLocale(): ?string
     {
-        parent::boot();
-        self::deleting(function ($check) {
-            foreach ($check->books as $book) {
-                $book->delete();
-            }
-        });
+        return $this->locale;
     }
 
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class);
+    }
+
+    // FIXME: SAMPLE CODE
     public function books(): HasMany
     {
-        return $this->hasMany(\App\Models\Sample\Book::class);
+        return $this->hasMany(Book::class);
     }
 
     public function employees(): HasMany

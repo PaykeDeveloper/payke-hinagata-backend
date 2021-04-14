@@ -23,16 +23,6 @@ class Book extends Model
         'updated_at',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-        self::deleting(function ($check) {
-            foreach ($check->comments as $comment) {
-                $comment->delete();
-            }
-        });
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -43,7 +33,7 @@ class Book extends Model
         return $this->hasMany(BookComment::class);
     }
 
-    public static function createWithUser(mixed $attributes, User $user): Book
+    public static function createFromRequest(mixed $attributes, User $user): Book
     {
         $book = new self();
         $book->fill($attributes);
