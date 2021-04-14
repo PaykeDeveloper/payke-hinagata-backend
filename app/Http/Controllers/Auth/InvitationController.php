@@ -13,6 +13,14 @@ use Illuminate\Http\Response;
 class InvitationController extends Controller
 {
     /**
+     * @response [{
+     * "id":9,
+     * "user_id":1,
+     * "email":"aaaaa@example.com",
+     * "status":"pending",
+     * "created_at":"2021-04-14T03:19:50.000000Z",
+     * "updated_at":"2021-04-14T03:19:50.000000Z"
+     * }]
      *
      * @param Request $request
      * @return Response
@@ -24,6 +32,14 @@ class InvitationController extends Controller
     }
 
     /**
+     * @response {
+     * "id":9,
+     * "user_id":1,
+     * "email":"aaaaa@example.com",
+     * "status":"pending",
+     * "created_at":"2021-04-14T03:19:50.000000Z",
+     * "updated_at":"2021-04-14T03:19:50.000000Z"
+     * }
      *
      * @param InvitationCreateRequest $request
      * @return Response
@@ -35,6 +51,14 @@ class InvitationController extends Controller
     }
 
     /**
+     * @response {
+     * "id":9,
+     * "user_id":1,
+     * "email":"aaaaa@example.com",
+     * "status":"pending",
+     * "created_at":"2021-04-14T03:19:50.000000Z",
+     * "updated_at":"2021-04-14T03:19:50.000000Z"
+     * }
      *
      * @param InvitationShowRequest $request
      * @param Invitation $invitation
