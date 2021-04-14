@@ -24,6 +24,10 @@ class Invitation extends Model
         'email',
     ];
 
+    protected $hidden = [
+        'token',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
