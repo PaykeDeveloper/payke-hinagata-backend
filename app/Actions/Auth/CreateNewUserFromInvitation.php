@@ -27,12 +27,14 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
     {
         $validated_input = $this->validateInput($input);
         $invitation = Invitation::find($validated_input['id']);
-        return User::create([
+        $user = User::create([
             'name' => $validated_input['name'],
             'email' => $invitation->email,
             'password' => Hash::make($validated_input['password']),
             'locale' => request()->getPreferredLanguage(),
         ]);
+        $invitation->approved();
+        return $user;
     }
 
     /**

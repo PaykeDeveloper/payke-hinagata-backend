@@ -50,4 +50,11 @@ class Invitation extends Model
         $invitation->sendInvitationNotification($token, $attributes['locale']);
         return $invitation;
     }
+
+    public function approved(): Invitation
+    {
+        $this->status = InvitationStatus::APPROVED;
+        $this->save();
+        return $this;
+    }
 }
