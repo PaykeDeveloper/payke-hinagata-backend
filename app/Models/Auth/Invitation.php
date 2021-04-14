@@ -33,7 +33,7 @@ class Invitation extends Model
         return $this->belongsTo(User::class);
     }
 
-    private function sendInvitationNotification(string $token, string $locale)
+    private function sendInvitationNotification(string $token, string $locale): void
     {
         \Notification::route('mail', $this->email)
             ->notify((new InvitationUser($this, $token))->locale($locale));

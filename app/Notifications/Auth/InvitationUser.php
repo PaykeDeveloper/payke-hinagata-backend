@@ -65,10 +65,14 @@ class InvitationUser extends Notification
 
     protected function buildMailMessage(string $username, string $url): MailMessage
     {
+        /** @var string $subject */
+        $subject = __('Invitation instructions');
+        /** @var string $action */
+        $action = __('Sign up');
         return (new MailMessage())
-            ->subject(__('Invitation instructions'))
+            ->subject($subject)
             ->line(__('You are invited from :name.', ['name' => $username]))
             ->line(__('Please click the button below to create your account.'))
-            ->action(__('Sign up'), $url);
+            ->action($action, $url);
     }
 }

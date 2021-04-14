@@ -26,6 +26,7 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
     public function create(array $input): User
     {
         $validated_input = $this->validateInput($input);
+        /** @var Invitation $invitation */
         $invitation = Invitation::find($validated_input['id']);
         $user = User::create([
             'name' => $validated_input['name'],

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Auth\Invitation;
+use App\Models\Sample\Book;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -72,6 +74,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
 
     public function books(): HasMany
     {
-        return $this->hasMany(\App\Models\Sample\Book::class);
+        return $this->hasMany(Book::class);
     }
 }
