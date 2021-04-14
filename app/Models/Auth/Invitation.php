@@ -21,6 +21,7 @@ class Invitation extends Model
     ];
 
     protected $fillable = [
+        'name',
         'email',
     ];
 

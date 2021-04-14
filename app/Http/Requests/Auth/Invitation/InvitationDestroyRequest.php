@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Auth\Invitation;
 
+use App\Http\Requests\FormRequest;
 use App\Models\Auth\InvitationStatus;
 use Symfony\Component\HttpFoundation\Response;
 
-class InvitationDestroyRequest extends InvitationShowRequest
+class InvitationDestroyRequest extends FormRequest
 {
     protected function prepareForValidation()
     {
@@ -15,5 +16,12 @@ class InvitationDestroyRequest extends InvitationShowRequest
         if ($invitation->status !== InvitationStatus::PENDING) {
             abort(Response::HTTP_METHOD_NOT_ALLOWED);
         }
+    }
+
+    public function rules(): array
+    {
+        return [
+            //
+        ];
     }
 }

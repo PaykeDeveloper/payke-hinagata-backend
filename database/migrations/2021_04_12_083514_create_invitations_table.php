@@ -17,11 +17,11 @@ class CreateInvitationsTable extends Migration
         Schema::create('invitations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
-            $table->string('email');
+            $table->string('name');
+            $table->string('email')->unique();
             $table->string('token');
             $table->enum('status', InvitationStatus::all());
             $table->timestampsTz();
-            $table->unique(['user_id', 'email']);
         });
     }
 

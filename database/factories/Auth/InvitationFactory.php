@@ -26,6 +26,7 @@ class InvitationFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
+            'name' => $this->faker->name,
             'email' => $this->faker->unique()->email,
             'token' => Str::random(60),
             'status' => $this->faker->randomElement(InvitationStatus::all()),
