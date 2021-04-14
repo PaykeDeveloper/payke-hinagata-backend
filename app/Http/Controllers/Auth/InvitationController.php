@@ -48,7 +48,7 @@ class InvitationController extends Controller
      */
     public function store(InvitationCreateRequest $request): Response
     {
-        $invitation = Invitation::createFromRequest($request->all(), $request->user());
+        $invitation = Invitation::createFromRequest($request->validated(), $request->user());
         return response($invitation);
     }
 
@@ -89,7 +89,7 @@ class InvitationController extends Controller
      */
     public function update(InvitationUpdateRequest $request, Invitation $invitation): Response
     {
-        $invitation->update($request->all());
+        $invitation->update($request->validated());
         return response($invitation);
     }
 
