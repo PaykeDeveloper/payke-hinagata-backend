@@ -17,7 +17,7 @@ class CreateBookCommentsTable extends Migration
     {
         Schema::create('book_comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('book_id')->constrained();
+            $table->foreignId('book_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->boolean('confirmed')->nullable();
             $table->date('publish_date')->nullable();
             $table->dateTimeTz('approved_at')->nullable();
