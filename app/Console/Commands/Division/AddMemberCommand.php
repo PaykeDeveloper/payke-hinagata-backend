@@ -42,6 +42,8 @@ class AddMemberCommand extends Command
     {
         $divisionId = $this->argument('divisionId');
         $email = $this->argument("email");
+
+        /** @var string|null */
         $rolesString = $this->argument("roles");
 
         while ($divisionId === null) {
@@ -69,11 +71,11 @@ class AddMemberCommand extends Command
             return 1;
         }
 
-        if (!is_string($rolesString)) {
-            return 1;
+        if ($rolesString) {
+            $roles = explode(',', $rolesString);
+        } else {
+            $roles = ['Member'];
         }
-
-        $roles = explode(',', $rolesString);
 
         $member = Member::createWithUserAndDivision($user, $division);
         $member->syncRoles($roles);

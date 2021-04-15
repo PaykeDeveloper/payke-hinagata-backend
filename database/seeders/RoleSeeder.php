@@ -31,7 +31,7 @@ class RoleSeeder extends Seeder
         };
 
         $admin_crud_perms = function ($resources) use ($crud_perms) {
-            $perms = [];
+            $perms = $crud_perms($resources);
 
             foreach ($resources as $resource) {
                 $perms = array_merge($perms, [
@@ -58,11 +58,12 @@ class RoleSeeder extends Seeder
             // Member Roles
             [ 'name' => 'Division Manager', 'permissions' => array_merge(
                 $admin_crud_perms(['project']),
-                ['view_division'],
+                ['view_member', 'viewAny_member'],
+                ['view_division', 'viewAny_division'],
             )],
             [ 'name' => 'Member', 'permissions' => array_merge(
-                $crud_perms(['project']),
-                ['view_division'],
+                ['view_project', 'viewAny_project'],
+                ['view_division', 'viewAny_division'],
             )],
         ];
 

@@ -5,10 +5,10 @@
 namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Sample\Division\DivisionIndexRequest;
-use App\Http\Requests\Sample\Division\DivisionShowRequest;
-use App\Http\Requests\Sample\Division\DivisionUpdateRequest;
+use App\Http\Requests\Sample\Member\MemberShowRequest;
 use App\Http\Requests\Sample\Member\MemberCreateRequest;
+use App\Http\Requests\Sample\Member\MemberIndexRequest;
+use App\Http\Requests\Sample\Member\MemberUpdateRequest;
 use App\Models\Sample\Division;
 use App\Models\Sample\Member;
 use App\Models\User;
@@ -51,10 +51,10 @@ class MemberController extends Controller
      *   }
      * ]
      *
-     * @param DivisionIndexRequest $request
+     * @param MemberIndexRequest $request
      * @return Response
      */
-    public function index(DivisionIndexRequest $request, Division $division): Response
+    public function index(MemberIndexRequest $request, Division $division): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
         $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division]);
@@ -62,7 +62,7 @@ class MemberController extends Controller
         foreach ($division->members as $member) {
             // 取得を行うと自動的にレスポンスに挿入される
             $member->getRoleNames();
-            $member->getDirectPermissions();
+            $member->getAllPermissions();
         }
         return response($division->members);
     }
@@ -129,12 +129,12 @@ class MemberController extends Controller
      *   "updated_at": "2021-04-13T06:04:44.000000Z"
      * }
      *
-     * @param DivisionShowRequest $request
+     * @param MemberShowRequest $request
      * @param Division $division
      * @param Member $member
      * @return Response
      */
-    public function show(DivisionShowRequest $request, Division $division, Member $member): Response
+    public function show(MemberShowRequest $request, Division $division, Member $member): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
         $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division, $member]);
@@ -153,11 +153,11 @@ class MemberController extends Controller
      *   "permissions": []
      * }
      *
-     * @param DivisionUpdateRequest $request
+     * @param MemberUpdateRequest $request
      * @param Division $division
      * @return Response
      */
-    public function update(DivisionUpdateRequest $request, Division $division, Member $member): Response
+    public function update(MemberUpdateRequest $request, Division $division, Member $member): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
         $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division, $member]);
@@ -177,12 +177,12 @@ class MemberController extends Controller
     }
 
     /**
-     * @param DivisionShowRequest $request
+     * @param MemberShowRequest $request
      * @param Division $division
      * @return Response
      * @throws Exception
      */
-    public function destroy(DivisionShowRequest $request, Division $division, Member $member): Response
+    public function destroy(MemberShowRequest $request, Division $division, Member $member): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
         $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division, $member]);
