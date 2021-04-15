@@ -12,5 +12,7 @@ class Permission extends BaseModel
 {
     use HasFactory;
 
+    public const RESOURCE = 'permission';
+
     protected $hidden = ['created_at', 'updated_at', 'guard_name'];
 }

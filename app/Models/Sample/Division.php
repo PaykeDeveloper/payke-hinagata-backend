@@ -18,7 +18,13 @@ class Division extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    public const RESOURCE = 'division';
+
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 
     public function members(): HasMany
     {

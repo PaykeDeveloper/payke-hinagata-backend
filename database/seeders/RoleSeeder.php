@@ -2,8 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Models\Common\MemberRole;
+use App\Models\Common\PermissionType;
+use App\Models\Common\UserRole;
 use App\Models\Role;
+use App\Models\Sample\Division;
+use App\Models\Sample\Member;
+use App\Models\Sample\Project;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use function App\Models\Common\getPermissionName;
 
 
 class RoleSeeder extends Seeder
@@ -15,55 +23,38 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $crud_perms = function ($resources) {
-            $perms = [];
-
-            foreach ($resources as $resource) {
-                $perms = array_merge($perms, [
-                    'viewAny_' . $resource,
-                    'view_' . $resource,
-                    'create_' . $resource,
-                    'update_' . $resource,
-                    'delete_' . $resource,
-                ]);
-            }
-            return $perms;
-        };
-
-        $admin_crud_perms = function ($resources) use ($crud_perms) {
-            $perms = $crud_perms($resources);
-
-            foreach ($resources as $resource) {
-                $perms = array_merge($perms, [
-                    'viewAnyAll_' . $resource,
-                    'viewAll_' . $resource,
-                    'createAll_' . $resource,
-                    'updateAll_' . $resource,
-                    'deleteAll_' . $resource,
-                ]);
-            }
-
-            return $perms;
-        };
-
         $data_set = [
             // User Roles
-            ['name' => 'Super Admin'],
-            ['name' => 'Admin', 'permissions' => $admin_crud_perms(['user'])],
-            ['name' => 'Manager', 'permissions' => array_merge(
-                $admin_crud_perms(['division', 'member']),
-                ['view_user', 'viewAny_user']
+            ['name' => UserRole::ADMIN, 'permissions' => array_merge(
+                self::getCrudAllPermissions([User::RESOURCE]),
+            )],
+            ['name' => UserRole::MANAGER, 'permissions' => array_merge(
+                self::getCrudAllPermissions([Division::RESOURCE, Member::RESOURCE]),
+                [
+                    getPermissionName(PermissionType::VIEW, User::RESOURCE),
+                    getPermissionName(PermissionType::VIEW_ANY, User::RESOURCE),
+                ]
             )],
 
             // Member Roles
-            ['name' => 'Division Manager', 'permissions' => array_merge(
-                $admin_crud_perms(['project']),
-                ['view_member', 'viewAny_member'],
-                ['view_division', 'viewAny_division'],
+            ['name' => MemberRole::MANAGER, 'permissions' => array_merge(
+                self::getCrudAllPermissions([Project::RESOURCE]),
+                [
+                    getPermissionName(PermissionType::VIEW, Member::RESOURCE),
+                    getPermissionName(PermissionType::VIEW_ANY, Member::RESOURCE),
+
+                    getPermissionName(PermissionType::VIEW, Division::RESOURCE),
+                    getPermissionName(PermissionType::VIEW_ANY, Division::RESOURCE),
+                ],
             )],
-            ['name' => 'Member', 'permissions' => array_merge(
-                ['view_project', 'viewAny_project'],
-                ['view_division', 'viewAny_division'],
+            ['name' => MemberRole::MEMBER, 'permissions' => array_merge(
+                [
+                    getPermissionName(PermissionType::VIEW, Project::RESOURCE),
+                    getPermissionName(PermissionType::VIEW_ANY, Project::RESOURCE),
+
+                    getPermissionName(PermissionType::VIEW, Division::RESOURCE),
+                    getPermissionName(PermissionType::VIEW_ANY, Division::RESOURCE),
+                ],
             )],
         ];
 
@@ -83,5 +74,39 @@ class RoleSeeder extends Seeder
                 $role->syncPermissions($permissions);
             }
         }
+        Role::whereNotIn('id', $ids)->delete();
+    }
+
+    private static function getCrudPermissions(array $resources): array
+    {
+        $permissions = [];
+
+        foreach ($resources as $resource) {
+            $permissions = array_merge($permissions, [
+                getPermissionName(PermissionType::VIEW_ANY, $resource),
+                getPermissionName(PermissionType::VIEW, $resource),
+                getPermissionName(PermissionType::CREATE, $resource),
+                getPermissionName(PermissionType::UPDATE, $resource),
+                getPermissionName(PermissionType::DELETE, $resource),
+            ]);
+        }
+        return $permissions;
+    }
+
+    private static function getCrudAllPermissions(array $resources): array
+    {
+        $permissions = self::getCrudPermissions($resources);
+
+        foreach ($resources as $resource) {
+            $permissions = array_merge($permissions, [
+                getPermissionName(PermissionType::VIEW_ANY_ALL, $resource),
+                getPermissionName(PermissionType::VIEW_ALL, $resource),
+                getPermissionName(PermissionType::CREATE_ALL, $resource),
+                getPermissionName(PermissionType::UPDATE_ALL, $resource),
+                getPermissionName(PermissionType::DELETE_ALL, $resource),
+            ]);
+        }
+
+        return $permissions;
     }
 }

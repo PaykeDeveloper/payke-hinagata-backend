@@ -12,5 +12,7 @@ class Role extends BaseModel
 {
     use HasFactory;
 
+    public const RESOURCE = 'role';
+
     protected $hidden = ['created_at', 'updated_at', 'guard_name'];
 }

@@ -17,6 +17,8 @@ class Invitation extends Model
 {
     use HasFactory;
 
+    public const RESOURCE = 'invitation';
+
     protected $attributes = [
         'status' => InvitationStatus::PENDING,
     ];

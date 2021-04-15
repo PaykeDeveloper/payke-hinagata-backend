@@ -17,8 +17,11 @@ class Project extends Model
 {
     use HasFactory;
 
+    public const RESOURCE = 'project';
+
     protected $guarded = [
         'id',
+        'created_at',
         'updated_at',
     ];
 

@@ -24,6 +24,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     use HasRoles;
     use HasAllOrPermissions;
 
+    public const RESOURCE = 'user';
+
     /**
      * The attributes that are mass assignable.
      *

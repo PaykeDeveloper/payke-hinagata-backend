@@ -2,33 +2,42 @@
 
 namespace Database\Seeders;
 
+use App\Models\Auth\Invitation;
+use App\Models\Common\PermissionType;
 use App\Models\Permission;
+use App\Models\Role;
+use App\Models\Sample\Division;
+use App\Models\Sample\Member;
+use App\Models\Sample\Project;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use function App\Models\Common\getPermissionName;
 
 class PermissionSeeder extends Seeder
 {
     // パーミッションのタイプ
     private array $types = [
-        'viewAny',
-        'viewAnyAll',
-        'view',
-        'viewAll',
-        'create',
-        'createAll',
-        'update',
-        'updateAll',
-        'delete',
-        'deleteAll',
+        PermissionType::VIEW_ANY,
+        PermissionType::VIEW_ANY_ALL,
+        PermissionType::VIEW,
+        PermissionType::VIEW_ALL,
+        PermissionType::CREATE,
+        PermissionType::CREATE_ALL,
+        PermissionType::UPDATE,
+        PermissionType::UPDATE_ALL,
+        PermissionType::DELETE,
+        PermissionType::DELETE_ALL,
     ];
 
     // 用意するリソース (モデル)
     private array $resources = [
-        'user',
-        'permission',
-        'invitation',
-        'division',
-        'member',
-        'project',
+        User::RESOURCE,
+        Permission::RESOURCE,
+        Role::RESOURCE,
+        Invitation::RESOURCE,
+        Division::RESOURCE,
+        Member::RESOURCE,
+        Project::RESOURCE,
     ];
 
     /**
@@ -41,7 +50,7 @@ class PermissionSeeder extends Seeder
         $ids = [];
         foreach ($this->resources as $resource) {
             foreach ($this->types as $type) {
-                $name = $type . '_' . $resource;
+                $name = getPermissionName($type, $resource);
                 $permission = Permission::updateOrCreate([
                     'name' => $name,
                 ], [

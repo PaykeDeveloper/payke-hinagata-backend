@@ -19,11 +19,14 @@ class Member extends Model
 {
     use HasFactory, HasRoles, HasAllOrPermissions;
 
+    public const RESOURCE = 'member';
+
     /** @var string */
     protected $guard_name = 'web';
 
     protected $guarded = [
         'id',
+        'created_at',
         'updated_at',
     ];
 
