@@ -31,7 +31,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('/status', StatusController::class);
     Route::middleware('auth:sanctum')->group(function () {
-        Route::apiResource('invitations', InvitationController::class, ['except' => ['update']]);
+        Route::apiResource('invitations', InvitationController::class);
 
         // FIXME: SAMPLE CODE
         Route::apiResource('books', BookController::class);

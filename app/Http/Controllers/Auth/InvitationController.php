@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\Invitation\InvitationCreateRequest;
 use App\Http\Requests\Auth\Invitation\InvitationDestroyRequest;
-use App\Http\Requests\Auth\Invitation\InvitationShowRequest;
+use App\Http\Requests\Auth\Invitation\InvitationUpdateRequest;
 use App\Models\Auth\Invitation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,12 +14,13 @@ class InvitationController extends Controller
 {
     /**
      * @response [{
-     * "id":9,
-     * "user_id":1,
-     * "email":"aaaaa@example.com",
+     * "id":1,
      * "status":"pending",
-     * "created_at":"2021-04-14T03:19:50.000000Z",
-     * "updated_at":"2021-04-14T03:19:50.000000Z"
+     * "name":"Ova Ankunding",
+     * "email":"jayden.goodwin@nicolas.org",
+     * "created_by":1,
+     * "updated_at":"2021-04-14T07:55:48.000000Z",
+     * "created_at":"2021-04-14T07:55:48.000000Z",
      * }]
      *
      * @param Request $request
@@ -27,18 +28,19 @@ class InvitationController extends Controller
      */
     public function index(Request $request): Response
     {
-        $invitations = Invitation::whereUserId($request->user()->id)->get();
+        $invitations = Invitation::all();
         return response($invitations);
     }
 
     /**
      * @response {
-     * "id":9,
-     * "user_id":1,
-     * "email":"aaaaa@example.com",
+     * "id":1,
      * "status":"pending",
-     * "created_at":"2021-04-14T03:19:50.000000Z",
-     * "updated_at":"2021-04-14T03:19:50.000000Z"
+     * "name":"Ova Ankunding",
+     * "email":"jayden.goodwin@nicolas.org",
+     * "created_by":1,
+     * "updated_at":"2021-04-14T07:55:48.000000Z",
+     * "created_at":"2021-04-14T07:55:48.000000Z",
      * }
      *
      * @param InvitationCreateRequest $request
@@ -46,26 +48,48 @@ class InvitationController extends Controller
      */
     public function store(InvitationCreateRequest $request): Response
     {
-        $invitation = Invitation::createFromRequest($request->all(), $request->user());
+        $invitation = Invitation::createFromRequest($request->validated(), $request->user());
         return response($invitation);
     }
 
     /**
      * @response {
-     * "id":9,
-     * "user_id":1,
-     * "email":"aaaaa@example.com",
+     * "id":1,
      * "status":"pending",
-     * "created_at":"2021-04-14T03:19:50.000000Z",
-     * "updated_at":"2021-04-14T03:19:50.000000Z"
+     * "name":"Ova Ankunding",
+     * "email":"jayden.goodwin@nicolas.org",
+     * "created_by":1,
+     * "updated_at":"2021-04-14T07:55:48.000000Z",
+     * "created_at":"2021-04-14T07:55:48.000000Z",
      * }
      *
-     * @param InvitationShowRequest $request
+     * @param Request $request
      * @param Invitation $invitation
      * @return Response
      */
-    public function show(InvitationShowRequest $request, Invitation $invitation): Response
+    public function show(Request $request, Invitation $invitation): Response
     {
+        return response($invitation);
+    }
+
+    /**
+     * @response {
+     * "id":1,
+     * "status":"pending",
+     * "name":"Ova Ankunding",
+     * "email":"jayden.goodwin@nicolas.org",
+     * "created_by":1,
+     * "updated_at":"2021-04-14T07:55:48.000000Z",
+     * "created_at":"2021-04-14T07:55:48.000000Z",
+     * }
+     *
+     * @param InvitationUpdateRequest $request
+     * @param Invitation $invitation
+     * @return Response
+     */
+    public function update(InvitationUpdateRequest $request, Invitation $invitation): Response
+    {
+        $invitation->update($request->validated());
         return response($invitation);
     }
 

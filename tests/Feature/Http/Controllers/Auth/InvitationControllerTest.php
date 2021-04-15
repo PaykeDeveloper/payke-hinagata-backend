@@ -15,13 +15,11 @@ class InvitationControllerTest extends TestCase
     use DatabaseMigrations;
     use WithFaker;
 
-    private User $user;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create();
-        $this->actingAs($this->user);
+        $user = User::factory()->create();
+        $this->actingAs($user);
     }
 
     /**
@@ -33,7 +31,7 @@ class InvitationControllerTest extends TestCase
      */
     public function testIndexSuccess()
     {
-        $invitation = Invitation::factory()->create(['user_id' => $this->user->id]);
+        $invitation = Invitation::factory()->create();
 
         $response = $this->getJson(route('invitations.index'));
 
@@ -49,6 +47,7 @@ class InvitationControllerTest extends TestCase
     {
         $email = $this->faker->email;
         $data = [
+            'name' => $this->faker->name,
             'email' => $email,
             'locale' => 'ja',
         ];
@@ -64,7 +63,7 @@ class InvitationControllerTest extends TestCase
      */
     public function testShowSuccess()
     {
-        $invitation = Invitation::factory()->create(['user_id' => $this->user->id]);
+        $invitation = Invitation::factory()->create();
 
         $response = $this->getJson(route('invitations.show', ['invitation' => $invitation->id]));
 
@@ -72,15 +71,28 @@ class InvitationControllerTest extends TestCase
             ->assertJson($invitation->toArray());
     }
 
+    /**
+     * データの更新ができる。
+     */
+    public function testUpdateSuccess()
+    {
+        $invitation = Invitation::factory()->pending()->create();
+        $data = [
+            'name' => $this->faker->name,
+        ];
+
+        $response = $this->patchJson(route('invitations.update', ['invitation' => $invitation->id]), $data);
+
+        $response->assertOk()
+            ->assertJsonFragment($data);
+    }
 
     /**
      * 削除ができる。
      */
     public function testDestroySuccess()
     {
-        $invitation = Invitation::factory()->pending()->create([
-            'user_id' => $this->user->id,
-        ]);
+        $invitation = Invitation::factory()->pending()->create();
 
         $response = $this->deleteJson(route('invitations.destroy', ['invitation' => $invitation->id]));
 
@@ -95,12 +107,10 @@ class InvitationControllerTest extends TestCase
      */
 
     /**
-     * ユーザーに紐づかないデータは取得されない。
+     * データが存在しない場合は空の配列となる。
      */
     public function testIndexEmpty()
     {
-        Invitation::factory()->create();
-
         $response = $this->getJson(route('invitations.index'));
 
         $response->assertOk()
@@ -108,13 +118,11 @@ class InvitationControllerTest extends TestCase
     }
 
     /**
-     * ユーザーに紐づかないIDで取得するとエラーになる。
+     * 存在しないIDで取得するとエラーになる。
      */
     public function testShowNotFound()
     {
-        $invitation = Invitation::factory()->create();
-
-        $response = $this->getJson(route('invitations.show', ['invitation' => $invitation->id]));
+        $response = $this->getJson(route('invitations.show', ['invitation' => 11111]));
 
         $response->assertNotFound();
     }
@@ -155,9 +163,7 @@ class InvitationControllerTest extends TestCase
      */
     public function testStoreExistsInvitation()
     {
-        $invitation = Invitation::factory()->create([
-            'user_id' => $this->user->id,
-        ]);
+        $invitation = Invitation::factory()->pending()->create();
         $data = [
             'email' => $invitation->email,
         ];
@@ -173,27 +179,17 @@ class InvitationControllerTest extends TestCase
      */
     public function testUpdateDenied()
     {
-        $invitation = Invitation::factory()->create(['user_id' => $this->user->id]);
+        $invitation = Invitation::factory()->create([
+            'status' => $this->faker->randomElement([InvitationStatus::DENIED, InvitationStatus::APPROVED]),
+        ]);
 
         $data = [
-            'email' => $this->faker->email,
+            'name' => $this->faker->name,
         ];
 
-        $response = $this->patchJson("/api/v1/invitations/{$invitation->id}", $data);
+        $response = $this->patchJson(route('invitations.update', ['invitation' => $invitation->id]), $data);
 
         $response->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
-    }
-
-    /**
-     * ユーザーに紐づかないIDで削除するとエラーになる。
-     */
-    public function testDeleteNotFound()
-    {
-        $invitation = Invitation::factory()->create();
-
-        $response = $this->deleteJson(route('invitations.destroy', ['invitation' => $invitation->id]));
-
-        $response->assertNotFound();
     }
 
     /**
@@ -202,7 +198,6 @@ class InvitationControllerTest extends TestCase
     public function testDeleteStatusIsNotPending()
     {
         $invitation = Invitation::factory()->create([
-            'user_id' => $this->user->id,
             'status' => $this->faker->randomElement([InvitationStatus::DENIED, InvitationStatus::APPROVED]),
         ]);
 
