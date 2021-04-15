@@ -4,7 +4,6 @@ namespace Database\Factories\Auth;
 
 use App\Models\Auth\Invitation;
 use App\Models\Auth\InvitationStatus;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -29,7 +28,7 @@ class InvitationFactory extends Factory
             'email' => $this->faker->unique()->email,
             'token' => Str::random(60),
             'status' => $this->faker->randomElement(InvitationStatus::all()),
-            'created_by' => User::factory(),
+            'created_by' => null,
         ];
     }
 

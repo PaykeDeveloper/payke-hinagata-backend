@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 class PermissionSeeder extends Seeder
 {
     // パーミッションのタイプ
-    private $types = [
+    private array $types = [
         'viewAny',
         'viewAnyAll',
         'view',
@@ -22,9 +22,10 @@ class PermissionSeeder extends Seeder
     ];
 
     // 用意するリソース (モデル)
-    private $resources = [
+    private array $resources = [
         'user',
         'permission',
+        'invitation',
         'division',
         'member',
         'project',
@@ -37,15 +38,18 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        foreach ($this->resources as $i => $resource) {
-            foreach ($this->types as $ti => $type) {
-                Permission::updateOrCreate([
-                    'id' => ($ti + 1) + ($i * count($this->types)),
+        $ids = [];
+        foreach ($this->resources as $resource) {
+            foreach ($this->types as $type) {
+                $name = $type . '_' . $resource;
+                $permission = Permission::updateOrCreate([
+                    'name' => $name,
                 ], [
-                    'name' => $type . '_' . $resource,
-                    'guard_name' => 'web',
+                    'name' => $name,
                 ]);
+                $ids[] = $permission->id;
             }
         }
+        Permission::whereNotIn('id', $ids)->delete();
     }
 }
