@@ -27,7 +27,7 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function viewAny(User $user)
     {
-        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
             return true;
         }
         abort(Response::HTTP_NOT_FOUND);
@@ -42,7 +42,7 @@ class UserPolicy extends AuthorizablePolicy
      */
     public function view(User $user, User $targetUser)
     {
-        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
             return true;
         }
         abort(Response::HTTP_NOT_FOUND);
@@ -69,8 +69,8 @@ class UserPolicy extends AuthorizablePolicy
     public function update(User $user, User $targetUser)
     {
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -88,8 +88,8 @@ class UserPolicy extends AuthorizablePolicy
     public function delete(User $user, User $targetUser)
     {
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -107,8 +107,8 @@ class UserPolicy extends AuthorizablePolicy
     public function restore(User $user, User $targetUser)
     {
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -126,8 +126,8 @@ class UserPolicy extends AuthorizablePolicy
     public function forceDelete(User $user, User $targetUser)
     {
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }

@@ -32,14 +32,14 @@ class MemberPolicy extends AuthorizablePolicy
         // Member のパーミッションチェック (Division に属する)
         foreach ($division->members as $member) {
             if ($member->user_id === $user->id) {
-                if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
                     return true;
                 }
             }
         }
 
         // User パーミッションチェック (Admin)
-        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
             return true;
         }
 
@@ -58,14 +58,14 @@ class MemberPolicy extends AuthorizablePolicy
         // Member のパーミッションチェック (Division に属する)
         foreach ($division->members as $member) {
             if ($member->user_id === $user->id) {
-                if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+                if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
                     return true;
                 }
             }
         }
 
         // User パーミッションチェック (Admin)
-        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
             return true;
         }
 
@@ -83,8 +83,8 @@ class MemberPolicy extends AuthorizablePolicy
         // Member のパーミッションチェック (Division に属する)
         foreach ($division->members as $member) {
             if ($member->user_id === $user->id) {
-                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -93,8 +93,8 @@ class MemberPolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -114,8 +114,8 @@ class MemberPolicy extends AuthorizablePolicy
         // Member のパーミッションチェック (Division に属する)
         foreach ($division->members as $member) {
             if ($member->user_id === $user->id) {
-                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -124,8 +124,8 @@ class MemberPolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -145,8 +145,8 @@ class MemberPolicy extends AuthorizablePolicy
         // Member のパーミッションチェック (Division に属する)
         foreach ($division->members as $member) {
             if ($member->user_id === $user->id) {
-                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -155,8 +155,8 @@ class MemberPolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -176,8 +176,8 @@ class MemberPolicy extends AuthorizablePolicy
         // Member のパーミッションチェック (Division に属する)
         foreach ($division->members as $member) {
             if ($member->user_id === $user->id) {
-                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -186,8 +186,8 @@ class MemberPolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -207,8 +207,8 @@ class MemberPolicy extends AuthorizablePolicy
         // Member のパーミッションチェック (Division に属する)
         foreach ($division->members as $member) {
             if ($member->user_id === $user->id) {
-                $viewPermission = $member->hasAllOrPermissionTo('view', $this->baseName($this->model));
-                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+                $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
+                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
 
                 if ($viewPermission && $funcPermission) {
                     return true;
@@ -217,8 +217,8 @@ class MemberPolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }

@@ -14,9 +14,9 @@ class AuthorizablePolicy
         }
     }
 
-    public function baseName(string $model): string
+    public function modelName(): string
     {
-        $modelName = $model ?? $this->model;
-        return strtolower(basename(strtr($modelName, '\\', '/')));
+        $modelName = $this->model;
+        return strtolower(class_basename($modelName));
     }
 }
