@@ -25,10 +25,11 @@ class InvitationFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory(),
+            'name' => $this->faker->name,
             'email' => $this->faker->unique()->email,
             'token' => Str::random(60),
             'status' => $this->faker->randomElement(InvitationStatus::all()),
+            'created_by' => User::factory(),
         ];
     }
 

@@ -43,6 +43,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('roles', RoleController::class)->only(['index']);
         Route::apiResource('permissions', PermissionController::class)->only(['index']);
         Route::apiResource('invitations', InvitationController::class, ['except' => ['update']]);
+        Route::apiResource('invitations', InvitationController::class);
 
         // FIXME: SAMPLE CODE
         Route::apiResource('books', BookController::class);

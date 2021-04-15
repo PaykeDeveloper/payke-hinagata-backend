@@ -16,17 +16,15 @@ class InvitationCreateRequest extends FormRequest
 
     public function rules(): array
     {
-        $user = $this->user();
         return [
+            'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
                 'string',
                 'email',
                 'max:255',
                 Rule::unique(User::class),
-                Rule::unique(Invitation::class)->where(function ($query) use ($user) {
-                    return $query->where('user_id', $user->id);
-                }),
+                Rule::unique(Invitation::class),
             ],
             'locale' => ['required', 'string']
         ];

@@ -29,7 +29,7 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
         /** @var Invitation $invitation */
         $invitation = Invitation::find($validated_input['id']);
         $user = User::create([
-            'name' => $validated_input['name'],
+            'name' => $invitation->name,
             'email' => $invitation->email,
             'password' => Hash::make($validated_input['password']),
             'locale' => request()->getPreferredLanguage(),
@@ -45,7 +45,6 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
     {
         $updated_input = $this->updateInput($input);
         $validator = Validator::make($updated_input, [
-            'name' => ['required', 'string', 'max:255'],
             'password' => $this->passwordRules(),
             'id' => ['required', 'integer'],
             'token' => [

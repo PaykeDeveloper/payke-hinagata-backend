@@ -3,29 +3,25 @@
 namespace App\Http\Requests\Auth\Invitation;
 
 use App\Http\Requests\FormRequest;
+use App\Models\Auth\InvitationStatus;
 use Symfony\Component\HttpFoundation\Response;
 
-class InvitationShowRequest extends FormRequest
+class InvitationUpdateRequest extends FormRequest
 {
     protected function prepareForValidation()
     {
         parent::prepareForValidation();
 
         $invitation = $this->route('invitation');
-        if ($invitation->user->id !== $this->user()->id) {
-            abort(Response::HTTP_NOT_FOUND);
+        if ($invitation->status !== InvitationStatus::PENDING) {
+            abort(Response::HTTP_METHOD_NOT_ALLOWED);
         }
-    }
-
-    public function authorize(): bool
-    {
-        return true;
     }
 
     public function rules(): array
     {
         return [
-            //
+            'name' => ['string', 'max:255'],
         ];
     }
 }

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Sample\Member;
 use App\Models\Traits\HasAllOrPermissions;
-use App\Models\Auth\Invitation;
 use App\Models\Sample\Book;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
@@ -59,11 +58,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     public function preferredLocale(): ?string
     {
         return $this->locale;
-    }
-
-    public function invitations(): HasMany
-    {
-        return $this->hasMany(Invitation::class);
     }
 
     // FIXME: SAMPLE CODE

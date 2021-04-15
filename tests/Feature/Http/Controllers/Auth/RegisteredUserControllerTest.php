@@ -30,7 +30,6 @@ class RegisteredUserControllerTest extends TestCase
 
         $password = $this->faker->password(minLength: 8);
         $data = [
-            'name' => $this->faker->name,
             'password' => $password,
             'password_confirmation' => $password,
             'id' => $invitation->id,
@@ -58,7 +57,6 @@ class RegisteredUserControllerTest extends TestCase
 
         $password = $this->faker->password(minLength: 8);
         $data = [
-            'name' => $this->faker->name,
             'password' => $password,
             'password_confirmation' => $password,
             'id' => $invitation->id,
