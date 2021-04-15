@@ -12,6 +12,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @mixin IdeHelperMember
+ */
 class Member extends Model
 {
     use HasFactory, HasRoles, HasAllOrPermissions;
