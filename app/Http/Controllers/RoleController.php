@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\RoleIndexRequest;
+use App\Models\Role;
 use Illuminate\Http\Response;
-use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {

@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Permission\Models\Permission as BaseModel;
+use Spatie\Permission\Models\Role as BaseModel;
 
 /**
- * @mixin IdeHelperPermission
+ * @mixin IdeHelperRole
  */
-class Permission extends BaseModel
+class Role extends BaseModel
 {
     use HasFactory;
 

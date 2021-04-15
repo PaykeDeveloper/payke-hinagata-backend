@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands\User;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
-use Spatie\Permission\Models\Role;
 
 class AddRoleToUserCommand extends Command
 {

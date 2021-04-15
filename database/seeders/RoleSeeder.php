@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
+
 
 class RoleSeeder extends Seeder
 {
@@ -48,32 +48,34 @@ class RoleSeeder extends Seeder
 
         $data_set = [
             // User Roles
-            [ 'name' => 'Super Admin' ],
-            [ 'name' => 'Admin', 'permissions' => $admin_crud_perms(['user']) ],
-            [ 'name' => 'Manager', 'permissions' => array_merge(
+            ['name' => 'Super Admin'],
+            ['name' => 'Admin', 'permissions' => $admin_crud_perms(['user'])],
+            ['name' => 'Manager', 'permissions' => array_merge(
                 $admin_crud_perms(['division', 'member']),
                 ['view_user', 'viewAny_user']
             )],
 
             // Member Roles
-            [ 'name' => 'Division Manager', 'permissions' => array_merge(
+            ['name' => 'Division Manager', 'permissions' => array_merge(
                 $admin_crud_perms(['project']),
                 ['view_member', 'viewAny_member'],
                 ['view_division', 'viewAny_division'],
             )],
-            [ 'name' => 'Member', 'permissions' => array_merge(
+            ['name' => 'Member', 'permissions' => array_merge(
                 ['view_project', 'viewAny_project'],
                 ['view_division', 'viewAny_division'],
             )],
         ];
 
-        foreach ($data_set as $i => $value) {
+        $ids = [];
+        foreach ($data_set as $value) {
+            $name = $value['name'];
             $role = Role::updateOrCreate([
-                'id' => $i + 1,
+                'name' => $name,
             ], [
                 'name' => $value['name'],
-                'guard_name' => 'web',
             ]);
+            $ids[] = $role->id;
 
             // 各種パーミッションの割り当
             $permissions = $value['permissions'] ?? null;
