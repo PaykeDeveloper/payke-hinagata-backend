@@ -37,6 +37,11 @@ class Member extends Model
         return $this->belongsTo(Division::class);
     }
 
+    public static function findByUniqueKeys(string $user_id, string $division_id): ?Member
+    {
+        return self::where('user_id', $user_id)->where('division_id', $division_id)->first();
+    }
+
     public static function createWithUserAndDivision(User $user, Division $division, array $attributes = []): Member
     {
         $member = new self();

@@ -18,6 +18,7 @@ class CreateMembersTable extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('division_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestampsTz();
+            $table->unique(['user_id', 'division_id']);
         });
     }
 
