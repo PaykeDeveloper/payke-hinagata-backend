@@ -14,8 +14,8 @@ class MemberUpdateRequest extends MemberShowRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:20'],
             'roles' => ['array'],
+            'roles.*' => ['string', 'distinct'],
         ];
     }
 }

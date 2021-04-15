@@ -15,7 +15,6 @@ class DivisionUpdateRequest extends DivisionShowRequest
     {
         return [
             'name' => ['string', 'max:20'],
-            'roles' => ['array'],
         ];
     }
 }

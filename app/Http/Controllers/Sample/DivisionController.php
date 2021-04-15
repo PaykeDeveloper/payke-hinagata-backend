@@ -51,7 +51,7 @@ class DivisionController extends Controller
      */
     public function store(DivisionCreateRequest $request): Response
     {
-        $division = Division::create($request->all());
+        $division = Division::create($request->validated());
         return response($division);
     }
 
@@ -134,7 +134,7 @@ class DivisionController extends Controller
      */
     public function update(DivisionUpdateRequest $request, Division $division): Response
     {
-        $division->update($request->all());
+        $division->update($request->validated());
         return response($division);
     }
 

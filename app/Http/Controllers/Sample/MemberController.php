@@ -171,7 +171,7 @@ class MemberController extends Controller
         // 取得を行うと自動的にレスポンスに挿入される
         $member->getAllPermissions();
 
-        $member->update($request->all());
+        $member->update($request->validated());
 
         return response($member);
     }

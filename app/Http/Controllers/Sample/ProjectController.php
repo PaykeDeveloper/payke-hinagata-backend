@@ -67,7 +67,7 @@ class ProjectController extends Controller
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
         $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Project::class, $division]);
 
-        $project = Project::createWithDivision($division, $request->all());
+        $project = Project::createWithDivision($division, $request->validated());
         return response($project);
     }
 
@@ -118,7 +118,7 @@ class ProjectController extends Controller
      */
     public function update(ProjectUpdateRequest $request, Division $division, Project $project): Response
     {
-        $project->update($request->all());
+        $project->update($request->validated());
         return response($project);
     }
 

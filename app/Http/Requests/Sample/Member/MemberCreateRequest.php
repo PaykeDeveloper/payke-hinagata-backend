@@ -16,6 +16,7 @@ class MemberCreateRequest extends MemberIndexRequest
         return [
             'user_id' => ['required', 'string'],
             'roles' => ['array'],
+            'roles.*' => ['string', 'distinct'],
         ];
     }
 }

@@ -19,7 +19,12 @@ class UserUpdateRequest extends UserShowRequest
         ];
     }
 
-    // Roles のバリデーション
+    /**
+     * Roles の Super Admin 追加禁止のバリデーション
+     *
+     * Rule::notIn(['Super Admin']) は空配列を許容してくれないので手動で実装
+     * カスタム rule を追加する手法もある
+     */
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (ValidationValidator $validator) {
@@ -31,7 +36,6 @@ class UserUpdateRequest extends UserShowRequest
                 return;
             }
 
-            // Super Admin の追加は禁止
             if (in_array('Super Admin', $roles)) {
                 $validator->errors()->add('roles', 'failed to update');
                 return;
