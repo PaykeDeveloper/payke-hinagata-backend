@@ -29,6 +29,7 @@ class ProjectControllerTest extends TestCase
         parent::setUp();
 
         $this->seed('PermissionSeeder');
+        $this->seed('RoleSeeder');
 
         // 正常系ロール
         $this->artisan('role:add "Test Division Manager"');

@@ -27,6 +27,7 @@ class DivisionControllerTest extends TestCase
         parent::setUp();
 
         $this->seed('PermissionSeeder');
+        $this->seed('RoleSeeder');
 
         // ロールの作成
         $this->artisan('role:add "Test Division Manager"');
@@ -168,6 +169,9 @@ class DivisionControllerTest extends TestCase
         // member 経由でのアクセス
         $this->artisan("division:add-member {$division->id} {$this->user->email}");
 
+        // role を削除
+        $division->findMembersByUser($this->user)[0]->roles()->detach();
+
         $response = $this->getJson(route('divisions.index', $division->id));
 
         $response->assertNotFound();
@@ -182,6 +186,9 @@ class DivisionControllerTest extends TestCase
 
         // member 経由でのアクセス
         $this->artisan("division:add-member {$division->id} {$this->user->email}");
+
+        // role を削除
+        $division->findMembersByUser($this->user)[0]->roles()->detach();
 
         $response = $this->getJson(route('divisions.show', $division->id));
 
