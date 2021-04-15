@@ -135,11 +135,11 @@ class UserController extends Controller
     {
         // Role の更新
         $roles = $request->input('roles');
-        if ($roles) {
+        if (!is_null($roles)) {
             $user->syncRoles($roles);
         }
 
-        $user->update($request->all());
+        $user->update($request->validated());
         return response($user);
     }
 }

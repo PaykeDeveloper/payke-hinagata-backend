@@ -46,7 +46,7 @@ class AppendRolePermissionCommand extends Command
         }
 
         while ($permissionsRaw === null) {
-            $permissionsRaw = $this->ask('What is permissions e.g. view_company,viewAny_company,view_project');
+            $permissionsRaw = $this->ask('What is permissions e.g. view_division,viewAny_division,view_project');
         }
 
         $permissions = explode(',', $permissionsRaw);

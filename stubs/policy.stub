@@ -28,7 +28,7 @@ class {{ class }} extends AuthorizablePolicy
         // FIXME: 個別のリソース権限チェック
 
         // User パーミッションチェック (Admin)
-        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
             return true;
         }
 
@@ -47,7 +47,7 @@ class {{ class }} extends AuthorizablePolicy
         // FIXME: 個別のリソース権限チェック
 
         // User パーミッションチェック (Admin)
-        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
             return true;
         }
 
@@ -65,8 +65,8 @@ class {{ class }} extends AuthorizablePolicy
         // FIXME: 個別のリソース権限チェック
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -86,8 +86,8 @@ class {{ class }} extends AuthorizablePolicy
         // FIXME: 個別のリソース権限チェック
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -107,8 +107,8 @@ class {{ class }} extends AuthorizablePolicy
         // FIXME: 個別のリソース権限チェック
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -128,8 +128,8 @@ class {{ class }} extends AuthorizablePolicy
         // FIXME: 個別のリソース権限チェック
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -149,8 +149,8 @@ class {{ class }} extends AuthorizablePolicy
         // FIXME: 個別のリソース権限チェック
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }

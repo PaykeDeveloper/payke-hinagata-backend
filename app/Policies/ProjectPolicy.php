@@ -5,7 +5,7 @@
 namespace App\Policies;
 
 use Illuminate\Http\Response;
-use App\Models\Sample\Company;
+use App\Models\Sample\Division;
 use App\Models\Sample\Project;
 use App\Models\User;
 use App\Policies\Common\AuthorizablePolicy;
@@ -25,24 +25,24 @@ class ProjectPolicy extends AuthorizablePolicy
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Sample\Company  $company
+     * @param  \App\Models\Sample\Division  $division
      * @return mixed
      */
-    public function viewAny(User $user, Company $company)
+    public function viewAny(User $user, Division $division)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($company->findEmployeesByUser($user) as $employee) {
-            if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Member のパーミッションチェック
+        foreach ($division->findMembersByUser($user) as $member) {
+            if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
                 return true;
             }
         }
 
         // User パーミッションチェック (Admin)
-        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
             return true;
         }
 
@@ -58,19 +58,19 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function view(User $user, Project $project)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($project->findEmployeesByUser($user) as $employee) {
-            if ($employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        // Member のパーミッションチェック
+        foreach ($project->findMembersByUser($user) as $member) {
+            if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
                 return true;
             }
         }
 
         // User パーミッションチェック (Admin)
-        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model))) {
+        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
             return true;
         }
 
@@ -83,16 +83,16 @@ class ProjectPolicy extends AuthorizablePolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user, Company $company)
+    public function create(User $user, Division $division)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($company->findEmployeesByUser($user) as $employee) {
-            $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-            $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($division->findMembersByUser($user) as $member) {
+            $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
+            $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
 
             if ($viewPermission && $funcPermission) {
                 return true;
@@ -100,8 +100,8 @@ class ProjectPolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -118,14 +118,14 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function update(User $user, Project $project)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($project->findEmployeesByUser($user) as $employee) {
-            $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-            $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($project->findMembersByUser($user) as $member) {
+            $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
+            $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
 
             if ($viewPermission && $funcPermission) {
                 return true;
@@ -133,8 +133,8 @@ class ProjectPolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -151,14 +151,14 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function delete(User $user, Project $project)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($project->findEmployeesByUser($user) as $employee) {
-            $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-            $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($project->findMembersByUser($user) as $member) {
+            $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
+            $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
 
             if ($viewPermission && $funcPermission) {
                 return true;
@@ -166,8 +166,8 @@ class ProjectPolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -184,14 +184,14 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function restore(User $user, Project $project)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($project->findEmployeesByUser($user) as $employee) {
-            $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-            $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($project->findMembersByUser($user) as $member) {
+            $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
+            $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
 
             if ($viewPermission && $funcPermission) {
                 return true;
@@ -199,8 +199,8 @@ class ProjectPolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }
@@ -217,14 +217,14 @@ class ProjectPolicy extends AuthorizablePolicy
      */
     public function forceDelete(User $user, Project $project)
     {
-        // MEMO: 親リソースの Company の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
+        // MEMO: 親リソースの Division の権限チェックは middleware で判定済み (Controller のコンストラクタを参照)
 
         // FIXME: ProjectMember があればここで Member かどうかのチェックを行う
 
-        // Employee のパーミッションチェック
-        foreach ($project->findEmployeesByUser($user) as $employee) {
-            $viewPermission = $employee->hasAllOrPermissionTo('view', $this->baseName($this->model));
-            $funcPermission = $employee->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        // Member のパーミッションチェック
+        foreach ($project->findMembersByUser($user) as $member) {
+            $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
+            $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
 
             if ($viewPermission && $funcPermission) {
                 return true;
@@ -232,8 +232,8 @@ class ProjectPolicy extends AuthorizablePolicy
         }
 
         // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->baseName($this->model));
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->baseName($this->model));
+        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
+        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
         if ($viewPermission && $funcPermission) {
             return true;
         }

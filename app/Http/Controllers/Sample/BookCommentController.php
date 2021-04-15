@@ -84,7 +84,7 @@ class BookCommentController extends Controller
      */
     public function store(BookCommentCreateRequest $request, Book $book): Response
     {
-        $comment = BookComment::createFromRequest($request->all(), $book);
+        $comment = BookComment::createFromRequest($request->validated(), $book);
         return response($comment);
     }
 
@@ -143,7 +143,7 @@ class BookCommentController extends Controller
      */
     public function update(BookCommentUpdateRequest $request, Book $book, BookComment $comment): Response
     {
-        $comment->updateFromRequest($request->all());
+        $comment->updateFromRequest($request->validated());
         return response($comment);
     }
 
@@ -167,7 +167,7 @@ class BookCommentController extends Controller
      */
     public function storeAsync(BookCommentCreateRequest $request, Book $book): Response
     {
-        CreateBookComment::dispatch($book, $request->all());
+        CreateBookComment::dispatch($book, $request->validated());
         return response(null, 204);
     }
 
@@ -179,7 +179,7 @@ class BookCommentController extends Controller
      */
     public function updateAsync(BookCommentUpdateRequest $request, Book $book, BookComment $comment): Response
     {
-        UpdateBookComment::dispatch($comment, $request->all())->afterResponse();
+        UpdateBookComment::dispatch($comment, $request->validated())->afterResponse();
         return response(null, 204);
     }
 }

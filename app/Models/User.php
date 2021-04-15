@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Sample\Employee;
+use App\Models\Sample\Member;
 use App\Models\Traits\HasAllOrPermissions;
+use App\Models\Sample\Book;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
@@ -16,7 +18,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * @mixin IdeHelperUser
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
@@ -31,6 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'locale',
     ];
 
     /**
@@ -52,41 +55,35 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    // FIXME: SAMPLE CODE
-
-    protected static function boot()
+    public function preferredLocale(): ?string
     {
-        parent::boot();
-        self::deleting(function ($check) {
-            foreach ($check->books as $book) {
-                $book->delete();
-            }
-        });
+        return $this->locale;
     }
 
+    // FIXME: SAMPLE CODE
     public function books(): HasMany
     {
-        return $this->hasMany(\App\Models\Sample\Book::class);
+        return $this->hasMany(Book::class);
     }
 
-    public function employees(): HasMany
+    public function members(): HasMany
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(Member::class);
     }
 
-    public function companies(): array
+    public function divisions(): array
     {
-        // get all company ids belonging to the user
-        $companies = [];
-        foreach ($this->employees()->get() as $employee) {
-            $companies[] = $employee->company;
+        // get all division ids belonging to the user
+        $divisions = [];
+        foreach ($this->members()->get() as $member) {
+            $divisions[] = $member->division;
         }
         // remove duplicates
-        $unique_companies = [];
-        foreach ($companies as $company) {
-            $unique_companies[$company->id] = $company;
+        $unique_divisions = [];
+        foreach ($divisions as $division) {
+            $unique_divisions[$division->id] = $division;
         }
-        return array_values($unique_companies);
+        return array_values($unique_divisions);
     }
 
     /**

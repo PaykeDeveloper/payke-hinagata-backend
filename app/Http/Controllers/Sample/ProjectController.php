@@ -9,7 +9,7 @@ use App\Http\Requests\Sample\Project\ProjectCreateRequest;
 use App\Http\Requests\Sample\Project\ProjectIndexRequest;
 use App\Http\Requests\Sample\Project\ProjectShowRequest;
 use App\Http\Requests\Sample\Project\ProjectUpdateRequest;
-use App\Models\Sample\Company;
+use App\Models\Sample\Division;
 use App\Models\Sample\Project;
 use Illuminate\Http\Response;
 use Exception;
@@ -18,8 +18,8 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
-        // Company (親リソース) の Policy 適用
-        $this->middleware('can:view,company');
+        // Division (親リソース) の Policy 適用
+        $this->middleware('can:view,division');
 
         // 自身の Policy 適用
         $this->authorizeResource(Project::class, 'project', [
@@ -32,7 +32,7 @@ class ProjectController extends Controller
      * @response [
      *   {
      *     "id": 7,
-     *     "company_id": 18,
+     *     "division_id": 18,
      *     "name": "new project",
      *     "created_at": "2021-04-13T07:30:58.000000Z",
      *     "updated_at": "2021-04-13T07:30:58.000000Z"
@@ -42,18 +42,18 @@ class ProjectController extends Controller
      * @param ProjectIndexRequest $request
      * @return Response
      */
-    public function index(ProjectIndexRequest $request, Company $company): Response
+    public function index(ProjectIndexRequest $request, Division $division): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Project::class, $company]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Project::class, $division]);
 
-        return response($company->projects);
+        return response($division->projects);
     }
 
     /**
      * @response {
      *   "name": "new project",
-     *   "company_id": 18,
+     *   "division_id": 18,
      *   "updated_at": "2021-04-13T07:30:58.000000Z",
      *   "created_at": "2021-04-13T07:30:58.000000Z",
      *   "id": 7
@@ -62,23 +62,23 @@ class ProjectController extends Controller
      * @param ProjectCreateRequest $request
      * @return Response
      */
-    public function store(ProjectCreateRequest $request, Company $company): Response
+    public function store(ProjectCreateRequest $request, Division $division): Response
     {
         // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Project::class, $company]);
+        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Project::class, $division]);
 
-        $project = Project::createWithCompany($company, $request->all());
+        $project = Project::createWithDivision($division, $request->validated());
         return response($project);
     }
 
     /**
      * @response {
      *   "id": 7,
-     *   "company_id": 18,
+     *   "division_id": 18,
      *   "name": "new project",
      *   "created_at": "2021-04-13T07:30:58.000000Z",
      *   "updated_at": "2021-04-13T07:30:58.000000Z",
-     *   "company": {
+     *   "division": {
      *     "id": 18,
      *     "name": "テストカンパニー",
      *     "created_at": "2021-04-13T04:12:36.000000Z",
@@ -87,11 +87,11 @@ class ProjectController extends Controller
      * }
      *
      * @param ProjectShowRequest $request
-     * @param Company $company
+     * @param Division $division
      * @param Project $project
      * @return Response
      */
-    public function show(ProjectShowRequest $request, Company $company, Project $project): Response
+    public function show(ProjectShowRequest $request, Division $division, Project $project): Response
     {
         return response($project);
     }
@@ -99,11 +99,11 @@ class ProjectController extends Controller
     /**
      * @response {
      *   "id": 7,
-     *   "company_id": 18,
+     *   "division_id": 18,
      *   "name": "new projectaaaa",
      *   "created_at": "2021-04-13T07:30:58.000000Z",
      *   "updated_at": "2021-04-13T07:41:04.000000Z",
-     *   "company": {
+     *   "division": {
      *     "id": 18,
      *     "name": "テストカンパニー",
      *     "created_at": "2021-04-13T04:12:36.000000Z",
@@ -112,24 +112,24 @@ class ProjectController extends Controller
      * }
      *
      * @param ProjectUpdateRequest $request
-     * @param Company $company
+     * @param Division $division
      * @param Project $project
      * @return Response
      */
-    public function update(ProjectUpdateRequest $request, Company $company, Project $project): Response
+    public function update(ProjectUpdateRequest $request, Division $division, Project $project): Response
     {
-        $project->update($request->all());
+        $project->update($request->validated());
         return response($project);
     }
 
     /**
      * @param ProjectShowRequest $request
-     * @param Company $company
+     * @param Division $division
      * @param Project $project
      * @return Response
      * @throws Exception
      */
-    public function destroy(ProjectShowRequest $request, Company $company, Project $project): Response
+    public function destroy(ProjectShowRequest $request, Division $division, Project $project): Response
     {
         $project->delete();
         return response(null, 204);
