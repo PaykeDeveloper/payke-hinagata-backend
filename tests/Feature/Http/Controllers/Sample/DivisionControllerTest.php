@@ -6,11 +6,9 @@ namespace Tests\Feature\Http\Controllers\Sample;
 
 use App\Models\Sample\Division;
 use App\Models\User;
+use Database\Seeders\Common\PermissionSeeder;
+use Database\Seeders\Common\RoleSeeder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 /**
@@ -26,8 +24,8 @@ class DivisionControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed('PermissionSeeder');
-        $this->seed('RoleSeeder');
+        $this->seed(PermissionSeeder::class);
+        $this->seed(RoleSeeder::class);
 
         // ロールの作成
         $this->artisan('role:add "Test Division Manager"');
@@ -72,7 +70,7 @@ class DivisionControllerTest extends TestCase
 
         $this->user->givePermissionTo(['view_division', 'update_division']);
 
-        $data = [ 'name' => 'foo' ];
+        $data = ['name' => 'foo'];
 
         $response = $this->putJson(route('divisions.update', ['division' => $division->id]), $data);
 
@@ -234,7 +232,7 @@ class DivisionControllerTest extends TestCase
 
         $this->user->givePermissionTo(['update_division']);
 
-        $data = [ 'name' => 'foo' ];
+        $data = ['name' => 'foo'];
 
         $response = $this->putJson(route('divisions.update', ['division' => $division->id]), $data);
 

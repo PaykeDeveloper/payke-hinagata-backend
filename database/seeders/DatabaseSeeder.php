@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App;
-use Database\Seeders\Auth\InvitationSeeder;
+use Database\Seeders\Common\InvitationSeeder;
+use Database\Seeders\Common\PermissionSeeder;
+use Database\Seeders\Common\RoleSeeder;
 use Database\Seeders\Sample\BookSeeder;
 use DB;
 use Illuminate\Database\Seeder;

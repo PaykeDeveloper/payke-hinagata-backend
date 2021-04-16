@@ -7,11 +7,9 @@ namespace Tests\Feature\Http\Controllers\Sample;
 use App\Models\Sample\Division;
 use App\Models\Sample\Project;
 use App\Models\User;
+use Database\Seeders\Common\PermissionSeeder;
+use Database\Seeders\Common\RoleSeeder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 /**
@@ -28,8 +26,8 @@ class ProjectControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed('PermissionSeeder');
-        $this->seed('RoleSeeder');
+        $this->seed(PermissionSeeder::class);
+        $this->seed(RoleSeeder::class);
 
         // 正常系ロール
         $this->artisan('role:add "Test Division Manager"');
@@ -87,7 +85,7 @@ class ProjectControllerTest extends TestCase
     {
         $this->user->givePermissionTo(['view_division', 'view_project', 'update_project']);
 
-        $data = [ 'name' => 'foo' ];
+        $data = ['name' => 'foo'];
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
@@ -264,7 +262,7 @@ class ProjectControllerTest extends TestCase
     {
         $this->user->givePermissionTo(['view_division', 'update_division']);
 
-        $data = [ 'name' => 'foo' ];
+        $data = ['name' => 'foo'];
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
@@ -279,7 +277,7 @@ class ProjectControllerTest extends TestCase
      */
     public function testDestroyForbiddenAsUser()
     {
-        $this->user->givePermissionTo(['view_division','delete_division']);
+        $this->user->givePermissionTo(['view_division', 'delete_division']);
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
@@ -296,7 +294,7 @@ class ProjectControllerTest extends TestCase
     {
         $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Project Role'");
 
-        $data = [ 'name' => 'foo' ];
+        $data = ['name' => 'foo'];
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,

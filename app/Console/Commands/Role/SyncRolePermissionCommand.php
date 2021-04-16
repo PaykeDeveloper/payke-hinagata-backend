@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Role;
 
-use App\Models\Role;
+use App\Models\Common\Role;
 use Illuminate\Console\Command;
 
 class SyncRolePermissionCommand extends Command

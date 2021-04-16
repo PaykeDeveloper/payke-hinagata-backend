@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\Auth\InvitationController;
-use App\Http\Controllers\Auth\StatusController;
-use App\Http\Controllers\Auth\TokenController;
+use App\Http\Controllers\Common\InvitationController;
+use App\Http\Controllers\Common\PermissionController;
+use App\Http\Controllers\Common\RoleController;
+use App\Http\Controllers\Common\StatusController;
+use App\Http\Controllers\Common\TokenController;
 use App\Http\Controllers\MyUserController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Sample\BookCommentController;
 use App\Http\Controllers\Sample\BookController;
 use App\Http\Controllers\Sample\DivisionController;
