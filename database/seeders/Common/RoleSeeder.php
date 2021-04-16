@@ -12,7 +12,6 @@ use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
-
 class RoleSeeder extends Seeder
 {
     /**
@@ -25,22 +24,22 @@ class RoleSeeder extends Seeder
         $data_set = [
             // User Roles
             ['name' => UserRole::ADMIN, 'permissions' => array_merge(
-                self::getAllPermissions(User::RESOURCE),
+                PermissionType::getAllNames(User::RESOURCE),
             )],
             ['name' => UserRole::MANAGER, 'permissions' => array_merge(
-                self::getAllPermissions(Division::RESOURCE),
-                self::getAllPermissions(Member::RESOURCE),
+                PermissionType::getAllNames(Division::RESOURCE),
+                PermissionType::getAllNames(Member::RESOURCE),
                 [
                     PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE),
                 ]
             )],
             ['name' => UserRole::STAFF, 'permissions' => array_merge(
-                self::getOwnPermissions(Division::RESOURCE),
+                PermissionType::getOwnNames(Division::RESOURCE),
             )],
 
             // Member Roles
             ['name' => MemberRole::MANAGER, 'permissions' => array_merge(
-                self::getAllPermissions(Project::RESOURCE),
+                PermissionType::getAllNames(Project::RESOURCE),
                 [
                     PermissionType::getName(PermissionType::VIEW_ALL, Member::RESOURCE),
                 ],
@@ -69,27 +68,5 @@ class RoleSeeder extends Seeder
             }
         }
         Role::whereNotIn('id', $ids)->delete();
-    }
-
-    private static function getOwnPermissions(string $resource): array
-    {
-        return [
-            PermissionType::getName(PermissionType::VIEW_ANY, $resource),
-            PermissionType::getName(PermissionType::VIEW_OWN, $resource),
-            PermissionType::getName(PermissionType::CREATE_OWN, $resource),
-            PermissionType::getName(PermissionType::UPDATE_OWN, $resource),
-            PermissionType::getName(PermissionType::DELETE_OWN, $resource),
-        ];
-    }
-
-    private static function getAllPermissions(string $resource): array
-    {
-        return [
-            PermissionType::getName(PermissionType::VIEW_ANY_ALL, $resource),
-            PermissionType::getName(PermissionType::VIEW_ALL, $resource),
-            PermissionType::getName(PermissionType::CREATE_ALL, $resource),
-            PermissionType::getName(PermissionType::UPDATE_ALL, $resource),
-            PermissionType::getName(PermissionType::DELETE_ALL, $resource),
-        ];
     }
 }

@@ -14,23 +14,6 @@ use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder
 {
-    // パーミッションのタイプ
-    private const OWN_TYPES = [
-        PermissionType::VIEW_ANY,
-        PermissionType::VIEW_OWN,
-        PermissionType::CREATE_OWN,
-        PermissionType::UPDATE_OWN,
-        PermissionType::DELETE_OWN,
-    ];
-
-    private const ALL_TYPES = [
-        PermissionType::VIEW_ANY_ALL,
-        PermissionType::VIEW_ALL,
-        PermissionType::CREATE_ALL,
-        PermissionType::UPDATE_ALL,
-        PermissionType::DELETE_ALL,
-    ];
-
     // 用意するリソース (モデル)
     private const RESOURCES = [
         ['name' => User::RESOURCE, 'all' => true, 'own' => true,],
@@ -53,10 +36,10 @@ class PermissionSeeder extends Seeder
         foreach (self::RESOURCES as $resource) {
             $types = [];
             if ($resource['all']) {
-                $types = array_merge($types, self::ALL_TYPES);
+                $types = array_merge($types, PermissionType::ALL_TYPES);
             }
             if ($resource['own']) {
-                $types = array_merge($types, self::OWN_TYPES);
+                $types = array_merge($types, PermissionType::OWN_TYPES);
             }
             $resource_name = $resource['name'];
 
