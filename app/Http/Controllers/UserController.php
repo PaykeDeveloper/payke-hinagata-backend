@@ -112,7 +112,7 @@ class UserController extends Controller
     public function showMe(UserShowMeRequest $request): Response
     {
         // 取得だけ行うと自動的にレスポンスに挿入される (permissions key)
-        $request->user()->getDirectPermissions();
+//        $request->user()->getDirectPermissions();
         return response($request->user());
     }
 

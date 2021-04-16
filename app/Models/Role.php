@@ -17,7 +17,7 @@ class Role extends BaseModel
 
     public const RESOURCE = 'role';
 
-    protected $hidden = ['created_at', 'updated_at', 'guard_name'];
+    protected $hidden = ['permissions', 'pivot', 'guard_name', 'created_at', 'updated_at'];
 
     protected $appends = ['type'];
 

@@ -43,6 +43,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     /**
@@ -53,6 +55,13 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = ['all_permissions'];
+
+    public function getAllPermissionsAttribute(): \Illuminate\Support\Collection
+    {
+        return $this->getAllPermissions();
+    }
 
     public function preferredLocale(): ?string
     {

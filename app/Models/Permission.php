@@ -14,5 +14,5 @@ class Permission extends BaseModel
 
     public const RESOURCE = 'permission';
 
-    protected $hidden = ['created_at', 'updated_at', 'guard_name'];
+    protected $hidden = ['pivot', 'guard_name', 'created_at', 'updated_at'];
 }
