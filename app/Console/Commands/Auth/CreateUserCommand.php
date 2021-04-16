@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Auth;
 
 use App\Actions\Fortify\CreateNewUser;
+use App\Models\Common\UserRole;
 use Illuminate\Console\Command;
 use Illuminate\Validation\ValidationException;
 
@@ -68,6 +69,7 @@ class CreateUserCommand extends Command
             $action = new CreateNewUser();
             $user = $action->create($attributes);
             $user->markEmailAsVerified();
+            $user->syncRoles(UserRole::all());
         } catch (ValidationException $e) {
             foreach ($e->validator->errors()->all() as $error) {
                 $this->error($error);

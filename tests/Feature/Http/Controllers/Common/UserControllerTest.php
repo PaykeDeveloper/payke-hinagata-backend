@@ -3,7 +3,6 @@
 namespace Tests\Feature\Http\Controllers\Common;
 
 use App\Models\Common\Invitation;
-use App\Models\Common\InvitationStatus;
 use App\Models\Common\PermissionType;
 use App\Models\User;
 use Database\Seeders\Common\PermissionSeeder;
@@ -93,6 +92,7 @@ class UserControllerTest extends TestCase
      */
     public function testUpdateSuccessAll()
     {
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
         $this->user->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, User::RESOURCE));
         $user = User::factory()->create();
         $data = [
@@ -106,10 +106,28 @@ class UserControllerTest extends TestCase
     }
 
     /**
+     * データの更新ができる。
+     */
+    public function testUpdateSuccessOwn()
+    {
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_OWN, User::RESOURCE));
+        $data = [
+            'name' => $this->faker->name,
+        ];
+
+        $response = $this->patchJson(route('users.update', ['user' => $this->user->id]), $data);
+
+        $response->assertOk()
+            ->assertJsonFragment($data);
+    }
+
+    /**
      * 削除ができる。
      */
     public function testDestroySuccessALL()
     {
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
         $this->user->givePermissionTo(PermissionType::getName(PermissionType::DELETE_ALL, User::RESOURCE));
         $user = User::factory()->create();
 
@@ -122,106 +140,100 @@ class UserControllerTest extends TestCase
     }
 
     /**
+     * 削除ができる。
+     */
+    public function testDestroySuccessOwn()
+    {
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::DELETE_OWN, User::RESOURCE));
+
+        $response = $this->deleteJson(route('users.destroy', ['user' => $this->user->id]));
+
+        $response->assertNoContent();
+
+        $result = Invitation::find($this->user->id);
+        $this->assertNull($result);
+    }
+
+    /**
      * [準正常系]
      */
 
     /**
-     * データが存在しない場合は空の配列となる。
+     * 取得で、権限エラーになる。
      */
-    public function testIndexEmpty()
+    public function testIndexUnAuthorized()
     {
-        $response = $this->getJson(route('invitations.index'));
-
-        $response->assertOk()
-            ->assertJsonCount(0);
-    }
-
-    /**
-     * 存在しないIDで取得するとエラーになる。
-     */
-    public function testShowNotFound()
-    {
-        $response = $this->getJson(route('invitations.show', ['invitation' => 11111]));
+        $response = $this->getJson(route('users.index'));
 
         $response->assertNotFound();
     }
 
     /**
-     * メールアドレスが不正な値で作成するとエラーになる。
+     * 作成はエラーになる。
      */
-    public function testStoreInvalidEmail()
+    public function testStoreNotFound()
     {
-        $data = [
-            'email' => 'not email address',
-        ];
+        $response = $this->postJson(route('users.index'), []);
 
-        $response = $this->postJson(route('invitations.store'), $data);
-
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonStructure(['errors' => ['email']]);
+        $response->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
     }
 
     /**
-     * 存在するユーザーで作成するとエラーになる。
+     * 更新で、権限エラーになる。
      */
-    public function testStoreExistsUser()
+    public function testUpdateUnAuthorizedAll()
     {
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_OWN, User::RESOURCE));
         $user = User::factory()->create();
-        $data = [
-            'email' => $user->email,
-        ];
-
-        $response = $this->postJson(route('invitations.store'), $data);
-
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonStructure(['errors' => ['email']]);
-    }
-
-    /**
-     * 招待済みのメールアドレスで作成するとエラーになる。
-     */
-    public function testStoreExistsInvitation()
-    {
-        $invitation = Invitation::factory()->pending()->create();
-        $data = [
-            'email' => $invitation->email,
-        ];
-
-        $response = $this->postJson(route('invitations.store'), $data);
-
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonStructure(['errors' => ['email']]);
-    }
-
-    /**
-     * 更新ができない。
-     */
-    public function testUpdateDenied()
-    {
-        $invitation = Invitation::factory()->create([
-            'status' => $this->faker->randomElement([InvitationStatus::DENIED, InvitationStatus::APPROVED]),
-        ]);
-
         $data = [
             'name' => $this->faker->name,
         ];
 
-        $response = $this->patchJson(route('invitations.update', ['invitation' => $invitation->id]), $data);
+        $response = $this->patchJson(route('users.update', ['user' => $user->id]), $data);
 
-        $response->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /**
-     * ステータスが待ちのデータ以外を削除するとエラーになる。
+     * 更新で、権限エラーになる。
      */
-    public function testDeleteStatusIsNotPending()
+    public function testUpdateUnAuthorizedOwn()
     {
-        $invitation = Invitation::factory()->create([
-            'status' => $this->faker->randomElement([InvitationStatus::DENIED, InvitationStatus::APPROVED]),
-        ]);
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
+        $data = [
+            'name' => $this->faker->name,
+        ];
 
-        $response = $this->deleteJson(route('invitations.destroy', ['invitation' => $invitation->id]));
+        $response = $this->patchJson(route('users.update', ['user' => $this->user->id]), $data);
 
-        $response->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    /**
+     * 削除で、権限エラーになる。
+     */
+    public function testDestroyUnAuthorizedALL()
+    {
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::DELETE_OWN, User::RESOURCE));
+        $user = User::factory()->create();
+
+        $response = $this->deleteJson(route('users.destroy', ['user' => $user->id]));
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    /**
+     * 削除で、権限エラーになる。
+     */
+    public function testDestroyUnAuthorizedOwn()
+    {
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
+
+        $response = $this->deleteJson(route('users.destroy', ['user' => $this->user->id]));
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 }

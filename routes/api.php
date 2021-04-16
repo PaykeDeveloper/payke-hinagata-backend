@@ -39,7 +39,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/status', StatusController::class);
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user', MyUserController::class);
-        Route::apiResource('users', UserController::class)->only(['index', 'show', 'update']);
+        Route::apiResource('users', UserController::class)->except(['store']);
         Route::apiResource('roles', RoleController::class)->only(['index']);
         Route::apiResource('permissions', PermissionController::class)->only(['index']);
         Route::apiResource('invitations', InvitationController::class);

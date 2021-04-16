@@ -41,14 +41,36 @@ class UserPolicy
 
     public function update(User $user, User $target_user): bool
     {
-        return $this->view($user, $target_user)
-            && $user->hasUpdatePermissionTo(self::RESOURCE);
+        if (!$this->view($user, $target_user)) {
+            return false;
+        }
+
+        if ($user->hasAllUpdatePermissionTo(self::RESOURCE)) {
+            return true;
+        }
+
+        if ($user->hasOwnUpdatePermissionTo(self::RESOURCE)) {
+            return $user->id === $target_user->id;
+        }
+
+        return false;
     }
 
     public function delete(User $user, User $target_user): bool
     {
-        return $this->view($user, $target_user)
-            && $user->hasDeletePermissionTo(self::RESOURCE);
+        if (!$this->view($user, $target_user)) {
+            return false;
+        }
+
+        if ($user->hasAllDeletePermissionTo(self::RESOURCE)) {
+            return true;
+        }
+
+        if ($user->hasOwnDeletePermissionTo(self::RESOURCE)) {
+            return $user->id === $target_user->id;
+        }
+
+        return false;
     }
 
     public function restore(User $user, User $target_user): bool
