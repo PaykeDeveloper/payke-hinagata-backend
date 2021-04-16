@@ -18,13 +18,13 @@ class PermissionSeeder extends Seeder
     private array $types = [
         PermissionType::VIEW_ANY,
         PermissionType::VIEW_ANY_ALL,
-        PermissionType::VIEW,
+        PermissionType::VIEW_OWN,
         PermissionType::VIEW_ALL,
-        PermissionType::CREATE,
+        PermissionType::CREATE_OWN,
         PermissionType::CREATE_ALL,
-        PermissionType::UPDATE,
+        PermissionType::UPDATE_OWN,
         PermissionType::UPDATE_ALL,
-        PermissionType::DELETE,
+        PermissionType::DELETE_OWN,
         PermissionType::DELETE_ALL,
     ];
 

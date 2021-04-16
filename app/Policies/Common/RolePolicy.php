@@ -33,17 +33,20 @@ class RolePolicy
 
     public function create(User $user): bool
     {
-        return $user->hasAllCreatePermissionTo(self::RESOURCE);
+        return $this->viewAny($user)
+            && $user->hasAllCreatePermissionTo(self::RESOURCE);
     }
 
     public function update(User $user, Role $role): bool
     {
-        return $user->hasAllUpdatePermissionTo(self::RESOURCE);
+        return $this->view($user, $role)
+            && $user->hasAllUpdatePermissionTo(self::RESOURCE);
     }
 
     public function delete(User $user, Role $role): bool
     {
-        return $user->hasAllDeletePermissionTo(self::RESOURCE);
+        return $this->view($user, $role)
+            && $user->hasAllDeletePermissionTo(self::RESOURCE);
     }
 
     public function restore(User $user, Role $role): bool

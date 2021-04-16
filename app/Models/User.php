@@ -99,7 +99,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      */
     public static function allOrWhereId(User $user): Collection
     {
-        if ($user->can('viewAnyAll_' . strtolower(basename(strtr(static::class, '\\', '/'))))) {
+        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             // 全ての閲覧権限を持っている場合は全データ取得
             return static::all();
         } else {

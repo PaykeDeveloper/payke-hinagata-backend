@@ -1,17 +1,17 @@
 <?php
 
 use App\Http\Controllers\Common\InvitationController;
+use App\Http\Controllers\Common\MyUserController;
 use App\Http\Controllers\Common\PermissionController;
 use App\Http\Controllers\Common\RoleController;
 use App\Http\Controllers\Common\StatusController;
 use App\Http\Controllers\Common\TokenController;
-use App\Http\Controllers\MyUserController;
+use App\Http\Controllers\Common\UserController;
 use App\Http\Controllers\Sample\BookCommentController;
 use App\Http\Controllers\Sample\BookController;
 use App\Http\Controllers\Sample\DivisionController;
 use App\Http\Controllers\Sample\MemberController;
 use App\Http\Controllers\Sample\ProjectController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*

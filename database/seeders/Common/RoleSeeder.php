@@ -30,7 +30,7 @@ class RoleSeeder extends Seeder
             ['name' => UserRole::MANAGER, 'permissions' => array_merge(
                 self::getCrudAllPermissions([Division::RESOURCE, Member::RESOURCE]),
                 [
-                    PermissionType::getName(PermissionType::VIEW, User::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE),
                     PermissionType::getName(PermissionType::VIEW_ANY, User::RESOURCE),
                 ]
             )],
@@ -39,19 +39,19 @@ class RoleSeeder extends Seeder
             ['name' => MemberRole::MANAGER, 'permissions' => array_merge(
                 self::getCrudAllPermissions([Project::RESOURCE]),
                 [
-                    PermissionType::getName(PermissionType::VIEW, Member::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_OWN, Member::RESOURCE),
                     PermissionType::getName(PermissionType::VIEW_ANY, Member::RESOURCE),
 
-                    PermissionType::getName(PermissionType::VIEW, Division::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE),
                     PermissionType::getName(PermissionType::VIEW_ANY, Division::RESOURCE),
                 ],
             )],
             ['name' => MemberRole::MEMBER, 'permissions' => array_merge(
                 [
-                    PermissionType::getName(PermissionType::VIEW, Project::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_OWN, Project::RESOURCE),
                     PermissionType::getName(PermissionType::VIEW_ANY, Project::RESOURCE),
 
-                    PermissionType::getName(PermissionType::VIEW, Division::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE),
                     PermissionType::getName(PermissionType::VIEW_ANY, Division::RESOURCE),
                 ],
             )],
@@ -83,10 +83,10 @@ class RoleSeeder extends Seeder
         foreach ($resources as $resource) {
             $permissions = array_merge($permissions, [
                 PermissionType::getName(PermissionType::VIEW_ANY, $resource),
-                PermissionType::getName(PermissionType::VIEW, $resource),
-                PermissionType::getName(PermissionType::CREATE, $resource),
-                PermissionType::getName(PermissionType::UPDATE, $resource),
-                PermissionType::getName(PermissionType::DELETE, $resource),
+                PermissionType::getName(PermissionType::VIEW_OWN, $resource),
+                PermissionType::getName(PermissionType::CREATE_OWN, $resource),
+                PermissionType::getName(PermissionType::UPDATE_OWN, $resource),
+                PermissionType::getName(PermissionType::DELETE_OWN, $resource),
             ]);
         }
         return $permissions;

@@ -4,7 +4,9 @@ namespace Tests\Feature\Http\Controllers\Common;
 
 use App\Models\Common\Invitation;
 use App\Models\Common\InvitationStatus;
+use App\Models\Common\PermissionType;
 use App\Models\User;
+use Database\Seeders\Common\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,12 +17,14 @@ class UserControllerTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
+    private User $user;
+
     public function setUp(): void
     {
         parent::setUp();
-        /** @var User $user */
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $this->seed(PermissionSeeder::class);
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
     }
 
     /**
@@ -30,59 +34,72 @@ class UserControllerTest extends TestCase
     /**
      * データ一覧の取得ができる。
      */
-    public function testIndexSuccess()
+    public function testIndexSuccessAll()
     {
-        $invitation = Invitation::factory()->create();
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
+        $user = User::factory()->create();
 
-        $response = $this->getJson(route('invitations.index'));
+        $response = $this->getJson(route('users.index'));
 
         $response->assertOk()
-            ->assertJsonCount(1)
-            ->assertJsonFragment($invitation->toArray());
+            ->assertJsonCount(2)
+            ->assertJsonFragment($user->toArray());
     }
 
     /**
-     * 作成ができる。
+     * データ一覧の取得ができる。
      */
-    public function testStoreSuccess()
+    public function testIndexSuccessOwn()
     {
-        $email = $this->faker->email;
-        $data = [
-            'name' => $this->faker->name,
-            'email' => $email,
-            'locale' => 'ja',
-        ];
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
+        $user = User::factory()->create();
 
-        $response = $this->postJson(route('invitations.store'), $data);
+        $response = $this->getJson(route('users.index'));
 
         $response->assertOk()
-            ->assertJsonFragment(['email' => $email]);
+            ->assertJsonCount(1)
+            ->assertJsonMissing(['id' => $user->id]);
     }
 
     /**
      * データの取得ができる。
      */
-    public function testShowSuccess()
+    public function testShowSuccessAll()
     {
-        $invitation = Invitation::factory()->create();
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
+        $user = User::factory()->create();
 
-        $response = $this->getJson(route('invitations.show', ['invitation' => $invitation->id]));
+        $response = $this->getJson(route('users.show', ['user' => $user->id]));
 
         $response->assertOk()
-            ->assertJson($invitation->toArray());
+            ->assertJson($user->toArray());
+    }
+
+    /**
+     * データの取得ができる。
+     */
+    public function testShowSuccessOwn()
+    {
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
+
+        $response = $this->getJson(route('users.show', ['user' => $this->user->id]));
+
+        $response->assertOk()
+            ->assertJson($this->user->toArray());
     }
 
     /**
      * データの更新ができる。
      */
-    public function testUpdateSuccess()
+    public function testUpdateSuccessAll()
     {
-        $invitation = Invitation::factory()->pending()->create();
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, User::RESOURCE));
+        $user = User::factory()->create();
         $data = [
             'name' => $this->faker->name,
         ];
 
-        $response = $this->patchJson(route('invitations.update', ['invitation' => $invitation->id]), $data);
+        $response = $this->patchJson(route('users.update', ['user' => $user->id]), $data);
 
         $response->assertOk()
             ->assertJsonFragment($data);
@@ -91,15 +108,16 @@ class UserControllerTest extends TestCase
     /**
      * 削除ができる。
      */
-    public function testDestroySuccess()
+    public function testDestroySuccessALL()
     {
-        $invitation = Invitation::factory()->pending()->create();
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::DELETE_ALL, User::RESOURCE));
+        $user = User::factory()->create();
 
-        $response = $this->deleteJson(route('invitations.destroy', ['invitation' => $invitation->id]));
+        $response = $this->deleteJson(route('users.destroy', ['user' => $user->id]));
 
         $response->assertNoContent();
 
-        $result = Invitation::find($invitation->id);
+        $result = Invitation::find($user->id);
         $this->assertNull($result);
     }
 

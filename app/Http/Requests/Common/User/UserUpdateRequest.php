@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Common\User;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\Validator as ValidationValidator;

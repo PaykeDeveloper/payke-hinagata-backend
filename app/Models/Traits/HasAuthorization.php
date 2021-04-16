@@ -37,7 +37,7 @@ trait HasAuthorization
 
     public function hasOwnViewPermissionTo(string $resource): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::VIEW, $resource);
+        return $this->hasResourcePermissionTo(PermissionType::VIEW_OWN, $resource);
     }
 
     public function hasAllViewPermissionTo(string $resource): bool
@@ -52,7 +52,7 @@ trait HasAuthorization
 
     public function hasOwnCreatePermissionTo(string $resource): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::CREATE, $resource);
+        return $this->hasResourcePermissionTo(PermissionType::CREATE_OWN, $resource);
     }
 
     public function hasAllCreatePermissionTo(string $resource): bool
@@ -67,7 +67,7 @@ trait HasAuthorization
 
     public function hasOwnUpdatePermissionTo(string $resource): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::UPDATE, $resource);
+        return $this->hasResourcePermissionTo(PermissionType::UPDATE_OWN, $resource);
     }
 
     public function hasAllUpdatePermissionTo(string $resource): bool
@@ -82,7 +82,7 @@ trait HasAuthorization
 
     public function hasOwnDeletePermissionTo(string $resource): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::DELETE, $resource);
+        return $this->hasResourcePermissionTo(PermissionType::DELETE_OWN, $resource);
     }
 
     public function hasAllDeletePermissionTo(string $resource): bool

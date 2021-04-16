@@ -33,17 +33,20 @@ class PermissionPolicy
 
     public function create(User $user): bool
     {
-        return $user->hasAllCreatePermissionTo(self::RESOURCE);
+        return $this->viewAny($user)
+            && $user->hasAllCreatePermissionTo(self::RESOURCE);
     }
 
     public function update(User $user, Permission $permission): bool
     {
-        return $user->hasAllUpdatePermissionTo(self::RESOURCE);
+        return $this->view($user, $permission)
+            && $user->hasAllUpdatePermissionTo(self::RESOURCE);
     }
 
     public function delete(User $user, Permission $permission): bool
     {
-        return $user->hasAllDeletePermissionTo(self::RESOURCE);
+        return $this->view($user, $permission)
+            && $user->hasAllDeletePermissionTo(self::RESOURCE);
     }
 
     public function restore(User $user, Permission $permission): bool

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Common;
 
-use App\Http\Requests\User\UserIndexRequest;
-use App\Http\Requests\User\UserShowRequest;
-use App\Http\Requests\User\UserUpdateRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Common\User\UserIndexRequest;
+use App\Http\Requests\Common\User\UserShowRequest;
+use App\Http\Requests\Common\User\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Response;
 
@@ -12,30 +13,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(User::class, 'user');
-    }
-
-    /**
-     * Get the map of resource methods to ability names.
-     *
-     * @return array
-     */
-    protected function resourceAbilityMap()
-    {
-        return [
-            'show' => 'view',
-            'create' => 'create',
-            'store' => 'create',
-            'edit' => 'update',
-            'update' => 'update',
-            'destroy' => 'delete',
-            'showMe' => 'showMe',
-        ];
-    }
-
-    protected function resourceMethodsWithoutModels()
-    {
-        return ['index', 'create', 'store', 'showMe'];
+        $this->authorizeResource(User::class, User::RESOURCE);
     }
 
     /**
@@ -76,19 +54,9 @@ class UserController extends Controller
      * @param User $user
      * @return Response
      */
-    public function show(UserShowRequest $request, User $user = null): Response
+    public function show(UserShowRequest $request, User $user): Response
     {
-        if ($user) {
-            // permissions の取得を行うと自動的にレスポンスに挿入される (permissions key)
-            $user->getDirectPermissions();
-            $response = $user;
-        } else {
-            // permissions の取得を行うと自動的にレスポンスに挿入される (permissions key)
-            $request->user()->getDirectPermissions();
-            $response = $request->user();
-        }
-
-        return response($response);
+        return response($user);
     }
 
     /**
@@ -116,5 +84,18 @@ class UserController extends Controller
 
         $user->update($request->validated());
         return response($user);
+    }
+
+    /**
+     *
+     * @param UserShowRequest $request
+     * @param User $user
+     * @return Response
+     * @throws \Exception
+     */
+    public function destroy(UserShowRequest $request, User $user): Response
+    {
+        $user->delete();
+        return response(null, 204);
     }
 }
