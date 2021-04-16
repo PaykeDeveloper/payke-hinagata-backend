@@ -5,14 +5,14 @@ namespace Tests\Feature\Http\Controllers\Common;
 use App\Models\Common\Permission;
 use App\Models\Common\PermissionType;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use function App\Models\Common\getPermissionName;
 
 class PermissionControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function setUp(): void
     {

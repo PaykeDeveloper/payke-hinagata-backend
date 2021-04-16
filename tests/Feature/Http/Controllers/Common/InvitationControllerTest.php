@@ -5,14 +5,14 @@ namespace Tests\Feature\Http\Controllers\Common;
 use App\Models\Common\Invitation;
 use App\Models\Common\InvitationStatus;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class InvitationControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
     use WithFaker;
 
     public function setUp(): void

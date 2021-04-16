@@ -7,13 +7,13 @@ namespace Tests\Feature\Http\Controllers\Sample;
 use App\Models\Sample\Book;
 use App\Models\Sample\BookComment;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class BookControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     private User $user;
 

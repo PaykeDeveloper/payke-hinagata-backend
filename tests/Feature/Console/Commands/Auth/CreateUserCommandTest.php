@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Console\Commands\Auth;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CreateUserCommandTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
     use WithFaker;
 
     /**

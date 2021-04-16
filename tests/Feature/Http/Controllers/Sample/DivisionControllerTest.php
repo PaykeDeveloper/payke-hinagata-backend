@@ -8,7 +8,7 @@ use App\Models\Sample\Division;
 use App\Models\User;
 use Database\Seeders\Common\PermissionSeeder;
 use Database\Seeders\Common\RoleSeeder;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -16,7 +16,7 @@ use Tests\TestCase;
  */
 class DivisionControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     private User $user;
 

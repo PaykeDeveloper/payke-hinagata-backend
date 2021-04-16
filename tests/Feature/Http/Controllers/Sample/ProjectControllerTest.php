@@ -9,7 +9,7 @@ use App\Models\Sample\Project;
 use App\Models\User;
 use Database\Seeders\Common\PermissionSeeder;
 use Database\Seeders\Common\RoleSeeder;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -18,7 +18,7 @@ use Tests\TestCase;
  */
 class ProjectControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     private User $user;
 

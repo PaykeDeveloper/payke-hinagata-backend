@@ -4,12 +4,12 @@ namespace Tests\Feature\Http\Controllers\Common;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TokenControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * [正常系]
