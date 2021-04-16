@@ -11,7 +11,6 @@ use App\Models\Sample\Member;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use function App\Models\Common\getPermissionName;
 
 class PermissionSeeder extends Seeder
 {
@@ -50,7 +49,7 @@ class PermissionSeeder extends Seeder
         $ids = [];
         foreach ($this->resources as $resource) {
             foreach ($this->types as $type) {
-                $name = getPermissionName($type, $resource);
+                $name = PermissionType::getName($type, $resource);
                 $permission = Permission::updateOrCreate([
                     'name' => $name,
                 ], [

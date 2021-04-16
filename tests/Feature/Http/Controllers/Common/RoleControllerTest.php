@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
-use function App\Models\Common\getPermissionName;
 
 class RoleControllerTest extends TestCase
 {
@@ -31,7 +30,7 @@ class RoleControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->create();
-        $user->givePermissionTo(getPermissionName(PermissionType::VIEW_ALL, Role::RESOURCE));
+        $user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Role::RESOURCE));
         $response = $this->actingAs($user)->getJson(route('roles.index'));
 
         $response->assertOk()

@@ -27,7 +27,7 @@ trait HasAuthorization
 
     private function hasResourcePermissionTo(string $type, string $resource): bool
     {
-        return $this->hasPermissionTo(\App\Models\Common\getPermissionName($type, $resource));
+        return $this->hasPermissionTo(PermissionType::getName($type, $resource));
     }
 
     public function hasViewPermissionTo(string $resource): bool

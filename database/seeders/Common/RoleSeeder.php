@@ -11,7 +11,6 @@ use App\Models\Sample\MemberRole;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use function App\Models\Common\getPermissionName;
 
 
 class RoleSeeder extends Seeder
@@ -31,8 +30,8 @@ class RoleSeeder extends Seeder
             ['name' => UserRole::MANAGER, 'permissions' => array_merge(
                 self::getCrudAllPermissions([Division::RESOURCE, Member::RESOURCE]),
                 [
-                    getPermissionName(PermissionType::VIEW, User::RESOURCE),
-                    getPermissionName(PermissionType::VIEW_ANY, User::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW, User::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_ANY, User::RESOURCE),
                 ]
             )],
 
@@ -40,20 +39,20 @@ class RoleSeeder extends Seeder
             ['name' => MemberRole::MANAGER, 'permissions' => array_merge(
                 self::getCrudAllPermissions([Project::RESOURCE]),
                 [
-                    getPermissionName(PermissionType::VIEW, Member::RESOURCE),
-                    getPermissionName(PermissionType::VIEW_ANY, Member::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW, Member::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_ANY, Member::RESOURCE),
 
-                    getPermissionName(PermissionType::VIEW, Division::RESOURCE),
-                    getPermissionName(PermissionType::VIEW_ANY, Division::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW, Division::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_ANY, Division::RESOURCE),
                 ],
             )],
             ['name' => MemberRole::MEMBER, 'permissions' => array_merge(
                 [
-                    getPermissionName(PermissionType::VIEW, Project::RESOURCE),
-                    getPermissionName(PermissionType::VIEW_ANY, Project::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW, Project::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_ANY, Project::RESOURCE),
 
-                    getPermissionName(PermissionType::VIEW, Division::RESOURCE),
-                    getPermissionName(PermissionType::VIEW_ANY, Division::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW, Division::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_ANY, Division::RESOURCE),
                 ],
             )],
         ];
@@ -83,11 +82,11 @@ class RoleSeeder extends Seeder
 
         foreach ($resources as $resource) {
             $permissions = array_merge($permissions, [
-                getPermissionName(PermissionType::VIEW_ANY, $resource),
-                getPermissionName(PermissionType::VIEW, $resource),
-                getPermissionName(PermissionType::CREATE, $resource),
-                getPermissionName(PermissionType::UPDATE, $resource),
-                getPermissionName(PermissionType::DELETE, $resource),
+                PermissionType::getName(PermissionType::VIEW_ANY, $resource),
+                PermissionType::getName(PermissionType::VIEW, $resource),
+                PermissionType::getName(PermissionType::CREATE, $resource),
+                PermissionType::getName(PermissionType::UPDATE, $resource),
+                PermissionType::getName(PermissionType::DELETE, $resource),
             ]);
         }
         return $permissions;
@@ -99,11 +98,11 @@ class RoleSeeder extends Seeder
 
         foreach ($resources as $resource) {
             $permissions = array_merge($permissions, [
-                getPermissionName(PermissionType::VIEW_ANY_ALL, $resource),
-                getPermissionName(PermissionType::VIEW_ALL, $resource),
-                getPermissionName(PermissionType::CREATE_ALL, $resource),
-                getPermissionName(PermissionType::UPDATE_ALL, $resource),
-                getPermissionName(PermissionType::DELETE_ALL, $resource),
+                PermissionType::getName(PermissionType::VIEW_ANY_ALL, $resource),
+                PermissionType::getName(PermissionType::VIEW_ALL, $resource),
+                PermissionType::getName(PermissionType::CREATE_ALL, $resource),
+                PermissionType::getName(PermissionType::UPDATE_ALL, $resource),
+                PermissionType::getName(PermissionType::DELETE_ALL, $resource),
             ]);
         }
 

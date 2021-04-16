@@ -30,9 +30,9 @@ final class PermissionType
             self::DELETE_ALL,
         ];
     }
-}
 
-function getPermissionName(string $type, string $resource): string
-{
-    return "{$type}_$resource";
+    public static function getName(string $type, string $resource): string
+    {
+        return "{$type}_$resource";
+    }
 }
