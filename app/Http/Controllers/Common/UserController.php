@@ -76,13 +76,7 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user): Response
     {
-        // Role の更新
-        $roles = $request->input('roles');
-        if (!is_null($roles)) {
-            $user->syncRoles($roles);
-        }
-
-        $user->update($request->validated());
+        $user->updateFromRequest($request->validated());
         return response($user);
     }
 

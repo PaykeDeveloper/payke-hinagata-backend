@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Common\User;
 
+use App\Models\Common\UserRole;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
 
 class UserUpdateRequest extends UserShowRequest
@@ -16,7 +18,9 @@ class UserUpdateRequest extends UserShowRequest
         return [
             'name' => ['string', 'max:255'],
             'roles' => ['array'],
-            'roles.*' => [Rule::exists('roles', 'name')]
+            'roles.*' => [Rule::exists('roles', 'name')->where(function (Builder $query) {
+                return $query->whereIn('name', UserRole::all());
+            })]
         ];
     }
 }

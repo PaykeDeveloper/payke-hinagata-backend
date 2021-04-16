@@ -106,4 +106,13 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
             return static::whereId($user->id)->get();
         }
     }
+
+    public function updateFromRequest(mixed $attributes): self
+    {
+        $this->update($attributes);
+        if (array_key_exists('roles', $attributes)) {
+            $this->syncRoles($attributes['roles']);
+        }
+        return $this;
+    }
 }

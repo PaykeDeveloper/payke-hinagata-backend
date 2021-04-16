@@ -4,8 +4,11 @@ namespace Tests\Feature\Http\Controllers\Common;
 
 use App\Models\Common\Invitation;
 use App\Models\Common\PermissionType;
+use App\Models\Common\UserRole;
+use App\Models\Sample\MemberRole;
 use App\Models\User;
 use Database\Seeders\Common\PermissionSeeder;
+use Database\Seeders\Common\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +25,7 @@ class UserControllerTest extends TestCase
     {
         parent::setUp();
         $this->seed(PermissionSeeder::class);
+        $this->seed(RoleSeeder::class);
         $this->user = User::factory()->create();
         $this->actingAs($this->user);
     }
@@ -97,12 +101,13 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
         $data = [
             'name' => $this->faker->name,
+            'roles' => UserRole::all(),
         ];
 
         $response = $this->patchJson(route('users.update', ['user' => $user->id]), $data);
 
         $response->assertOk()
-            ->assertJsonFragment($data);
+            ->assertJsonFragment(['name' => $data['name']]);
     }
 
     /**
@@ -178,6 +183,26 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
     }
+
+    /**
+     * 不正なロールの設定でエラーになる。
+     */
+    public function testUpdateInValidRoles()
+    {
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, User::RESOURCE));
+        $user = User::factory()->create();
+        $data = [
+            'name' => $this->faker->name,
+            'roles' => [MemberRole::MANAGER],
+        ];
+
+        $response = $this->patchJson(route('users.update', ['user' => $user->id]), $data);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonStructure(['errors' => ['roles.0']]);
+    }
+
 
     /**
      * 更新で、権限エラーになる。
