@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Common;
 
 use App\Models\Common\Permission;
 use App\Models\User;
@@ -15,7 +15,7 @@ class PermissionPolicy
 
     public function viewAny(User $user): bool
     {
-        if ($user->hasViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             return true;
         }
         abort(Response::HTTP_NOT_FOUND);
@@ -24,7 +24,7 @@ class PermissionPolicy
 
     public function view(User $user, Permission $permission): bool
     {
-        if ($user->hasViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             return true;
         }
         abort(Response::HTTP_NOT_FOUND);
@@ -33,17 +33,17 @@ class PermissionPolicy
 
     public function create(User $user): bool
     {
-        return $user->hasCreatePermissionTo(self::RESOURCE);
+        return $user->hasAllCreatePermissionTo(self::RESOURCE);
     }
 
     public function update(User $user, Permission $permission): bool
     {
-        return $user->hasUpdatePermissionTo(self::RESOURCE);
+        return $user->hasAllUpdatePermissionTo(self::RESOURCE);
     }
 
     public function delete(User $user, Permission $permission): bool
     {
-        return $user->hasDeletePermissionTo(self::RESOURCE);
+        return $user->hasAllDeletePermissionTo(self::RESOURCE);
     }
 
     public function restore(User $user, Permission $permission): bool

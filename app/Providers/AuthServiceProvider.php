@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Sample\Project;
-use App\Policies\ProjectPolicy;
 use App\Models\User;
 use Gate;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -20,7 +18,10 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $policies = [];
+    protected $policies = [
+        \App\Models\Common\Permission::class => \App\Policies\Common\PermissionPolicy::class,
+        \App\Models\Common\Role::class => \App\Policies\Common\RolePolicy::class,
+    ];
 
     /**
      * Register any authentication / authorization services.
