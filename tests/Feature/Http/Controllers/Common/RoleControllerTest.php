@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\Common;
 use App\Models\Common\PermissionType;
 use App\Models\Common\Role;
 use App\Models\User;
+use Database\Seeders\Common\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -13,10 +14,14 @@ class RoleControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    private User $user;
+
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seed(PermissionSeeder::class);
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
     }
 
     /**
@@ -28,10 +33,8 @@ class RoleControllerTest extends TestCase
      */
     public function testIndexSuccess()
     {
-        /** @var User $user */
-        $user = User::factory()->create();
-        $user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Role::RESOURCE));
-        $response = $this->actingAs($user)->getJson(route('roles.index'));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Role::RESOURCE));
+        $response = $this->getJson(route('roles.index'));
 
         $response->assertOk()
             ->assertJsonStructure([
@@ -48,8 +51,7 @@ class RoleControllerTest extends TestCase
      */
     public function testIndexUnAuthorized()
     {
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->getJson(route('roles.index'));
+        $response = $this->getJson(route('roles.index'));
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
