@@ -25,34 +25,29 @@ class RoleSeeder extends Seeder
         $data_set = [
             // User Roles
             ['name' => UserRole::ADMIN, 'permissions' => array_merge(
-                self::getCrudAllPermissions([User::RESOURCE]),
+                self::getAllPermissions(User::RESOURCE),
             )],
             ['name' => UserRole::MANAGER, 'permissions' => array_merge(
-                self::getCrudAllPermissions([Division::RESOURCE, Member::RESOURCE]),
+                self::getAllPermissions(Division::RESOURCE),
+                self::getAllPermissions(Member::RESOURCE),
                 [
-                    PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE),
-                    PermissionType::getName(PermissionType::VIEW_ANY, User::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE),
                 ]
+            )],
+            ['name' => UserRole::STAFF, 'permissions' => array_merge(
+                self::getOwnPermissions(Division::RESOURCE),
             )],
 
             // Member Roles
             ['name' => MemberRole::MANAGER, 'permissions' => array_merge(
-                self::getCrudAllPermissions([Project::RESOURCE]),
+                self::getAllPermissions(Project::RESOURCE),
                 [
-                    PermissionType::getName(PermissionType::VIEW_OWN, Member::RESOURCE),
-                    PermissionType::getName(PermissionType::VIEW_ANY, Member::RESOURCE),
-
-                    PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE),
-                    PermissionType::getName(PermissionType::VIEW_ANY, Division::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_ALL, Member::RESOURCE),
                 ],
             )],
             ['name' => MemberRole::MEMBER, 'permissions' => array_merge(
                 [
                     PermissionType::getName(PermissionType::VIEW_OWN, Project::RESOURCE),
-                    PermissionType::getName(PermissionType::VIEW_ANY, Project::RESOURCE),
-
-                    PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE),
-                    PermissionType::getName(PermissionType::VIEW_ANY, Division::RESOURCE),
                 ],
             )],
         ];
@@ -76,36 +71,25 @@ class RoleSeeder extends Seeder
         Role::whereNotIn('id', $ids)->delete();
     }
 
-    private static function getCrudPermissions(array $resources): array
+    private static function getOwnPermissions(string $resource): array
     {
-        $permissions = [];
-
-        foreach ($resources as $resource) {
-            $permissions = array_merge($permissions, [
-                PermissionType::getName(PermissionType::VIEW_ANY, $resource),
-                PermissionType::getName(PermissionType::VIEW_OWN, $resource),
-                PermissionType::getName(PermissionType::CREATE_OWN, $resource),
-                PermissionType::getName(PermissionType::UPDATE_OWN, $resource),
-                PermissionType::getName(PermissionType::DELETE_OWN, $resource),
-            ]);
-        }
-        return $permissions;
+        return [
+            PermissionType::getName(PermissionType::VIEW_ANY, $resource),
+            PermissionType::getName(PermissionType::VIEW_OWN, $resource),
+            PermissionType::getName(PermissionType::CREATE_OWN, $resource),
+            PermissionType::getName(PermissionType::UPDATE_OWN, $resource),
+            PermissionType::getName(PermissionType::DELETE_OWN, $resource),
+        ];
     }
 
-    private static function getCrudAllPermissions(array $resources): array
+    private static function getAllPermissions(string $resource): array
     {
-        $permissions = self::getCrudPermissions($resources);
-
-        foreach ($resources as $resource) {
-            $permissions = array_merge($permissions, [
-                PermissionType::getName(PermissionType::VIEW_ANY_ALL, $resource),
-                PermissionType::getName(PermissionType::VIEW_ALL, $resource),
-                PermissionType::getName(PermissionType::CREATE_ALL, $resource),
-                PermissionType::getName(PermissionType::UPDATE_ALL, $resource),
-                PermissionType::getName(PermissionType::DELETE_ALL, $resource),
-            ]);
-        }
-
-        return $permissions;
+        return [
+            PermissionType::getName(PermissionType::VIEW_ANY_ALL, $resource),
+            PermissionType::getName(PermissionType::VIEW_ALL, $resource),
+            PermissionType::getName(PermissionType::CREATE_ALL, $resource),
+            PermissionType::getName(PermissionType::UPDATE_ALL, $resource),
+            PermissionType::getName(PermissionType::DELETE_ALL, $resource),
+        ];
     }
 }

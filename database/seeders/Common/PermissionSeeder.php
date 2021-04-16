@@ -15,28 +15,31 @@ use Illuminate\Database\Seeder;
 class PermissionSeeder extends Seeder
 {
     // パーミッションのタイプ
-    private array $types = [
+    private const OWN_TYPES = [
         PermissionType::VIEW_ANY,
-        PermissionType::VIEW_ANY_ALL,
         PermissionType::VIEW_OWN,
-        PermissionType::VIEW_ALL,
         PermissionType::CREATE_OWN,
-        PermissionType::CREATE_ALL,
         PermissionType::UPDATE_OWN,
-        PermissionType::UPDATE_ALL,
         PermissionType::DELETE_OWN,
+    ];
+
+    private const ALL_TYPES = [
+        PermissionType::VIEW_ANY_ALL,
+        PermissionType::VIEW_ALL,
+        PermissionType::CREATE_ALL,
+        PermissionType::UPDATE_ALL,
         PermissionType::DELETE_ALL,
     ];
 
     // 用意するリソース (モデル)
-    private array $resources = [
-        User::RESOURCE,
-        Permission::RESOURCE,
-        Role::RESOURCE,
-        Invitation::RESOURCE,
-        Division::RESOURCE,
-        Member::RESOURCE,
-        Project::RESOURCE,
+    private const RESOURCES = [
+        ['name' => User::RESOURCE, 'all' => true, 'own' => true,],
+        ['name' => Permission::RESOURCE, 'all' => true, 'own' => false,],
+        ['name' => Role::RESOURCE, 'all' => true, 'own' => false,],
+        ['name' => Invitation::RESOURCE, 'all' => true, 'own' => false,],
+        ['name' => Division::RESOURCE, 'all' => true, 'own' => true,],
+        ['name' => Member::RESOURCE, 'all' => true, 'own' => true,],
+        ['name' => Project::RESOURCE, 'all' => true, 'own' => true,],
     ];
 
     /**
@@ -47,9 +50,18 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $ids = [];
-        foreach ($this->resources as $resource) {
-            foreach ($this->types as $type) {
-                $name = PermissionType::getName($type, $resource);
+        foreach (self::RESOURCES as $resource) {
+            $types = [];
+            if ($resource['all']) {
+                $types = array_merge($types, self::ALL_TYPES);
+            }
+            if ($resource['own']) {
+                $types = array_merge($types, self::OWN_TYPES);
+            }
+            $resource_name = $resource['name'];
+
+            foreach ($types as $type) {
+                $name = PermissionType::getName($type, $resource_name);
                 $permission = Permission::updateOrCreate([
                     'name' => $name,
                 ], [
