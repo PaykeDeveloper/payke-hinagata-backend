@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Sample\Book;
 use App\Models\Sample\Member;
-use App\Models\Traits\HasAllOrPermissions;
+use App\Models\Traits\HasAuthorization;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Collection;
@@ -13,16 +13,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @mixin IdeHelperUser
  */
 class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
-    use HasApiTokens, HasFactory, Notifiable;
-    use HasRoles;
-    use HasAllOrPermissions;
+    use HasApiTokens, HasFactory, Notifiable, HasAuthorization;
 
     public const RESOURCE = 'user';
 

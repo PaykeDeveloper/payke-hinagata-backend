@@ -4,20 +4,19 @@
 
 namespace App\Models\Sample;
 
-use App\Models\Traits\HasAllOrPermissions;
+use App\Models\Traits\HasAuthorization;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @mixin IdeHelperMember
  */
 class Member extends Model
 {
-    use HasFactory, HasRoles, HasAllOrPermissions;
+    use HasFactory, HasAuthorization;
 
     public const RESOURCE = 'member';
 

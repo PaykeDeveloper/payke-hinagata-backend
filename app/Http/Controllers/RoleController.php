@@ -2,32 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Role\RoleIndexRequest;
 use App\Models\Role;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class RoleController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Role::class, 'role');
+        $this->authorizeResource(Role::class, Role::RESOURCE);
     }
 
     /**
      * ロールの一覧 (Super Admin のみ実行可能)
      *
-     * @param RoleIndexRequest $request
+     * @param Request $request
      * @return Response
      */
-    public function index(RoleIndexRequest $request): Response
+    public function index(Request $request): Response
     {
-        $roles = Role::all();
-
-        foreach ($roles as $role) {
-            // permissions の取得を行うと自動的にレスポンスに挿入される (permissions key)
-            $role->getAllPermissions();
-        }
-
-        return response($roles);
+        return response(Role::all());
     }
 }
