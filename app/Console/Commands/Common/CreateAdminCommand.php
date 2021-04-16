@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Console\Commands\Auth;
+namespace App\Console\Commands\Common;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Models\Common\UserRole;
 use Illuminate\Console\Command;
 use Illuminate\Validation\ValidationException;
 
-class CreateUserCommand extends Command
+class CreateAdminCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'user:create {--name=} {--email=} {--password=}';
+    protected $signature = 'admin:create {--name=} {--email=} {--password=}';
 
     /**
      * The console command description.
