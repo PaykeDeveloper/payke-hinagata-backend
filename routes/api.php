@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\InvitationController;
 use App\Http\Controllers\Auth\StatusController;
 use App\Http\Controllers\Auth\TokenController;
+use App\Http\Controllers\MyUserController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Sample\BookCommentController;
@@ -37,7 +38,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('/status', StatusController::class);
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/user', [UserController::class, 'showMe']);
+        Route::get('/user', MyUserController::class);
         Route::apiResource('users', UserController::class)->only(['index', 'show', 'update']);
         Route::apiResource('roles', RoleController::class)->only(['index']);
         Route::apiResource('permissions', PermissionController::class)->only(['index']);

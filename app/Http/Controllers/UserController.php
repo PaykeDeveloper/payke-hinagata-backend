@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserIndexRequest;
 use App\Http\Requests\User\UserShowRequest;
-use App\Http\Requests\User\UserShowMeRequest;
 use App\Http\Requests\User\UserUpdateRequest;
-use Illuminate\Http\Response;
 use App\Models\User;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
@@ -17,7 +15,7 @@ class UserController extends Controller
         $this->authorizeResource(User::class, 'user');
     }
 
-   /**
+    /**
      * Get the map of resource methods to ability names.
      *
      * @return array
@@ -91,29 +89,6 @@ class UserController extends Controller
         }
 
         return response($response);
-    }
-
-    /**
-     * @response {
-     * "id": 2,
-     * "name": "Prof. Dee Hamill MD",
-     * "email": "demario81@example.com",
-     * "email_verified_at": "2021-03-26T06:52:06.000000Z",
-     * "two_factor_secret": null,
-     * "two_factor_recovery_codes": null,
-     * "created_at": "2021-03-26T06:52:06.000000Z",
-     * "updated_at": "2021-03-26T06:52:06.000000Z",
-     * "roles": []
-     * }
-     *
-     * @param UserShowMeRequest $request
-     * @return Response
-     */
-    public function showMe(UserShowMeRequest $request): Response
-    {
-        // 取得だけ行うと自動的にレスポンスに挿入される (permissions key)
-//        $request->user()->getDirectPermissions();
-        return response($request->user());
     }
 
     /**
