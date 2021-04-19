@@ -47,8 +47,6 @@ class PermissionSeeder extends Seeder
                 $name = PermissionType::getName($type, $resource_name);
                 $permission = Permission::updateOrCreate([
                     'name' => $name,
-                ], [
-                    'name' => $name,
                 ]);
                 $ids[] = $permission->id;
             }

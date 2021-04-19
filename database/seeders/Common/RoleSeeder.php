@@ -63,8 +63,6 @@ class RoleSeeder extends Seeder
             $name = $value['name'];
             $role = Role::updateOrCreate([
                 'name' => $name,
-            ], [
-                'name' => $value['name'],
             ]);
             $ids[] = $role->id;
 
