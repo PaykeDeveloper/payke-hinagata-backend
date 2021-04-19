@@ -34,7 +34,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
         DB::transaction(function () {
             $this->call(self::BASE_SEEDS);
             if (!App::isProduction()) {
