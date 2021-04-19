@@ -3,7 +3,7 @@
 namespace App\Models\Common;
 
 use App\Models\Division\Member;
-use App\Models\Sample\MemberRole;
+use App\Models\Division\MemberRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Models\Role as BaseModel;

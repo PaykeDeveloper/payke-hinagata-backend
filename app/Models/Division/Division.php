@@ -4,7 +4,6 @@
 
 namespace App\Models\Division;
 
-use App\Models\Sample\MemberRole;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Sample;
+namespace App\Models\Division;
 
 final class MemberRole
 {

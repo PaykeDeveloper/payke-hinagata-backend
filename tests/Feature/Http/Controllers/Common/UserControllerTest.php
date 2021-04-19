@@ -5,7 +5,7 @@ namespace Tests\Feature\Http\Controllers\Common;
 use App\Models\Common\Invitation;
 use App\Models\Common\PermissionType;
 use App\Models\Common\UserRole;
-use App\Models\Sample\MemberRole;
+use App\Models\Division\MemberRole;
 use App\Models\User;
 use Database\Seeders\Common\PermissionSeeder;
 use Database\Seeders\Common\RoleSeeder;

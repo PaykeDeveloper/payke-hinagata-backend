@@ -9,7 +9,7 @@ use App\Models\Common\Role;
 use App\Models\Common\UserRole;
 use App\Models\Division\Division;
 use App\Models\Division\Member;
-use App\Models\Sample\MemberRole;
+use App\Models\Division\MemberRole;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Database\Seeder;

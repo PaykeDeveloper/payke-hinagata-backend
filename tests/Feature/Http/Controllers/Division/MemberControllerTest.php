@@ -7,14 +7,13 @@ namespace Tests\Feature\Http\Controllers\Division;
 use App\Models\Common\PermissionType;
 use App\Models\Division\Division;
 use App\Models\Division\Member;
-use App\Models\Sample\MemberRole;
+use App\Models\Division\MemberRole;
 use App\Models\User;
 use Database\Seeders\Common\PermissionSeeder;
 use Database\Seeders\Common\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use function route;
 
 /**
  * @group division

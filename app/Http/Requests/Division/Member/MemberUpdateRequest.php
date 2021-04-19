@@ -5,7 +5,7 @@
 namespace App\Http\Requests\Division\Member;
 
 use App\Http\Requests\FormRequest;
-use App\Models\Sample\MemberRole;
+use App\Models\Division\MemberRole;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
 
