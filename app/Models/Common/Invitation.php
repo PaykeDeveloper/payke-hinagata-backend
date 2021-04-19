@@ -45,7 +45,7 @@ class Invitation extends Model
             ->notify((new InvitationUser($this, $token))->locale($locale));
     }
 
-    public static function createFromRequest(array $attributes, User $user): Invitation
+    public static function createFromRequest(array $attributes, User $user): self
     {
         $invitation = new self();
         $invitation->fill($attributes);
@@ -57,7 +57,7 @@ class Invitation extends Model
         return $invitation;
     }
 
-    public function approved(): Invitation
+    public function approved(): self
     {
         $this->status = InvitationStatus::APPROVED;
         $this->save();

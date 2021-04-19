@@ -54,16 +54,16 @@ class Member extends Model
         return $this->belongsTo(Division::class);
     }
 
-    public static function findByUniqueKeys(string $user_id, string $division_id): ?Member
+    public static function findByUniqueKeys(string $user_id, string $division_id): ?self
     {
         return self::where('user_id', $user_id)->where('division_id', $division_id)->first();
     }
 
     public static function findFromRequest(User $user, Division $division): Collection
     {
-        $member = Member::findByUniqueKeys($user->id, $division->id);
-        $enable_all = $member?->hasAllViewPermissionTo(Member::RESOURCE)
-            || $user->hasAllViewPermissionTo(Member::RESOURCE);
+        $member = self::findByUniqueKeys($user->id, $division->id);
+        $enable_all = $member?->hasAllViewPermissionTo(self::RESOURCE)
+            || $user->hasAllViewPermissionTo(self::RESOURCE);
 
         /** @var Collection $members */
         $members = $division->members;

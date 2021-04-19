@@ -4,12 +4,15 @@
 
 namespace Tests\Feature\Http\Controllers\Sample;
 
+use App\Models\Common\PermissionType;
 use App\Models\Division\Division;
+use App\Models\Division\Member;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Database\Seeders\Common\PermissionSeeder;
 use Database\Seeders\Common\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 /**
@@ -19,8 +22,12 @@ use Tests\TestCase;
 class ProjectControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
 
     private User $user;
+    private Division $division;
+    private Member $member;
+    private Project $project;
 
     public function setUp(): void
     {
@@ -29,28 +36,17 @@ class ProjectControllerTest extends TestCase
         $this->seed(PermissionSeeder::class);
         $this->seed(RoleSeeder::class);
 
-        // 正常系ロール
-        $this->artisan('role:add "Test Division Manager"');
-        $projectPerms = 'viewAny_project,view_project,update_project,create_project,delete_project';
-        $permissions = 'view_division,view_project,' . $projectPerms;
-        $this->artisan('role:sync-permissions "Test Division Manager" ' . $permissions);
-
-        // Division だけが見えるロール
-        $this->artisan('role:add "Test Only Division Role"');
-        $permissions = 'view_division';
-        $this->artisan('role:sync-permissions "Test Only Division Role" ' . $permissions);
-
-        // Division が見えないロール
-        $this->artisan('role:add "Test Only Project Role"');
-        $permissions = $projectPerms;
-        $this->artisan('role:sync-permissions "Test Only Project Role" ' . $permissions);
-
-        // Division の作成とプロジェクトの作成
-        $this->division = Division::create(['name' => 'test']);
-        $this->project = Project::createWithDivision($this->division, ['name' => 'test project']);
-
         $this->user = User::factory()->create();
         $this->actingAs($this->user);
+
+        $this->division = Division::factory()->create();
+        $this->member = Member::factory()->create([
+            'user_id' => $this->user->id,
+            'division_id' => $this->division->id,
+        ]);
+        $this->project = Project::factory()->create([
+            'division_id' => $this->division->id,
+        ]);
     }
 
     /**
@@ -59,7 +55,8 @@ class ProjectControllerTest extends TestCase
 
     public function testIndexSuccessAsUser()
     {
-        $this->user->givePermissionTo(['view_division', 'viewAny_project']);
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Division::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
 
         $response = $this->getJson(route('divisions.projects.index', ['division' => $this->division->id]));
 
@@ -70,7 +67,8 @@ class ProjectControllerTest extends TestCase
 
     public function testShowSuccessAsUser()
     {
-        $this->user->givePermissionTo(['view_division', 'view_project']);
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Division::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
@@ -83,9 +81,11 @@ class ProjectControllerTest extends TestCase
 
     public function testUpdateSuccessAsUser()
     {
-        $this->user->givePermissionTo(['view_division', 'view_project', 'update_project']);
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Division::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, Project::RESOURCE));
 
-        $data = ['name' => 'foo'];
+        $data = ['name' => $this->faker->name];
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
@@ -98,7 +98,9 @@ class ProjectControllerTest extends TestCase
 
     public function testDestroySuccessAsUser()
     {
-        $this->user->givePermissionTo(['view_division', 'view_project', 'delete_project']);
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Division::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(PermissionType::DELETE_ALL, Project::RESOURCE));
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
@@ -114,7 +116,8 @@ class ProjectControllerTest extends TestCase
     public function testIndexSuccessAsMember()
     {
         // member 経由でのアクセス
-        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Division Manager'");
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
 
         $response = $this->getJson(route('divisions.projects.index', [
             'division' => $this->division->id,
@@ -128,7 +131,8 @@ class ProjectControllerTest extends TestCase
     public function testShowSuccessAsMember()
     {
         // member 経由でのアクセス
-        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Division Manager'");
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
@@ -145,9 +149,11 @@ class ProjectControllerTest extends TestCase
     public function testUpdateSuccessAsMember()
     {
         // member 経由でのアクセス
-        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Division Manager'");
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, Project::RESOURCE));
 
-        $data = ['name' => 'new project name'];
+        $data = ['name' => $this->faker->name];
 
         $response = $this->patchJson(route('divisions.projects.update', [
             'division' => $this->division->id,
@@ -167,15 +173,15 @@ class ProjectControllerTest extends TestCase
      */
     public function testShowNotFoundAsMember()
     {
-        // Division の作成とプロジェクトの作成
-        $otherDivision = Division::create(['name' => 'other test division']);
-        $otherProject = Project::createWithDivision($otherDivision, ['name' => 'other test project']);
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
 
-        // member 経由でのアクセス
-        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Division Manager'");
+        // Division の作成とプロジェクトの作成
+        /** @var Project $otherProject */
+        $otherProject = Project::factory()->create();
 
         $response = $this->getJson(route('divisions.projects.show', [
-            'division' => $otherDivision->id,
+            'division' => $otherProject->division_id,
             'project' => $otherProject->id
         ]));
 
@@ -187,8 +193,7 @@ class ProjectControllerTest extends TestCase
      */
     public function testIndexNotFoundNoPermissionAsMember()
     {
-        // member 経由でのアクセス
-        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Division Role'");
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
 
         $response = $this->getJson(route('divisions.projects.index', $this->division->id));
 
@@ -200,8 +205,7 @@ class ProjectControllerTest extends TestCase
      */
     public function testShowNotFoundNoPermissionAsMember()
     {
-        // member 経由でのアクセス
-        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Division Role'");
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
@@ -216,8 +220,8 @@ class ProjectControllerTest extends TestCase
      */
     public function testUpdateForbiddenNoPermissionAsMember()
     {
-        // member 経由でのアクセス
-        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Division Role'");
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
 
         $response = $this->patchJson(route('divisions.projects.update', [
             'division' => $this->division->id,
@@ -232,8 +236,8 @@ class ProjectControllerTest extends TestCase
      */
     public function testDestroyForbiddenNoPermissionAsMember()
     {
-        // member 経由でのアクセス
-        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Division Role'");
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
@@ -248,7 +252,7 @@ class ProjectControllerTest extends TestCase
      */
     public function testIndexNotFoundNoParentViewAsUser()
     {
-        $this->user->givePermissionTo(['viewAny_project']);
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
 
         $response = $this->getJson(route('divisions.projects.index', ['division' => $this->division->id]));
 
@@ -260,16 +264,17 @@ class ProjectControllerTest extends TestCase
      */
     public function testUpdateForbiddenAsUser()
     {
-        $this->user->givePermissionTo(['view_division', 'update_division']);
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, Project::RESOURCE));
 
-        $data = ['name' => 'foo'];
+        $data = ['name' => $this->faker->name];
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
             'project' => $this->project->id
         ]), $data);
 
-        $response->assertForbidden();
+        $response->assertNotFound();
     }
 
     /**
@@ -277,14 +282,15 @@ class ProjectControllerTest extends TestCase
      */
     public function testDestroyForbiddenAsUser()
     {
-        $this->user->givePermissionTo(['view_division', 'delete_division']);
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::DELETE_ALL, Project::RESOURCE));
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
             'project' => $this->project->id
         ]));
 
-        $response->assertForbidden();
+        $response->assertNotFound();
     }
 
     /**
@@ -292,9 +298,10 @@ class ProjectControllerTest extends TestCase
      */
     public function testUpdateNotFoundParentView()
     {
-        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Project Role'");
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Project::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, Project::RESOURCE));
 
-        $data = ['name' => 'foo'];
+        $data = ['name' => $this->faker->name];
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
@@ -309,7 +316,8 @@ class ProjectControllerTest extends TestCase
      */
     public function testDestroyNotFoundParentView()
     {
-        $this->artisan("division:add-member {$this->division->id} {$this->user->email} 'Test Only Project Role'");
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Project::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::DELETE_ALL, Project::RESOURCE));
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,

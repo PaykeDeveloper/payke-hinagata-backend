@@ -4,8 +4,20 @@
 
 namespace App\Http\Requests\Sample\Project;
 
-class ProjectCreateRequest extends ProjectIndexRequest
+use App\Http\Requests\FormRequest;
+
+class ProjectCreateRequest extends FormRequest
 {
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -14,7 +26,7 @@ class ProjectCreateRequest extends ProjectIndexRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:20'],
+            'name' => ['required', 'string', 'max:255'],
         ];
     }
 }
