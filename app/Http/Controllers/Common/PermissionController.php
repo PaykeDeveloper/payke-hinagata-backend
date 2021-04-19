@@ -11,7 +11,7 @@ class PermissionController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Permission::class, Permission::RESOURCE);
+        $this->authorizeResource(Permission::class);
     }
 
     public function index(Request $request): Response

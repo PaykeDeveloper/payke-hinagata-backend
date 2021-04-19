@@ -2,12 +2,23 @@
 
 namespace App\Http\Requests\Common\User;
 
+use App\Http\Requests\FormRequest;
 use App\Models\Common\UserRole;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
 
-class UserUpdateRequest extends UserShowRequest
+class UserUpdateRequest extends FormRequest
 {
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

@@ -7,7 +7,6 @@ namespace App\Policies\Common;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Http\Response;
-use function abort;
 
 class UserPolicy
 {
@@ -20,15 +19,22 @@ class UserPolicy
         if ($user->hasViewPermissionTo(self::RESOURCE)) {
             return true;
         }
+
         abort(Response::HTTP_NOT_FOUND);
         return false;
     }
 
     public function view(User $user, User $target_user): bool
     {
-        if ($user->hasViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             return true;
         }
+        if ($user->hasOwnViewPermissionTo(self::RESOURCE)) {
+            if ($user->id === $target_user->id) {
+                return true;
+            }
+        }
+
         abort(Response::HTTP_NOT_FOUND);
         return false;
     }

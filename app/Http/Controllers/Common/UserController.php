@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Common\User\UserIndexRequest;
-use App\Http\Requests\Common\User\UserShowRequest;
 use App\Http\Requests\Common\User\UserUpdateRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(User::class, User::RESOURCE);
+        $this->authorizeResource(User::class);
     }
 
     /**
@@ -30,10 +29,10 @@ class UserController extends Controller
      * }
      * ]
      *
-     * @param UserIndexRequest $request
+     * @param Request $request
      * @return Response
      */
-    public function index(UserIndexRequest $request): Response
+    public function index(Request $request): Response
     {
         return response(User::allOrWhereId($request->user()));
     }
@@ -50,11 +49,11 @@ class UserController extends Controller
      * "updated_at": "2021-03-25T01:48:01.000000Z"
      * }
      *
-     * @param UserShowRequest $request
+     * @param Request $request
      * @param User $user
      * @return Response
      */
-    public function show(UserShowRequest $request, User $user): Response
+    public function show(Request $request, User $user): Response
     {
         return response($user);
     }
@@ -82,12 +81,12 @@ class UserController extends Controller
 
     /**
      *
-     * @param UserShowRequest $request
+     * @param Request $request
      * @param User $user
      * @return Response
      * @throws \Exception
      */
-    public function destroy(UserShowRequest $request, User $user): Response
+    public function destroy(Request $request, User $user): Response
     {
         $user->delete();
         return response(null, 204);
