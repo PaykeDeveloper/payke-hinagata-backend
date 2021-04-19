@@ -298,7 +298,7 @@ class ProjectControllerTest extends TestCase
      */
     public function testUpdateNotFoundParentView()
     {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Project::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
         $this->member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, Project::RESOURCE));
 
         $data = ['name' => $this->faker->name];
@@ -316,7 +316,7 @@ class ProjectControllerTest extends TestCase
      */
     public function testDestroyNotFoundParentView()
     {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Project::RESOURCE));
+        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
         $this->member->givePermissionTo(PermissionType::getName(PermissionType::DELETE_ALL, Project::RESOURCE));
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
