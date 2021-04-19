@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Common\Permission;
 use App\Models\Division\Member;
 use App\Models\Sample\Book;
 use App\Models\Traits\HasAuthorization;
@@ -45,6 +46,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         'remember_token',
         'two_factor_secret',
         'two_factor_recovery_codes',
+        'permissions',
+        'roles',
     ];
 
     /**
@@ -56,11 +59,19 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ['all_permissions'];
+    protected $appends = ['permission_names', 'role_names'];
 
-    public function getAllPermissionsAttribute(): \Illuminate\Support\Collection
+    public function getPermissionNamesAttribute(): array
     {
-        return $this->getAllPermissions();
+        $permissions = $this->getAllPermissions()->all();
+        return array_map(function (Permission $permission) {
+            return $permission->name;
+        }, $permissions);
+    }
+
+    public function getRoleNamesAttribute(): array
+    {
+        return $this->getRoleNames()->all();
     }
 
     public function preferredLocale(): ?string
@@ -95,8 +106,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     public function updateFromRequest(mixed $attributes): self
     {
         $this->update($attributes);
-        if (array_key_exists('roles', $attributes)) {
-            $this->syncRoles($attributes['roles']);
+        if (array_key_exists('role_names', $attributes)) {
+            $this->syncRoles($attributes['role_names']);
         }
         return $this;
     }

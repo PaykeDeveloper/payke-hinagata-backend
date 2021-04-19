@@ -31,8 +31,8 @@ class MyUserControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonFragment([
-                'all_permissions' => [],
-                'roles' => [],
+                'permission_names' => [],
+                'role_names' => [],
             ]);
     }
 
@@ -46,15 +46,11 @@ class MyUserControllerTest extends TestCase
         $user->assignRole(UserRole::ADMIN);
 
         $response = $this->actingAs($user)->getJson('api/v1/user');
+        $response->json();
 
-        $response->assertOk()
-            ->assertJsonStructure([
-                'all_permissions' => [
-                    '*' => ['id', 'name'],
-                ],
-                'roles' => [
-                    '*' => ['id', 'name', 'type'],
-                ],
-            ]);
+        $response->assertOk();
+        $json = $response->json();
+        $this->assertNotEmpty($json['permission_names']);
+        $this->assertNotEmpty($json['role_names']);
     }
 }

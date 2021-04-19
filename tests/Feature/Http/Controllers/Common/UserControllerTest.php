@@ -101,7 +101,7 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
         $data = [
             'name' => $this->faker->name,
-            'roles' => UserRole::all(),
+            'role_names' => UserRole::all(),
         ];
 
         $response = $this->patchJson(route('users.update', ['user' => $user->id]), $data);
@@ -194,13 +194,13 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
         $data = [
             'name' => $this->faker->name,
-            'roles' => [MemberRole::MANAGER],
+            'role_names' => [MemberRole::MANAGER],
         ];
 
         $response = $this->patchJson(route('users.update', ['user' => $user->id]), $data);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJsonStructure(['errors' => ['roles.0']]);
+            ->assertJsonStructure(['errors' => ['role_names.0']]);
     }
 
 

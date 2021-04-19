@@ -28,8 +28,8 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
-            'roles' => ['array'],
-            'roles.*' => [Rule::exists('roles', 'name')->where(function (Builder $query) {
+            'role_names' => ['array'],
+            'role_names.*' => [Rule::exists('roles', 'name')->where(function (Builder $query) {
                 return $query->whereIn('name', UserRole::all());
             })]
         ];
