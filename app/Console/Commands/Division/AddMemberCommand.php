@@ -77,7 +77,7 @@ class AddMemberCommand extends Command
             $roles = ['Member'];
         }
 
-        $member = Member::createWithUserAndDivision($user, $division);
+        $member = Member::createFromRequest($user, $division);
         $member->syncRoles($roles);
 
         return 0;

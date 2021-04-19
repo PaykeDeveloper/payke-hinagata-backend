@@ -88,7 +88,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request, User $user): Response
     {
-        $user->delete();
+        $user->deleteFromRequest();
         return response(null, 204);
     }
 }

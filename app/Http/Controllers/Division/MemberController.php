@@ -5,24 +5,20 @@
 namespace App\Http\Controllers\Division;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Sample\Member\MemberCreateRequest;
-use App\Http\Requests\Sample\Member\MemberIndexRequest;
-use App\Http\Requests\Sample\Member\MemberShowRequest;
-use App\Http\Requests\Sample\Member\MemberUpdateRequest;
+use App\Http\Requests\Division\Member\MemberCreateRequest;
+use App\Http\Requests\Division\Member\MemberUpdateRequest;
 use App\Models\Division\Division;
 use App\Models\Division\Member;
-use App\Models\User;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class MemberController extends Controller
 {
     public function __construct()
     {
-        // Division (親リソース) の Policy 適用
         $this->middleware('can:view,division');
-
-        // Policy は追加パラメータが必要なので authorizeResource ではなく手動で呼び出す
+        $this->authorizeResource(Member::class);
     }
 
     /**
@@ -51,19 +47,12 @@ class MemberController extends Controller
      *   }
      * ]
      *
-     * @param MemberIndexRequest $request
+     * @param Request $request
+     * @param Division $division
      * @return Response
      */
-    public function index(MemberIndexRequest $request, Division $division): Response
+    public function index(Request $request, Division $division): Response
     {
-        // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division]);
-
-        foreach ($division->members as $member) {
-            // 取得を行うと自動的にレスポンスに挿入される
-            $member->getRoleNames();
-            $member->getAllPermissions();
-        }
         return response($division->members);
     }
 
@@ -95,28 +84,7 @@ class MemberController extends Controller
      */
     public function store(MemberCreateRequest $request, Division $division): Response
     {
-        // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division]);
-
-        $userId = $request->input('user_id');
-
-        /**
-         * @var User|null
-         */
-        $user = User::find($userId);
-
-        // Member として追加
-        $member = Member::createWithUserAndDivision($user, $division);
-
-        // Role を追加
-        $roles = $request->input('roles');
-        if (!is_null($roles)) {
-            $member->syncRoles($roles);
-        }
-
-        // 取得を行うと自動的にレスポンスに挿入される
-        $member->getAllPermissions();
-
+        $member = Member::createFromRequest($request->validated(), $division);
         return response($member);
     }
 
@@ -129,16 +97,13 @@ class MemberController extends Controller
      *   "updated_at": "2021-04-13T06:04:44.000000Z"
      * }
      *
-     * @param MemberShowRequest $request
+     * @param Request $request
      * @param Division $division
      * @param Member $member
      * @return Response
      */
-    public function show(MemberShowRequest $request, Division $division, Member $member): Response
+    public function show(Request $request, Division $division, Member $member): Response
     {
-        // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division, $member]);
-
         return response($member);
     }
 
@@ -159,38 +124,19 @@ class MemberController extends Controller
      */
     public function update(MemberUpdateRequest $request, Division $division, Member $member): Response
     {
-        // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division, $member]);
-
-        // Role の更新
-        $roles = $request->input('roles');
-        if (!is_null($roles)) {
-            $member->syncRoles($roles);
-        }
-
-        // 取得を行うと自動的にレスポンスに挿入される
-        $member->getAllPermissions();
-
-        $member->update($request->validated());
-
+        $member->updateFromRequest($request->validated());
         return response($member);
     }
 
     /**
-     * @param MemberShowRequest $request
+     * @param Request $request
      * @param Division $division
      * @return Response
      * @throws Exception
      */
-    public function destroy(MemberShowRequest $request, Division $division, Member $member): Response
+    public function destroy(Request $request, Division $division, Member $member): Response
     {
-        // Policy の呼び出し (追加パラメータを渡す為手動実行)
-        $this->authorize($this->resourceAbilityMap()[__FUNCTION__], [Member::class, $division, $member]);
-
-        // ロールの割り当て解除
-        $member->roles()->detach();
-
-        $member->delete();
+        $member->deleteFromRequest();
         return response(null, 204);
     }
 }

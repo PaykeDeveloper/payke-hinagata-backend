@@ -2,11 +2,14 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Requests\Sample\Member;
+namespace App\Http\Requests\Division\Member;
 
 use App\Http\Requests\FormRequest;
+use App\Models\Sample\MemberRole;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Validation\Rule;
 
-class MemberIndexRequest extends FormRequest
+class MemberUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +29,10 @@ class MemberIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'role_names' => ['array'],
+            'role_names.*' => [Rule::exists('roles', 'name')->where(function (Builder $query) {
+                return $query->whereIn('name', MemberRole::all());
+            })]
         ];
     }
 }

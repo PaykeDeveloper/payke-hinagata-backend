@@ -7,222 +7,122 @@ namespace App\Policies\Division;
 use App\Models\Division\Division;
 use App\Models\Division\Member;
 use App\Models\User;
-use App\Policies\Common\AuthorizablePolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class MemberPolicy extends AuthorizablePolicy
+class MemberPolicy
 {
     use HandlesAuthorization;
 
-    public function __construct()
+    private const RESOURCE = Member::RESOURCE;
+
+    private Division $division;
+    private ?Member $member;
+
+    public function __construct(Request $request)
     {
-        $this->model = Member::class;
-        parent::__construct();
+        /** @var User $user */
+        $user = $request->user();
+        /** @var Division $division */
+        $division = $request->route('division');
+        $this->division = $division;
+        $this->member = Member::findByUniqueKeys($user->id, $division->id);
     }
 
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @param User $user
-     * @return mixed
-     */
-    public function viewAny(User $user, Division $division)
+    public function viewAny(User $user): bool
     {
-        // Member のパーミッションチェック (Division に属する)
-        foreach ($division->members as $member) {
-            if ($member->user_id === $user->id) {
-                if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
-                    return true;
-                }
-            }
+        if ($this->member?->hasViewPermissionTo(self::RESOURCE)) {
+            return true;
         }
 
-        // User パーミッションチェック (Admin)
-        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
+        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             return true;
         }
 
         abort(Response::HTTP_NOT_FOUND);
+        return false;
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     * @param Member $member
-     * @return mixed
-     */
-    public function view(User $user, Division $division, Member $member)
+    public function view(User $user, Member $member): bool
     {
-        // Member のパーミッションチェック (Division に属する)
-        foreach ($division->members as $member) {
-            if ($member->user_id === $user->id) {
-                if ($member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
-                    return true;
-                }
+        if ($this->division->id !== $member->division_id) {
+            abort(Response::HTTP_NOT_FOUND);
+        }
+
+        if ($this->member?->hasAllViewPermissionTo(self::RESOURCE)) {
+            return true;
+        }
+        if ($this->member?->hasOwnViewPermissionTo(self::RESOURCE)) {
+            if ($this->member->id === $member->id) {
+                return true;
             }
         }
 
-        // User パーミッションチェック (Admin)
-        if ($user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName())) {
+        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             return true;
         }
 
         abort(Response::HTTP_NOT_FOUND);
+        return false;
     }
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     * @return mixed
-     */
-    public function create(User $user, Division $division)
+    public function create(User $user): bool
     {
-        // Member のパーミッションチェック (Division に属する)
-        foreach ($division->members as $member) {
-            if ($member->user_id === $user->id) {
-                $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
-                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
+        return $this->viewAny($user)
+            && $user->hasCreatePermissionTo(self::RESOURCE);
+    }
 
-                if ($viewPermission && $funcPermission) {
-                    return true;
-                }
+    public function update(User $user, Member $member): bool
+    {
+        if (!$this->view($user, $member)) {
+            return false;
+        }
+
+        if ($this->member?->hasAllUpdatePermissionTo(self::RESOURCE)) {
+            return true;
+        }
+        if ($this->member?->hasOwnUpdatePermissionTo(self::RESOURCE)) {
+            if ($this->member->id === $member->id) {
+                return true;
             }
         }
 
-        // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
-        if ($viewPermission && $funcPermission) {
+        if ($user->hasAllUpdatePermissionTo(self::RESOURCE)) {
             return true;
         }
 
-        abort(Response::HTTP_FORBIDDEN);
+        return false;
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     * @param Member $member
-     * @return mixed
-     */
-    public function update(User $user, Division $division, Member $member)
+    public function delete(User $user, Member $member): bool
     {
-        // Member のパーミッションチェック (Division に属する)
-        foreach ($division->members as $member) {
-            if ($member->user_id === $user->id) {
-                $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
-                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
-
-                if ($viewPermission && $funcPermission) {
-                    return true;
-                }
-            }
+        if (!$this->view($user, $member)) {
+            return false;
         }
 
-        // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
-        if ($viewPermission && $funcPermission) {
+        if ($this->member?->hasAllUpdatePermissionTo(self::RESOURCE)) {
+            return true;
+        }
+        if ($this->member?->hasOwnUpdatePermissionTo(self::RESOURCE)) {
+            if ($this->member->id === $member->id) {
+                return true;
+            }
+        }
+        if ($user->hasAllDeletePermissionTo(self::RESOURCE)) {
             return true;
         }
 
-        abort(Response::HTTP_FORBIDDEN);
+        return false;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param User $user
-     * @param Member $member
-     * @return mixed
-     */
-    public function delete(User $user, Division $division, Member $member)
+    public function restore(User $user, Member $member): bool
     {
-        // Member のパーミッションチェック (Division に属する)
-        foreach ($division->members as $member) {
-            if ($member->user_id === $user->id) {
-                $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
-                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
-
-                if ($viewPermission && $funcPermission) {
-                    return true;
-                }
-            }
-        }
-
-        // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
-        if ($viewPermission && $funcPermission) {
-            return true;
-        }
-
-        abort(Response::HTTP_FORBIDDEN);
+        return false;
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param User $user
-     * @param Member $member
-     * @return mixed
-     */
-    public function restore(User $user, Division $division, Member $member)
+    public function forceDelete(User $user, Member $member): bool
     {
-        // Member のパーミッションチェック (Division に属する)
-        foreach ($division->members as $member) {
-            if ($member->user_id === $user->id) {
-                $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
-                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
-
-                if ($viewPermission && $funcPermission) {
-                    return true;
-                }
-            }
-        }
-
-        // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
-        if ($viewPermission && $funcPermission) {
-            return true;
-        }
-
-        abort(Response::HTTP_FORBIDDEN);
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param User $user
-     * @param Member $member
-     * @return mixed
-     */
-    public function forceDelete(User $user, Division $division, Member $member)
-    {
-        // Member のパーミッションチェック (Division に属する)
-        foreach ($division->members as $member) {
-            if ($member->user_id === $user->id) {
-                $viewPermission = $member->hasAllOrPermissionTo('view', $this->modelName());
-                $funcPermission = $member->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
-
-                if ($viewPermission && $funcPermission) {
-                    return true;
-                }
-            }
-        }
-
-        // User パーミッションチェック (Admin)
-        $viewPermission = $user->hasAllOrPermissionTo('view', $this->modelName());
-        $funcPermission = $user->hasAllOrPermissionTo(__FUNCTION__, $this->modelName());
-        if ($viewPermission && $funcPermission) {
-            return true;
-        }
-
-        abort(Response::HTTP_FORBIDDEN);
+        return false;
     }
 }

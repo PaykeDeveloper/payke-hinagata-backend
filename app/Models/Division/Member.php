@@ -4,7 +4,7 @@
 
 namespace App\Models\Division;
 
-use App\Models\Sample\IdeHelperMember;
+use App\Models\Common\Permission;
 use App\Models\Traits\HasAuthorization;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +28,21 @@ class Member extends Model
         'updated_at',
     ];
 
+    protected $appends = ['permission_names', 'role_names'];
+
+    public function getPermissionNamesAttribute(): array
+    {
+        $permissions = $this->getAllPermissions()->all();
+        return array_map(function (Permission $permission) {
+            return $permission->name;
+        }, $permissions);
+    }
+
+    public function getRoleNamesAttribute(): array
+    {
+        return $this->getRoleNames()->all();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -43,13 +58,35 @@ class Member extends Model
         return self::where('user_id', $user_id)->where('division_id', $division_id)->first();
     }
 
-    public static function createWithUserAndDivision(User $user, Division $division, array $attributes = []): Member
+    public static function createFromRequest(mixed $attributes, Division $division): self
     {
         $member = new self();
         $member->fill($attributes);
-        $member->user_id = $user->id;
         $member->division_id = $division->id;
         $member->save();
+        if (array_key_exists('role_names', $attributes)) {
+            $member->syncRoles($attributes['role_names']);
+        }
         return $member;
+    }
+
+    public function updateFromRequest(mixed $attributes): self
+    {
+        $this->update($attributes);
+        if (array_key_exists('role_names', $attributes)) {
+            $this->syncRoles($attributes['role_names']);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function deleteFromRequest()
+    {
+        $this->syncRoles([]);
+        $this->syncPermissions([]);
+        $this->delete();
     }
 }
