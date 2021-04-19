@@ -4,7 +4,7 @@
 
 namespace Tests\Feature\Http\Controllers\Sample;
 
-use App\Models\Sample\Division;
+use App\Models\Division\Division;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Database\Seeders\Common\PermissionSeeder;

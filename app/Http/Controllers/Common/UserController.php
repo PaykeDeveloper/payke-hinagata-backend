@@ -34,7 +34,7 @@ class UserController extends Controller
      */
     public function index(Request $request): Response
     {
-        return response(User::allOrWhereId($request->user()));
+        return response(User::getFromRequest($request->user()));
     }
 
     /**

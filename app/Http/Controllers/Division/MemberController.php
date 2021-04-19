@@ -2,15 +2,15 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Controllers\Sample;
+namespace App\Http\Controllers\Division;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Sample\Member\MemberShowRequest;
 use App\Http\Requests\Sample\Member\MemberCreateRequest;
 use App\Http\Requests\Sample\Member\MemberIndexRequest;
+use App\Http\Requests\Sample\Member\MemberShowRequest;
 use App\Http\Requests\Sample\Member\MemberUpdateRequest;
-use App\Models\Sample\Division;
-use App\Models\Sample\Member;
+use App\Models\Division\Division;
+use App\Models\Division\Member;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Response;

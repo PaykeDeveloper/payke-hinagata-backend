@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Division;
 
-use App\Models\Sample\Division;
-use App\Models\Sample\Member;
+use App\Models\Division\Division;
+use App\Models\Division\Member;
 use App\Models\User;
 use Illuminate\Console\Command;
 

@@ -4,6 +4,7 @@
 
 namespace App\Models\Sample;
 
+use App\Models\Division\Division;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

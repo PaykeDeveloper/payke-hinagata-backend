@@ -2,22 +2,24 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Http\Controllers\Sample;
+namespace App\Http\Controllers\Division;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Sample\Division\DivisionCreateRequest;
-use App\Http\Requests\Sample\Division\DivisionIndexRequest;
-use App\Http\Requests\Sample\Division\DivisionShowRequest;
-use App\Http\Requests\Sample\Division\DivisionUpdateRequest;
-use App\Models\Sample\Division;
+use App\Http\Requests\Division\Division\DivisionCreateRequest;
+use App\Http\Requests\Division\Division\DivisionUpdateRequest;
+use App\Models\Common\Permission;
+use App\Models\Division\Division;
+use App\Models\Division\Member;
+use App\Models\User;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class DivisionController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Division::class, 'division');
+        $this->authorizeResource(Division::class);
     }
 
     /**
@@ -30,12 +32,12 @@ class DivisionController extends Controller
      *   }
      * ]
      *
-     * @param DivisionIndexRequest $request
+     * @param Request $request
      * @return Response
      */
-    public function index(DivisionIndexRequest $request): Response
+    public function index(Request $request): Response
     {
-        return response(Division::listByPermissions($request->user()));
+        return response(Division::getFromRequest($request->user()));
     }
 
     /**
@@ -51,7 +53,7 @@ class DivisionController extends Controller
      */
     public function store(DivisionCreateRequest $request): Response
     {
-        $division = Division::create($request->validated());
+        $division = Division::createFromRequest($request->validated(), $request->user());
         return response($division);
     }
 
@@ -87,13 +89,22 @@ class DivisionController extends Controller
      *   ]
      * }
      *
-     * @param DivisionShowRequest $request
+     * @param Request $request
      * @param Division $division
      * @return Response
      */
-    public function show(DivisionShowRequest $request, Division $division): Response
+    public function show(Request $request, Division $division): Response
     {
-        return response($division);
+        $result = $division->toArray();
+        /** @var User $user */
+        $user = $request->user();
+        $member = Member::findByUniqueKeys($user->id, $division->id);
+        $permissions = $member?->getAllPermissions()->all() ?? $user->getAllPermissions()->all();
+        $permission_names = array_map(function (Permission $permission) {
+            return $permission->name;
+        }, $permissions);
+        $result['permission_names'] = $permission_names;
+        return response($result);
     }
 
     /**
@@ -139,12 +150,12 @@ class DivisionController extends Controller
     }
 
     /**
-     * @param DivisionShowRequest $request
+     * @param Request $request
      * @param Division $division
      * @return Response
      * @throws Exception
      */
-    public function destroy(DivisionShowRequest $request, Division $division): Response
+    public function destroy(Request $request, Division $division): Response
     {
         $division->delete();
         return response(null, 204);

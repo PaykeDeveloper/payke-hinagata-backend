@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\User;
-use Gate;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -22,6 +21,8 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\User::class => \App\Policies\Common\UserPolicy::class,
         \App\Models\Common\Permission::class => \App\Policies\Common\PermissionPolicy::class,
         \App\Models\Common\Role::class => \App\Policies\Common\RolePolicy::class,
+        \App\Models\Division\Division::class => \App\Policies\Division\DivisionPolicy::class,
+        \App\Models\Division\Member::class => \App\Policies\Division\MemberPolicy::class,
     ];
 
     /**
@@ -32,12 +33,6 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        // Implicitly grant "Super Admin" role all permissions
-        // This works in the app by using gate-related functions like auth()->user->can() and @can()
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole('Super Admin') ? true : null;
-        });
 
         ResetPassword::createUrlUsing(function (User $user, string $token) {
             $origin = config('constant.frontend_origin');

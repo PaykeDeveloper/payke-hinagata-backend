@@ -9,10 +9,10 @@ use App\Http\Requests\Sample\Project\ProjectCreateRequest;
 use App\Http\Requests\Sample\Project\ProjectIndexRequest;
 use App\Http\Requests\Sample\Project\ProjectShowRequest;
 use App\Http\Requests\Sample\Project\ProjectUpdateRequest;
-use App\Models\Sample\Division;
+use App\Models\Division\Division;
 use App\Models\Sample\Project;
-use Illuminate\Http\Response;
 use Exception;
+use Illuminate\Http\Response;
 
 class ProjectController extends Controller
 {

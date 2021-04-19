@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Division\Member;
 use App\Models\Sample\Book;
-use App\Models\Sample\Member;
 use App\Models\Traits\HasAuthorization;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -79,25 +79,10 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         return $this->hasMany(Member::class);
     }
 
-    public function divisions(): array
-    {
-        // get all division ids belonging to the user
-        $divisions = [];
-        foreach ($this->members()->get() as $member) {
-            $divisions[] = $member->division;
-        }
-        // remove duplicates
-        $unique_divisions = [];
-        foreach ($divisions as $division) {
-            $unique_divisions[$division->id] = $division;
-        }
-        return array_values($unique_divisions);
-    }
-
     /**
      * 全閲覧権限がある場合は全て、それ以外は Id で絞り込む
      */
-    public static function allOrWhereId(User $user): Collection
+    public static function getFromRequest(User $user): Collection
     {
         if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             // 全ての閲覧権限を持っている場合は全データ取得

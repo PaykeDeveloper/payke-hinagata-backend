@@ -2,14 +2,14 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Models\Sample;
+namespace App\Models\Division;
 
+use App\Models\Sample\IdeHelperMember;
 use App\Models\Traits\HasAuthorization;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @mixin IdeHelperMember
@@ -20,8 +20,7 @@ class Member extends Model
 
     public const RESOURCE = 'member';
 
-    /** @var string */
-    protected $guard_name = 'web';
+    protected string $guard_name = 'web';
 
     protected $guarded = [
         'id',
@@ -29,9 +28,9 @@ class Member extends Model
         'updated_at',
     ];
 
-    public function user(): HasOne
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function division(): BelongsTo

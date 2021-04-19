@@ -4,12 +4,12 @@
 
 namespace App\Policies;
 
-use Illuminate\Http\Response;
-use App\Models\Sample\Division;
+use App\Models\Division\Division;
 use App\Models\Sample\Project;
 use App\Models\User;
 use App\Policies\Common\AuthorizablePolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Http\Response;
 
 class ProjectPolicy extends AuthorizablePolicy
 {
@@ -25,7 +25,7 @@ class ProjectPolicy extends AuthorizablePolicy
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Sample\Division  $division
+     * @param  \App\Models\Division\Division  $division
      * @return mixed
      */
     public function viewAny(User $user, Division $division)

@@ -2,7 +2,7 @@
 
 namespace App\Models\Common;
 
-use App\Models\Sample\Member;
+use App\Models\Division\Member;
 use App\Models\Sample\MemberRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

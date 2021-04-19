@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Division;
 
-use App\Models\Sample\Division;
+use App\Models\Division\Division;
 use Illuminate\Console\Command;
 
 class AddDivisionCommand extends Command

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Division;
 
-use App\Models\Sample\Member;
+use App\Models\Division\Member;
 use Illuminate\Console\Command;
 
 class RemoveMemberCommand extends Command

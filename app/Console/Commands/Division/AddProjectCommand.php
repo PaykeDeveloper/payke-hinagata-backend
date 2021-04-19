@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Division;
 
-use App\Models\Sample\Division;
+use App\Models\Division\Division;
 use App\Models\Sample\Project;
 use Illuminate\Console\Command;
 

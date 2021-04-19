@@ -2,8 +2,11 @@
 
 // FIXME: SAMPLE CODE
 
-namespace App\Models\Sample;
+namespace App\Models\Division;
 
+use App\Models\Sample\IdeHelperDivision;
+use App\Models\Sample\MemberRole;
+use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -48,9 +51,9 @@ class Division extends Model
      * 一覧取得
      * 権限によって取得される内容が自動的に可変する
      */
-    public static function listByPermissions(User $user): Collection
+    public static function getFromRequest(User $user): Collection
     {
-        if ($user->hasPermissionTo('viewAnyAll_division')) {
+        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             // ユーザー自体が全てを見れる権限があれば全てを返す
             return self::all();
         } else {
@@ -59,5 +62,20 @@ class Division extends Model
                 $query->where('user_id', '=', $user->id);
             })->get();
         }
+    }
+
+    public static function createFromRequest(mixed $attributes, User $user): self
+    {
+        $division = new self();
+        $division->fill($attributes);
+        $division->save();
+
+        $member = Member::create([
+            'user_id' => $user->id,
+            'division_id' => $division->id,
+        ]);
+        $member->syncRoles(MemberRole::all());
+
+        return $division;
     }
 }

@@ -7,10 +7,10 @@ use App\Http\Controllers\Common\RoleController;
 use App\Http\Controllers\Common\StatusController;
 use App\Http\Controllers\Common\TokenController;
 use App\Http\Controllers\Common\UserController;
+use App\Http\Controllers\Division\DivisionController;
+use App\Http\Controllers\Division\MemberController;
 use App\Http\Controllers\Sample\BookCommentController;
 use App\Http\Controllers\Sample\BookController;
-use App\Http\Controllers\Sample\DivisionController;
-use App\Http\Controllers\Sample\MemberController;
 use App\Http\Controllers\Sample\ProjectController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,13 +45,13 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('invitations', InvitationController::class);
 
         // FIXME: SAMPLE CODE
+        Route::apiResource('divisions', DivisionController::class);
+        Route::apiResource('divisions.members', MemberController::class);
+        Route::apiResource('divisions.projects', ProjectController::class);
+
         Route::apiResource('books', BookController::class);
         Route::apiResource('books.comments', BookCommentController::class);
         Route::post('/books/{book}/comments/create-async', [BookCommentController::class, 'storeAsync']);
         Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
-
-        Route::apiResource('divisions', DivisionController::class);
-        Route::apiResource('divisions.members', MemberController::class);
-        Route::apiResource('divisions.projects', ProjectController::class);
     });
 });
