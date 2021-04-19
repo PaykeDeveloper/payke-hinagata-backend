@@ -40,13 +40,17 @@ class MemberCreateRequest extends FormRequest
             || $user?->hasAllCreatePermissionTo(Member::RESOURCE);
 
         return [
-            'user_id' => ['required', Rule::exists('users')->where(function (Builder $query) use ($enable_all, $user) {
-                if ($enable_all) {
-                    return $query;
-                } else {
-                    return $query->where('id', $user->id);
-                }
-            })],
+            'user_id' => ['required', 'integer',
+                Rule::unique('members')->where(function (Builder $query) use ($division) {
+                    return $query->where('division_id', $division->id);
+                }),
+                Rule::exists('users', 'id')->where(function (Builder $query) use ($enable_all, $user) {
+                    if ($enable_all) {
+                        return $query;
+                    } else {
+                        return $query->where('id', $user->id);
+                    }
+                })],
             'role_names' => ['array'],
             'role_names.*' => ['string', Rule::exists('roles', 'name')->where(function (Builder $query) {
                 return $query->whereIn('name', MemberRole::all());
