@@ -64,14 +64,4 @@ class InvitationPolicy
 
         return false;
     }
-
-    public function restore(User $user, Invitation $invitation): bool
-    {
-        return false;
-    }
-
-    public function forceDelete(User $user, Invitation $invitation): bool
-    {
-        return false;
-    }
 }

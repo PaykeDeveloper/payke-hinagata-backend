@@ -48,14 +48,4 @@ class RolePolicy
         return $this->view($user, $role)
             && $user->hasAllDeletePermissionTo(self::RESOURCE);
     }
-
-    public function restore(User $user, Role $role): bool
-    {
-        return false;
-    }
-
-    public function forceDelete(User $user, Role $role): bool
-    {
-        return false;
-    }
 }

@@ -126,14 +126,4 @@ class MemberPolicy
 
         return false;
     }
-
-    public function restore(User $user, Member $member): bool
-    {
-        return false;
-    }
-
-    public function forceDelete(User $user, Member $member): bool
-    {
-        return false;
-    }
 }

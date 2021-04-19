@@ -83,16 +83,6 @@ class DivisionPolicy
         return false;
     }
 
-    public function restore(User $user, Division $division): bool
-    {
-        return false;
-    }
-
-    public function forceDelete(User $user, Division $division): bool
-    {
-        return false;
-    }
-
     private ?Member $member = null;
     private ?string $user_id = null;
     private ?string $division_id = null;

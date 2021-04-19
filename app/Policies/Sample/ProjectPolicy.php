@@ -113,14 +113,4 @@ class ProjectPolicy
 
         return false;
     }
-
-    public function restore(User $user, Project $project): bool
-    {
-        return false;
-    }
-
-    public function forceDelete(User $user, Project $project): bool
-    {
-        return false;
-    }
 }

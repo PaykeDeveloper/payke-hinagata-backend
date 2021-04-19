@@ -76,14 +76,4 @@ class UserPolicy
 
         return false;
     }
-
-    public function restore(User $user, User $target_user): bool
-    {
-        return false;
-    }
-
-    public function forceDelete(User $user, User $target_user): bool
-    {
-        return false;
-    }
 }

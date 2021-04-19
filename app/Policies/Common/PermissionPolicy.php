@@ -48,14 +48,4 @@ class PermissionPolicy
         return $this->view($user, $permission)
             && $user->hasAllDeletePermissionTo(self::RESOURCE);
     }
-
-    public function restore(User $user, Permission $permission): bool
-    {
-        return false;
-    }
-
-    public function forceDelete(User $user, Permission $permission): bool
-    {
-        return false;
-    }
 }
