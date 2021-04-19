@@ -7,6 +7,7 @@ namespace App\Models\Division;
 use App\Models\Common\Permission;
 use App\Models\Traits\HasAuthorization;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -56,6 +57,21 @@ class Member extends Model
     public static function findByUniqueKeys(string $user_id, string $division_id): ?Member
     {
         return self::where('user_id', $user_id)->where('division_id', $division_id)->first();
+    }
+
+    public static function findFromRequest(User $user, Division $division): Collection
+    {
+        $member = Member::findByUniqueKeys($user->id, $division->id);
+        $enable_all = $member?->hasAllViewPermissionTo(Member::RESOURCE)
+            || $user->hasAllViewPermissionTo(Member::RESOURCE);
+
+        /** @var Collection $members */
+        $members = $division->members;
+        if ($enable_all) {
+            return $members;
+        } else {
+            return $members->where('user_id', $user->id);
+        }
     }
 
     public static function createFromRequest(mixed $attributes, Division $division): self

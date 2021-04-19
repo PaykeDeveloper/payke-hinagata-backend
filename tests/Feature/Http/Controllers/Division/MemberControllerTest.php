@@ -110,40 +110,40 @@ class MemberControllerTest extends TestCase
 
     public function testIndexSuccessUserViewAnyAsMember()
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
         /** @var Member $member */
         $member = Member::factory()->create([
             'user_id' => $this->user->id,
             'division_id' => $this->division->id,
         ]);
         $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-        $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Division::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Member::RESOURCE));
 
         $response = $this->getJson(route('divisions.members.index', [
             'division' => $this->division->id,
-            'member' => $this->member->id,
         ]));
 
         $response->assertOk()
             ->assertJsonCount(1)
-            ->assertJsonFragment($this->member->toArray())
             ->assertJsonFragment($member->toArray());
     }
 
     public function testShowSuccessAsMember()
     {
-        $division = Division::create(['name' => $this->faker->name]);
-
-        $member = Member::create([
+        /** @var Member $member */
+        $member = Member::factory()->create([
             'user_id' => $this->user->id,
-            'division_id' => $division->id,
+            'division_id' => $this->division->id,
         ]);
         $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Member::RESOURCE));
 
-        $response = $this->getJson(route('divisions.members.show', $division->id));
+        $response = $this->getJson(route('divisions.members.show', [
+            'division' => $this->division->id,
+            'member' => $member->id,
+        ]));
 
         $response->assertOk()
-            ->assertJson($division->toArray());
+            ->assertJson($member->toArray());
     }
 
     /**
@@ -151,18 +151,21 @@ class MemberControllerTest extends TestCase
      */
     public function testUpdateSuccessAsMember()
     {
-        $division = Division::create(['name' => $this->faker->name]);
-
-        $member = Member::create([
+        /** @var Member $member */
+        $member = Member::factory()->create([
             'user_id' => $this->user->id,
-            'division_id' => $division->id,
+            'division_id' => $this->division->id,
         ]);
         $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-        $member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_OWN, Division::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Member::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_OWN, Member::RESOURCE));
 
-        $data = ['name' => $this->faker->name];
+        $data = ['role_names' => [MemberRole::MEMBER]];
 
-        $response = $this->patchJson(route('divisions.members.update', ['division' => $division->id]), $data);
+        $response = $this->patchJson(route('divisions.members.update', [
+            'division' => $this->division->id,
+            'member' => $member->id,
+        ]), $data);
 
         $response->assertOk()
             ->assertJson($data);
@@ -173,21 +176,23 @@ class MemberControllerTest extends TestCase
      */
 
     /**
-     * Memberではない別のカンパニーにアクセスするとエラーになる。
+     * 権限の無い別のメンバーにアクセスするとエラーになる。
      */
     public function testShowNotFoundAsMember()
     {
-        $division = Division::create(['name' => $this->faker->name]);
-        $member = Member::create([
+        /** @var Member $member */
+        $member = Member::factory()->create([
             'user_id' => $this->user->id,
-            'division_id' => $division->id,
+            'division_id' => $this->division->id,
         ]);
         $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-        $member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_OWN, Division::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Member::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_OWN, Member::RESOURCE));
 
-        $division2 = Division::create(['name' => $this->faker->name]);
-
-        $response = $this->getJson(route('divisions.members.show', $division2->id));
+        $response = $this->getJson(route('divisions.members.show', [
+            'division' => $this->division->id,
+            'member' => $this->member->id,
+        ]));
 
         $response->assertNotFound();
     }
@@ -197,13 +202,9 @@ class MemberControllerTest extends TestCase
      */
     public function testIndexNotFoundNoPermissionAsMember()
     {
-        $division = Division::create(['name' => $this->faker->name]);
-        Member::create([
-            'user_id' => $this->user->id,
-            'division_id' => $division->id,
-        ]);
-
-        $response = $this->getJson(route('divisions.members.index', $division->id));
+        $response = $this->getJson(route('divisions.members.index', [
+            'division' => $this->division->id,
+        ]));
 
         $response->assertNotFound();
     }
@@ -213,13 +214,10 @@ class MemberControllerTest extends TestCase
      */
     public function testShowNotFoundNoPermissionAsMember()
     {
-        $division = Division::create(['name' => $this->faker->name]);
-        Member::create([
-            'user_id' => $this->user->id,
-            'division_id' => $division->id,
-        ]);
-
-        $response = $this->getJson(route('divisions.members.show', $division->id));
+        $response = $this->getJson(route('divisions.members.show', [
+            'division' => $this->division->id,
+            'member' => $this->member->id,
+        ]));
 
         $response->assertNotFound();
     }
@@ -229,16 +227,20 @@ class MemberControllerTest extends TestCase
      */
     public function testUpdateForbiddenNoPermissionAsMember()
     {
-        $division = Division::create(['name' => $this->faker->name]);
+        /** @var Member $member */
         $member = Member::create([
             'user_id' => $this->user->id,
-            'division_id' => $division->id,
+            'division_id' => $this->division->id,
         ]);
         $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Member::RESOURCE));
 
-        $data = ['name' => $this->faker->name];
+        $data = ['role_names' => [MemberRole::MEMBER]];
 
-        $response = $this->patchJson(route('divisions.members.update', $division->id), $data);
+        $response = $this->patchJson(route('divisions.members.update', [
+            'division' => $this->division->id,
+            'member' => $member->id,
+        ]), $data);
 
         $response->assertForbidden();
     }
@@ -248,14 +250,18 @@ class MemberControllerTest extends TestCase
      */
     public function testDestroyForbiddenNoPermissionAsMember()
     {
-        $division = Division::create(['name' => $this->faker->name]);
+        /** @var Member $member */
         $member = Member::create([
             'user_id' => $this->user->id,
-            'division_id' => $division->id,
+            'division_id' => $this->division->id,
         ]);
         $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Member::RESOURCE));
 
-        $response = $this->deleteJson(route('divisions.members.destroy', $division->id));
+        $response = $this->deleteJson(route('divisions.members.destroy', [
+            'division' => $this->division->id,
+            'member' => $member->id,
+        ]));
 
         $response->assertForbidden();
     }
@@ -265,16 +271,20 @@ class MemberControllerTest extends TestCase
      */
     public function testUpdateForbiddenAsUser()
     {
-        $division = Division::create(['name' => $this->faker->name]);
-        $member = Member::create([
+        /** @var Member $member */
+        $member = Member::factory()->create([
             'user_id' => $this->user->id,
-            'division_id' => $division->id,
+            'division_id' => $this->division->id,
         ]);
-        $member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_OWN, Division::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_OWN, Member::RESOURCE));
 
-        $data = ['name' => $this->faker->name];
+        $data = ['role_names' => [MemberRole::MEMBER]];
 
-        $response = $this->putJson(route('divisions.members.update', ['division' => $division->id]), $data);
+        $response = $this->patchJson(route('divisions.members.update', [
+            'division' => $this->division->id,
+            'member' => $member->id,
+        ]), $data);
 
         $response->assertNotFound();
     }
@@ -284,14 +294,18 @@ class MemberControllerTest extends TestCase
      */
     public function testDestroyForbiddenAsUser()
     {
-        $division = Division::create(['name' => $this->faker->name]);
-        $member = Member::create([
+        /** @var Member $member */
+        $member = Member::factory()->create([
             'user_id' => $this->user->id,
-            'division_id' => $division->id,
+            'division_id' => $this->division->id,
         ]);
-        $member->givePermissionTo(PermissionType::getName(PermissionType::DELETE_OWN, Division::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
+        $member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_OWN, Member::RESOURCE));
 
-        $response = $this->deleteJson(route('divisions.members.destroy', ['division' => $division->id]));
+        $response = $this->deleteJson(route('divisions.members.destroy', [
+            'division' => $this->division->id,
+            'member' => $member->id,
+        ]));
 
         $response->assertNotFound();
     }

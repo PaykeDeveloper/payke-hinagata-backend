@@ -53,7 +53,8 @@ class MemberController extends Controller
      */
     public function index(Request $request, Division $division): Response
     {
-        return response($division->members);
+        $members = Member::findFromRequest($request->user(), $division);
+        return response($members);
     }
 
     /**
