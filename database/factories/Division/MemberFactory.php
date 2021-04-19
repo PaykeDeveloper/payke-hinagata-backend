@@ -1,5 +1,7 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace Database\Factories\Division;
 
 use App\Models\Division\Division;
