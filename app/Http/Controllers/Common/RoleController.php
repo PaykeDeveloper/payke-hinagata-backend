@@ -15,7 +15,13 @@ class RoleController extends Controller
     }
 
     /**
-     * ロールの一覧 (Super Admin のみ実行可能)
+     * @response [
+     * {
+     * "id": 1,
+     * "name": "Admin",
+     * "type": "user"
+     * }
+     * ]
      *
      * @param Request $request
      * @return Response

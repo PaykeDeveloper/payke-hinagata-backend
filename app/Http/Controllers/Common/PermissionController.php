@@ -14,6 +14,17 @@ class PermissionController extends Controller
         $this->authorizeResource(Permission::class);
     }
 
+    /**
+     * @response [
+     * {
+     * "id": 1,
+     * "name": "user_viewAll"
+     * }
+     * ]
+     *
+     * @param Request $request
+     * @return Response
+     */
     public function index(Request $request): Response
     {
         return response(Permission::all());

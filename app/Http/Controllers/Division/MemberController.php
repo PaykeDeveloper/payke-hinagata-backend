@@ -23,28 +23,22 @@ class MemberController extends Controller
 
     /**
      * @response [
-     *   {
-     *     "id": 5,
-     *     "user_id": 2,
-     *     "division_id": 18,
-     *     "created_at": "2021-04-13T04:52:40.000000Z",
-     *     "updated_at": "2021-04-13T04:52:40.000000Z",
-     *     "permissions": [],
-     *     "roles": [
-     *       {
-     *         "id": 9,
-     *         "name": "Division Manager",
-     *         "guard_name": "web",
-     *         "created_at": "2021-04-13T02:55:12.000000Z",
-     *         "updated_at": "2021-04-13T02:55:12.000000Z",
-     *         "pivot": {
-     *           "model_id": 5,
-     *           "role_id": 9,
-     *           "model_type": "App\\Models\\Sample\\Member"
-     *         }
-     *       }
-     *     ]
-     *   }
+     * {
+     * "id": 1,
+     * "user_id": 4,
+     * "division_id": 1,
+     * "created_at": "2021-04-19T10:02:33.000000Z",
+     * "updated_at": "2021-04-19T10:02:33.000000Z",
+     * "permission_names": [
+     * "project_viewAll",
+     * "project_createAll",
+     * "project_updateAll",
+     * "project_deleteAll"
+     * ],
+     * "role_names": [
+     * "Member"
+     * ]
+     * }
      * ]
      *
      * @param Request $request
@@ -59,25 +53,20 @@ class MemberController extends Controller
 
     /**
      * @response {
-     *   "user_id": 3,
-     *   "division_id": 18,
-     *   "updated_at": "2021-04-13T06:04:44.000000Z",
-     *   "created_at": "2021-04-13T06:04:44.000000Z",
-     *   "id": 7,
-     *   "roles": [
-     *     {
-     *       "id": 9,
-     *       "name": "Division Manager",
-     *       "guard_name": "web",
-     *       "created_at": "2021-04-13T02:55:12.000000Z",
-     *       "updated_at": "2021-04-13T02:55:12.000000Z",
-     *       "pivot": {
-     *         "model_id": 7,
-     *         "role_id": 9,
-     *         "model_type": "App\\Models\\Sample\\Member"
-     *       }
-     *     }
-     *   ]
+     * "id": 1,
+     * "user_id": 4,
+     * "division_id": 1,
+     * "created_at": "2021-04-19T10:02:33.000000Z",
+     * "updated_at": "2021-04-19T10:02:33.000000Z",
+     * "permission_names": [
+     * "project_viewAll",
+     * "project_createAll",
+     * "project_updateAll",
+     * "project_deleteAll"
+     * ],
+     * "role_names": [
+     * "Member"
+     * ]
      * }
      *
      * @param MemberCreateRequest $request
@@ -91,11 +80,20 @@ class MemberController extends Controller
 
     /**
      * @response {
-     *   "id": 7,
-     *   "user_id": 3,
-     *   "division_id": 18,
-     *   "created_at": "2021-04-13T06:04:44.000000Z",
-     *   "updated_at": "2021-04-13T06:04:44.000000Z"
+     * "id": 1,
+     * "user_id": 4,
+     * "division_id": 1,
+     * "created_at": "2021-04-19T10:02:33.000000Z",
+     * "updated_at": "2021-04-19T10:02:33.000000Z",
+     * "permission_names": [
+     * "project_viewAll",
+     * "project_createAll",
+     * "project_updateAll",
+     * "project_deleteAll"
+     * ],
+     * "role_names": [
+     * "Member"
+     * ]
      * }
      *
      * @param Request $request
@@ -110,13 +108,20 @@ class MemberController extends Controller
 
     /**
      * @response {
-     *   "id": 7,
-     *   "user_id": 3,
-     *   "division_id": 18,
-     *   "created_at": "2021-04-13T06:04:44.000000Z",
-     *   "updated_at": "2021-04-13T06:04:44.000000Z",
-     *   "roles": [],
-     *   "permissions": []
+     * "id": 1,
+     * "user_id": 4,
+     * "division_id": 1,
+     * "created_at": "2021-04-19T10:02:33.000000Z",
+     * "updated_at": "2021-04-19T10:02:33.000000Z",
+     * "permission_names": [
+     * "project_viewAll",
+     * "project_createAll",
+     * "project_updateAll",
+     * "project_deleteAll"
+     * ],
+     * "role_names": [
+     * "Member"
+     * ]
      * }
      *
      * @param MemberUpdateRequest $request

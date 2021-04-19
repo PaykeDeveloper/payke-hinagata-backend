@@ -18,14 +18,22 @@ class UserController extends Controller
     /**
      * @response [
      * {
-     * "id": 1,
-     * "name": "Queen Gusikowski DDS",
-     * "email": "josianne.mcglynn@example.net",
-     * "email_verified_at": "2021-03-25T01:48:01.000000Z",
-     * "two_factor_secret": null,
-     * "two_factor_recovery_codes": null,
-     * "created_at": "2021-03-25T01:48:01.000000Z",
-     * "updated_at": "2021-03-25T01:48:01.000000Z"
+     * "id": 4,
+     * "name": "user01",
+     * "email": "user01@example.com",
+     * "email_verified_at": "2021-04-19T09:32:02.000000Z",
+     * "locale": null,
+     * "created_at": "2021-04-19T09:32:01.000000Z",
+     * "updated_at": "2021-04-19T09:32:02.000000Z",
+     * "permission_names": [
+     * "division_viewOwn",
+     * "division_createOwn",
+     * "division_updateOwn",
+     * "division_deleteOwn"
+     * ],
+     * "role_names": [
+     * "Staff"
+     * ]
      * }
      * ]
      *
@@ -39,14 +47,22 @@ class UserController extends Controller
 
     /**
      * @response {
-     * "id": 1,
-     * "name": "Queen Gusikowski DDS",
-     * "email": "josianne.mcglynn@example.net",
-     * "email_verified_at": "2021-03-25T01:48:01.000000Z",
-     * "two_factor_secret": null,
-     * "two_factor_recovery_codes": null,
-     * "created_at": "2021-03-25T01:48:01.000000Z",
-     * "updated_at": "2021-03-25T01:48:01.000000Z"
+     * "id": 4,
+     * "name": "user01",
+     * "email": "user01@example.com",
+     * "email_verified_at": "2021-04-19T09:32:02.000000Z",
+     * "locale": null,
+     * "created_at": "2021-04-19T09:32:01.000000Z",
+     * "updated_at": "2021-04-19T09:32:02.000000Z",
+     * "permission_names": [
+     * "division_viewOwn",
+     * "division_createOwn",
+     * "division_updateOwn",
+     * "division_deleteOwn"
+     * ],
+     * "role_names": [
+     * "Staff"
+     * ]
      * }
      *
      * @param Request $request
@@ -60,13 +76,22 @@ class UserController extends Controller
 
     /**
      * @response {
-     * "id": 2,
-     * "user_id": 1,
-     * "title": "Title 1",
-     * "author": "Author 1",
-     * "release_date": "2021-03-16",
-     * "created_at": "2021-03-05T08:31:33.000000Z",
-     * "updated_at": "2021-03-05T08:31:33.000000Z"
+     * "id": 4,
+     * "name": "user01",
+     * "email": "user01@example.com",
+     * "email_verified_at": "2021-04-19T09:32:02.000000Z",
+     * "locale": null,
+     * "created_at": "2021-04-19T09:32:01.000000Z",
+     * "updated_at": "2021-04-19T09:32:02.000000Z",
+     * "permission_names": [
+     * "division_viewOwn",
+     * "division_createOwn",
+     * "division_updateOwn",
+     * "division_deleteOwn"
+     * ],
+     * "role_names": [
+     * "Staff"
+     * ]
      * }
      *
      * @param UserUpdateRequest $request

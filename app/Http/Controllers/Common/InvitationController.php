@@ -18,7 +18,8 @@ class InvitationController extends Controller
     }
 
     /**
-     * @response [{
+     * @response [
+     * {
      * "id":1,
      * "status":"pending",
      * "name":"Ova Ankunding",
@@ -26,7 +27,8 @@ class InvitationController extends Controller
      * "created_by":1,
      * "updated_at":"2021-04-14T07:55:48.000000Z",
      * "created_at":"2021-04-14T07:55:48.000000Z",
-     * }]
+     * }
+     * ]
      *
      * @param Request $request
      * @return Response

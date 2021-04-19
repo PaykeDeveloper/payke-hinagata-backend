@@ -4,19 +4,16 @@ namespace App\Models\Common;
 
 final class PermissionType
 {
-    public const VIEW_ANY = 'viewAny';
-    public const VIEW_ANY_ALL = 'viewAnyAll';
-    public const VIEW_OWN = 'view';
+    public const VIEW_OWN = 'viewOwn';
     public const VIEW_ALL = 'viewAll';
-    public const CREATE_OWN = 'create';
+    public const CREATE_OWN = 'createOwn';
     public const CREATE_ALL = 'createAll';
-    public const UPDATE_OWN = 'update';
+    public const UPDATE_OWN = 'updateOwn';
     public const UPDATE_ALL = 'updateAll';
-    public const DELETE_OWN = 'delete';
+    public const DELETE_OWN = 'deleteOwn';
     public const DELETE_ALL = 'deleteAll';
 
     public const OWN_TYPES = [
-        self::VIEW_ANY,
         self::VIEW_OWN,
         self::CREATE_OWN,
         self::UPDATE_OWN,
@@ -24,7 +21,6 @@ final class PermissionType
     ];
 
     public const ALL_TYPES = [
-        self::VIEW_ANY_ALL,
         self::VIEW_ALL,
         self::CREATE_ALL,
         self::UPDATE_ALL,
@@ -38,7 +34,7 @@ final class PermissionType
 
     public static function getName(string $type, string $resource): string
     {
-        return "{$type}_$resource";
+        return implode("_", [$resource, $type]);
     }
 
     public static function getOwnNames(string $resource): array

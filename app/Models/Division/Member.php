@@ -29,6 +29,11 @@ class Member extends Model
         'updated_at',
     ];
 
+    protected $hidden = [
+        'permissions',
+        'roles',
+    ];
+
     protected $appends = ['permission_names', 'role_names'];
 
     public function getPermissionNamesAttribute(): array

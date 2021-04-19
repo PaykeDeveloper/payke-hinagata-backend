@@ -3,6 +3,7 @@
 namespace Database\Seeders\Common;
 
 use App\Models\Common\Invitation;
+use App\Models\Common\Permission;
 use App\Models\Common\PermissionType;
 use App\Models\Common\Role;
 use App\Models\Common\UserRole;
@@ -25,30 +26,34 @@ class RoleSeeder extends Seeder
         $data_set = [
             // User Roles
             ['name' => UserRole::ADMIN, 'permissions' => array_merge(
+                PermissionType::getAllNames(Permission::RESOURCE),
+                PermissionType::getAllNames(Role::RESOURCE),
                 PermissionType::getAllNames(User::RESOURCE),
                 PermissionType::getAllNames(Invitation::RESOURCE),
             )],
             ['name' => UserRole::MANAGER, 'permissions' => array_merge(
-                PermissionType::getAllNames(Division::RESOURCE),
+                PermissionType::getOwnNames(Division::RESOURCE),
                 PermissionType::getAllNames(Member::RESOURCE),
                 [
                     PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE),
                 ]
             )],
             ['name' => UserRole::STAFF, 'permissions' => array_merge(
-                PermissionType::getOwnNames(Division::RESOURCE),
+                [
+                    PermissionType::getName(PermissionType::VIEW_ALL, Role::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_ALL, Division::RESOURCE),
+                ]
             )],
 
             // Member Roles
             ['name' => MemberRole::MANAGER, 'permissions' => array_merge(
+                PermissionType::getOwnNames(Division::RESOURCE),
+                PermissionType::getAllNames(Member::RESOURCE),
                 PermissionType::getAllNames(Project::RESOURCE),
-                [
-                    PermissionType::getName(PermissionType::VIEW_ALL, Member::RESOURCE),
-                ],
             )],
             ['name' => MemberRole::MEMBER, 'permissions' => array_merge(
                 [
-                    PermissionType::getName(PermissionType::VIEW_OWN, Project::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE),
                 ],
             )],
         ];

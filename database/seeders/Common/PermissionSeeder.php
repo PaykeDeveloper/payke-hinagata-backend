@@ -22,7 +22,7 @@ class PermissionSeeder extends Seeder
         ['name' => Invitation::RESOURCE, 'all' => true, 'own' => false,],
         ['name' => Division::RESOURCE, 'all' => true, 'own' => true,],
         ['name' => Member::RESOURCE, 'all' => true, 'own' => true,],
-        ['name' => Project::RESOURCE, 'all' => true, 'own' => true,],
+        ['name' => Project::RESOURCE, 'all' => true, 'own' => false,],
     ];
 
     /**

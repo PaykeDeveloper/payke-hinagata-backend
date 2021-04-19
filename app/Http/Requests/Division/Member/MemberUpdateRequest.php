@@ -30,7 +30,7 @@ class MemberUpdateRequest extends FormRequest
     {
         return [
             'role_names' => ['array'],
-            'role_names.*' => [Rule::exists('roles', 'name')->where(function (Builder $query) {
+            'role_names.*' => ['string', Rule::exists('roles', 'name')->where(function (Builder $query) {
                 return $query->whereIn('name', MemberRole::all());
             })]
         ];

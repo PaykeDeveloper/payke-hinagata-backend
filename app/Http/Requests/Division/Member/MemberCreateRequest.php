@@ -35,9 +35,9 @@ class MemberCreateRequest extends FormRequest
         $user = $this->user();
         /** @var Division $division */
         $division = $this->route('division');
-        $member = Member::findByUniqueKeys($user->id, $division->id);
+        $member = $user && $division ? Member::findByUniqueKeys($user->id, $division->id) : null;
         $enable_all = $member?->hasAllCreatePermissionTo(Member::RESOURCE)
-            || $user->hasAllCreatePermissionTo(Member::RESOURCE);
+            || $user?->hasAllCreatePermissionTo(Member::RESOURCE);
 
         return [
             'user_id' => ['required', Rule::exists('users')->where(function (Builder $query) use ($enable_all, $user) {
@@ -48,7 +48,7 @@ class MemberCreateRequest extends FormRequest
                 }
             })],
             'role_names' => ['array'],
-            'role_names.*' => [Rule::exists('roles', 'name')->where(function (Builder $query) {
+            'role_names.*' => ['string', Rule::exists('roles', 'name')->where(function (Builder $query) {
                 return $query->whereIn('name', MemberRole::all());
             })]
         ];

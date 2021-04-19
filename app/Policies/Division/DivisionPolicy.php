@@ -44,7 +44,7 @@ class DivisionPolicy
     public function create(User $user): bool
     {
         return $this->viewAny($user)
-            && $user->hasAllCreatePermissionTo(self::RESOURCE);
+            && $user->hasCreatePermissionTo(self::RESOURCE);
     }
 
     public function update(User $user, Division $division): bool
