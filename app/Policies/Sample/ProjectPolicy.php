@@ -65,8 +65,19 @@ class ProjectPolicy
 
     public function create(User $user): bool
     {
-        return $this->viewAny($user)
-            && $user->hasAllCreatePermissionTo(self::RESOURCE);
+        if (!$this->viewAny($user)) {
+            return false;
+        }
+
+        if ($this->member?->hasAllCreatePermissionTo(self::RESOURCE)) {
+            return true;
+        }
+
+        if ($user->hasAllCreatePermissionTo(self::RESOURCE)) {
+            return true;
+        }
+
+        return false;
     }
 
     public function update(User $user, Project $project): bool

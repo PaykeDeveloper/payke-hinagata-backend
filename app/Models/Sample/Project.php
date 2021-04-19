@@ -34,6 +34,7 @@ class Project extends Model
         $project = new Project();
         $project->fill($attributes);
         $project->division_id = $division->id;
+        $project->save();
         return $project;
     }
 }

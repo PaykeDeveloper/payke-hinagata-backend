@@ -66,12 +66,6 @@ class ProjectController extends Controller
      *   "name": "new project",
      *   "created_at": "2021-04-13T07:30:58.000000Z",
      *   "updated_at": "2021-04-13T07:30:58.000000Z",
-     *   "division": {
-     *     "id": 18,
-     *     "name": "テストカンパニー",
-     *     "created_at": "2021-04-13T04:12:36.000000Z",
-     *     "updated_at": "2021-04-13T04:12:36.000000Z"
-     *   }
      * }
      *
      * @param Request $request
@@ -91,12 +85,6 @@ class ProjectController extends Controller
      *   "name": "new projectaaaa",
      *   "created_at": "2021-04-13T07:30:58.000000Z",
      *   "updated_at": "2021-04-13T07:41:04.000000Z",
-     *   "division": {
-     *     "id": 18,
-     *     "name": "テストカンパニー",
-     *     "created_at": "2021-04-13T04:12:36.000000Z",
-     *     "updated_at": "2021-04-13T04:12:36.000000Z"
-     *   }
      * }
      *
      * @param ProjectUpdateRequest $request

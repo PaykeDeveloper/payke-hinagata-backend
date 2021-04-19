@@ -69,8 +69,19 @@ class MemberPolicy
 
     public function create(User $user): bool
     {
-        return $this->viewAny($user)
-            && $user->hasCreatePermissionTo(self::RESOURCE);
+        if (!$this->viewAny($user)) {
+            return false;
+        }
+
+        if ($this->member?->hasCreatePermissionTo(self::RESOURCE)) {
+            return true;
+        }
+
+        if ($user->hasAllCreatePermissionTo(self::RESOURCE)) {
+            return true;
+        }
+
+        return false;
     }
 
     public function update(User $user, Member $member): bool
