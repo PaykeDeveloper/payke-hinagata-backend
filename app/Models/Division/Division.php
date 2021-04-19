@@ -34,14 +34,6 @@ class Division extends Model
         return $this->hasMany(Member::class);
     }
 
-    /**
-     * 指定したユーザーの Member を取得
-     */
-    public function findMembersByUser(User $user): Collection
-    {
-        return $this->members()->where('user_id', $user->id)->get();
-    }
-
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\Common;
 
+use App\Models\Common\Invitation;
 use App\Models\Common\PermissionType;
 use App\Models\Common\Role;
 use App\Models\Common\UserRole;
@@ -25,6 +26,7 @@ class RoleSeeder extends Seeder
             // User Roles
             ['name' => UserRole::ADMIN, 'permissions' => array_merge(
                 PermissionType::getAllNames(User::RESOURCE),
+                PermissionType::getAllNames(Invitation::RESOURCE),
             )],
             ['name' => UserRole::MANAGER, 'permissions' => array_merge(
                 PermissionType::getAllNames(Division::RESOURCE),

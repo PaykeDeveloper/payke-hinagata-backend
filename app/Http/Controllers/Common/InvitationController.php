@@ -12,6 +12,11 @@ use Illuminate\Http\Response;
 
 class InvitationController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Invitation::class);
+    }
+
     /**
      * @response [{
      * "id":1,

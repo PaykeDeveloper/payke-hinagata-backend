@@ -2,19 +2,20 @@
 
 namespace App\Policies\Common;
 
+use App\Models\Common\Invitation;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Http\Response;
 
-class UserPolicy
+class InvitationPolicy
 {
     use HandlesAuthorization;
 
-    private const RESOURCE = User::RESOURCE;
+    private const RESOURCE = Invitation::RESOURCE;
 
     public function viewAny(User $user): bool
     {
-        if ($user->hasViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             return true;
         }
 
@@ -22,15 +23,10 @@ class UserPolicy
         return false;
     }
 
-    public function view(User $user, User $target_user): bool
+    public function view(User $user, Invitation $invitation): bool
     {
         if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             return true;
-        }
-        if ($user->hasOwnViewPermissionTo(self::RESOURCE)) {
-            if ($user->id === $target_user->id) {
-                return true;
-            }
         }
 
         abort(Response::HTTP_NOT_FOUND);
@@ -43,9 +39,9 @@ class UserPolicy
             && $user->hasAllCreatePermissionTo(self::RESOURCE);
     }
 
-    public function update(User $user, User $target_user): bool
+    public function update(User $user, Invitation $invitation): bool
     {
-        if (!$this->view($user, $target_user)) {
+        if (!$this->view($user, $invitation)) {
             return false;
         }
 
@@ -53,16 +49,12 @@ class UserPolicy
             return true;
         }
 
-        if ($user->hasOwnUpdatePermissionTo(self::RESOURCE)) {
-            return $user->id === $target_user->id;
-        }
-
         return false;
     }
 
-    public function delete(User $user, User $target_user): bool
+    public function delete(User $user, Invitation $invitation): bool
     {
-        if (!$this->view($user, $target_user)) {
+        if (!$this->view($user, $invitation)) {
             return false;
         }
 
@@ -70,19 +62,15 @@ class UserPolicy
             return true;
         }
 
-        if ($user->hasOwnDeletePermissionTo(self::RESOURCE)) {
-            return $user->id === $target_user->id;
-        }
-
         return false;
     }
 
-    public function restore(User $user, User $target_user): bool
+    public function restore(User $user, Invitation $invitation): bool
     {
         return false;
     }
 
-    public function forceDelete(User $user, User $target_user): bool
+    public function forceDelete(User $user, Invitation $invitation): bool
     {
         return false;
     }
