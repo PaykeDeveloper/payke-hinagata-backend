@@ -18,6 +18,8 @@ class InvitationControllerTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
+    private User $user;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -25,9 +27,8 @@ class InvitationControllerTest extends TestCase
         $this->seed(RoleSeeder::class);
 
         /** @var User $user */
-        $user = User::factory()->create();
-        $user->assignRole(UserRole::ADMIN);
-        $this->actingAs($user);
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
     }
 
     /**
@@ -36,9 +37,12 @@ class InvitationControllerTest extends TestCase
 
     /**
      * データ一覧の取得ができる。
+     *
+     * @dataProvider provideAuthorizedRole
      */
-    public function testIndexSuccess()
+    public function testIndexSuccess($role)
     {
+        $this->user->syncRoles($role);
         $invitation = Invitation::factory()->create();
 
         $response = $this->getJson(route('invitations.index'));
@@ -50,9 +54,12 @@ class InvitationControllerTest extends TestCase
 
     /**
      * 作成ができる。
+     *
+     * @dataProvider provideAuthorizedRole
      */
-    public function testStoreSuccess()
+    public function testStoreSuccess($role)
     {
+        $this->user->syncRoles($role);
         $email = $this->faker->email;
         $data = [
             'name' => $this->faker->name,
@@ -68,9 +75,12 @@ class InvitationControllerTest extends TestCase
 
     /**
      * データの取得ができる。
+     *
+     * @dataProvider provideAuthorizedRole
      */
-    public function testShowSuccess()
+    public function testShowSuccess($role)
     {
+        $this->user->syncRoles($role);
         $invitation = Invitation::factory()->create();
 
         $response = $this->getJson(route('invitations.show', ['invitation' => $invitation->id]));
@@ -81,9 +91,12 @@ class InvitationControllerTest extends TestCase
 
     /**
      * データの更新ができる。
+     *
+     * @dataProvider provideAuthorizedRole
      */
-    public function testUpdateSuccess()
+    public function testUpdateSuccess($role)
     {
+        $this->user->syncRoles($role);
         $invitation = Invitation::factory()->pending()->create();
         $data = [
             'name' => $this->faker->name,
@@ -97,9 +110,12 @@ class InvitationControllerTest extends TestCase
 
     /**
      * 削除ができる。
+     *
+     * @dataProvider provideAuthorizedRole
      */
-    public function testDestroySuccess()
+    public function testDestroySuccess($role)
     {
+        $this->user->syncRoles($role);
         $invitation = Invitation::factory()->pending()->create();
 
         $response = $this->deleteJson(route('invitations.destroy', ['invitation' => $invitation->id]));
@@ -115,10 +131,29 @@ class InvitationControllerTest extends TestCase
      */
 
     /**
-     * データが存在しない場合は空の配列となる。
+     * 許可されないユーザーで一覧取得。
+     *
+     * @dataProvider provideUnAuthorizedRole
      */
-    public function testIndexEmpty()
+    public function testIndexUnAuthorized($role)
     {
+        $this->user->syncRoles($role);
+        Invitation::factory()->create();
+
+        $response = $this->getJson(route('invitations.index'));
+
+        $response->assertNotFound();
+    }
+
+    /**
+     * データが存在しない場合は空の配列となる。
+     *
+     * @dataProvider provideAuthorizedRole
+     */
+    public function testIndexEmpty($role)
+    {
+        $this->user->syncRoles($role);
+
         $response = $this->getJson(route('invitations.index'));
 
         $response->assertOk()
@@ -126,20 +161,62 @@ class InvitationControllerTest extends TestCase
     }
 
     /**
-     * 存在しないIDで取得するとエラーになる。
+     * 許可されないユーザーで詳細取得。
+     *
+     * @dataProvider provideUnAuthorizedRole
      */
-    public function testShowNotFound()
+    public function testShowUnAuthorized($role)
     {
+        $this->user->syncRoles($role);
+        $invitation = Invitation::factory()->create();
+
+        $response = $this->getJson(route('invitations.show', ['invitation' => $invitation->id]));
+
+        $response->assertNotFound();
+    }
+
+    /**
+     * 存在しないIDで取得するとエラーになる。
+     *
+     * @dataProvider provideAuthorizedRole
+     */
+    public function testShowNotFound($role)
+    {
+        $this->user->syncRoles($role);
+
         $response = $this->getJson(route('invitations.show', ['invitation' => 11111]));
 
         $response->assertNotFound();
     }
 
     /**
-     * メールアドレスが不正な値で作成するとエラーになる。
+     * 許可されないユーザーで作成。
+     *
+     * @dataProvider provideUnAuthorizedRole
      */
-    public function testStoreInvalidEmail()
+    public function testStoreUnAuthorized($role)
     {
+        $this->user->syncRoles($role);
+        $email = $this->faker->email;
+        $data = [
+            'name' => $this->faker->name,
+            'email' => $email,
+            'locale' => 'ja',
+        ];
+
+        $response = $this->postJson(route('invitations.store'), $data);
+
+        $response->assertNotFound();
+    }
+
+    /**
+     * メールアドレスが不正な値で作成するとエラーになる。
+     *
+     * @dataProvider provideAuthorizedRole
+     */
+    public function testStoreInvalidEmail($role)
+    {
+        $this->user->syncRoles($role);
         $data = [
             'email' => 'not email address',
         ];
@@ -152,9 +229,12 @@ class InvitationControllerTest extends TestCase
 
     /**
      * 存在するユーザーで作成するとエラーになる。
+     *
+     * @dataProvider provideAuthorizedRole
      */
-    public function testStoreExistsUser()
+    public function testStoreExistsUser($role)
     {
+        $this->user->syncRoles($role);
         $user = User::factory()->create();
         $data = [
             'email' => $user->email,
@@ -168,9 +248,12 @@ class InvitationControllerTest extends TestCase
 
     /**
      * 招待済みのメールアドレスで作成するとエラーになる。
+     *
+     * @dataProvider provideAuthorizedRole
      */
-    public function testStoreExistsInvitation()
+    public function testStoreExistsInvitation($role)
     {
+        $this->user->syncRoles($role);
         $invitation = Invitation::factory()->pending()->create();
         $data = [
             'email' => $invitation->email,
@@ -183,10 +266,31 @@ class InvitationControllerTest extends TestCase
     }
 
     /**
-     * 更新ができない。
+     * 許可されないユーザーで更新。
+     *
+     * @dataProvider provideUnAuthorizedRole
      */
-    public function testUpdateDenied()
+    public function testUpdateUnAuthorized($role)
     {
+        $this->user->syncRoles($role);
+        $invitation = Invitation::factory()->pending()->create();
+        $data = [
+            'name' => $this->faker->name,
+        ];
+
+        $response = $this->patchJson(route('invitations.update', ['invitation' => $invitation->id]), $data);
+
+        $response->assertNotFound();
+    }
+
+    /**
+     * 更新ができない。
+     *
+     * @dataProvider provideAuthorizedRole
+     */
+    public function testUpdateDenied($role)
+    {
+        $this->user->syncRoles($role);
         $invitation = Invitation::factory()->create([
             'status' => $this->faker->randomElement([InvitationStatus::DENIED, InvitationStatus::APPROVED]),
         ]);
@@ -201,10 +305,28 @@ class InvitationControllerTest extends TestCase
     }
 
     /**
-     * ステータスが待ちのデータ以外を削除するとエラーになる。
+     * 削除ができる。
+     *
+     * @dataProvider provideUnAuthorizedRole
      */
-    public function testDeleteStatusIsNotPending()
+    public function testDestroyUnAuthorized($role)
     {
+        $this->user->syncRoles($role);
+        $invitation = Invitation::factory()->pending()->create();
+
+        $response = $this->deleteJson(route('invitations.destroy', ['invitation' => $invitation->id]));
+
+        $response->assertNotFound();
+    }
+
+    /**
+     * ステータスが待ちのデータ以外を削除するとエラーになる。
+     *
+     * @dataProvider provideAuthorizedRole
+     */
+    public function testDeleteStatusIsNotPending($role)
+    {
+        $this->user->syncRoles($role);
         $invitation = Invitation::factory()->create([
             'status' => $this->faker->randomElement([InvitationStatus::DENIED, InvitationStatus::APPROVED]),
         ]);
@@ -212,5 +334,20 @@ class InvitationControllerTest extends TestCase
         $response = $this->deleteJson(route('invitations.destroy', ['invitation' => $invitation->id]));
 
         $response->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
+    }
+
+    public function provideAuthorizedRole(): array
+    {
+        return [
+            [UserRole::ADMIN],
+        ];
+    }
+
+    public function provideUnAuthorizedRole(): array
+    {
+        return [
+            [UserRole::MANAGER],
+            [UserRole::STAFF],
+        ];
     }
 }
