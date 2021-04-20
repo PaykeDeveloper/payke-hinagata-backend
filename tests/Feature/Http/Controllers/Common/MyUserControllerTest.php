@@ -11,10 +11,15 @@ class MyUserControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    private User $user;
+
     public function setUp(): void
     {
         parent::setUp();
         $this->seed();
+
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
     }
 
     /**
@@ -24,10 +29,9 @@ class MyUserControllerTest extends TestCase
     /**
      * データの取得ができる。
      */
-    public function testShowSuccess()
+    public function testIndexSuccess()
     {
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->getJson('api/v1/user');
+        $response = $this->getJson('api/v1/user');
 
         $response->assertOk()
             ->assertJsonFragment([
@@ -39,18 +43,28 @@ class MyUserControllerTest extends TestCase
     /**
      * ロールがある場合は、その内容を返す
      */
-    public function testShowHasRole()
+    public function testIndexHasRole()
     {
-        /** @var User $user */
-        $user = User::factory()->create();
-        $user->assignRole(UserRole::ADMIN);
+        $this->user->assignRole(UserRole::ADMIN);
 
-        $response = $this->actingAs($user)->getJson('api/v1/user');
+        $response = $this->getJson('api/v1/user');
         $response->json();
 
         $response->assertOk();
         $json = $response->json();
         $this->assertNotEmpty($json['permission_names']);
         $this->assertNotEmpty($json['role_names']);
+    }
+
+    public function testStoreSuccess()
+    {
+        $data = [
+            'locale' => 'zh_CN',
+        ];
+
+        $response = $this->patchJson('api/v1/user', $data);
+
+        $response->assertOk()
+            ->assertJsonFragment($data);
     }
 }
