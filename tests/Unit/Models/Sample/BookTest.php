@@ -7,12 +7,12 @@ namespace Tests\Unit\Models\Sample;
 use App\Models\Sample\Book;
 use App\Models\Sample\BookComment;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 class BookTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
 
     public function testUserSuccess()
     {

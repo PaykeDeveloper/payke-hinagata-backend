@@ -6,12 +6,12 @@ namespace Tests\Feature\Jobs\Sample;
 
 use App\Jobs\Sample\CreateBookComment;
 use App\Models\Sample\Book;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 class CreateBookCommentTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
 
     public function testDispatchSuccess()
     {

@@ -9,10 +9,8 @@ use App\Models\Division\Division;
 use App\Models\Division\Member;
 use App\Models\Division\MemberRole;
 use App\Models\User;
-use Database\Seeders\Common\PermissionSeeder;
-use Database\Seeders\Common\RoleSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 /**
@@ -20,7 +18,7 @@ use Tests\TestCase;
  */
 class MemberControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
     use WithFaker;
 
     private User $user;
@@ -30,9 +28,6 @@ class MemberControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->seed(PermissionSeeder::class);
-        $this->seed(RoleSeeder::class);
 
         $this->user = User::factory()->create();
         $this->actingAs($this->user);

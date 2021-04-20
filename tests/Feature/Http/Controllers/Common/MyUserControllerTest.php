@@ -4,20 +4,18 @@ namespace Tests\Feature\Http\Controllers\Common;
 
 use App\Models\Common\UserRole;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 class MyUserControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
 
     private User $user;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed();
-
         $this->user = User::factory()->create();
         $this->actingAs($this->user);
     }
@@ -45,7 +43,7 @@ class MyUserControllerTest extends TestCase
      */
     public function testIndexHasRole()
     {
-        $this->user->assignRole(UserRole::ADMIN);
+        $this->user->assignRole(UserRole::ADMINISTRATOR);
 
         $response = $this->getJson('api/v1/user');
         $response->json();

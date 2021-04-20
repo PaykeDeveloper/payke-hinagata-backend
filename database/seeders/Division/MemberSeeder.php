@@ -28,7 +28,8 @@ class MemberSeeder extends Seeder
                 'user_id' => $user->id,
                 'division_id' => $division->id,
             ]);
-            $member->syncRoles(array_rand(MemberRole::all()));
+            $role = MemberRole::all()[array_rand(MemberRole::all())];
+            $member->syncRoles($role);
         }
     }
 }

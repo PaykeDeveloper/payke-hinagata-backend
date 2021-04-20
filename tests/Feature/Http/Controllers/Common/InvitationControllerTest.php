@@ -6,16 +6,14 @@ use App\Models\Common\Invitation;
 use App\Models\Common\InvitationStatus;
 use App\Models\Common\UserRole;
 use App\Models\User;
-use Database\Seeders\Common\PermissionSeeder;
-use Database\Seeders\Common\RoleSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 class InvitationControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
     use WithFaker;
 
     private User $user;
@@ -23,8 +21,6 @@ class InvitationControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed(PermissionSeeder::class);
-        $this->seed(RoleSeeder::class);
 
         /** @var User $user */
         $this->user = User::factory()->create();
@@ -48,7 +44,7 @@ class InvitationControllerTest extends TestCase
         $response = $this->getJson(route('invitations.index'));
 
         $response->assertOk()
-            ->assertJsonCount(1)
+            ->assertJsonCount(Invitation::count())
             ->assertJsonFragment($invitation->toArray());
     }
 
@@ -154,6 +150,7 @@ class InvitationControllerTest extends TestCase
     public function testIndexEmpty($role)
     {
         $this->user->syncRoles($role);
+        Invitation::query()->delete();
 
         $response = $this->getJson(route('invitations.index'));
 
@@ -350,14 +347,15 @@ class InvitationControllerTest extends TestCase
     public function provideAuthorizedRole(): array
     {
         return [
-            [UserRole::ADMIN],
+            [UserRole::ADMINISTRATOR],
+            [UserRole::PERSONAL_DIRECTOR],
         ];
     }
 
     public function provideUnAuthorizedRole(): array
     {
         return [
-            [UserRole::MANAGER],
+            [UserRole::DIVISION_MANAGER],
             [UserRole::STAFF],
         ];
     }

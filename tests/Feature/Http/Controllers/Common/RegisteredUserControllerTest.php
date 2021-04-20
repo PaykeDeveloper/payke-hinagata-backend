@@ -3,25 +3,16 @@
 namespace Tests\Feature\Http\Controllers\Common;
 
 use App\Models\Common\Invitation;
-use Database\Seeders\Common\PermissionSeeder;
-use Database\Seeders\Common\RoleSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 class RegisteredUserControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
     use WithFaker;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->seed(PermissionSeeder::class);
-        $this->seed(RoleSeeder::class);
-    }
 
     /**
      * [正常系]

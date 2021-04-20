@@ -7,16 +7,14 @@ use App\Models\Common\PermissionType;
 use App\Models\Common\UserRole;
 use App\Models\Division\MemberRole;
 use App\Models\User;
-use Database\Seeders\Common\PermissionSeeder;
-use Database\Seeders\Common\RoleSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
     use WithFaker;
 
     private User $user;
@@ -24,8 +22,6 @@ class UserControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed(PermissionSeeder::class);
-        $this->seed(RoleSeeder::class);
         $this->user = User::factory()->create();
         $this->actingAs($this->user);
     }
@@ -45,7 +41,7 @@ class UserControllerTest extends TestCase
         $response = $this->getJson(route('users.index'));
 
         $response->assertOk()
-            ->assertJsonCount(2)
+            ->assertJsonCount(User::count())
             ->assertJsonFragment($user->toArray());
     }
 

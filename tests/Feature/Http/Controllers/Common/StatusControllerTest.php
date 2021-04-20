@@ -3,12 +3,12 @@
 namespace Tests\Feature\Http\Controllers\Common;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 class StatusControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
 
     /**
      * [正常系]

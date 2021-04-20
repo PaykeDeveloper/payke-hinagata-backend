@@ -8,13 +8,13 @@ use App\Models\Sample\Book;
 use App\Models\Sample\BookComment;
 use App\Models\User;
 use Faker\Provider\Uuid;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 class BookCommentControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
 
     private Book $book;
 

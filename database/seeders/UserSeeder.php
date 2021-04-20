@@ -18,7 +18,8 @@ class UserSeeder extends Seeder
         $users = User::factory()->count(rand(1, 5))->create();
         /** @var User $user */
         foreach ($users as $user) {
-            $user->syncRoles(array_rand(UserRole::all()));
+            $role = UserRole::all()[array_rand(UserRole::all())];
+            $user->syncRoles($role);
         }
     }
 }
