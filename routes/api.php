@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\Auth\InvitationController;
-use App\Http\Controllers\Auth\StatusController;
-use App\Http\Controllers\Auth\TokenController;
+use App\Http\Controllers\Common\InvitationController;
+use App\Http\Controllers\Common\MyUserController;
+use App\Http\Controllers\Common\PermissionController;
+use App\Http\Controllers\Common\RoleController;
+use App\Http\Controllers\Common\StatusController;
+use App\Http\Controllers\Common\TokenController;
+use App\Http\Controllers\Common\UserController;
+use App\Http\Controllers\Division\DivisionController;
+use App\Http\Controllers\Division\MemberController;
 use App\Http\Controllers\Sample\BookCommentController;
 use App\Http\Controllers\Sample\BookController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\Sample\DivisionController;
 use App\Http\Controllers\Sample\ProjectController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\Sample\MemberController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserRoleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,21 +38,20 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('/status', StatusController::class);
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/user', [UserController::class, 'showMe']);
-        Route::apiResource('users', UserController::class)->only(['index', 'show', 'update']);
+        Route::get('/user', MyUserController::class);
+        Route::apiResource('users', UserController::class)->except(['store']);
         Route::apiResource('roles', RoleController::class)->only(['index']);
         Route::apiResource('permissions', PermissionController::class)->only(['index']);
-        Route::apiResource('invitations', InvitationController::class, ['except' => ['update']]);
         Route::apiResource('invitations', InvitationController::class);
 
         // FIXME: SAMPLE CODE
+        Route::apiResource('divisions', DivisionController::class);
+        Route::apiResource('divisions.members', MemberController::class);
+        Route::apiResource('divisions.projects', ProjectController::class);
+
         Route::apiResource('books', BookController::class);
         Route::apiResource('books.comments', BookCommentController::class);
         Route::post('/books/{book}/comments/create-async', [BookCommentController::class, 'storeAsync']);
         Route::patch('/books/{book}/comments/{comment}/update-async', [BookCommentController::class, 'updateAsync']);
-
-        Route::apiResource('divisions', DivisionController::class);
-        Route::apiResource('divisions.members', MemberController::class);
-        Route::apiResource('divisions.projects', ProjectController::class);
     });
 });

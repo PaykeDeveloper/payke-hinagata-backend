@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Auth\InvitationStatus;
+use App\Models\Common\InvitationStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

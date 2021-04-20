@@ -4,8 +4,20 @@
 
 namespace App\Http\Requests\Sample\Project;
 
-class ProjectUpdateRequest extends ProjectShowRequest
+use App\Http\Requests\FormRequest;
+
+class ProjectUpdateRequest extends FormRequest
 {
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -14,7 +26,7 @@ class ProjectUpdateRequest extends ProjectShowRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:20'],
+            'name' => ['string', 'max:255'],
         ];
     }
 }
