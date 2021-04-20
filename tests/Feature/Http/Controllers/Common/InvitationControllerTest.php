@@ -65,6 +65,7 @@ class InvitationControllerTest extends TestCase
             'name' => $this->faker->name,
             'email' => $email,
             'locale' => 'ja',
+            'role_names' => [],
         ];
 
         $response = $this->postJson(route('invitations.store'), $data);
@@ -202,6 +203,7 @@ class InvitationControllerTest extends TestCase
             'name' => $this->faker->name,
             'email' => $email,
             'locale' => 'ja',
+            'role_names' => [],
         ];
 
         $response = $this->postJson(route('invitations.store'), $data);
@@ -218,7 +220,10 @@ class InvitationControllerTest extends TestCase
     {
         $this->user->syncRoles($role);
         $data = [
-            'email' => 'not email address',
+            'name' => $this->faker->name,
+            'email' => $this->faker->name,
+            'locale' => 'ja',
+            'role_names' => [],
         ];
 
         $response = $this->postJson(route('invitations.store'), $data);
@@ -237,7 +242,10 @@ class InvitationControllerTest extends TestCase
         $this->user->syncRoles($role);
         $user = User::factory()->create();
         $data = [
+            'name' => $this->faker->name,
             'email' => $user->email,
+            'locale' => 'ja',
+            'role_names' => [],
         ];
 
         $response = $this->postJson(route('invitations.store'), $data);
@@ -256,7 +264,10 @@ class InvitationControllerTest extends TestCase
         $this->user->syncRoles($role);
         $invitation = Invitation::factory()->pending()->create();
         $data = [
+            'name' => $this->faker->name,
             'email' => $invitation->email,
+            'locale' => 'ja',
+            'role_names' => [],
         ];
 
         $response = $this->postJson(route('invitations.store'), $data);

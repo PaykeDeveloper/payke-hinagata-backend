@@ -26,11 +26,16 @@ class Invitation extends Model
     protected $fillable = [
         'name',
         'email',
+        'role_names',
     ];
 
     protected $hidden = [
         'token',
         'create_user',
+    ];
+
+    protected $casts = [
+        'role_names' => 'array',
     ];
 
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
