@@ -6,4 +6,7 @@ parameters:
     level: 7
     ignoreErrors:
         - '#PHPDoc tag @mixin contains unknown class App\\Models\\[a-zA-Z0-9\\_]*IdeHelper[a-zA-Z0-9\\_]+#'
+        - '#Unreachable statement - code above always terminates.#'
+        - '#Access to an undefined property App\\Models\\Common\\Permission::\$name.#'
+        - '#Access to an undefined property App\\Models\\Common\\Role::\$name.#'
     checkMissingIterableValueType: false

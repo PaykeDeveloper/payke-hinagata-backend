@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Actions\Auth\CreateNewUserFromInvitation;
+use App\Actions\Common\CreateNewUserFromInvitation;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;

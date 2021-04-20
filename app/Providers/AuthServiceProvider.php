@@ -18,7 +18,15 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        \App\Models\User::class => \App\Policies\Common\UserPolicy::class,
+        \App\Models\Common\Permission::class => \App\Policies\Common\PermissionPolicy::class,
+        \App\Models\Common\Role::class => \App\Policies\Common\RolePolicy::class,
+        \App\Models\Common\Invitation::class => \App\Policies\Common\InvitationPolicy::class,
+        \App\Models\Division\Division::class => \App\Policies\Division\DivisionPolicy::class,
+        \App\Models\Division\Member::class => \App\Policies\Division\MemberPolicy::class,
+
+        // FIXME: SAMPLE CODE
+        \App\Models\Sample\Project::class => \App\Policies\Sample\ProjectPolicy::class,
     ];
 
     /**

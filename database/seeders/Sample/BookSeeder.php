@@ -17,7 +17,7 @@ class BookSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::factory()->create();
+        $user = User::first() ?? User::factory()->create();
         $data_set = [
             1 => ['user_id' => $user->id, 'title' => 'Title A'],
             2 => ['user_id' => $user->id, 'title' => 'Title B'],
