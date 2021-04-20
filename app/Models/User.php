@@ -115,7 +115,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * @throws \Exception
      */
-    public function deleteFromRequest()
+    public function deleteFromRequest(): void
     {
         $this->syncRoles([]);
         $this->syncPermissions([]);

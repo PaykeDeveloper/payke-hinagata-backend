@@ -59,7 +59,7 @@ class Member extends Model
         return $this->belongsTo(Division::class);
     }
 
-    public static function findByUniqueKeys(string $user_id, string $division_id): ?self
+    public static function findByUniqueKeys(int $user_id, int $division_id): ?self
     {
         return self::where('user_id', $user_id)->where('division_id', $division_id)->first();
     }
@@ -104,7 +104,7 @@ class Member extends Model
     /**
      * @throws \Exception
      */
-    public function deleteFromRequest()
+    public function deleteFromRequest(): void
     {
         $this->syncRoles([]);
         $this->syncPermissions([]);

@@ -84,10 +84,10 @@ class DivisionPolicy
     }
 
     private ?Member $member = null;
-    private ?string $user_id = null;
-    private ?string $division_id = null;
+    private ?int $user_id = null;
+    private ?int $division_id = null;
 
-    private function findMember(string $user_id, string $division_id): ?Member
+    private function findMember(int $user_id, int $division_id): ?Member
     {
         if ($user_id === $this->user_id && $division_id === $this->division_id) {
             return $this->member;

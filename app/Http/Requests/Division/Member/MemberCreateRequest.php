@@ -31,9 +31,9 @@ class MemberCreateRequest extends FormRequest
      */
     public function rules(): array
     {
-        /** @var User $user */
+        /** @var ?User $user */
         $user = $this->user();
-        /** @var Division $division */
+        /** @var ?Division $division */
         $division = $this->route('division');
         $member = $user && $division ? Member::findByUniqueKeys($user->id, $division->id) : null;
         $enable_all = $member?->hasAllCreatePermissionTo(Member::RESOURCE)
