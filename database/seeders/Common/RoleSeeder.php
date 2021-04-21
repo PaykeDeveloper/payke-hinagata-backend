@@ -32,7 +32,7 @@ class RoleSeeder extends Seeder
                 PermissionType::getAllNames(Invitation::RESOURCE),
             )],
             ['name' => UserRole::MANAGER, 'permissions' => array_merge(
-                PermissionType::getOwnNames(Division::RESOURCE),
+                PermissionType::getAllNames(Division::RESOURCE),
                 PermissionType::getAllNames(Member::RESOURCE),
                 [
                     PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE),

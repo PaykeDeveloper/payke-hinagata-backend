@@ -282,7 +282,6 @@ class DivisionControllerTest extends TestCase
     public function provideAuthorizedIndexOwnRole(): array
     {
         return [
-            [UserRole::MANAGER],
             [UserRole::STAFF],
         ];
     }
@@ -291,6 +290,7 @@ class DivisionControllerTest extends TestCase
     {
         return [
             [UserRole::ADMINISTRATOR],
+            [UserRole::MANAGER],
         ];
     }
 
@@ -305,8 +305,7 @@ class DivisionControllerTest extends TestCase
     {
         return [
             [UserRole::ADMINISTRATOR, null],
-            [UserRole::MANAGER, MemberRole::MANAGER],
-            [UserRole::MANAGER, MemberRole::MEMBER],
+            [UserRole::MANAGER, null],
             [UserRole::STAFF, MemberRole::MANAGER],
             [UserRole::STAFF, MemberRole::MEMBER],
         ];
@@ -322,7 +321,6 @@ class DivisionControllerTest extends TestCase
     public function provideUnAuthorizedShowRole(): array
     {
         return [
-            [UserRole::MANAGER, null],
             [UserRole::ORGANIZER, null],
             [UserRole::STAFF, null],
         ];
@@ -348,7 +346,7 @@ class DivisionControllerTest extends TestCase
     {
         return [
             [UserRole::ADMINISTRATOR, null],
-            [UserRole::MANAGER, MemberRole::MANAGER],
+            [UserRole::MANAGER, null],
             [UserRole::ORGANIZER, MemberRole::MANAGER],
             [UserRole::STAFF, MemberRole::MANAGER],
         ];
@@ -357,7 +355,6 @@ class DivisionControllerTest extends TestCase
     public function provideUnAuthorizedUpdateDeleteOwnRole(): array
     {
         return [
-            [UserRole::MANAGER, MemberRole::MEMBER],
             [UserRole::ORGANIZER, MemberRole::MEMBER],
             [UserRole::STAFF, MemberRole::MEMBER],
         ];
@@ -367,13 +364,13 @@ class DivisionControllerTest extends TestCase
     {
         return [
             [UserRole::ADMINISTRATOR],
+            [UserRole::MANAGER],
         ];
     }
 
     public function provideUnAuthorizedUpdateDeleteOtherRole(): array
     {
         return [
-            [UserRole::MANAGER],
             [UserRole::ORGANIZER],
             [UserRole::STAFF],
         ];

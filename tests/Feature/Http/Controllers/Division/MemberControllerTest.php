@@ -253,7 +253,7 @@ class MemberControllerTest extends TestCase
     {
         return [
             [UserRole::ADMINISTRATOR, null],
-            [UserRole::MANAGER, MemberRole::MANAGER],
+            [UserRole::MANAGER, null],
             [UserRole::STAFF, MemberRole::MANAGER],
         ];
     }
