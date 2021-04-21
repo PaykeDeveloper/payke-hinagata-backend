@@ -53,6 +53,7 @@ class RoleSeeder extends Seeder
             )],
             ['name' => MemberRole::MEMBER, 'permissions' => array_merge(
                 [
+                    PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE),
                     PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE),
                 ],
             )],
