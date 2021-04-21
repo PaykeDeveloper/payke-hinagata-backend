@@ -4,12 +4,14 @@
 
 namespace Tests\Feature\Http\Controllers\Sample;
 
-use App\Models\Common\PermissionType;
+use App\Models\Common\UserRole;
 use App\Models\Division\Division;
 use App\Models\Division\Member;
+use App\Models\Division\MemberRole;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
@@ -48,10 +50,13 @@ class ProjectControllerTest extends TestCase
      * [正常系]
      */
 
-    public function testIndexSuccessAsUser()
+    /**
+     * @dataProvider provideAuthorizedViewRole
+     */
+    public function testIndexSuccess($user_role, $member_role)
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Division::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
 
         $response = $this->getJson(route('divisions.projects.index', ['division' => $this->division->id]));
 
@@ -60,10 +65,31 @@ class ProjectControllerTest extends TestCase
             ->assertJsonFragment($this->project->toArray());
     }
 
-    public function testShowSuccessAsUser()
+    /**
+     * @dataProvider provideAuthorizedOtherRole
+     */
+    public function testStoreSuccess($user_role, $member_role)
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Division::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
+
+        $data = ['name' => $this->faker->name];
+
+        $response = $this->postJson(route('divisions.projects.store', [
+            'division' => $this->division->id,
+        ]), $data);
+
+        $response->assertOk()
+            ->assertJson($data);
+    }
+
+    /**
+     * @dataProvider provideAuthorizedViewRole
+     */
+    public function testShowSuccess($user_role, $member_role)
+    {
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
@@ -74,11 +100,13 @@ class ProjectControllerTest extends TestCase
             ->assertJsonFragment($this->project->toArray());
     }
 
-    public function testUpdateSuccessAsUser()
+    /**
+     * @dataProvider provideAuthorizedOtherRole
+     */
+    public function testUpdateSuccess($user_role, $member_role)
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Division::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, Project::RESOURCE));
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
 
         $data = ['name' => $this->faker->name];
 
@@ -91,11 +119,13 @@ class ProjectControllerTest extends TestCase
             ->assertJson($data);
     }
 
-    public function testDestroySuccessAsUser()
+    /**
+     * @dataProvider provideAuthorizedOtherRole
+     */
+    public function testDestroySuccess($user_role, $member_role)
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Division::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::DELETE_ALL, Project::RESOURCE));
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
@@ -108,146 +138,17 @@ class ProjectControllerTest extends TestCase
         $this->assertNull($result);
     }
 
-    public function testIndexSuccessAsMember()
-    {
-        // member 経由でのアクセス
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
-
-        $response = $this->getJson(route('divisions.projects.index', [
-            'division' => $this->division->id,
-        ]));
-
-        $response->assertOk()
-            ->assertJsonCount(1)
-            ->assertJsonFragment($this->project->toArray());
-    }
-
-    public function testShowSuccessAsMember()
-    {
-        // member 経由でのアクセス
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
-
-        $response = $this->getJson(route('divisions.projects.show', [
-            'division' => $this->division->id,
-            'project' => $this->project->id,
-        ]));
-
-        $response->assertOk()
-            ->assertJson($this->project->toArray());
-    }
-
-    /**
-     * 更新ができる。
-     */
-    public function testUpdateSuccessAsMember()
-    {
-        // member 経由でのアクセス
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, Project::RESOURCE));
-
-        $data = ['name' => $this->faker->name];
-
-        $response = $this->patchJson(route('divisions.projects.update', [
-            'division' => $this->division->id,
-            'project' => $this->project->id,
-        ]), $data);
-
-        $response->assertOk()
-            ->assertJson($data);
-    }
-
     /**
      * [準正常系]
      */
 
     /**
-     * Memberではない別のカンパニーにアクセスするとエラーになる。
+     * @dataProvider provideUnAuthorizedViewRole
      */
-    public function testShowNotFoundAsMember()
+    public function testIndexUnAuthorized($user_role, $member_role)
     {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
-
-        // Division の作成とプロジェクトの作成
-        /** @var Project $otherProject */
-        $otherProject = Project::factory()->create();
-
-        $response = $this->getJson(route('divisions.projects.show', [
-            'division' => $otherProject->division_id,
-            'project' => $otherProject->id
-        ]));
-
-        $response->assertNotFound();
-    }
-
-    /**
-     * viewAny 権限がないとエラー
-     */
-    public function testIndexNotFoundNoPermissionAsMember()
-    {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-
-        $response = $this->getJson(route('divisions.projects.index', $this->division->id));
-
-        $response->assertNotFound();
-    }
-
-    /**
-     * view 権限がないとエラー
-     */
-    public function testShowNotFoundNoPermissionAsMember()
-    {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-
-        $response = $this->getJson(route('divisions.projects.show', [
-            'division' => $this->division->id,
-            'project' => $this->project->id
-        ]));
-
-        $response->assertNotFound();
-    }
-
-    /**
-     * update 権限がないとエラー 403
-     */
-    public function testUpdateForbiddenNoPermissionAsMember()
-    {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
-
-        $response = $this->patchJson(route('divisions.projects.update', [
-            'division' => $this->division->id,
-            'project' => $this->project->id
-        ]));
-
-        $response->assertForbidden();
-    }
-
-    /**
-     * destroy 権限がないとエラー 403
-     */
-    public function testDestroyForbiddenNoPermissionAsMember()
-    {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
-
-        $response = $this->deleteJson(route('divisions.projects.destroy', [
-            'division' => $this->division->id,
-            'project' => $this->project->id
-        ]));
-
-        $response->assertForbidden();
-    }
-
-    /**
-     * Division の view がないとエラー
-     */
-    public function testIndexNotFoundNoParentViewAsUser()
-    {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
 
         $response = $this->getJson(route('divisions.projects.index', ['division' => $this->division->id]));
 
@@ -255,70 +156,104 @@ class ProjectControllerTest extends TestCase
     }
 
     /**
-     * update はあっても view がない場合はエラー
+     * @dataProvider provideUnAuthorizedOtherRole
      */
-    public function testUpdateForbiddenAsUser()
+    public function testStoreUnAuthorized($user_role, $member_role)
     {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, Project::RESOURCE));
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
 
         $data = ['name' => $this->faker->name];
 
-        $response = $this->putJson(route('divisions.projects.update', [
+        $response = $this->postJson(route('divisions.projects.store', [
             'division' => $this->division->id,
-            'project' => $this->project->id
         ]), $data);
 
-        $response->assertNotFound();
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /**
-     * destroy はあっても view がない場合はエラー
+     * @dataProvider provideUnAuthorizedViewRole
      */
-    public function testDestroyForbiddenAsUser()
+    public function testShowUnAuthorized($user_role, $member_role)
     {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE));
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::DELETE_ALL, Project::RESOURCE));
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
 
-        $response = $this->deleteJson(route('divisions.projects.destroy', [
+        $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
-            'project' => $this->project->id
+            'project' => $this->project->id,
         ]));
 
         $response->assertNotFound();
     }
 
     /**
-     * 親が見れないと更新できない (親チェックが view なので 404)
+     * @dataProvider provideUnAuthorizedOtherRole
      */
-    public function testUpdateNotFoundParentView()
+    public function testUpdateUnAuthorized($user_role, $member_role)
     {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, Project::RESOURCE));
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
 
         $data = ['name' => $this->faker->name];
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
-            'project' => $this->project->id
+            'project' => $this->project->id,
         ]), $data);
 
-        $response->assertNotFound();
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /**
-     * 親が見れないと削除できない (親チェックが view なので 404)
+     * @dataProvider provideUnAuthorizedOtherRole
      */
-    public function testDestroyNotFoundParentView()
+    public function testDestroyUnAuthorized($user_role, $member_role)
     {
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE));
-        $this->member->givePermissionTo(PermissionType::getName(PermissionType::DELETE_ALL, Project::RESOURCE));
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
-            'project' => $this->project->id
+            'project' => $this->project->id,
         ]));
 
-        $response->assertNotFound();
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function provideAuthorizedViewRole(): array
+    {
+        return [
+            [UserRole::ADMINISTRATOR, null],
+            [UserRole::MANAGER, MemberRole::MANAGER],
+            [UserRole::MANAGER, MemberRole::MEMBER],
+            [UserRole::STAFF, MemberRole::MANAGER],
+            [UserRole::STAFF, MemberRole::MEMBER],
+        ];
+    }
+
+    public function provideUnAuthorizedViewRole(): array
+    {
+        return [
+            [UserRole::ORGANIZER, null],
+        ];
+    }
+
+    public function provideAuthorizedOtherRole(): array
+    {
+        return [
+            [UserRole::ADMINISTRATOR, null],
+            [UserRole::MANAGER, MemberRole::MANAGER],
+            [UserRole::STAFF, MemberRole::MANAGER],
+        ];
+    }
+
+    public function provideUnAuthorizedOtherRole(): array
+    {
+        return [
+            [UserRole::MANAGER, MemberRole::MEMBER],
+            [UserRole::STAFF, MemberRole::MEMBER],
+        ];
     }
 }
