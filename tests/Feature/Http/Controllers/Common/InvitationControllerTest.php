@@ -348,14 +348,14 @@ class InvitationControllerTest extends TestCase
     {
         return [
             [UserRole::ADMINISTRATOR],
-            [UserRole::PERSONAL_DIRECTOR],
+            [UserRole::ORGANIZER],
         ];
     }
 
     public function provideUnAuthorizedRole(): array
     {
         return [
-            [UserRole::DIVISION_MANAGER],
+            [UserRole::MANAGER],
             [UserRole::STAFF],
         ];
     }

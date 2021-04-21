@@ -25,13 +25,13 @@ class RoleSeeder extends Seeder
     {
         $data_set = [
             // User Roles
-            ['name' => UserRole::PERSONAL_DIRECTOR, 'permissions' => array_merge(
+            ['name' => UserRole::ORGANIZER, 'permissions' => array_merge(
                 PermissionType::getAllNames(Permission::RESOURCE),
                 PermissionType::getAllNames(Role::RESOURCE),
                 PermissionType::getAllNames(User::RESOURCE),
                 PermissionType::getAllNames(Invitation::RESOURCE),
             )],
-            ['name' => UserRole::DIVISION_MANAGER, 'permissions' => array_merge(
+            ['name' => UserRole::MANAGER, 'permissions' => array_merge(
                 PermissionType::getOwnNames(Division::RESOURCE),
                 PermissionType::getAllNames(Member::RESOURCE),
                 [
