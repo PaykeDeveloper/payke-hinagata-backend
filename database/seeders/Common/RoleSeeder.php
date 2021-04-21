@@ -25,14 +25,14 @@ class RoleSeeder extends Seeder
     {
         $data_set = [
             // User Roles
-            ['name' => UserRole::ADMIN, 'permissions' => array_merge(
+            ['name' => UserRole::ORGANIZER, 'permissions' => array_merge(
                 PermissionType::getAllNames(Permission::RESOURCE),
                 PermissionType::getAllNames(Role::RESOURCE),
                 PermissionType::getAllNames(User::RESOURCE),
                 PermissionType::getAllNames(Invitation::RESOURCE),
             )],
             ['name' => UserRole::MANAGER, 'permissions' => array_merge(
-                PermissionType::getOwnNames(Division::RESOURCE),
+                PermissionType::getAllNames(Division::RESOURCE),
                 PermissionType::getAllNames(Member::RESOURCE),
                 [
                     PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE),
@@ -41,7 +41,7 @@ class RoleSeeder extends Seeder
             ['name' => UserRole::STAFF, 'permissions' => array_merge(
                 [
                     PermissionType::getName(PermissionType::VIEW_ALL, Role::RESOURCE),
-                    PermissionType::getName(PermissionType::VIEW_ALL, Division::RESOURCE),
+                    PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE),
                 ]
             )],
 
@@ -53,12 +53,18 @@ class RoleSeeder extends Seeder
             )],
             ['name' => MemberRole::MEMBER, 'permissions' => array_merge(
                 [
+                    PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE),
                     PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE),
                 ],
             )],
         ];
 
         $ids = [];
+
+        $admin_role = Role::updateOrCreate(['name' => UserRole::ADMINISTRATOR]);
+        $admin_role->syncPermissions(Permission::pluck('name')->all());
+        $ids[] = $admin_role->id;
+
         foreach ($data_set as $value) {
             $name = $value['name'];
             $role = Role::updateOrCreate([

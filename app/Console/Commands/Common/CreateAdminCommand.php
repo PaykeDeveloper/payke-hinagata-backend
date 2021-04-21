@@ -69,7 +69,7 @@ class CreateAdminCommand extends Command
             $action = new CreateNewUser();
             $user = $action->create($attributes);
             $user->markEmailAsVerified();
-            $user->syncRoles(UserRole::all());
+            $user->syncRoles(UserRole::ADMINISTRATOR);
         } catch (ValidationException $e) {
             foreach ($e->validator->errors()->all() as $error) {
                 $this->error($error);

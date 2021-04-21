@@ -3,20 +3,17 @@
 namespace Tests\Feature\Http\Controllers\Common;
 
 use App\Models\Common\Invitation;
-use App\Models\Common\PermissionType;
 use App\Models\Common\UserRole;
 use App\Models\Division\MemberRole;
 use App\Models\User;
-use Database\Seeders\Common\PermissionSeeder;
-use Database\Seeders\Common\RoleSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
     use WithFaker;
 
     private User $user;
@@ -24,8 +21,6 @@ class UserControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed(PermissionSeeder::class);
-        $this->seed(RoleSeeder::class);
         $this->user = User::factory()->create();
         $this->actingAs($this->user);
     }
@@ -36,40 +31,29 @@ class UserControllerTest extends TestCase
 
     /**
      * データ一覧の取得ができる。
+     *
+     * @dataProvider provideAuthorizedViewRole
      */
-    public function testIndexSuccessAll()
+    public function testIndexSuccess($role)
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
+        $this->user->syncRoles($role);
         $user = User::factory()->create();
 
         $response = $this->getJson(route('users.index'));
 
         $response->assertOk()
-            ->assertJsonCount(2)
+            ->assertJsonCount(User::count())
             ->assertJsonFragment($user->toArray());
     }
 
     /**
-     * データ一覧の取得ができる。
-     */
-    public function testIndexSuccessOwn()
-    {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
-        $user = User::factory()->create();
-
-        $response = $this->getJson(route('users.index'));
-
-        $response->assertOk()
-            ->assertJsonCount(1)
-            ->assertJsonMissing(['id' => $user->id]);
-    }
-
-    /**
      * データの取得ができる。
+     *
+     * @dataProvider provideAuthorizedViewRole
      */
-    public function testShowSuccessAll()
+    public function testShowSuccess($role)
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
+        $this->user->syncRoles($role);
         $user = User::factory()->create();
 
         $response = $this->getJson(route('users.show', ['user' => $user->id]));
@@ -79,25 +63,13 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * データの取得ができる。
-     */
-    public function testShowSuccessOwn()
-    {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
-
-        $response = $this->getJson(route('users.show', ['user' => $this->user->id]));
-
-        $response->assertOk()
-            ->assertJson($this->user->toArray());
-    }
-
-    /**
      * データの更新ができる。
+     *
+     * @dataProvider provideAuthorizedOtherRole
      */
-    public function testUpdateSuccessAll()
+    public function testUpdateSuccess($role)
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, User::RESOURCE));
+        $this->user->syncRoles($role);
         $user = User::factory()->create();
         $data = [
             'name' => $this->faker->name,
@@ -111,29 +83,13 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * データの更新ができる。
-     */
-    public function testUpdateSuccessOwn()
-    {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_OWN, User::RESOURCE));
-        $data = [
-            'name' => $this->faker->name,
-        ];
-
-        $response = $this->patchJson(route('users.update', ['user' => $this->user->id]), $data);
-
-        $response->assertOk()
-            ->assertJsonFragment($data);
-    }
-
-    /**
      * 削除ができる。
+     *
+     * @dataProvider provideAuthorizedOtherRole
      */
-    public function testDestroySuccessALL()
+    public function testDestroySuccessALL($role)
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::DELETE_ALL, User::RESOURCE));
+        $this->user->syncRoles($role);
         $user = User::factory()->create();
 
         $response = $this->deleteJson(route('users.destroy', ['user' => $user->id]));
@@ -145,30 +101,18 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * 削除ができる。
-     */
-    public function testDestroySuccessOwn()
-    {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::DELETE_OWN, User::RESOURCE));
-
-        $response = $this->deleteJson(route('users.destroy', ['user' => $this->user->id]));
-
-        $response->assertNoContent();
-
-        $result = Invitation::find($this->user->id);
-        $this->assertNull($result);
-    }
-
-    /**
      * [準正常系]
      */
 
     /**
      * 取得で、権限エラーになる。
+     *
+     * @dataProvider provideUnAuthorizedViewRole
      */
-    public function testIndexUnAuthorized()
+    public function testIndexUnAuthorized($role)
     {
+        $this->user->syncRoles($role);
+
         $response = $this->getJson(route('users.index'));
 
         $response->assertNotFound();
@@ -176,9 +120,13 @@ class UserControllerTest extends TestCase
 
     /**
      * 作成はエラーになる。
+     *
+     * @dataProvider provideAuthorizedViewRole
      */
-    public function testStoreNotFound()
+    public function testStoreNotFound($role)
     {
+        $this->user->syncRoles($role);
+
         $response = $this->postJson(route('users.index'), []);
 
         $response->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
@@ -186,11 +134,12 @@ class UserControllerTest extends TestCase
 
     /**
      * 不正なロールの設定でエラーになる。
+     *
+     * @dataProvider provideAuthorizedOtherRole
      */
-    public function testUpdateInValidRoles()
+    public function testUpdateInValidRoles($role)
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_ALL, User::RESOURCE));
+        $this->user->syncRoles($role);
         $user = User::factory()->create();
         $data = [
             'name' => $this->faker->name,
@@ -206,11 +155,12 @@ class UserControllerTest extends TestCase
 
     /**
      * 更新で、権限エラーになる。
+     *
+     * @dataProvider provideUnAuthorizedOtherRole
      */
-    public function testUpdateUnAuthorizedAll()
+    public function testUpdateUnAuthorized($role, $status)
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::UPDATE_OWN, User::RESOURCE));
+        $this->user->syncRoles($role);
         $user = User::factory()->create();
         $data = [
             'name' => $this->faker->name,
@@ -218,47 +168,53 @@ class UserControllerTest extends TestCase
 
         $response = $this->patchJson(route('users.update', ['user' => $user->id]), $data);
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
-    }
-
-    /**
-     * 更新で、権限エラーになる。
-     */
-    public function testUpdateUnAuthorizedOwn()
-    {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
-        $data = [
-            'name' => $this->faker->name,
-        ];
-
-        $response = $this->patchJson(route('users.update', ['user' => $this->user->id]), $data);
-
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertStatus($status);
     }
 
     /**
      * 削除で、権限エラーになる。
+     *
+     * @dataProvider provideUnAuthorizedOtherRole
      */
-    public function testDestroyUnAuthorizedALL()
+    public function testDestroyUnAuthorized($role, $status)
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE));
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::DELETE_OWN, User::RESOURCE));
+        $this->user->syncRoles($role);
         $user = User::factory()->create();
 
         $response = $this->deleteJson(route('users.destroy', ['user' => $user->id]));
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertStatus($status);
     }
 
-    /**
-     * 削除で、権限エラーになる。
-     */
-    public function testDestroyUnAuthorizedOwn()
+    public function provideAuthorizedViewRole(): array
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_OWN, User::RESOURCE));
+        return [
+            [UserRole::ADMINISTRATOR],
+            [UserRole::ORGANIZER],
+            [UserRole::MANAGER],
+        ];
+    }
 
-        $response = $this->deleteJson(route('users.destroy', ['user' => $this->user->id]));
+    public function provideUnAuthorizedViewRole(): array
+    {
+        return [
+            [UserRole::STAFF],
+        ];
+    }
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    public function provideAuthorizedOtherRole(): array
+    {
+        return [
+            [UserRole::ADMINISTRATOR],
+            [UserRole::ORGANIZER],
+        ];
+    }
+
+    public function provideUnAuthorizedOtherRole(): array
+    {
+        return [
+            [UserRole::MANAGER, Response::HTTP_FORBIDDEN],
+            [UserRole::STAFF, Response::HTTP_NOT_FOUND],
+        ];
     }
 }

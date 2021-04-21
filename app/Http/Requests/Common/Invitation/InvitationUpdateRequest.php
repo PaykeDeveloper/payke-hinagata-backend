@@ -4,6 +4,8 @@ namespace App\Http\Requests\Common\Invitation;
 
 use App\Http\Requests\FormRequest;
 use App\Models\Common\InvitationStatus;
+use App\Models\Common\UserRole;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class InvitationUpdateRequest extends FormRequest
@@ -22,6 +24,8 @@ class InvitationUpdateRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
+            'role_names' => ['array'],
+            'role_names.*' => ['string', Rule::in(UserRole::all())],
         ];
     }
 }

@@ -4,11 +4,11 @@
 
 namespace Database\Seeders\Sample;
 
-use App\Models\Sample\Book;
-use App\Models\User;
+use App\Models\Division\Division;
+use App\Models\Sample\Project;
 use Illuminate\Database\Seeder;
 
-class BookSeeder extends Seeder
+class ProjectSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,8 +19,8 @@ class BookSeeder extends Seeder
     {
         $count = rand(1, 5);
         for ($i = 0; $i < $count; $i++) {
-            $user = User::inRandomOrder()->first();
-            Book::factory()->create(['user_id' => $user->id]);
+            $division = Division::inRandomOrder()->first();
+            Project::factory()->create(['division_id' => $division->id]);
         }
     }
 }

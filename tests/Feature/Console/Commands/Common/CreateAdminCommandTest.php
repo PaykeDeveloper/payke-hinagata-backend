@@ -2,23 +2,14 @@
 
 namespace Tests\Feature\Console\Commands\Common;
 
-use Database\Seeders\Common\PermissionSeeder;
-use Database\Seeders\Common\RoleSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 class CreateAdminCommandTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
     use WithFaker;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->seed(PermissionSeeder::class);
-        $this->seed(RoleSeeder::class);
-    }
 
     /**
      * [正常系]

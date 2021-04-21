@@ -20,6 +20,7 @@ class CreateInvitationsTable extends Migration
             $table->string('email')->unique();
             $table->string('token');
             $table->enum('status', InvitationStatus::all());
+            $table->json('role_names');
             $table->foreignId('created_by')
                 ->nullable()
                 ->constrained('users')

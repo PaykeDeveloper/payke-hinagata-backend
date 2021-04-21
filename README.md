@@ -10,7 +10,7 @@
 
 ```shell
 % docker-compose exec backend-web sh
-backend-web% php artisan user:create
+backend-web% php artisan admin:create
 ```
 
 ### 開発環境の更新

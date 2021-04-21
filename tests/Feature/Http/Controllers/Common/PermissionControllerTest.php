@@ -5,21 +5,19 @@ namespace Tests\Feature\Http\Controllers\Common;
 use App\Models\Common\Permission;
 use App\Models\Common\PermissionType;
 use App\Models\User;
-use Database\Seeders\Common\PermissionSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
 class PermissionControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshSeedDatabase;
 
     private User $user;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed(PermissionSeeder::class);
         $this->user = User::factory()->create();
         $this->actingAs($this->user);
     }

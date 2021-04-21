@@ -5,6 +5,8 @@ namespace App\Actions\Common;
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Models\Common\Invitation;
 use App\Models\Common\InvitationStatus;
+use App\Models\Common\Role;
+use App\Models\Common\UserRole;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -34,6 +36,8 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
             'password' => Hash::make($validated_input['password']),
             'locale' => request()->getPreferredLanguage(),
         ]);
+        $role_names = $this->filteredRoles($invitation->role_names);
+        $user->syncRoles($role_names);
         $invitation->approved();
         return $user;
     }
@@ -70,5 +74,14 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
             $updated_input['token'] = hash('sha256', $input['token']);
         }
         return $updated_input;
+    }
+
+    private function filteredRoles(array $role_names): array
+    {
+        $user_roles = UserRole::all();
+        $all_roles = Role::pluck('name')->all();
+        return array_filter($role_names, function ($name) use ($user_roles, $all_roles) {
+            return in_array($name, $user_roles) && in_array($name, $all_roles);
+        });
     }
 }
