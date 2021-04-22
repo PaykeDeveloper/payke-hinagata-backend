@@ -24,6 +24,7 @@ return [
         'forgot-password',
         'reset-password',
         'email/verify/*',
+        'user/password',
         \App\Providers\RouteServiceProvider::HOME,
     ],
 
