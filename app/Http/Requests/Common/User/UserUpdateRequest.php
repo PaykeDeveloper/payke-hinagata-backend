@@ -27,7 +27,7 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        /** @var User $user */
+        /** @var ?User $user */
         $user = $this->route('user');
         return [
             'name' => ['string', 'max:255'],
@@ -35,7 +35,7 @@ class UserUpdateRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($user->id),
+                Rule::unique('users')->ignore($user?->id),
             ],
             'role_names' => ['array'],
             'role_names.*' => ['string', Rule::exists('roles', 'name')->where(function (Builder $query) {
