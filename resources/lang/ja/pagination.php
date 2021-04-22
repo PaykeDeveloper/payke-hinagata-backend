@@ -11,7 +11,4 @@
 |
 */
 
-return [
-    'next'     => '次 &raquo;',
-    'previous' => '&laquo; 前',
-];
+return require __DIR__ . '/../../../vendor/laravel-lang/lang/locales/ja/pagination.php';
