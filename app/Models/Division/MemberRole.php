@@ -14,4 +14,11 @@ final class MemberRole
             self::MEMBER,
         ];
     }
+
+    public static function required(): array
+    {
+        return [
+            self::MEMBER,
+        ];
+    }
 }

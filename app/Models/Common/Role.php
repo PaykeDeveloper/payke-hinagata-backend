@@ -19,7 +19,7 @@ class Role extends BaseModel
 
     protected $hidden = ['permissions', 'pivot', 'guard_name', 'created_at', 'updated_at'];
 
-    protected $appends = ['type'];
+    protected $appends = ['type', 'required'];
 
     public function getTypeAttribute(): ?string
     {
@@ -31,5 +31,17 @@ class Role extends BaseModel
             return Member::RESOURCE;
         }
         return null;
+    }
+
+    public function getRequiredAttribute(): bool
+    {
+        $name = $this->name;
+        if (in_array($name, UserRole::required())) {
+            return true;
+        }
+        if (in_array($name, MemberRole::required())) {
+            return true;
+        }
+        return false;
     }
 }
