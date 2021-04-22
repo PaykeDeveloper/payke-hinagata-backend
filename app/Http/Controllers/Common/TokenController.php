@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Common;
 
 use App\Http\Requests\Common\Token\TokenCreateRequest;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
@@ -19,9 +18,9 @@ class TokenController extends AuthenticatedSessionController
      * }
      *
      * @param TokenCreateRequest $request
-     * @return Response
+     * @return mixed
      */
-    public function storeToken(TokenCreateRequest $request): Response
+    public function storeToken(TokenCreateRequest $request): mixed
     {
         return $this->loginPipeline($request)->then(function ($request) {
             $user = $request->user();
