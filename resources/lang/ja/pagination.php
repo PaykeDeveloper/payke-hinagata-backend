@@ -1,19 +1,17 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Pagination Language Lines
+|--------------------------------------------------------------------------
+|
+| The following language lines are used by the paginator library to build
+| the simple pagination links. You are free to change them to anything
+| you want to customize your views to better match your application.
+|
+*/
+
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | ペジネーション言語行
-    |--------------------------------------------------------------------------
-    |
-    | 以下の言語行はペジネーターライブラリーによりシンプルなペジネーション
-    | リンクを生成するために使用されます。アプリケーションに合うように、
-    | 自由に変更してください。
-    |
-    */
-
+    'next'     => '次 &raquo;',
     'previous' => '&laquo; 前',
-    'next' => '次 &raquo',
-
 ];
