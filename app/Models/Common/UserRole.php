@@ -18,4 +18,11 @@ final class UserRole
             self::STAFF,
         ];
     }
+
+    public static function required(): array
+    {
+        return [
+            self::STAFF,
+        ];
+    }
 }
