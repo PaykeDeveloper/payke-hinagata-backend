@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Common\InvitationController;
+use App\Http\Controllers\Common\LocaleController;
 use App\Http\Controllers\Common\MyUserController;
 use App\Http\Controllers\Common\PermissionController;
 use App\Http\Controllers\Common\RoleController;
@@ -36,6 +37,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/logout', [TokenController::class, 'destroyToken'])
         ->middleware('auth:sanctum');
 
+    Route::get('/locales', LocaleController::class);
     Route::get('/status', StatusController::class);
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user', [MyUserController::class, 'index']);
