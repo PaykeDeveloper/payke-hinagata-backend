@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Common;
 
+use App\Models\Common\LocaleType;
 use App\Models\Common\UserRole;
 use App\Models\User;
 use Tests\RefreshSeedDatabase;
@@ -57,7 +58,7 @@ class MyUserControllerTest extends TestCase
     public function testStoreSuccess()
     {
         $data = [
-            'locale' => 'zh_CN',
+            'locale' => LocaleType::EN,
         ];
 
         $response = $this->patchJson('api/v1/user', $data);
