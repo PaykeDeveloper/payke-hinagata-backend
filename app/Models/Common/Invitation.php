@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Notifications\Common\InvitationUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use Notification;
 
@@ -31,18 +30,11 @@ class Invitation extends Model
 
     protected $hidden = [
         'token',
-        'create_user',
     ];
 
     protected $casts = [
         'role_names' => 'array',
     ];
-
-    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
-    public function create_user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
 
     private function sendInvitationNotification(string $token, string $locale): void
     {
