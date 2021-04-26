@@ -5,14 +5,14 @@
 namespace Tests\Feature\Http\Controllers\Sample;
 
 use App\Models\Sample\Book;
-use App\Models\Sample\BookComment;
+use App\Models\Sample\DivisionProject;
 use App\Models\User;
 use Faker\Provider\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
-class BookCommentControllerTest extends TestCase
+class DivisionProjectControllerTest extends TestCase
 {
     use RefreshSeedDatabase;
 
@@ -35,7 +35,7 @@ class BookCommentControllerTest extends TestCase
      */
     public function testIndexSuccess()
     {
-        $comment = BookComment::factory()->create(['book_id' => $this->book->id]);
+        $comment = DivisionProject::factory()->create(['book_id' => $this->book->id]);
 
         $response = $this->getJson(route('books.comments.index', ['book' => $comment->book_id]));
 
@@ -92,7 +92,7 @@ class BookCommentControllerTest extends TestCase
      */
     public function testShowSuccess()
     {
-        $comment = BookComment::factory()->create(['book_id' => $this->book->id]);
+        $comment = DivisionProject::factory()->create(['book_id' => $this->book->id]);
 
         $response = $this->getJson(route(
             'books.comments.show',
@@ -108,7 +108,7 @@ class BookCommentControllerTest extends TestCase
      */
     public function testUpdateSuccess()
     {
-        $comment = BookComment::factory()->create(['book_id' => $this->book->id]);
+        $comment = DivisionProject::factory()->create(['book_id' => $this->book->id]);
         $data = ['votes' => 1];
 
         $response = $this->patchJson(route(
@@ -125,7 +125,7 @@ class BookCommentControllerTest extends TestCase
      */
     public function testUpdateAsyncSuccess()
     {
-        $comment = BookComment::factory()->create(['book_id' => $this->book->id]);
+        $comment = DivisionProject::factory()->create(['book_id' => $this->book->id]);
         $data = ['votes' => 1];
 
         $response = $this->patchJson("/api/v1/books/{$comment->book_id}/comments/{$comment->slug}/update-async", $data);
@@ -138,7 +138,7 @@ class BookCommentControllerTest extends TestCase
      */
     public function testDestroySuccess()
     {
-        $comment = BookComment::factory()->create(['book_id' => $this->book->id]);
+        $comment = DivisionProject::factory()->create(['book_id' => $this->book->id]);
 
         $response = $this->deleteJson(route(
             'books.comments.destroy',
@@ -146,7 +146,7 @@ class BookCommentControllerTest extends TestCase
         ));
 
         $response->assertNoContent();
-        $result = BookComment::find($comment->id);
+        $result = DivisionProject::find($comment->id);
         $this->assertNull($result);
     }
 
@@ -159,7 +159,7 @@ class BookCommentControllerTest extends TestCase
      */
     public function testIndexNotFound()
     {
-        $comment = BookComment::factory()->create();
+        $comment = DivisionProject::factory()->create();
 
         $response = $this->getJson(route('books.comments.index', ['book' => $comment->book_id]));
 
@@ -244,7 +244,7 @@ class BookCommentControllerTest extends TestCase
      */
     public function testUpdateDisableUpdateSlug()
     {
-        $comment = BookComment::factory()->create(['book_id' => $this->book->id]);
+        $comment = DivisionProject::factory()->create(['book_id' => $this->book->id]);
         $data = ['slug' => Uuid::uuid()];
 
         $response = $this->patchJson(route(
@@ -253,7 +253,7 @@ class BookCommentControllerTest extends TestCase
         ), $data);
 
         $response->assertOk();
-        $result = BookComment::find($comment->id);
+        $result = DivisionProject::find($comment->id);
         $this->assertEquals($comment->slug, $result->slug);
     }
 
@@ -274,10 +274,10 @@ class BookCommentControllerTest extends TestCase
 
     private function createNotFoundPatterns(): array
     {
-        $comment = BookComment::factory()->create(['book_id' => $this->book->id]);
+        $comment = DivisionProject::factory()->create(['book_id' => $this->book->id]);
         $another_book = Book::factory()->create(['user_id' => $this->book->user->id]);
-        $another_book_comment = BookComment::factory()->create(['book_id' => $another_book->id]);
-        $another_user_comment = BookComment::factory()->create();
+        $another_book_comment = DivisionProject::factory()->create(['book_id' => $another_book->id]);
+        $another_user_comment = DivisionProject::factory()->create();
         return [
             ['book' => $comment->book_id, 'comment' => $another_book_comment->id],
             ['book' => $another_book->id, 'comment' => $comment->id],

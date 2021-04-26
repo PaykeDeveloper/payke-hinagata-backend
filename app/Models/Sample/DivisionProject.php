@@ -13,9 +13,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * @mixin IdeHelperBookComment
+ * @mixin IdeHelperDivisionProject
  */
-class BookComment extends Model implements HasMedia
+class DivisionProject extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
@@ -97,7 +97,7 @@ class BookComment extends Model implements HasMedia
         $this->addMediaCollection(self::COLLECTION_NAME)->singleFile();
     }
 
-    public static function createFromRequest(mixed $attributes, Book $book): BookComment
+    public static function createFromRequest(mixed $attributes, Book $book): self
     {
         $comment = new self();
         $comment->fill($attributes);
@@ -110,7 +110,7 @@ class BookComment extends Model implements HasMedia
         return $comment;
     }
 
-    public function updateFromRequest(mixed $attributes): BookComment
+    public function updateFromRequest(mixed $attributes): self
     {
         $this->update($attributes);
         if (array_key_exists('cover', $attributes)) {

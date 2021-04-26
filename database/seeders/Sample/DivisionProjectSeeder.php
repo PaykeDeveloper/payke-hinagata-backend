@@ -4,11 +4,11 @@
 
 namespace Database\Seeders\Sample;
 
-use App\Models\Sample\Book;
-use App\Models\Sample\BookComment;
+use App\Models\Division\Division;
+use App\Models\Sample\DivisionProject;
 use Illuminate\Database\Seeder;
 
-class BookCommentSeeder extends Seeder
+class DivisionProjectSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,9 +19,9 @@ class BookCommentSeeder extends Seeder
     {
         $count = rand(1, 5);
         for ($i = 0; $i < $count; $i++) {
-            $book = Book::inRandomOrder()->first();
-            if ($book) {
-                BookComment::factory()->create(['book_id' => $book->id]);
+            $division = Division::inRandomOrder()->first();
+            if ($division) {
+                DivisionProject::factory()->create(['division_id' => $division->id]);
             }
         }
     }

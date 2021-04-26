@@ -5,14 +5,14 @@
 namespace App\Http\Controllers\Sample;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Sample\BookComment\BookCommentCreateRequest;
-use App\Http\Requests\Sample\BookComment\BookCommentIndexRequest;
-use App\Http\Requests\Sample\BookComment\BookCommentShowRequest;
-use App\Http\Requests\Sample\BookComment\BookCommentUpdateRequest;
-use App\Jobs\Sample\CreateBookComment;
-use App\Jobs\Sample\UpdateBookComment;
+use App\Http\Requests\Sample\DivisionProject\DivisionProjectCreateRequest;
+use App\Http\Requests\Sample\DivisionProject\DivisionProjectIndexRequest;
+use App\Http\Requests\Sample\DivisionProject\DivisionProjectShowRequest;
+use App\Http\Requests\Sample\DivisionProject\DivisionProjectUpdateRequest;
+use App\Jobs\Sample\CreateDivisionProject;
+use App\Jobs\Sample\UpdateDivisionProject;
 use App\Models\Sample\Book;
-use App\Models\Sample\BookComment;
+use App\Models\Sample\DivisionProject;
 use Exception;
 use Illuminate\Http\Response;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\Response;
  * 間違えた名前を設定すると、値がNULLになり404エラーにはなりません。。
  *
  */
-class BookCommentController extends Controller
+class DivisionProjectController extends Controller
 {
     /**
      * @response [
@@ -49,13 +49,13 @@ class BookCommentController extends Controller
      * }
      * ]
      *
-     * @param BookCommentIndexRequest $request
+     * @param DivisionProjectIndexRequest $request
      * @param Book $book
      * @return Response
      */
-    public function index(BookCommentIndexRequest $request, Book $book): Response
+    public function index(DivisionProjectIndexRequest $request, Book $book): Response
     {
-        $comments = BookComment::whereBookId($book->id)->get();
+        $comments = DivisionProject::whereBookId($book->id)->get();
         return response($comments);
     }
 
@@ -78,13 +78,13 @@ class BookCommentController extends Controller
      * "cover_url": "http://localhost:8000/storage/uploads/Ao32KH7ablb14RRUFZr2JR0P5rRlEYImx6FvV9Y2.png"
      * }
      *
-     * @param BookCommentCreateRequest $request
+     * @param DivisionProjectCreateRequest $request
      * @param Book $book
      * @return Response
      */
-    public function store(BookCommentCreateRequest $request, Book $book): Response
+    public function store(DivisionProjectCreateRequest $request, Book $book): Response
     {
-        $comment = BookComment::createFromRequest($request->validated(), $book);
+        $comment = DivisionProject::createFromRequest($request->validated(), $book);
         return response($comment);
     }
 
@@ -107,12 +107,12 @@ class BookCommentController extends Controller
      * "cover_url": "http://localhost:8000/storage/uploads/Ao32KH7ablb14RRUFZr2JR0P5rRlEYImx6FvV9Y2.png"
      * }
      *
-     * @param BookCommentShowRequest $request
+     * @param DivisionProjectShowRequest $request
      * @param Book $book
-     * @param BookComment $comment
+     * @param DivisionProject $comment
      * @return Response
      */
-    public function show(BookCommentShowRequest $request, Book $book, BookComment $comment): Response
+    public function show(DivisionProjectShowRequest $request, Book $book, DivisionProject $comment): Response
     {
         return response($comment);
     }
@@ -136,50 +136,50 @@ class BookCommentController extends Controller
      * "cover_url": "http://localhost:8000/storage/uploads/Ao32KH7ablb14RRUFZr2JR0P5rRlEYImx6FvV9Y2.png"
      * }
      *
-     * @param BookCommentUpdateRequest $request
+     * @param DivisionProjectUpdateRequest $request
      * @param Book $book
-     * @param BookComment $comment
+     * @param DivisionProject $comment
      * @return Response
      */
-    public function update(BookCommentUpdateRequest $request, Book $book, BookComment $comment): Response
+    public function update(DivisionProjectUpdateRequest $request, Book $book, DivisionProject $comment): Response
     {
         $comment->updateFromRequest($request->validated());
         return response($comment);
     }
 
     /**
-     * @param BookCommentShowRequest $request
+     * @param DivisionProjectShowRequest $request
      * @param Book $book
-     * @param BookComment $comment
+     * @param DivisionProject $comment
      * @return Response
      * @throws Exception
      */
-    public function destroy(BookCommentShowRequest $request, Book $book, BookComment $comment): Response
+    public function destroy(DivisionProjectShowRequest $request, Book $book, DivisionProject $comment): Response
     {
         $comment->delete();
         return response(null, 204);
     }
 
     /**
-     * @param BookCommentCreateRequest $request
+     * @param DivisionProjectCreateRequest $request
      * @param Book $book
      * @return Response
      */
-    public function storeAsync(BookCommentCreateRequest $request, Book $book): Response
+    public function storeAsync(DivisionProjectCreateRequest $request, Book $book): Response
     {
-        CreateBookComment::dispatch($book, $request->validated());
+        CreateDivisionProject::dispatch($book, $request->validated());
         return response(null, 204);
     }
 
     /**
-     * @param BookCommentUpdateRequest $request
+     * @param DivisionProjectUpdateRequest $request
      * @param Book $book
-     * @param BookComment $comment
+     * @param DivisionProject $comment
      * @return Response
      */
-    public function updateAsync(BookCommentUpdateRequest $request, Book $book, BookComment $comment): Response
+    public function updateAsync(DivisionProjectUpdateRequest $request, Book $book, DivisionProject $comment): Response
     {
-        UpdateBookComment::dispatch($comment, $request->validated())->afterResponse();
+        UpdateDivisionProject::dispatch($comment, $request->validated())->afterResponse();
         return response(null, 204);
     }
 }

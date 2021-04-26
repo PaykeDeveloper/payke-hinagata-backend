@@ -4,19 +4,19 @@
 
 namespace Database\Factories\Sample;
 
-use App\Models\Sample\Book;
-use App\Models\Sample\BookComment;
+use App\Models\Division\Division;
+use App\Models\Sample\DivisionProject;
 use App\Models\Sample\FooBar;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class BookCommentFactory extends Factory
+class DivisionProjectFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = BookComment::class;
+    protected $model = DivisionProject::class;
 
     /**
      * Define the model's default state.
@@ -31,7 +31,7 @@ class BookCommentFactory extends Factory
             ->format(DATE_ATOM);
 
         return [
-            'book_id' => Book::factory(),
+            'division_id' => Division::factory(),
             'confirmed' => $this->faker->boolean(),
             'publish_date' => $publish_date,
             'approved_at' => $approved_at,

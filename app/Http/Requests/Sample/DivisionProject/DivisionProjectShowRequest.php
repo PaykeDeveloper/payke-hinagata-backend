@@ -6,7 +6,7 @@ namespace App\Http\Requests\Sample\BookComment;
 
 use Illuminate\Http\Response;
 
-class BookCommentShowRequest extends BookCommentIndexRequest
+class DivisionProjectShowRequest extends BookCommentIndexRequest
 {
     protected function prepareForValidation()
     {

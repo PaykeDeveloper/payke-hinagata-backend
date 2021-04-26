@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\Division\Member::class => \App\Policies\Division\MemberPolicy::class,
 
         // FIXME: SAMPLE CODE
-        \App\Models\Sample\Project::class => \App\Policies\Sample\ProjectPolicy::class,
+        \App\Models\Sample\DivisionProjectPolicy::class => \App\Policies\Sample\DivisionProjectPolicy::class,
     ];
 
     /**
