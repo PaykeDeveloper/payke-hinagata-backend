@@ -68,7 +68,8 @@ class DivisionController extends Controller
      * "project_createAll",
      * "project_updateAll",
      * "project_deleteAll"
-     * ]
+     * ],
+     * "request_member_id": 1
      * }
      *
      * @param Request $request
@@ -86,9 +87,7 @@ class DivisionController extends Controller
             return $permission->name;
         }, $permissions);
         $result['permission_names'] = $permission_names;
-        if ($member) {
-            $result['request_member_id'] = $member->id;
-        }
+        $result['request_member_id'] = $member?->id;
         return response($result);
     }
 
