@@ -27,6 +27,7 @@ class ProjectFactory extends Factory
         return [
             'division_id' => Division::factory(),
             'name' => $this->faker->name,
+            'lock_version' => $this->faker->randomDigit()
         ];
     }
 }
