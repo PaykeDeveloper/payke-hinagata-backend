@@ -27,6 +27,7 @@ class ProjectUpdateRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
+            'lock_version' => ['integer'],
         ];
     }
 }
