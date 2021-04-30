@@ -74,7 +74,7 @@ trait OptimisticLocking
 
     protected function lockingEnabled(): bool
     {
-        return $this->lock === null ? true : $this->lock;
+        return $this->lock;
     }
 
     protected function disableLocking(): static
