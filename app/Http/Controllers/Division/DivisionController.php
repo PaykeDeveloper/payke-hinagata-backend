@@ -60,13 +60,13 @@ class DivisionController extends Controller
      * "name": "aaaaaaaaaaaa",
      * "created_at": "2021-04-19T10:02:33.000000Z",
      * "updated_at": "2021-04-19T10:02:33.000000Z",
+     * "request_member_id": 1,
      * "permission_names": [
      * "project_viewAll",
      * "project_createAll",
      * "project_updateAll",
      * "project_deleteAll"
-     * ],
-     * "request_member_id": 1
+     * ]
      * }
      *
      * @param Request $request
