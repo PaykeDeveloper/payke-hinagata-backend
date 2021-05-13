@@ -207,6 +207,28 @@ class ProjectControllerTest extends TestCase
     }
 
     /**
+     * @dataProvider provideAuthorizedOtherRole
+     */
+    public function testUpdateOptimisticLock($user_role, $member_role)
+    {
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
+
+        $data = [
+            'name' => $this->faker->name,
+            'lock_version' => $this->project->lock_version - 1,
+        ];
+
+        $response = $this->putJson(route('divisions.projects.update', [
+            'division' => $this->division->id,
+            'project' => $this->project->id,
+        ]), $data);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonStructure(['errors' => ['lock_version']]);
+    }
+
+    /**
      * @dataProvider provideUnAuthorizedOtherRole
      */
     public function testDestroyUnAuthorized($user_role, $member_role)

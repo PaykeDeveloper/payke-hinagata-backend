@@ -17,6 +17,7 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->foreignId('division_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('name');
+            $table->integer('lock_version')->unsigned();
             $table->timestampsTz();
         });
     }

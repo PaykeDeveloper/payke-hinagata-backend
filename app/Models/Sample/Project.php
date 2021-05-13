@@ -5,6 +5,7 @@
 namespace App\Models\Sample;
 
 use App\Models\Division\Division;
+use App\Models\Traits\OptimisticLocking;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Project extends Model
 {
     use HasFactory;
+    use OptimisticLocking;
 
     public const RESOURCE = 'project';
 
@@ -22,6 +24,10 @@ class Project extends Model
         'id',
         'created_at',
         'updated_at',
+    ];
+
+    protected $attributes = [
+        'lock_version' => 1,
     ];
 
     public function division(): BelongsTo
