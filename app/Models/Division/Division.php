@@ -4,6 +4,7 @@
 
 namespace App\Models\Division;
 
+use App\Models\Common\Permission;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -67,5 +68,28 @@ class Division extends Model
         $member->syncRoles(MemberRole::all());
 
         return $division;
+    }
+
+    private ?Member $member = null;
+
+    public function setRequest(User $user): self
+    {
+        $this->member = Member::findByUniqueKeys($user->id, $this->id);
+        $this->append('request_member_id');
+        $this->append('permission_names');
+        return $this;
+    }
+
+    public function getRequestMemberIdAttribute(): ?int
+    {
+        return $this->member?->id;
+    }
+
+    public function getPermissionNamesAttribute(): array
+    {
+        $permissions = $this->member?->getAllPermissions()->all() ?? [];
+        return array_map(function (Permission $permission) {
+            return $permission->name;
+        }, $permissions);
     }
 }

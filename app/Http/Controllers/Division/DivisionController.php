@@ -7,10 +7,7 @@ namespace App\Http\Controllers\Division;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Division\Division\DivisionCreateRequest;
 use App\Http\Requests\Division\Division\DivisionUpdateRequest;
-use App\Models\Common\Permission;
 use App\Models\Division\Division;
-use App\Models\Division\Member;
-use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -63,6 +60,7 @@ class DivisionController extends Controller
      * "name": "aaaaaaaaaaaa",
      * "created_at": "2021-04-19T10:02:33.000000Z",
      * "updated_at": "2021-04-19T10:02:33.000000Z",
+     * "request_member_id": 11,
      * "permission_names": [
      * "project_viewAll",
      * "project_createAll",
@@ -77,16 +75,8 @@ class DivisionController extends Controller
      */
     public function show(Request $request, Division $division): Response
     {
-        $result = $division->toArray();
-        /** @var User $user */
-        $user = $request->user();
-        $member = Member::findByUniqueKeys($user->id, $division->id);
-        $permissions = $member?->getAllPermissions()->all() ?? $user->getAllPermissions()->all();
-        $permission_names = array_map(function (Permission $permission) {
-            return $permission->name;
-        }, $permissions);
-        $result['permission_names'] = $permission_names;
-        return response($result);
+        $division->setRequest($request->user());
+        return response($division);
     }
 
     /**
