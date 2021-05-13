@@ -1,5 +1,7 @@
 <?php
 
+// FIXME: SAMPLE CODE
+
 namespace App\Models\Division;
 
 final class MemberRole
