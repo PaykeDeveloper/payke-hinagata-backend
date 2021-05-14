@@ -25,7 +25,8 @@ class DivisionController extends Controller
      *     "id": 18,
      *     "name": "companpdafawefd)",
      *     "created_at": "2021-04-13T04:12:36.000000Z",
-     *     "updated_at": "2021-04-13T09:33:04.000000Z"
+     *     "updated_at": "2021-04-13T09:33:04.000000Z",
+     *     "request_member_id": 1
      *   }
      * ]
      *
@@ -39,10 +40,17 @@ class DivisionController extends Controller
 
     /**
      * @response {
-     *   "name": "brand new division",
-     *   "updated_at": "2021-04-13T04:04:49.000000Z",
-     *   "created_at": "2021-04-13T04:04:49.000000Z",
-     *   "id": 16
+     * "id": 1,
+     * "name": "aaaaaaaaaaaa",
+     * "created_at": "2021-04-19T10:02:33.000000Z",
+     * "updated_at": "2021-04-19T10:02:33.000000Z",
+     * "request_member_id": 1,
+     * "permission_names": [
+     * "project_viewAll",
+     * "project_createAll",
+     * "project_updateAll",
+     * "project_deleteAll"
+     * ]
      * }
      *
      * @param DivisionCreateRequest $request
@@ -51,6 +59,7 @@ class DivisionController extends Controller
     public function store(DivisionCreateRequest $request): Response
     {
         $division = Division::createFromRequest($request->validated(), $request->user());
+        $division->setRequest($request->user());
         return response($division);
     }
 
@@ -101,7 +110,8 @@ class DivisionController extends Controller
     public function update(DivisionUpdateRequest $request, Division $division): Response
     {
         $division->update($request->validated());
-        return $this->show($request, $division);
+        $division->setRequest($request->user());
+        return response($division);
     }
 
     /**

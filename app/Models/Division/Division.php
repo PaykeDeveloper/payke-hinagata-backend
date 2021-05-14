@@ -7,14 +7,16 @@ namespace App\Models\Division;
 use App\Models\Common\Permission;
 use App\Models\Sample\Project;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Collection;
 
 /**
  * @mixin IdeHelperDivision
+ * @property ?int request_member_id
+ * @property ?string[] permission_names
  */
 class Division extends Model
 {
@@ -44,15 +46,14 @@ class Division extends Model
      */
     public static function getFromRequest(User $user): Collection
     {
-        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
-            // ユーザー自体が全てを見れる権限があれば全てを返す
-            return self::all();
-        } else {
-            // Division の Member の user_id が一致するもののみ表示
-            return self::whereHas('members', function (Builder $query) use ($user) {
-                $query->where('user_id', '=', $user->id);
-            })->get();
+        $query = self::leftJoin('members', function (JoinClause $join) use ($user) {
+            $join->on('divisions.id', '=', 'members.division_id');
+            $join->where('members.user_id', '=', $user->id);
+        })->select('divisions.*', 'members.id as request_member_id');
+        if (!$user->hasAllViewPermissionTo(self::RESOURCE)) {
+            $query->where('members.user_id', '=', $user->id);
         }
+        return $query->get();
     }
 
     public static function createFromRequest(mixed $attributes, User $user): self
@@ -70,26 +71,15 @@ class Division extends Model
         return $division;
     }
 
-    private ?Member $member = null;
-
     public function setRequest(User $user): self
     {
-        $this->member = Member::findByUniqueKeys($user->id, $this->id);
-        $this->append('request_member_id');
-        $this->append('permission_names');
-        return $this;
-    }
+        $member = Member::findByUniqueKeys($user->id, $this->id);
+        $permissions = $member?->getAllPermissions()->all() ?? [];
 
-    public function getRequestMemberIdAttribute(): ?int
-    {
-        return $this->member?->id;
-    }
-
-    public function getPermissionNamesAttribute(): array
-    {
-        $permissions = $this->member?->getAllPermissions()->all() ?? [];
-        return array_map(function (Permission $permission) {
+        $this->request_member_id = $member?->id;
+        $this->permission_names = array_map(function (Permission $permission) {
             return $permission->name;
         }, $permissions);
+        return $this;
     }
 }
