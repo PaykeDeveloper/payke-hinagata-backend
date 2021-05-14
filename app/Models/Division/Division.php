@@ -15,8 +15,6 @@ use Illuminate\Support\Collection;
 
 /**
  * @mixin IdeHelperDivision
- * @property ?int request_member_id
- * @property ?string[] permission_names
  */
 class Division extends Model
 {
@@ -76,8 +74,8 @@ class Division extends Model
         $member = Member::findByUniqueKeys($user->id, $this->id);
         $permissions = $member?->getAllPermissions()->all() ?? [];
 
-        $this->request_member_id = $member?->id;
-        $this->permission_names = array_map(function (Permission $permission) {
+        $this->attributes['request_member_id'] = $member?->id;
+        $this->attributes['permission_names'] = array_map(function (Permission $permission) {
             return $permission->name;
         }, $permissions);
         return $this;
