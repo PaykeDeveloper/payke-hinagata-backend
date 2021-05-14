@@ -55,7 +55,7 @@ class MemberPolicy
         }
         if (
             $this->member?->id === $member->id &&
-            $this->member?->hasOwnViewPermissionTo(self::RESOURCE)
+            $this->member->hasOwnViewPermissionTo(self::RESOURCE)
         ) {
             return true;
         }
@@ -96,7 +96,7 @@ class MemberPolicy
         }
         if (
             $this->member?->id === $member->id &&
-            $this->member?->hasOwnUpdatePermissionTo(self::RESOURCE)
+            $this->member->hasOwnUpdatePermissionTo(self::RESOURCE)
         ) {
             return true;
         }
@@ -119,7 +119,7 @@ class MemberPolicy
         }
         if (
             $this->member?->id === $member->id &&
-            $this->member?->hasOwnDeletePermissionTo(self::RESOURCE)
+            $this->member->hasOwnDeletePermissionTo(self::RESOURCE)
         ) {
             return true;
         }
