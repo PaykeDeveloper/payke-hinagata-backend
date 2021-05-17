@@ -27,10 +27,11 @@ class UserPolicy
         if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             return true;
         }
-        if ($user->hasOwnViewPermissionTo(self::RESOURCE)) {
-            if ($user->id === $target_user->id) {
-                return true;
-            }
+        if (
+            $user->id === $target_user->id &&
+            $user->hasOwnViewPermissionTo(self::RESOURCE)
+        ) {
+            return true;
         }
 
         abort(Response::HTTP_NOT_FOUND);
@@ -49,12 +50,15 @@ class UserPolicy
             return false;
         }
 
-        if ($user->hasAllUpdatePermissionTo(self::RESOURCE)) {
+        if (
+            $user->id === $target_user->id &&
+            $user->hasOwnUpdatePermissionTo(self::RESOURCE)
+        ) {
             return true;
         }
 
-        if ($user->hasOwnUpdatePermissionTo(self::RESOURCE)) {
-            return $user->id === $target_user->id;
+        if ($user->hasAllUpdatePermissionTo(self::RESOURCE)) {
+            return true;
         }
 
         return false;
@@ -66,12 +70,15 @@ class UserPolicy
             return false;
         }
 
-        if ($user->hasAllDeletePermissionTo(self::RESOURCE)) {
+        if (
+            $user->id === $target_user->id &&
+            $user->hasOwnDeletePermissionTo(self::RESOURCE)
+        ) {
             return true;
         }
 
-        if ($user->hasOwnDeletePermissionTo(self::RESOURCE)) {
-            return $user->id === $target_user->id;
+        if ($user->hasAllDeletePermissionTo(self::RESOURCE)) {
+            return true;
         }
 
         return false;

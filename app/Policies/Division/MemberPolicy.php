@@ -53,10 +53,11 @@ class MemberPolicy
         if ($this->member?->hasAllViewPermissionTo(self::RESOURCE)) {
             return true;
         }
-        if ($this->member?->hasOwnViewPermissionTo(self::RESOURCE)) {
-            if ($this->member->id === $member->id) {
-                return true;
-            }
+        if (
+            $this->member?->id === $member->id &&
+            $this->member->hasOwnViewPermissionTo(self::RESOURCE)
+        ) {
+            return true;
         }
 
         if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
@@ -93,10 +94,11 @@ class MemberPolicy
         if ($this->member?->hasAllUpdatePermissionTo(self::RESOURCE)) {
             return true;
         }
-        if ($this->member?->hasOwnUpdatePermissionTo(self::RESOURCE)) {
-            if ($this->member->id === $member->id) {
-                return true;
-            }
+        if (
+            $this->member?->id === $member->id &&
+            $this->member->hasOwnUpdatePermissionTo(self::RESOURCE)
+        ) {
+            return true;
         }
 
         if ($user->hasAllUpdatePermissionTo(self::RESOURCE)) {
@@ -115,10 +117,11 @@ class MemberPolicy
         if ($this->member?->hasAllDeletePermissionTo(self::RESOURCE)) {
             return true;
         }
-        if ($this->member?->hasOwnDeletePermissionTo(self::RESOURCE)) {
-            if ($this->member->id === $member->id) {
-                return true;
-            }
+        if (
+            $this->member?->id === $member->id &&
+            $this->member->hasOwnDeletePermissionTo(self::RESOURCE)
+        ) {
+            return true;
         }
         if ($user->hasAllDeletePermissionTo(self::RESOURCE)) {
             return true;
