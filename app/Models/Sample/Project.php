@@ -4,6 +4,8 @@
 
 namespace App\Models\Sample;
 
+use App\Models\Division\Division;
+use App\Models\Traits\OptimisticLocking;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,10 +17,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * @mixin IdeHelperBookComment
  */
-class BookComment extends Model implements HasMedia
+class Project extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    use OptimisticLocking;
 
     /**
      * デフォルトの設定
@@ -27,6 +30,7 @@ class BookComment extends Model implements HasMedia
      */
     protected $attributes = [
         'description' => '',
+        'lock_version' => 1,
     ];
 
     /**
@@ -69,9 +73,9 @@ class BookComment extends Model implements HasMedia
         return 'slug';
     }
 
-    public function book(): BelongsTo
+    public function division(): BelongsTo
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Division::class);
     }
 
     /**
@@ -97,20 +101,20 @@ class BookComment extends Model implements HasMedia
         $this->addMediaCollection(self::COLLECTION_NAME)->singleFile();
     }
 
-    public static function createFromRequest(mixed $attributes, Book $book): BookComment
+    public static function createFromRequest(mixed $attributes, Division $division): self
     {
-        $comment = new self();
-        $comment->fill($attributes);
-        $comment->book_id = $book->id;
-        $comment->slug = (string)Str::uuid();
-        $comment->save();
+        $project = new Project();
+        $project->fill($attributes);
+        $project->division_id = $division->id;
+        $project->slug = (string)Str::uuid();
+        $project->save();
         if (array_key_exists('cover', $attributes)) {
-            $comment->saveCover($attributes['cover']);
+            $project->saveCover($attributes['cover']);
         }
-        return $comment;
+        return $project;
     }
 
-    public function updateFromRequest(mixed $attributes): BookComment
+    public function updateFromRequest(mixed $attributes): Project
     {
         $this->update($attributes);
         if (array_key_exists('cover', $attributes)) {

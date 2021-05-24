@@ -15,9 +15,10 @@ class CreateBookCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('book_comments', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('book_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('division_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->string('name');
             $table->boolean('confirmed')->nullable();
             $table->date('publish_date')->nullable();
             $table->dateTimeTz('approved_at')->nullable();
@@ -27,6 +28,7 @@ class CreateBookCommentsTable extends Migration
             $table->text('description');
             $table->unsignedTinyInteger('votes')->nullable();
             $table->uuid('slug')->unique();
+            $table->integer('lock_version')->unsigned();
             $table->timestampsTz();
             $table->softDeletes();
         });
@@ -39,6 +41,6 @@ class CreateBookCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('book_comments');
+        Schema::dropIfExists('projects');
     }
 }
