@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Common\Permission;
 use App\Models\Division\Member;
-use App\Models\Sample\Book;
 use App\Models\Traits\HasAuthorization;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -80,11 +79,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     }
 
     // FIXME: SAMPLE CODE
-    public function books(): HasMany
-    {
-        return $this->hasMany(Book::class);
-    }
-
     public function members(): HasMany
     {
         return $this->hasMany(Member::class);

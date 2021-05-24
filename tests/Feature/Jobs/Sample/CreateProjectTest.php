@@ -4,21 +4,21 @@
 
 namespace Tests\Feature\Jobs\Sample;
 
-use App\Jobs\Sample\CreateBookComment;
-use App\Models\Sample\Book;
+use App\Jobs\Sample\CreateProject;
+use App\Models\Division\Division;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
-class CreateBookCommentTest extends TestCase
+class CreateProjectTest extends TestCase
 {
     use RefreshSeedDatabase;
 
     public function testDispatchSuccess()
     {
-        $book = Book::factory()->create();
+        $division = Division::factory()->create();
         $attributes = ['slug' => 'abc'];
 
-        $response = CreateBookComment::dispatchSync($book, $attributes);
+        $response = CreateProject::dispatchSync($division, $attributes);
 
         $this->assertEquals(0, $response);
     }

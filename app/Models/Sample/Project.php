@@ -15,7 +15,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * @mixin IdeHelperBookComment
+ * @mixin IdeHelperProject
  */
 class Project extends Model implements HasMedia
 {

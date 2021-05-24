@@ -4,25 +4,25 @@
 
 namespace App\Mail\Sample;
 
-use App\Models\Sample\BookComment;
+use App\Models\Sample\Project;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class BookCommentCreated extends Mailable
+class ProjectCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public BookComment $comment;
+    public Project $project;
 
     /**
      * Create a new message instance.
      *
-     * @param BookComment $comment
+     * @param Project $project
      */
-    public function __construct(BookComment $comment)
+    public function __construct(Project $project)
     {
-        $this->comment = $comment;
+        $this->project = $project;
     }
 
     /**
@@ -32,6 +32,6 @@ class BookCommentCreated extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.book_comment.created');
+        return $this->view('emails.project.created');
     }
 }
