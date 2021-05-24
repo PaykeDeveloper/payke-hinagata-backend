@@ -9,11 +9,13 @@ use App\Http\Requests\Sample\Project\ProjectCreateRequest;
 use App\Http\Requests\Sample\Project\ProjectUpdateRequest;
 use App\Jobs\Sample\CreateProject;
 use App\Jobs\Sample\UpdateProject;
+use App\Mail\Sample\ProjectCreated;
 use App\Models\Division\Division;
 use App\Models\Sample\Project;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Mail;
 
 class ProjectController extends Controller
 {
@@ -53,11 +55,13 @@ class ProjectController extends Controller
      * }
      *
      * @param ProjectCreateRequest $request
+     * @param Division $division
      * @return Response
      */
     public function store(ProjectCreateRequest $request, Division $division): Response
     {
         $project = Project::createFromRequest($request->validated(), $division);
+        Mail::to($request->user())->send(new ProjectCreated($project));
         return response($project);
     }
 

@@ -53,12 +53,11 @@ class Project extends Model implements HasMedia
      * https://readouble.com/laravel/8.x/ja/eloquent-mutators.html
      */
     protected $dates = [
-//        'publish_date',
-        'approved_at',
+        'finished_at',
     ];
     protected $casts = [
-        'confirmed' => 'boolean',
-        'amount' => 'double',
+        'approved' => 'boolean',
+        'coefficient' => 'double',
     ];
 
     /**

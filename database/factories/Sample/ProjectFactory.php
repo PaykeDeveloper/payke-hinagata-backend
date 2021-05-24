@@ -40,7 +40,7 @@ class ProjectFactory extends Factory
             'start_date' => $start_date,
             'finished_at' => $finished_at,
             'difficulty' => $this->faker->numberBetween(1, 5),
-            'coefficient' => strval($this->faker->randomFloat(1, max: 99)),
+            'coefficient' => $this->faker->randomFloat(1, max: 99),
             'productivity' => $this->faker->randomFloat(3, max: 999999),
             'lock_version' => $this->faker->randomDigit()
         ];
