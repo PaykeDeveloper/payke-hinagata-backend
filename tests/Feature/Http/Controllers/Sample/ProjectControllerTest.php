@@ -93,7 +93,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]));
 
         $response->assertOk()
@@ -112,7 +112,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]), $data);
 
         $response->assertOk()
@@ -129,7 +129,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]));
 
         $response->assertNoContent();
@@ -182,7 +182,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]));
 
         $response->assertNotFound();
@@ -200,7 +200,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]), $data);
 
         $response->assertStatus(Response::HTTP_FORBIDDEN);
@@ -221,7 +221,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]), $data);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
@@ -238,7 +238,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]));
 
         $response->assertStatus(Response::HTTP_FORBIDDEN);

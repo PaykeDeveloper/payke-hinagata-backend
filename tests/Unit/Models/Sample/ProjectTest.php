@@ -16,15 +16,25 @@ class ProjectTest extends TestCase
     use RefreshSeedDatabase;
     use WithFaker;
 
-    public function testCreate()
+    public function testCreateFromRequest()
     {
         /** @var Division $division */
         $division = Division::factory()->create();
-        $project = Project::create([
-            'division_id' => $division->id,
+        $project = Project::createFromRequest([
+            'name' => $this->faker->name,
+        ], $division);
+        $this->assertEquals(1, $project->lock_version);
+    }
+
+    public function testUpdateFromRequest()
+    {
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        $expected = $project->lock_version + 1;
+        $project->updateFromRequest([
             'name' => $this->faker->name,
         ]);
-        $this->assertEquals(1, $project->lock_version);
+        $this->assertEquals($expected, $project->lock_version);
     }
 
     public function testUpdateWithLockVersion()
