@@ -23,6 +23,8 @@ class Project extends Model implements HasMedia
     use InteractsWithMedia;
     use OptimisticLocking;
 
+    public const RESOURCE = 'project';
+
     /**
      * デフォルトの設定
      *
