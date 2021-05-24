@@ -27,8 +27,6 @@ class Project extends Model implements HasMedia
 
     /**
      * デフォルトの設定
-     *
-     * @var string[]
      */
     protected $attributes = [
         'description' => '',
