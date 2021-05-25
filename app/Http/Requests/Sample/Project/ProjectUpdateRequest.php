@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 class ProjectUpdateRequest extends FormRequest
 {
     protected array $casts = [
-        'confirmed' => 'boolean',
+        'approved' => 'boolean',
         'description' => 'string',
     ];
 
