@@ -4,29 +4,30 @@
 
 namespace App\Jobs\Sample;
 
-use App\Models\Sample\BookComment;
+use App\Models\Division\Division;
+use App\Models\Sample\Project;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateBookComment implements ShouldQueue
+class CreateProject implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private BookComment $comment;
+    private Division $division;
     private array $attributes;
 
     /**
      * Create a new job instance.
      *
-     * @param BookComment $comment
+     * @param Division $division
      * @param mixed $attributes
      */
-    public function __construct(BookComment $comment, mixed $attributes)
+    public function __construct(Division $division, mixed $attributes)
     {
-        $this->comment = $comment;
+        $this->division = $division;
         $this->attributes = $attributes;
     }
 
@@ -37,6 +38,6 @@ class UpdateBookComment implements ShouldQueue
      */
     public function handle()
     {
-        $this->comment->updateFromRequest($this->attributes);
+        Project::createFromRequest($this->attributes, $this->division);
     }
 }

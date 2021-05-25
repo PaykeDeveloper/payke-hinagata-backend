@@ -8,6 +8,7 @@ use App\Models\Common\UserRole;
 use App\Models\Division\Division;
 use App\Models\Division\Member;
 use App\Models\Division\MemberRole;
+use App\Models\Sample\Priority;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -68,7 +69,7 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedOtherRole
      */
-    public function testStoreSuccess($user_role, $member_role)
+    public function testStoreSuccessWithRequiredParams($user_role, $member_role)
     {
         $this->user->syncRoles($user_role);
         $this->member->syncRoles($member_role);
@@ -84,6 +85,53 @@ class ProjectControllerTest extends TestCase
     }
 
     /**
+     * @dataProvider provideAuthorizedOtherRole
+     */
+    public function testStoreSuccessWithFullParams($user_role, $member_role)
+    {
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
+
+        $start_date = $this->faker->date();
+        $finished_at = $this->faker->dateTimeBetween($start_date, '+6day')
+            ->setTimezone(new \DateTimeZone('Asia/Tokyo'))
+            ->format("Y-m-d\TH:i:s.u\Z");
+        $data = [
+            'name' => $this->faker->name,
+            'description' => $this->faker->text,
+            'priority' => $this->faker->randomElement(Priority::all()),
+            'approved' => $this->faker->boolean,
+            'start_date' => $start_date,
+            'finished_at' => $finished_at,
+            'difficulty' => $this->faker->numberBetween(1, 5),
+            'coefficient' => $this->faker->randomFloat(1, max: 99),
+            'productivity' => $this->faker->randomFloat(3, max: 999999),
+        ];
+
+        $response = $this->postJson(route('divisions.projects.store', [
+            'division' => $this->division->id,
+        ]), $data);
+
+        $response->assertOk()
+            ->assertJson($data);
+    }
+
+    /**
+     * @dataProvider provideAuthorizedOtherRole
+     */
+    public function testStoreAsyncSuccess($user_role, $member_role)
+    {
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
+
+        $data = ['name' => $this->faker->name];
+
+        $response = $this->postJson("api/v1/divisions/{$this->division->id}/projects/create-async", $data);
+
+        $response->assertNoContent();
+    }
+
+    /**
      * @dataProvider provideAuthorizedViewRole
      */
     public function testShowSuccess($user_role, $member_role)
@@ -93,7 +141,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]));
 
         $response->assertOk()
@@ -103,20 +151,75 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedOtherRole
      */
-    public function testUpdateSuccess($user_role, $member_role)
+    public function testUpdateSuccessWithSingleParam($user_role, $member_role)
     {
         $this->user->syncRoles($user_role);
         $this->member->syncRoles($member_role);
 
-        $data = ['name' => $this->faker->name];
+        $data = [
+            'name' => $this->faker->name,
+        ];
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]), $data);
 
         $response->assertOk()
             ->assertJson($data);
+    }
+
+    /**
+     * @dataProvider provideAuthorizedOtherRole
+     */
+    public function testUpdateSuccessWithFullParams($user_role, $member_role)
+    {
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
+
+        $start_date = $this->faker->date();
+        $finished_at = $this->faker->dateTimeBetween($start_date, '+6day')
+            ->setTimezone(new \DateTimeZone('Asia/Tokyo'))
+            ->format("Y-m-d\TH:i:s.u\Z");
+        $data = [
+            'name' => $this->faker->name,
+            'description' => $this->faker->text,
+            'priority' => $this->faker->randomElement(Priority::all()),
+            'approved' => $this->faker->boolean,
+            'start_date' => $start_date,
+            'finished_at' => $finished_at,
+            'difficulty' => $this->faker->numberBetween(1, 5),
+            'coefficient' => $this->faker->randomFloat(1, max: 99),
+            'productivity' => $this->faker->randomFloat(3, max: 999999),
+        ];
+
+        $response = $this->putJson(route('divisions.projects.update', [
+            'division' => $this->division->id,
+            'project' => $this->project->slug,
+        ]), $data);
+
+        $response->assertOk()
+            ->assertJson($data);
+    }
+
+    /**
+     * @dataProvider provideAuthorizedOtherRole
+     */
+    public function testUpdateAsyncSuccess($user_role, $member_role)
+    {
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
+
+        $data = [
+            'name' => $this->faker->name,
+        ];
+
+        $response = $this->patchJson(
+            "api/v1/divisions/{$this->division->id}/projects/{$this->project->slug}/update-async",
+            $data
+        );
+
+        $response->assertNoContent();
     }
 
     /**
@@ -129,7 +232,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]));
 
         $response->assertNoContent();
@@ -182,7 +285,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]));
 
         $response->assertNotFound();
@@ -200,7 +303,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]), $data);
 
         $response->assertStatus(Response::HTTP_FORBIDDEN);
@@ -221,7 +324,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->putJson(route('divisions.projects.update', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]), $data);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
@@ -238,7 +341,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
-            'project' => $this->project->id,
+            'project' => $this->project->slug,
         ]));
 
         $response->assertStatus(Response::HTTP_FORBIDDEN);

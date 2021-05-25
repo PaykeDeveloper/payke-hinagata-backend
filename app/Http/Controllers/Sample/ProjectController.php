@@ -7,11 +7,15 @@ namespace App\Http\Controllers\Sample;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sample\Project\ProjectCreateRequest;
 use App\Http\Requests\Sample\Project\ProjectUpdateRequest;
+use App\Jobs\Sample\CreateProject;
+use App\Jobs\Sample\UpdateProject;
+use App\Mail\Sample\ProjectCreated;
 use App\Models\Division\Division;
 use App\Models\Sample\Project;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Mail;
 
 class ProjectController extends Controller
 {
@@ -51,11 +55,13 @@ class ProjectController extends Controller
      * }
      *
      * @param ProjectCreateRequest $request
+     * @param Division $division
      * @return Response
      */
     public function store(ProjectCreateRequest $request, Division $division): Response
     {
         $project = Project::createFromRequest($request->validated(), $division);
+        Mail::to($request->user())->send(new ProjectCreated($project));
         return response($project);
     }
 
@@ -94,7 +100,7 @@ class ProjectController extends Controller
      */
     public function update(ProjectUpdateRequest $request, Division $division, Project $project): Response
     {
-        $project->update($request->validated());
+        $project->updateFromRequest($request->validated());
         return response($project);
     }
 
@@ -108,6 +114,29 @@ class ProjectController extends Controller
     public function destroy(Request $request, Division $division, Project $project): Response
     {
         $project->delete();
+        return response(null, 204);
+    }
+
+    /**
+     * @param ProjectCreateRequest $request
+     * @param Division $division
+     * @return Response
+     */
+    public function storeAsync(ProjectCreateRequest $request, Division $division): Response
+    {
+        CreateProject::dispatch($division, $request->validated());
+        return response(null, 204);
+    }
+
+    /**
+     * @param ProjectUpdateRequest $request
+     * @param Division $division
+     * @param Project $project
+     * @return Response
+     */
+    public function updateAsync(ProjectUpdateRequest $request, Division $division, Project $project): Response
+    {
+        UpdateProject::dispatch($project, $request->validated())->afterResponse();
         return response(null, 204);
     }
 }

@@ -8,8 +8,6 @@ use Database\Seeders\Common\PermissionSeeder;
 use Database\Seeders\Common\RoleSeeder;
 use Database\Seeders\Division\DivisionSeeder;
 use Database\Seeders\Division\MemberSeeder;
-use Database\Seeders\Sample\BookCommentSeeder;
-use Database\Seeders\Sample\BookSeeder;
 use Database\Seeders\Sample\ProjectSeeder;
 use DB;
 use Illuminate\Database\Seeder;
@@ -29,8 +27,6 @@ class DatabaseSeeder extends Seeder
         DivisionSeeder::class,
         MemberSeeder::class,
         ProjectSeeder::class,
-        BookSeeder::class,
-        BookCommentSeeder::class,
     ];
 
 
