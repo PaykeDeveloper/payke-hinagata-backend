@@ -9,7 +9,6 @@ use App\Http\Requests\Division\Member\MemberCreateRequest;
 use App\Http\Requests\Division\Member\MemberUpdateRequest;
 use App\Models\Division\Division;
 use App\Models\Division\Member;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -70,6 +69,7 @@ class MemberController extends Controller
      * }
      *
      * @param MemberCreateRequest $request
+     * @param Division $division
      * @return Response
      */
     public function store(MemberCreateRequest $request, Division $division): Response
@@ -137,8 +137,9 @@ class MemberController extends Controller
     /**
      * @param Request $request
      * @param Division $division
+     * @param Member $member
      * @return Response
-     * @throws Exception
+     * @throws \Exception
      */
     public function destroy(Request $request, Division $division, Member $member): Response
     {
