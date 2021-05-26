@@ -46,13 +46,17 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('invitations', InvitationController::class);
 
         // FIXME: SAMPLE CODE
+
         Route::apiResource('divisions', DivisionController::class);
+
         Route::apiResource('divisions.members', MemberController::class);
-        Route::apiResource('divisions.projects', ProjectController::class);
+
+        Route::get('/divisions/{division}/projects/export', [ProjectController::class, 'export']);
         Route::post('/divisions/{division}/projects/create-async', [ProjectController::class, 'storeAsync']);
         Route::patch(
             '/divisions/{division}/projects/{project}/update-async',
             [ProjectController::class, 'updateAsync']
         );
+        Route::apiResource('divisions.projects', ProjectController::class);
     });
 });

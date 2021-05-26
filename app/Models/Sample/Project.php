@@ -25,6 +25,11 @@ class Project extends Model implements HasMedia
 
     public const RESOURCE = 'project';
 
+    protected $hidden = [
+        'division',
+        'media',
+    ];
+
     /**
      * デフォルトの設定
      */
