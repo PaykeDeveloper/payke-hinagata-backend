@@ -242,6 +242,19 @@ class ProjectControllerTest extends TestCase
     }
 
     /**
+     * @dataProvider provideAuthorizedOtherRole
+     */
+    public function testExportSuccess($user_role, $member_role)
+    {
+        $this->user->syncRoles($user_role);
+        $this->member->syncRoles($member_role);
+
+        $response = $this->get("api/v1/divisions/{$this->division->id}/projects/export");
+
+        $response->assertOk();
+    }
+
+    /**
      * [準正常系]
      */
 

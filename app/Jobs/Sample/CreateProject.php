@@ -4,8 +4,10 @@
 
 namespace App\Jobs\Sample;
 
+use App\Mail\Sample\ProjectCreated;
 use App\Models\Division\Division;
 use App\Models\Sample\Project;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -18,17 +20,20 @@ class CreateProject implements ShouldQueue
 
     private Division $division;
     private array $attributes;
+    private User $user;
 
     /**
      * Create a new job instance.
      *
      * @param Division $division
      * @param mixed $attributes
+     * @param User $user
      */
-    public function __construct(Division $division, mixed $attributes)
+    public function __construct(Division $division, mixed $attributes, User $user)
     {
         $this->division = $division;
         $this->attributes = $attributes;
+        $this->user = $user;
     }
 
     /**
@@ -38,6 +43,7 @@ class CreateProject implements ShouldQueue
      */
     public function handle()
     {
-        Project::createFromRequest($this->attributes, $this->division);
+        $project = Project::createFromRequest($this->attributes, $this->division);
+        \Mail::to($this->user)->send(new ProjectCreated($project));
     }
 }
