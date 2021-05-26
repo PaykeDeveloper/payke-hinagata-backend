@@ -44,7 +44,7 @@ class ProjectController extends Controller
      * "created_at":"2021-05-25T07:52:12.000000Z",
      * "updated_at":"2021-05-25T08:24:42.000000Z",
      * "deleted_at":null,
-     * "cover_url":"http:\/\/localhost:8000\/storage\/1\/\u30b9\u30af\u30ea\u30fc\u30f3\u30b7\u30e7\u30c3\u30c8-2021-05-25-14.43.13.png"
+     * "cover_url":"http:\/\/localhost:8000\/storage\/1\/example.png"
      * }]
      *
      * @param Request $request
@@ -74,7 +74,7 @@ class ProjectController extends Controller
      * "created_at":"2021-05-25T07:52:12.000000Z",
      * "updated_at":"2021-05-25T08:24:42.000000Z",
      * "deleted_at":null,
-     * "cover_url":"http:\/\/localhost:8000\/storage\/1\/\u30b9\u30af\u30ea\u30fc\u30f3\u30b7\u30e7\u30c3\u30c8-2021-05-25-14.43.13.png"
+     * "cover_url":"http:\/\/localhost:8000\/storage\/1\/example.png"
      * }
      *
      * @param ProjectCreateRequest $request
@@ -105,7 +105,7 @@ class ProjectController extends Controller
      * "created_at":"2021-05-25T07:52:12.000000Z",
      * "updated_at":"2021-05-25T08:24:42.000000Z",
      * "deleted_at":null,
-     * "cover_url":"http:\/\/localhost:8000\/storage\/1\/\u30b9\u30af\u30ea\u30fc\u30f3\u30b7\u30e7\u30c3\u30c8-2021-05-25-14.43.13.png"
+     * "cover_url":"http:\/\/localhost:8000\/storage\/1\/example.png"
      * }
      *
      * @param Request $request
@@ -136,7 +136,7 @@ class ProjectController extends Controller
      * "created_at":"2021-05-25T07:52:12.000000Z",
      * "updated_at":"2021-05-25T08:24:42.000000Z",
      * "deleted_at":null,
-     * "cover_url":"http:\/\/localhost:8000\/storage\/1\/\u30b9\u30af\u30ea\u30fc\u30f3\u30b7\u30e7\u30c3\u30c8-2021-05-25-14.43.13.png"
+     * "cover_url":"http:\/\/localhost:8000\/storage\/1\/example.png"
      * }
      *
      * @param ProjectUpdateRequest $request
