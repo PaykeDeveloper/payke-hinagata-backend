@@ -51,7 +51,7 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::apiResource('divisions.members', MemberController::class);
 
-        Route::get('/divisions/{division}/projects/export', [ProjectController::class, 'export']);
+        Route::get('/divisions/{division}/projects/download', [ProjectController::class, 'download']);
         Route::post('/divisions/{division}/projects/create-async', [ProjectController::class, 'storeAsync']);
         Route::patch(
             '/divisions/{division}/projects/{project}/update-async',

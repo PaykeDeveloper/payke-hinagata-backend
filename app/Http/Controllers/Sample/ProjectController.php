@@ -170,7 +170,7 @@ class ProjectController extends Controller
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function export(Request $request, Division $division): BinaryFileResponse
+    public function download(Request $request, Division $division): BinaryFileResponse
     {
         return Excel::download(new CollectionExport($division->projects), 'projects.csv');
     }

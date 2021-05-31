@@ -26,3 +26,4 @@ yarn-error.log
 /public/vendor/
 /public/docs/
 /resources/docs/
+/storage/framework/laravel-excel/
