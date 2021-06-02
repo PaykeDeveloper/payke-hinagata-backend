@@ -64,16 +64,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.183.9",
+            "version": "3.183.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3b3aafdceac4cb820e2ae65a8785e4d07db471a7"
+                "reference": "3995354f4791f8ca85f5208325cef9065e471f3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3b3aafdceac4cb820e2ae65a8785e4d07db471a7",
-                "reference": "3b3aafdceac4cb820e2ae65a8785e4d07db471a7",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3995354f4791f8ca85f5208325cef9065e471f3b",
+                "reference": "3995354f4791f8ca85f5208325cef9065e471f3b",
                 "shasum": ""
             },
             "require": {
@@ -148,9 +148,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.183.9"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.183.10"
             },
-            "time": "2021-05-28T18:28:19+00:00"
+            "time": "2021-06-01T18:13:35+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -4357,16 +4357,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "4.0.1",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "29c05324c170c0be108ccb86dd29f6a719c0a617"
+                "reference": "4a89dd3f083ddb89153367e6d087de3872c724ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/29c05324c170c0be108ccb86dd29f6a719c0a617",
-                "reference": "29c05324c170c0be108ccb86dd29f6a719c0a617",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/4a89dd3f083ddb89153367e6d087de3872c724ff",
+                "reference": "4a89dd3f083ddb89153367e6d087de3872c724ff",
                 "shasum": ""
             },
             "require": {
@@ -4423,7 +4423,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/4.0.1"
+                "source": "https://github.com/spatie/laravel-permission/tree/4.1.0"
             },
             "funding": [
                 {
@@ -4431,7 +4431,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-22T18:38:29+00:00"
+            "time": "2021-06-02T00:39:38+00:00"
         },
         {
             "name": "spatie/temporary-directory",
@@ -8501,16 +8501,16 @@
         },
         {
             "name": "laravel/telescope",
-            "version": "v4.4.9",
+            "version": "v4.4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "506aa21c7ead98d6666cf8341f25d4d2f333f385"
+                "reference": "04c9883c9ad8453e58207eb010e37153d13d26f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/506aa21c7ead98d6666cf8341f25d4d2f333f385",
-                "reference": "506aa21c7ead98d6666cf8341f25d4d2f333f385",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/04c9883c9ad8453e58207eb010e37153d13d26f6",
+                "reference": "04c9883c9ad8453e58207eb010e37153d13d26f6",
                 "shasum": ""
             },
             "require": {
@@ -8559,9 +8559,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/telescope/issues",
-                "source": "https://github.com/laravel/telescope/tree/v4.4.9"
+                "source": "https://github.com/laravel/telescope/tree/v4.4.10"
             },
-            "time": "2021-04-13T15:47:06+00:00"
+            "time": "2021-06-01T17:35:45+00:00"
         },
         {
             "name": "mnapoli/front-yaml",
