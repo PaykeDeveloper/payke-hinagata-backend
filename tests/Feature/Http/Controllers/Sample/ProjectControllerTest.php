@@ -249,7 +249,7 @@ class ProjectControllerTest extends TestCase
         $this->user->syncRoles($user_role);
         $this->member->syncRoles($member_role);
 
-        $response = $this->get("api/v1/divisions/{$this->division->id}/projects/export");
+        $response = $this->get("api/v1/divisions/{$this->division->id}/projects/download");
 
         $response->assertOk();
     }
