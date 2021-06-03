@@ -43,7 +43,7 @@ class ProjectCreateRequest extends FormRequest
             'difficulty' => ['nullable', 'integer', 'min:1', 'max:5'],
             'coefficient' => ['nullable', 'regex:/^\d+(\.\d{1,2})?$/'],
             'productivity' => ['nullable', 'numeric', 'max:999999'],
-            'cover' => ['nullable', 'mimetypes:image/jpeg,image/png,image/bmp', 'max:1024'],
+            'cover' => ['nullable', 'mimetypes:image/jpeg,image/png,image/bmp', 'max:2048'],
         ];
     }
 }
