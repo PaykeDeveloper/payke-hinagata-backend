@@ -65,7 +65,7 @@ class MyUserController extends Controller
     {
         /** @var User $user */
         $user = $request->user();
-        $user->update($request->validated());
-        return response($user);
+        $updated_user = $user->updateFromRequest($request->validated());
+        return response($updated_user);
     }
 }

@@ -109,9 +109,9 @@ class DivisionController extends Controller
      */
     public function update(DivisionUpdateRequest $request, Division $division): Response
     {
-        $division->update($request->validated());
-        $division->setRequest($request->user());
-        return response($division);
+        $updated_division = $division->updateFromRequest($request->validated());
+        $updated_division->setRequest($request->user());
+        return response($updated_division);
     }
 
     /**

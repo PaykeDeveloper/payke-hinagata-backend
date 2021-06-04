@@ -113,7 +113,7 @@ class Project extends Model implements HasMedia
 
     public static function createFromRequest(mixed $attributes, Division $division): self
     {
-        $project = new Project();
+        $project = new self();
         $project->fill($attributes);
         $project->division_id = $division->id;
         $project->slug = (string)Str::uuid();
@@ -121,15 +121,15 @@ class Project extends Model implements HasMedia
         if (array_key_exists('cover', $attributes)) {
             $project->saveCover($attributes['cover']);
         }
-        return $project;
+        return $project->fresh();
     }
 
-    public function updateFromRequest(mixed $attributes): Project
+    public function updateFromRequest(mixed $attributes): self
     {
         $this->update($attributes);
         if (array_key_exists('cover', $attributes)) {
             $this->saveCover($attributes['cover']);
         }
-        return $this;
+        return $this->fresh();
     }
 }
