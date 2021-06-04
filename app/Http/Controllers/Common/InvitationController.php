@@ -96,8 +96,8 @@ class InvitationController extends Controller
      */
     public function update(InvitationUpdateRequest $request, Invitation $invitation): Response
     {
-        $invitation->update($request->validated());
-        return response($invitation);
+        $updated_invitation = $invitation->updateFromRequest($request->validated());
+        return response($updated_invitation);
     }
 
     /**

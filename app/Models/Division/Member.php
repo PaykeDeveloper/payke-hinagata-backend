@@ -88,7 +88,7 @@ class Member extends Model
         if (array_key_exists('role_names', $attributes)) {
             $member->syncRoles($attributes['role_names']);
         }
-        return $member;
+        return $member->fresh();
     }
 
     public function updateFromRequest(mixed $attributes): self
@@ -98,7 +98,7 @@ class Member extends Model
             $this->syncRoles($attributes['role_names']);
         }
 
-        return $this;
+        return $this->fresh();
     }
 
     /**

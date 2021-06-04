@@ -67,7 +67,13 @@ class Division extends Model
         ]);
         $member->syncRoles(MemberRole::all());
 
-        return $division;
+        return $division->fresh();
+    }
+
+    public function updateFromRequest(mixed $attributes): self
+    {
+        $this->update($attributes);
+        return $this->fresh();
     }
 
     public function setRequest(User $user): self

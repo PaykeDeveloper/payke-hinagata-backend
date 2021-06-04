@@ -51,7 +51,13 @@ class Invitation extends Model
         $invitation->created_by = $user->id;
         $invitation->save();
         $invitation->sendInvitationNotification($token, $attributes['locale']);
-        return $invitation;
+        return $invitation->fresh();
+    }
+
+    public function updateFromRequest(mixed $attributes): self
+    {
+        $this->update($attributes);
+        return $this->fresh();
     }
 
     public function approved(): self

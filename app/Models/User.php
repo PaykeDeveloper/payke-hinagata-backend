@@ -111,7 +111,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         if (array_key_exists('role_names', $attributes)) {
             $this->syncRoles($attributes['role_names']);
         }
-        return $this;
+        return $this->fresh();
     }
 
     /**
