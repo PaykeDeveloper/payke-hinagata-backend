@@ -25,6 +25,5 @@ yarn-error.log
 /_ide_helper_models.php
 /public/vendor/
 /public/docs/
-/resources/docs/
 /.scribe
 /storage/framework/laravel-excel/
