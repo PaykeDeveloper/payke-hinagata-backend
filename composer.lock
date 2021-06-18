@@ -8293,16 +8293,16 @@
         },
         {
             "name": "knuckleswtf/scribe",
-            "version": "3.0.2",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/knuckleswtf/scribe.git",
-                "reference": "2e4b0b4485eba540e1c0743cbfa6de7300c01d9e"
+                "reference": "38c72413de1a4a4cce7a1793b341eef80b5a55e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/2e4b0b4485eba540e1c0743cbfa6de7300c01d9e",
-                "reference": "2e4b0b4485eba540e1c0743cbfa6de7300c01d9e",
+                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/38c72413de1a4a4cce7a1793b341eef80b5a55e5",
+                "reference": "38c72413de1a4a4cce7a1793b341eef80b5a55e5",
                 "shasum": ""
             },
             "require": {
@@ -8376,7 +8376,7 @@
             ],
             "support": {
                 "issues": "https://github.com/knuckleswtf/scribe/issues",
-                "source": "https://github.com/knuckleswtf/scribe/tree/3.0.2"
+                "source": "https://github.com/knuckleswtf/scribe/tree/3.0.3"
             },
             "funding": [
                 {
@@ -8384,7 +8384,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-06-11T21:50:20+00:00"
+            "time": "2021-06-18T10:02:34+00:00"
         },
         {
             "name": "laravel/sail",
@@ -9216,16 +9216,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.89",
+            "version": "0.12.90",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "54c0f5a6c30511b77128d58b6369f718df250542"
+                "reference": "f0e4b56630fc3d4eb5be86606d07212ac212ede4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/54c0f5a6c30511b77128d58b6369f718df250542",
-                "reference": "54c0f5a6c30511b77128d58b6369f718df250542",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f0e4b56630fc3d4eb5be86606d07212ac212ede4",
+                "reference": "f0e4b56630fc3d4eb5be86606d07212ac212ede4",
                 "shasum": ""
             },
             "require": {
@@ -9256,7 +9256,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.89"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.90"
             },
             "funding": [
                 {
@@ -9276,7 +9276,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-09T20:23:49+00:00"
+            "time": "2021-06-18T07:15:38+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
