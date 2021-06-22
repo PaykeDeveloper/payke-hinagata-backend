@@ -64,16 +64,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.184.6",
+            "version": "3.184.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0b7187c96ced465d400ad9427157e05ddee68edc"
+                "reference": "d5d5fe5fdfca6c7a56f2f8364d09c3100d5c2149"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0b7187c96ced465d400ad9427157e05ddee68edc",
-                "reference": "0b7187c96ced465d400ad9427157e05ddee68edc",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d5d5fe5fdfca6c7a56f2f8364d09c3100d5c2149",
+                "reference": "d5d5fe5fdfca6c7a56f2f8364d09c3100d5c2149",
                 "shasum": ""
             },
             "require": {
@@ -148,22 +148,22 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.184.6"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.184.7"
             },
-            "time": "2021-06-17T18:24:56+00:00"
+            "time": "2021-06-21T18:37:16+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
-            "version": "2.0.3",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Bacon/BaconQrCode.git",
-                "reference": "3e9d791b67d0a2912922b7b7c7312f4b37af41e4"
+                "reference": "f73543ac4e1def05f1a70bcd1525c8a157a1ad09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Bacon/BaconQrCode/zipball/3e9d791b67d0a2912922b7b7c7312f4b37af41e4",
-                "reference": "3e9d791b67d0a2912922b7b7c7312f4b37af41e4",
+                "url": "https://api.github.com/repos/Bacon/BaconQrCode/zipball/f73543ac4e1def05f1a70bcd1525c8a157a1ad09",
+                "reference": "f73543ac4e1def05f1a70bcd1525c8a157a1ad09",
                 "shasum": ""
             },
             "require": {
@@ -201,9 +201,9 @@
             "homepage": "https://github.com/Bacon/BaconQrCode",
             "support": {
                 "issues": "https://github.com/Bacon/BaconQrCode/issues",
-                "source": "https://github.com/Bacon/BaconQrCode/tree/2.0.3"
+                "source": "https://github.com/Bacon/BaconQrCode/tree/2.0.4"
             },
-            "time": "2020-10-30T02:02:47+00:00"
+            "time": "2021-06-18T13:26:35+00:00"
         },
         {
             "name": "brick/math",
@@ -2015,16 +2015,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "1.6.2",
+            "version": "1.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "7d70d2f19c84bcc16275ea47edabee24747352eb"
+                "reference": "c3c8b7217c52572fb42aaf84211abccf75a151b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/7d70d2f19c84bcc16275ea47edabee24747352eb",
-                "reference": "7d70d2f19c84bcc16275ea47edabee24747352eb",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c3c8b7217c52572fb42aaf84211abccf75a151b2",
+                "reference": "c3c8b7217c52572fb42aaf84211abccf75a151b2",
                 "shasum": ""
             },
             "require": {
@@ -2042,7 +2042,7 @@
                 "github/gfm": "0.29.0",
                 "michelf/php-markdown": "~1.4",
                 "mikehaertl/php-shellcommand": "^1.4",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^0.12.90",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.2",
                 "scrutinizer/ocular": "^1.5",
                 "symfony/finder": "^4.2"
@@ -2112,7 +2112,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-12T11:39:41+00:00"
+            "time": "2021-06-19T20:08:14+00:00"
         },
         {
             "name": "league/flysystem",
@@ -2797,16 +2797,16 @@
         },
         {
             "name": "mtdowling/jmespath.php",
-            "version": "2.6.0",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jmespath/jmespath.php.git",
-                "reference": "42dae2cbd13154083ca6d70099692fef8ca84bfb"
+                "reference": "9b87907a81b87bc76d19a7fb2d61e61486ee9edb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/42dae2cbd13154083ca6d70099692fef8ca84bfb",
-                "reference": "42dae2cbd13154083ca6d70099692fef8ca84bfb",
+                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/9b87907a81b87bc76d19a7fb2d61e61486ee9edb",
+                "reference": "9b87907a81b87bc76d19a7fb2d61e61486ee9edb",
                 "shasum": ""
             },
             "require": {
@@ -2814,7 +2814,7 @@
                 "symfony/polyfill-mbstring": "^1.17"
             },
             "require-dev": {
-                "composer/xdebug-handler": "^1.4",
+                "composer/xdebug-handler": "^1.4 || ^2.0",
                 "phpunit/phpunit": "^4.8.36 || ^7.5.15"
             },
             "bin": [
@@ -2852,9 +2852,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jmespath/jmespath.php/issues",
-                "source": "https://github.com/jmespath/jmespath.php/tree/2.6.0"
+                "source": "https://github.com/jmespath/jmespath.php/tree/2.6.1"
             },
-            "time": "2020-07-31T21:01:56+00:00"
+            "time": "2021-06-14T00:11:39+00:00"
         },
         {
             "name": "myclabs/php-enum",
@@ -8293,16 +8293,16 @@
         },
         {
             "name": "knuckleswtf/scribe",
-            "version": "3.0.3",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/knuckleswtf/scribe.git",
-                "reference": "38c72413de1a4a4cce7a1793b341eef80b5a55e5"
+                "reference": "cda557e030a2f6f3e3b3648b546d3d71878d0f71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/38c72413de1a4a4cce7a1793b341eef80b5a55e5",
-                "reference": "38c72413de1a4a4cce7a1793b341eef80b5a55e5",
+                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/cda557e030a2f6f3e3b3648b546d3d71878d0f71",
+                "reference": "cda557e030a2f6f3e3b3648b546d3d71878d0f71",
                 "shasum": ""
             },
             "require": {
@@ -8376,7 +8376,7 @@
             ],
             "support": {
                 "issues": "https://github.com/knuckleswtf/scribe/issues",
-                "source": "https://github.com/knuckleswtf/scribe/tree/3.0.3"
+                "source": "https://github.com/knuckleswtf/scribe/tree/3.1.0"
             },
             "funding": [
                 {
@@ -8384,7 +8384,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-06-18T10:02:34+00:00"
+            "time": "2021-06-18T11:46:34+00:00"
         },
         {
             "name": "laravel/sail",
@@ -10602,6 +10602,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-09-28T06:45:17+00:00"
         },
         {
