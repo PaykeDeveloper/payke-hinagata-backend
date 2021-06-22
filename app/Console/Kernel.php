@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         // $schedule->job(new CountProjects())->everyFiveMinutes()->onOneServer()->withoutOverlapping();
         $schedule->call(function () {
             \Log::debug("SAMPLE LOGGING");
-        })->name('sample_schedule')->onOneServer()->withoutOverlapping()->everyMinute();
+        })->name('sample_schedule')->onOneServer()->withoutOverlapping()->everyTenMinutes();
     }
 
     /**
