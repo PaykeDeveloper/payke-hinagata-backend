@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpUnusedParameterInspection */
+
 namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
@@ -21,9 +23,6 @@ class PermissionController extends Controller
      * "name": "user_viewAll"
      * }
      * ]
-     *
-     * @param Request $request
-     * @return Response
      */
     public function index(Request $request): Response
     {

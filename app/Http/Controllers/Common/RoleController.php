@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpUnusedParameterInspection */
+
 namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
@@ -22,9 +24,6 @@ class RoleController extends Controller
      * "type": "user"
      * }
      * ]
-     *
-     * @param Request $request
-     * @return Response
      */
     public function index(Request $request): Response
     {

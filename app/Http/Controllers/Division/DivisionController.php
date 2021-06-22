@@ -2,13 +2,14 @@
 
 // FIXME: SAMPLE CODE
 
+/** @noinspection PhpUnusedParameterInspection */
+
 namespace App\Http\Controllers\Division;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Division\Division\DivisionCreateRequest;
 use App\Http\Requests\Division\Division\DivisionUpdateRequest;
 use App\Models\Division\Division;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -29,9 +30,6 @@ class DivisionController extends Controller
      *     "request_member_id": 1
      *   }
      * ]
-     *
-     * @param Request $request
-     * @return Response
      */
     public function index(Request $request): Response
     {
@@ -52,9 +50,6 @@ class DivisionController extends Controller
      * "project_deleteAll"
      * ]
      * }
-     *
-     * @param DivisionCreateRequest $request
-     * @return Response
      */
     public function store(DivisionCreateRequest $request): Response
     {
@@ -77,10 +72,6 @@ class DivisionController extends Controller
      * "project_deleteAll"
      * ]
      * }
-     *
-     * @param Request $request
-     * @param Division $division
-     * @return Response
      */
     public function show(Request $request, Division $division): Response
     {
@@ -102,10 +93,6 @@ class DivisionController extends Controller
      * "project_deleteAll"
      * ]
      * }
-     *
-     * @param DivisionUpdateRequest $request
-     * @param Division $division
-     * @return Response
      */
     public function update(DivisionUpdateRequest $request, Division $division): Response
     {
@@ -114,12 +101,6 @@ class DivisionController extends Controller
         return response($updated_division);
     }
 
-    /**
-     * @param Request $request
-     * @param Division $division
-     * @return Response
-     * @throws Exception
-     */
     public function destroy(Request $request, Division $division): Response
     {
         $division->delete();

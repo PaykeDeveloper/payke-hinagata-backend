@@ -11,8 +11,6 @@ use Illuminate\Http\Response;
  * @response [
  * {"label":"日本語","value":"ja"}
  * ]
- *
- * @package App\Http\Controllers
  */
 class LocaleController extends Controller
 {

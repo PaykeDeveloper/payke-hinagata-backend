@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpUnusedParameterInspection */
+
 namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
@@ -29,9 +31,6 @@ class InvitationController extends Controller
      * "created_at":"2021-04-14T07:55:48.000000Z",
      * }
      * ]
-     *
-     * @param Request $request
-     * @return Response
      */
     public function index(Request $request): Response
     {
@@ -49,9 +48,6 @@ class InvitationController extends Controller
      * "updated_at":"2021-04-14T07:55:48.000000Z",
      * "created_at":"2021-04-14T07:55:48.000000Z",
      * }
-     *
-     * @param InvitationCreateRequest $request
-     * @return Response
      */
     public function store(InvitationCreateRequest $request): Response
     {
@@ -69,10 +65,6 @@ class InvitationController extends Controller
      * "updated_at":"2021-04-14T07:55:48.000000Z",
      * "created_at":"2021-04-14T07:55:48.000000Z",
      * }
-     *
-     * @param Request $request
-     * @param Invitation $invitation
-     * @return Response
      */
     public function show(Request $request, Invitation $invitation): Response
     {
@@ -89,10 +81,6 @@ class InvitationController extends Controller
      * "updated_at":"2021-04-14T07:55:48.000000Z",
      * "created_at":"2021-04-14T07:55:48.000000Z",
      * }
-     *
-     * @param InvitationUpdateRequest $request
-     * @param Invitation $invitation
-     * @return Response
      */
     public function update(InvitationUpdateRequest $request, Invitation $invitation): Response
     {
@@ -100,13 +88,6 @@ class InvitationController extends Controller
         return response($updated_invitation);
     }
 
-    /**
-     *
-     * @param InvitationDestroyRequest $request
-     * @param Invitation $invitation
-     * @return Response
-     * @throws \Exception
-     */
     public function destroy(InvitationDestroyRequest $request, Invitation $invitation): Response
     {
         $invitation->delete();

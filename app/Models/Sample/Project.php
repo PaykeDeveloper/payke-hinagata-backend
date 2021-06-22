@@ -111,6 +111,10 @@ class Project extends Model implements HasMedia
         $this->addMediaCollection(self::COLLECTION_NAME)->singleFile();
     }
 
+    /**
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
     public static function createFromRequest(mixed $attributes, Division $division): self
     {
         $project = new self();
@@ -124,6 +128,10 @@ class Project extends Model implements HasMedia
         return $project->fresh();
     }
 
+    /**
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
     public function updateFromRequest(mixed $attributes): self
     {
         $this->update($attributes);

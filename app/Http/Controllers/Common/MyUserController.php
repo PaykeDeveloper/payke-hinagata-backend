@@ -29,9 +29,6 @@ class MyUserController extends Controller
      * "Staff"
      * ]
      * }
-     *
-     * @param Request $request
-     * @return Response
      */
     public function index(Request $request): Response
     {
@@ -57,9 +54,6 @@ class MyUserController extends Controller
      * "Staff"
      * ]
      * }
-     *
-     * @param MyUserUpdateRequest $request
-     * @return Response
      */
     public function store(MyUserUpdateRequest $request): Response
     {

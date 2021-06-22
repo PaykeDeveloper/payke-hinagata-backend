@@ -16,9 +16,6 @@ class TokenController extends AuthenticatedSessionController
      * @response {
      * "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
      * }
-     *
-     * @param TokenCreateRequest $request
-     * @return mixed
      */
     public function storeToken(TokenCreateRequest $request): mixed
     {
@@ -31,10 +28,6 @@ class TokenController extends AuthenticatedSessionController
         });
     }
 
-    /**
-     * @param Request $request
-     * @return LogoutResponse
-     */
     public function destroyToken(Request $request): LogoutResponse
     {
         $user = $request->user();
