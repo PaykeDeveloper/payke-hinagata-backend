@@ -24,7 +24,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // FIXME: SAMPLE CODE
+        // $schedule->job(new CountProjects())->everyFiveMinutes()->onOneServer()->withoutOverlapping();
+        $schedule->call(function () {
+            \Log::debug("SAMPLE LOGGING");
+        })->name('sample_schedule')->onOneServer()->withoutOverlapping()->everyTenMinutes();
     }
 
     /**
