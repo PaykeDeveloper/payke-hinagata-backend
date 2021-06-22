@@ -25,11 +25,6 @@ class PermissionSeeder extends Seeder
         ['name' => Project::RESOURCE, 'all' => true, 'own' => false,],
     ];
 
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         $ids = [];

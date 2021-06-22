@@ -13,6 +13,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Mail;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class CreateProject implements ShouldQueue
 {
@@ -22,13 +25,6 @@ class CreateProject implements ShouldQueue
     private array $attributes;
     private User $user;
 
-    /**
-     * Create a new job instance.
-     *
-     * @param Division $division
-     * @param mixed $attributes
-     * @param User $user
-     */
     public function __construct(Division $division, mixed $attributes, User $user)
     {
         $this->division = $division;
@@ -37,13 +33,12 @@ class CreateProject implements ShouldQueue
     }
 
     /**
-     * Execute the job.
-     *
-     * @return void
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
-    public function handle()
+    public function handle(): void
     {
         $project = Project::createFromRequest($this->attributes, $this->division);
-        \Mail::to($this->user)->send(new ProjectCreated($project));
+        Mail::to($this->user)->send(new ProjectCreated($project));
     }
 }

@@ -2,6 +2,8 @@
 
 // FIXME: SAMPLE CODE
 
+/** @noinspection PhpUnusedParameterInspection */
+
 namespace App\Http\Controllers\Division;
 
 use App\Http\Controllers\Controller;
@@ -9,6 +11,7 @@ use App\Http\Requests\Division\Member\MemberCreateRequest;
 use App\Http\Requests\Division\Member\MemberUpdateRequest;
 use App\Models\Division\Division;
 use App\Models\Division\Member;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -39,10 +42,6 @@ class MemberController extends Controller
      * ]
      * }
      * ]
-     *
-     * @param Request $request
-     * @param Division $division
-     * @return Response
      */
     public function index(Request $request, Division $division): Response
     {
@@ -67,10 +66,6 @@ class MemberController extends Controller
      * "Member"
      * ]
      * }
-     *
-     * @param MemberCreateRequest $request
-     * @param Division $division
-     * @return Response
      */
     public function store(MemberCreateRequest $request, Division $division): Response
     {
@@ -95,11 +90,6 @@ class MemberController extends Controller
      * "Member"
      * ]
      * }
-     *
-     * @param Request $request
-     * @param Division $division
-     * @param Member $member
-     * @return Response
      */
     public function show(Request $request, Division $division, Member $member): Response
     {
@@ -123,10 +113,6 @@ class MemberController extends Controller
      * "Member"
      * ]
      * }
-     *
-     * @param MemberUpdateRequest $request
-     * @param Division $division
-     * @return Response
      */
     public function update(MemberUpdateRequest $request, Division $division, Member $member): Response
     {
@@ -135,11 +121,7 @@ class MemberController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param Division $division
-     * @param Member $member
-     * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function destroy(Request $request, Division $division, Member $member): Response
     {

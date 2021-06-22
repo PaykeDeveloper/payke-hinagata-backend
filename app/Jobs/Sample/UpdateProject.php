@@ -10,6 +10,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class UpdateProject implements ShouldQueue
 {
@@ -18,12 +20,6 @@ class UpdateProject implements ShouldQueue
     private Project $project;
     private array $attributes;
 
-    /**
-     * Create a new job instance.
-     *
-     * @param Project $project
-     * @param mixed $attributes
-     */
     public function __construct(Project $project, mixed $attributes)
     {
         $this->project = $project;
@@ -31,11 +27,10 @@ class UpdateProject implements ShouldQueue
     }
 
     /**
-     * Execute the job.
-     *
-     * @return void
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
-    public function handle()
+    public function handle(): void
     {
         $this->project->updateFromRequest($this->attributes);
     }

@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpUnusedParameterInspection */
+
 namespace App\Notifications\Common;
 
 use App\Models\Common\Invitation;
@@ -14,48 +16,25 @@ class InvitationUser extends Notification
     private Invitation $invitation;
     private string $token;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct(Invitation $invitation, string $token)
     {
         $this->invitation = $invitation;
         $this->token = $token;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     * @return array
-     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return MailMessage
-     */
     public function toMail(mixed $notifiable): MailMessage
     {
         $invitation = $this->invitation;
         $origin = config('constant.frontend_origin');
-        $url = "$origin/register?id={$invitation->id}&token={$this->token}";
+        $url = "$origin/register?id=$invitation->id&token=$this->token";
         return $this->buildMailMessage($url);
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return array
-     */
     public function toArray(mixed $notifiable): array
     {
         return [

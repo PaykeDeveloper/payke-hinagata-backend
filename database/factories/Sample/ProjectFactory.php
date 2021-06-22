@@ -7,27 +7,18 @@ namespace Database\Factories\Sample;
 use App\Models\Division\Division;
 use App\Models\Sample\Priority;
 use App\Models\Sample\Project;
+use DateTimeZone;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProjectFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = Project::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition(): array
     {
         $start_date = $this->faker->date();
         $finished_at = $this->faker->dateTimeBetween($start_date, '+6day')
-            ->setTimezone(new \DateTimeZone('Asia/Tokyo'))
+            ->setTimezone(new DateTimeZone('Asia/Tokyo'))
             ->format(DATE_ATOM);
 
         return [

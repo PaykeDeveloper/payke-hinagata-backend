@@ -7,6 +7,7 @@ namespace App\Models\Division;
 use App\Models\Common\Permission;
 use App\Models\Traits\HasAuthorization;
 use App\Models\User;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -102,7 +103,7 @@ class Member extends Model
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function deleteFromRequest(): void
     {

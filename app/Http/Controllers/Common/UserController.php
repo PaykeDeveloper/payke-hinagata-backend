@@ -1,10 +1,13 @@
 <?php
 
+/** @noinspection PhpUnusedParameterInspection */
+
 namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Common\User\UserUpdateRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -36,9 +39,6 @@ class UserController extends Controller
      * ]
      * }
      * ]
-     *
-     * @param Request $request
-     * @return Response
      */
     public function index(Request $request): Response
     {
@@ -64,10 +64,6 @@ class UserController extends Controller
      * "Staff"
      * ]
      * }
-     *
-     * @param Request $request
-     * @param User $user
-     * @return Response
      */
     public function show(Request $request, User $user): Response
     {
@@ -93,10 +89,6 @@ class UserController extends Controller
      * "Staff"
      * ]
      * }
-     *
-     * @param UserUpdateRequest $request
-     * @param User $user
-     * @return Response
      */
     public function update(UserUpdateRequest $request, User $user): Response
     {
@@ -105,11 +97,7 @@ class UserController extends Controller
     }
 
     /**
-     *
-     * @param Request $request
-     * @param User $user
-     * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function destroy(Request $request, User $user): Response
     {

@@ -9,11 +9,6 @@ use Laravel\Fortify\Http\Requests\LoginRequest;
 
 class TokenCreateRequest extends LoginRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules(): array
     {
         return [

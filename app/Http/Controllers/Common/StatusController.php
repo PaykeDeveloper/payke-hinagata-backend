@@ -10,8 +10,6 @@ use Illuminate\Http\Response;
  * @response {
  * "is_authenticated": false
  * }
- *
- * @package App\Http\Controllers
  */
 class StatusController extends Controller
 {

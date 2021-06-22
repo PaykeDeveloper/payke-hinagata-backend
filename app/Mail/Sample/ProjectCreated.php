@@ -15,22 +15,12 @@ class ProjectCreated extends Mailable
 
     public Project $project;
 
-    /**
-     * Create a new message instance.
-     *
-     * @param Project $project
-     */
     public function __construct(Project $project)
     {
         $this->project = $project;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function build(): static
     {
         return $this->view('emails.project.created');
     }

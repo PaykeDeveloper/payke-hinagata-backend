@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateDivisionsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('divisions', function (Blueprint $table) {
@@ -22,11 +17,6 @@ class CreateDivisionsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('divisions');

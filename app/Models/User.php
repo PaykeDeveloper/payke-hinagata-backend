@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Common\Permission;
 use App\Models\Division\Member;
 use App\Models\Traits\HasAuthorization;
+use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Collection;
@@ -115,7 +116,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function deleteFromRequest(): void
     {

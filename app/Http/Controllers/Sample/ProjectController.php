@@ -2,6 +2,8 @@
 
 // FIXME: SAMPLE CODE
 
+/** @noinspection PhpUnusedParameterInspection */
+
 namespace App\Http\Controllers\Sample;
 
 use App\Exports\CollectionExport;
@@ -16,6 +18,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ProjectController extends Controller
@@ -46,10 +50,6 @@ class ProjectController extends Controller
      * "deleted_at":null,
      * "cover_url":"http:\/\/localhost:8000\/storage\/1\/example.png"
      * }]
-     *
-     * @param Request $request
-     * @param Division $division
-     * @return Response
      */
     public function index(Request $request, Division $division): Response
     {
@@ -77,9 +77,8 @@ class ProjectController extends Controller
      * "cover_url":"http:\/\/localhost:8000\/storage\/1\/example.png"
      * }
      *
-     * @param ProjectCreateRequest $request
-     * @param Division $division
-     * @return Response
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
     public function store(ProjectCreateRequest $request, Division $division): Response
     {
@@ -107,11 +106,6 @@ class ProjectController extends Controller
      * "deleted_at":null,
      * "cover_url":"http:\/\/localhost:8000\/storage\/1\/example.png"
      * }
-     *
-     * @param Request $request
-     * @param Division $division
-     * @param Project $project
-     * @return Response
      */
     public function show(Request $request, Division $division, Project $project): Response
     {
@@ -139,10 +133,8 @@ class ProjectController extends Controller
      * "cover_url":"http:\/\/localhost:8000\/storage\/1\/example.png"
      * }
      *
-     * @param ProjectUpdateRequest $request
-     * @param Division $division
-     * @param Project $project
-     * @return Response
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
     public function update(ProjectUpdateRequest $request, Division $division, Project $project): Response
     {
@@ -151,10 +143,6 @@ class ProjectController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param Division $division
-     * @param Project $project
-     * @return Response
      * @throws Exception
      */
     public function destroy(Request $request, Division $division, Project $project): Response
@@ -164,9 +152,6 @@ class ProjectController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param Division $division
-     * @return BinaryFileResponse
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
@@ -175,23 +160,12 @@ class ProjectController extends Controller
         return Excel::download(new CollectionExport($division->projects), 'projects.csv');
     }
 
-    /**
-     * @param ProjectCreateRequest $request
-     * @param Division $division
-     * @return Response
-     */
     public function storeAsync(ProjectCreateRequest $request, Division $division): Response
     {
         CreateProject::dispatch($division, $request->validated(), $request->user());
         return response(null, 204);
     }
 
-    /**
-     * @param ProjectUpdateRequest $request
-     * @param Division $division
-     * @param Project $project
-     * @return Response
-     */
     public function updateAsync(ProjectUpdateRequest $request, Division $division, Project $project): Response
     {
         UpdateProject::dispatch($project, $request->validated())->afterResponse();
