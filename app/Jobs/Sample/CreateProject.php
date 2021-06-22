@@ -36,7 +36,7 @@ class CreateProject implements ShouldQueue
      * @throws FileDoesNotExist
      * @throws FileIsTooBig
      */
-    public function handle()
+    public function handle(): void
     {
         $project = Project::createFromRequest($this->attributes, $this->division);
         Mail::to($this->user)->send(new ProjectCreated($project));

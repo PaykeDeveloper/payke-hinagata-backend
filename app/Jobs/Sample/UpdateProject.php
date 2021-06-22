@@ -30,7 +30,7 @@ class UpdateProject implements ShouldQueue
      * @throws FileDoesNotExist
      * @throws FileIsTooBig
      */
-    public function handle()
+    public function handle(): void
     {
         $this->project->updateFromRequest($this->attributes);
     }
