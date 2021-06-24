@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Common\Permission;
 use App\Models\Division\Member;
 use App\Models\Traits\HasAuthorization;
-use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Collection;
@@ -113,15 +112,5 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
             $this->syncRoles($attributes['role_names']);
         }
         return $this->fresh();
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function deleteFromRequest(): void
-    {
-        $this->syncRoles([]);
-        $this->syncPermissions([]);
-        $this->delete();
     }
 }
