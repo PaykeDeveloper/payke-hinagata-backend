@@ -22,10 +22,11 @@ class Invitation extends Model
         'status' => InvitationStatus::PENDING,
     ];
 
-    protected $fillable = [
-        'name',
-        'email',
-        'role_names',
+    protected $guarded = [
+        'id',
+        'token',
+        'created_at',
+        'updated_at',
     ];
 
     protected $hidden = [
