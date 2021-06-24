@@ -23,7 +23,7 @@ class FormRequest extends BaseFormRequest
      */
     private function castInputs(array $casts): void
     {
-        $inputs = $this->all(array_keys($casts));
+        $inputs = $this->all();
         $merge_inputs = [];
         foreach ($casts as $field => $pattern) {
             if (!array_key_exists($field, $inputs)) {
