@@ -71,6 +71,15 @@ class Project extends Model implements HasMedia
     private const COLLECTION_NAME = 'cover';
     protected $appends = ['cover_url'];
 
+    protected static function booted()
+    {
+        self::creating(function (Project $project) {
+            if (is_null($project->getAttributeValue('slug'))) {
+                $project->slug = Str::uuid()->toString();
+            }
+        });
+    }
+
     /**
      * URLのキーをID以外に設定したい場合はここで指定する。
      */
@@ -120,7 +129,6 @@ class Project extends Model implements HasMedia
         $project = new self();
         $project->fill($attributes);
         $project->division_id = $division->id;
-        $project->slug = (string)Str::uuid();
         $project->save();
         if (array_key_exists('cover', $attributes)) {
             $project->saveCover($attributes['cover']);

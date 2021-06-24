@@ -70,7 +70,6 @@ class Member extends Model
         $enable_all = $member?->hasAllViewPermissionTo(self::RESOURCE)
             || $user->hasAllViewPermissionTo(self::RESOURCE);
 
-        /** @var Collection $members */
         $members = $division->members;
         if ($enable_all) {
             return $members;

@@ -21,6 +21,7 @@ class CreateInvitationsTable extends Migration
                 ->constrained('users')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
+            $table->string('locale')->nullable();
             $table->timestampsTz();
         });
     }

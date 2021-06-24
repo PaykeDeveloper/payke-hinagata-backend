@@ -22,10 +22,11 @@ class Invitation extends Model
         'status' => InvitationStatus::PENDING,
     ];
 
-    protected $fillable = [
-        'name',
-        'email',
-        'role_names',
+    protected $guarded = [
+        'id',
+        'token',
+        'created_at',
+        'updated_at',
     ];
 
     protected $hidden = [
@@ -35,6 +36,19 @@ class Invitation extends Model
     protected $casts = [
         'role_names' => 'array',
     ];
+
+    protected static function booted()
+    {
+        self::creating(function (Invitation $invitation) {
+            if (is_null($invitation->getAttributeValue('token'))) {
+                $token = Str::random(60);
+                $invitation->token = hash('sha256', $token);
+            }
+        });
+        self::created(function (Invitation $invitation) {
+            $invitation->sendInvitationNotification($invitation->token, $invitation->locale);
+        });
+    }
 
     private function sendInvitationNotification(string $token, string $locale): void
     {
@@ -46,11 +60,8 @@ class Invitation extends Model
     {
         $invitation = new self();
         $invitation->fill($attributes);
-        $token = Str::random(60);
-        $invitation->token = hash('sha256', $token);
         $invitation->created_by = $user->id;
         $invitation->save();
-        $invitation->sendInvitationNotification($token, $attributes['locale']);
         return $invitation->fresh();
     }
 

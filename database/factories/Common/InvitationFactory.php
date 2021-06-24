@@ -4,6 +4,7 @@ namespace Database\Factories\Common;
 
 use App\Models\Common\Invitation;
 use App\Models\Common\InvitationStatus;
+use App\Models\Common\LocaleType;
 use App\Models\Common\UserRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -20,6 +21,7 @@ class InvitationFactory extends Factory
             'token' => Str::random(60),
             'status' => $this->faker->randomElement(InvitationStatus::all()),
             'role_names' => $this->faker->randomElements(UserRole::all()),
+            'locale' => $this->faker->randomElement(LocaleType::all()),
             'created_by' => null,
         ];
     }
