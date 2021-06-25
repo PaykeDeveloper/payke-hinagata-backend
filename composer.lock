@@ -64,16 +64,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.185.0",
+            "version": "3.185.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6c919bc226f7ff3fbcbce948f31e618066d02ad0"
+                "reference": "953bbd1b5f7fd3f1601ad0a83f93358f635c57f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6c919bc226f7ff3fbcbce948f31e618066d02ad0",
-                "reference": "6c919bc226f7ff3fbcbce948f31e618066d02ad0",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/953bbd1b5f7fd3f1601ad0a83f93358f635c57f4",
+                "reference": "953bbd1b5f7fd3f1601ad0a83f93358f635c57f4",
                 "shasum": ""
             },
             "require": {
@@ -148,9 +148,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.185.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.185.1"
             },
-            "time": "2021-06-23T18:21:07+00:00"
+            "time": "2021-06-24T18:22:42+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -8293,16 +8293,16 @@
         },
         {
             "name": "knuckleswtf/scribe",
-            "version": "3.1.0",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/knuckleswtf/scribe.git",
-                "reference": "cda557e030a2f6f3e3b3648b546d3d71878d0f71"
+                "reference": "d1a9a815098858b4485f3a061cef33a8cc5d2285"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/cda557e030a2f6f3e3b3648b546d3d71878d0f71",
-                "reference": "cda557e030a2f6f3e3b3648b546d3d71878d0f71",
+                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/d1a9a815098858b4485f3a061cef33a8cc5d2285",
+                "reference": "d1a9a815098858b4485f3a061cef33a8cc5d2285",
                 "shasum": ""
             },
             "require": {
@@ -8376,7 +8376,7 @@
             ],
             "support": {
                 "issues": "https://github.com/knuckleswtf/scribe/issues",
-                "source": "https://github.com/knuckleswtf/scribe/tree/3.1.0"
+                "source": "https://github.com/knuckleswtf/scribe/tree/3.2.0"
             },
             "funding": [
                 {
@@ -8384,7 +8384,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-06-18T11:46:34+00:00"
+            "time": "2021-06-24T22:40:27+00:00"
         },
         {
             "name": "laravel/sail",
