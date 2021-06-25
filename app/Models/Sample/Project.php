@@ -73,7 +73,7 @@ class Project extends Model implements HasMedia
 
     protected static function booted()
     {
-        self::creating(function (Project $project) {
+        self::creating(function (self $project) {
             if (is_null($project->getAttributeValue('slug'))) {
                 $project->slug = Str::uuid()->toString();
             }
