@@ -125,7 +125,7 @@ class MemberController extends Controller
      */
     public function destroy(Request $request, Division $division, Member $member): Response
     {
-        $member->deleteFromRequest();
+        $member->delete();
         return response(null, 204);
     }
 }

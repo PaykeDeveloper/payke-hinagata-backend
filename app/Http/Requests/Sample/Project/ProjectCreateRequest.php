@@ -15,11 +15,6 @@ class ProjectCreateRequest extends FormRequest
         'description' => 'string',
     ];
 
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     public function rules(): array
     {
         return [
@@ -33,7 +28,7 @@ class ProjectCreateRequest extends FormRequest
             'difficulty' => ['nullable', 'integer', 'min:1', 'max:5'],
             'coefficient' => ['nullable', 'regex:/^\d+(\.\d{1,2})?$/'],
             'productivity' => ['nullable', 'numeric', 'max:999999'],
-            'cover' => ['nullable', 'mimetypes:image/jpeg,image/png,image/bmp', 'max:2048'],
+            'cover' => ['nullable', 'file', 'mimetypes:image/jpeg,image/png,image/bmp', 'max:2048'],
         ];
     }
 }

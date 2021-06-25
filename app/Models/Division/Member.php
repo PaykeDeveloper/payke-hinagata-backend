@@ -7,7 +7,6 @@ namespace App\Models\Division;
 use App\Models\Common\Permission;
 use App\Models\Traits\HasAuthorization;
 use App\Models\User;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -71,7 +70,6 @@ class Member extends Model
         $enable_all = $member?->hasAllViewPermissionTo(self::RESOURCE)
             || $user->hasAllViewPermissionTo(self::RESOURCE);
 
-        /** @var Collection $members */
         $members = $division->members;
         if ($enable_all) {
             return $members;
@@ -100,15 +98,5 @@ class Member extends Model
         }
 
         return $this->fresh();
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function deleteFromRequest(): void
-    {
-        $this->syncRoles([]);
-        $this->syncPermissions([]);
-        $this->delete();
     }
 }

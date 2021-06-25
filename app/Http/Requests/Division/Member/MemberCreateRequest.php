@@ -14,11 +14,6 @@ use Illuminate\Validation\Rule;
 
 class MemberCreateRequest extends FormRequest
 {
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     public function rules(): array
     {
         /** @var ?User $user */

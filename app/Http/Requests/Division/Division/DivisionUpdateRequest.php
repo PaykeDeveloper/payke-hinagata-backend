@@ -8,11 +8,6 @@ use App\Http\Requests\FormRequest;
 
 class DivisionUpdateRequest extends FormRequest
 {
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     public function rules(): array
     {
         return [

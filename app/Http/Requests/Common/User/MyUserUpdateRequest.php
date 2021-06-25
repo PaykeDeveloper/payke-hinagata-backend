@@ -8,11 +8,6 @@ use Illuminate\Validation\Rule;
 
 class MyUserUpdateRequest extends FormRequest
 {
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     public function rules(): array
     {
         return [
