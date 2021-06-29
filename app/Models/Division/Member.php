@@ -67,8 +67,8 @@ class Member extends Model
     public static function findFromRequest(User $user, Division $division): Collection
     {
         $member = self::findByUniqueKeys($user->id, $division->id);
-        $enableAll = $member?->hasAllViewPermissionTo(self::RESOURCE)
-            || $user->hasAllViewPermissionTo(self::RESOURCE);
+        $enableAll = $member?->hasViewAllPermissionTo(self::RESOURCE)
+            || $user->hasViewAllPermissionTo(self::RESOURCE);
 
         $members = $division->members;
         if ($enableAll) {

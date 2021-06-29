@@ -24,12 +24,12 @@ class UserPolicy
 
     public function view(User $user, User $targetUser): bool
     {
-        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
             return true;
         }
         if (
             $user->id === $targetUser->id &&
-            $user->hasOwnViewPermissionTo(self::RESOURCE)
+            $user->hasViewOwnPermissionTo(self::RESOURCE)
         ) {
             return true;
         }
@@ -41,7 +41,7 @@ class UserPolicy
     public function create(User $user): bool
     {
         return $this->viewAny($user)
-            && $user->hasAllCreatePermissionTo(self::RESOURCE);
+            && $user->hasCreateAllPermissionTo(self::RESOURCE);
     }
 
     public function update(User $user, User $targetUser): bool
@@ -52,12 +52,12 @@ class UserPolicy
 
         if (
             $user->id === $targetUser->id &&
-            $user->hasOwnUpdatePermissionTo(self::RESOURCE)
+            $user->hasUpdateOwnPermissionTo(self::RESOURCE)
         ) {
             return true;
         }
 
-        if ($user->hasAllUpdatePermissionTo(self::RESOURCE)) {
+        if ($user->hasUpdateAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
@@ -72,12 +72,12 @@ class UserPolicy
 
         if (
             $user->id === $targetUser->id &&
-            $user->hasOwnDeletePermissionTo(self::RESOURCE)
+            $user->hasDeleteOwnPermissionTo(self::RESOURCE)
         ) {
             return true;
         }
 
-        if ($user->hasAllDeletePermissionTo(self::RESOURCE)) {
+        if ($user->hasDeleteAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 

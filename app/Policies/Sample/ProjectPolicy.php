@@ -33,11 +33,11 @@ class ProjectPolicy
 
     public function viewAny(User $user): bool
     {
-        if ($this->member?->hasAllViewPermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasViewAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
-        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
@@ -51,11 +51,11 @@ class ProjectPolicy
             abort(Response::HTTP_NOT_FOUND);
         }
 
-        if ($this->member?->hasAllViewPermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasViewAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
-        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
@@ -69,11 +69,11 @@ class ProjectPolicy
             return false;
         }
 
-        if ($this->member?->hasAllCreatePermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasCreateAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
-        if ($user->hasAllCreatePermissionTo(self::RESOURCE)) {
+        if ($user->hasCreateAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
@@ -86,11 +86,11 @@ class ProjectPolicy
             return false;
         }
 
-        if ($this->member?->hasAllUpdatePermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasUpdateAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
-        if ($user->hasAllUpdatePermissionTo(self::RESOURCE)) {
+        if ($user->hasUpdateAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
@@ -103,11 +103,11 @@ class ProjectPolicy
             return false;
         }
 
-        if ($this->member?->hasAllDeletePermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasDeleteAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
-        if ($user->hasAllDeletePermissionTo(self::RESOURCE)) {
+        if ($user->hasDeleteAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
