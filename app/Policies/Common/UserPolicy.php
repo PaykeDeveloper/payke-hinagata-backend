@@ -22,13 +22,13 @@ class UserPolicy
         return false;
     }
 
-    public function view(User $user, User $target_user): bool
+    public function view(User $user, User $targetUser): bool
     {
         if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
             return true;
         }
         if (
-            $user->id === $target_user->id &&
+            $user->id === $targetUser->id &&
             $user->hasOwnViewPermissionTo(self::RESOURCE)
         ) {
             return true;
@@ -44,14 +44,14 @@ class UserPolicy
             && $user->hasAllCreatePermissionTo(self::RESOURCE);
     }
 
-    public function update(User $user, User $target_user): bool
+    public function update(User $user, User $targetUser): bool
     {
-        if (!$this->view($user, $target_user)) {
+        if (!$this->view($user, $targetUser)) {
             return false;
         }
 
         if (
-            $user->id === $target_user->id &&
+            $user->id === $targetUser->id &&
             $user->hasOwnUpdatePermissionTo(self::RESOURCE)
         ) {
             return true;
@@ -64,14 +64,14 @@ class UserPolicy
         return false;
     }
 
-    public function delete(User $user, User $target_user): bool
+    public function delete(User $user, User $targetUser): bool
     {
-        if (!$this->view($user, $target_user)) {
+        if (!$this->view($user, $targetUser)) {
             return false;
         }
 
         if (
-            $user->id === $target_user->id &&
+            $user->id === $targetUser->id &&
             $user->hasOwnDeletePermissionTo(self::RESOURCE)
         ) {
             return true;

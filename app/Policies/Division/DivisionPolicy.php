@@ -84,18 +84,18 @@ class DivisionPolicy
     }
 
     private ?Member $member = null;
-    private ?int $user_id = null;
-    private ?int $division_id = null;
+    private ?int $userId = null;
+    private ?int $divisionId = null;
 
-    private function findMember(int $user_id, int $division_id): ?Member
+    private function findMember(int $userId, int $divisionId): ?Member
     {
-        if ($user_id === $this->user_id && $division_id === $this->division_id) {
+        if ($userId === $this->userId && $divisionId === $this->divisionId) {
             return $this->member;
         }
 
-        $this->user_id = $user_id;
-        $this->division_id = $division_id;
-        $this->member = Member::findByUniqueKeys($user_id, $division_id);
+        $this->userId = $userId;
+        $this->divisionId = $divisionId;
+        $this->member = Member::findByUniqueKeys($userId, $divisionId);
         return $this->member;
     }
 }

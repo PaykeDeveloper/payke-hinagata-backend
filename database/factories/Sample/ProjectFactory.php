@@ -16,8 +16,8 @@ class ProjectFactory extends Factory
 
     public function definition(): array
     {
-        $start_date = $this->faker->date();
-        $finished_at = $this->faker->dateTimeBetween($start_date, '+6day')
+        $startDate = $this->faker->date();
+        $finishedAt = $this->faker->dateTimeBetween($startDate, '+6day')
             ->setTimezone(new DateTimeZone('Asia/Tokyo'))
             ->format(DATE_ATOM);
 
@@ -28,8 +28,8 @@ class ProjectFactory extends Factory
             'description' => $this->faker->paragraph(),
             'priority' => $this->faker->randomElement(Priority::all()),
             'approved' => $this->faker->boolean(),
-            'start_date' => $start_date,
-            'finished_at' => $finished_at,
+            'start_date' => $startDate,
+            'finished_at' => $finishedAt,
             'difficulty' => $this->faker->numberBetween(1, 5),
             'coefficient' => $this->faker->randomFloat(1, max: 99),
             'productivity' => $this->faker->randomFloat(3, max: 999999),

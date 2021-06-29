@@ -116,8 +116,8 @@ class MemberController extends Controller
      */
     public function update(MemberUpdateRequest $request, Division $division, Member $member): Response
     {
-        $updated_member = $member->updateFromRequest($request->validated());
-        return response($updated_member);
+        $result = $member->updateFromRequest($request->validated());
+        return response($result);
     }
 
     /**

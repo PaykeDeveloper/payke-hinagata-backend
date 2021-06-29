@@ -15,9 +15,9 @@ class StatusController extends Controller
 {
     public function __invoke(Request $request): Response
     {
-        $is_authenticated = !!auth()->guard('sanctum')->user();
+        $isAuthenticated = !!auth()->guard('sanctum')->user();
         $status = [
-            'is_authenticated' => $is_authenticated,
+            'is_authenticated' => $isAuthenticated,
         ];
         return response($status);
     }

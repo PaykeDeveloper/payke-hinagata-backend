@@ -54,10 +54,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedViewRole
      */
-    public function testIndexSuccess($user_role, $member_role)
+    public function testIndexSuccess($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->getJson(route('divisions.projects.index', ['division' => $this->division->id]));
 
@@ -69,10 +69,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedOtherRole
      */
-    public function testStoreSuccessWithRequiredParams($user_role, $member_role)
+    public function testStoreSuccessWithRequiredParams($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $data = ['name' => $this->faker->name];
 
@@ -87,13 +87,13 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedOtherRole
      */
-    public function testStoreSuccessWithFullParams($user_role, $member_role)
+    public function testStoreSuccessWithFullParams($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
-        $start_date = $this->faker->date();
-        $finished_at = $this->faker->dateTimeBetween($start_date, '+6day')
+        $startDate = $this->faker->date();
+        $finishedAt = $this->faker->dateTimeBetween($startDate, '+6day')
             ->setTimezone(new \DateTimeZone('Asia/Tokyo'))
             ->format("Y-m-d\TH:i:s.u\Z");
         $data = [
@@ -101,8 +101,8 @@ class ProjectControllerTest extends TestCase
             'description' => $this->faker->text,
             'priority' => $this->faker->randomElement(Priority::all()),
             'approved' => $this->faker->boolean,
-            'start_date' => $start_date,
-            'finished_at' => $finished_at,
+            'start_date' => $startDate,
+            'finished_at' => $finishedAt,
             'difficulty' => $this->faker->numberBetween(1, 5),
             'coefficient' => $this->faker->randomFloat(1, max: 99),
             'productivity' => $this->faker->randomFloat(3, max: 999999),
@@ -119,10 +119,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedOtherRole
      */
-    public function testStoreAsyncSuccess($user_role, $member_role)
+    public function testStoreAsyncSuccess($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $data = ['name' => $this->faker->name];
 
@@ -134,10 +134,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedViewRole
      */
-    public function testShowSuccess($user_role, $member_role)
+    public function testShowSuccess($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
@@ -151,10 +151,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedOtherRole
      */
-    public function testUpdateSuccessWithSingleParam($user_role, $member_role)
+    public function testUpdateSuccessWithSingleParam($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $data = [
             'name' => $this->faker->name,
@@ -172,13 +172,13 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedOtherRole
      */
-    public function testUpdateSuccessWithFullParams($user_role, $member_role)
+    public function testUpdateSuccessWithFullParams($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
-        $start_date = $this->faker->date();
-        $finished_at = $this->faker->dateTimeBetween($start_date, '+6day')
+        $startDate = $this->faker->date();
+        $finishedAt = $this->faker->dateTimeBetween($startDate, '+6day')
             ->setTimezone(new \DateTimeZone('Asia/Tokyo'))
             ->format("Y-m-d\TH:i:s.u\Z");
         $data = [
@@ -186,8 +186,8 @@ class ProjectControllerTest extends TestCase
             'description' => $this->faker->text,
             'priority' => $this->faker->randomElement(Priority::all()),
             'approved' => $this->faker->boolean,
-            'start_date' => $start_date,
-            'finished_at' => $finished_at,
+            'start_date' => $startDate,
+            'finished_at' => $finishedAt,
             'difficulty' => $this->faker->numberBetween(1, 5),
             'coefficient' => $this->faker->randomFloat(1, max: 99),
             'productivity' => $this->faker->randomFloat(3, max: 999999),
@@ -205,10 +205,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedOtherRole
      */
-    public function testUpdateAsyncSuccess($user_role, $member_role)
+    public function testUpdateAsyncSuccess($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $data = [
             'name' => $this->faker->name,
@@ -225,10 +225,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedOtherRole
      */
-    public function testDestroySuccess($user_role, $member_role)
+    public function testDestroySuccess($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
@@ -244,10 +244,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedOtherRole
      */
-    public function testExportSuccess($user_role, $member_role)
+    public function testExportSuccess($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->get("api/v1/divisions/{$this->division->id}/projects/download");
 
@@ -261,10 +261,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideUnAuthorizedViewRole
      */
-    public function testIndexUnAuthorized($user_role, $member_role)
+    public function testIndexUnAuthorized($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->getJson(route('divisions.projects.index', ['division' => $this->division->id]));
 
@@ -274,10 +274,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideUnAuthorizedOtherRole
      */
-    public function testStoreUnAuthorized($user_role, $member_role)
+    public function testStoreUnAuthorized($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $data = ['name' => $this->faker->name];
 
@@ -291,10 +291,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideUnAuthorizedViewRole
      */
-    public function testShowUnAuthorized($user_role, $member_role)
+    public function testShowUnAuthorized($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
@@ -307,10 +307,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideUnAuthorizedOtherRole
      */
-    public function testUpdateUnAuthorized($user_role, $member_role)
+    public function testUpdateUnAuthorized($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $data = ['name' => $this->faker->name];
 
@@ -325,10 +325,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedOtherRole
      */
-    public function testUpdateOptimisticLock($user_role, $member_role)
+    public function testUpdateOptimisticLock($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $data = [
             'name' => $this->faker->name,
@@ -347,10 +347,10 @@ class ProjectControllerTest extends TestCase
     /**
      * @dataProvider provideUnAuthorizedOtherRole
      */
-    public function testDestroyUnAuthorized($user_role, $member_role)
+    public function testDestroyUnAuthorized($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,

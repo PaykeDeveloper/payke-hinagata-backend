@@ -23,7 +23,7 @@ class CreateAdminCommand extends Command
         $name = $this->option("name");
         $email = $this->option("email");
         $password = $this->option("password");
-        $password_confirmation = $this->option("password");
+        $passwordConfirmation = $this->option("password");
 
         while ($name === null) {
             $name = $this->ask('What is the name?');
@@ -34,15 +34,15 @@ class CreateAdminCommand extends Command
         while ($password === null) {
             $password = $this->secret('What is the password?');
         }
-        while ($password_confirmation === null) {
-            $password_confirmation = $this->secret('Retype the password.');
+        while ($passwordConfirmation === null) {
+            $passwordConfirmation = $this->secret('Retype the password.');
         }
 
         $attributes = [
             'name' => $name,
             'email' => $email,
             'password' => $password,
-            'password_confirmation' => $password_confirmation,
+            'password_confirmation' => $passwordConfirmation,
         ];
 
         try {

@@ -59,19 +59,19 @@ class Member extends Model
         return $this->belongsTo(Division::class);
     }
 
-    public static function findByUniqueKeys(int $user_id, int $division_id): ?self
+    public static function findByUniqueKeys(int $userId, int $divisionId): ?self
     {
-        return self::where('user_id', $user_id)->where('division_id', $division_id)->first();
+        return self::where('user_id', $userId)->where('division_id', $divisionId)->first();
     }
 
     public static function findFromRequest(User $user, Division $division): Collection
     {
         $member = self::findByUniqueKeys($user->id, $division->id);
-        $enable_all = $member?->hasAllViewPermissionTo(self::RESOURCE)
+        $enableAll = $member?->hasAllViewPermissionTo(self::RESOURCE)
             || $user->hasAllViewPermissionTo(self::RESOURCE);
 
         $members = $division->members;
-        if ($enable_all) {
+        if ($enableAll) {
             return $members;
         } else {
             return $members->where('user_id', $user->id);

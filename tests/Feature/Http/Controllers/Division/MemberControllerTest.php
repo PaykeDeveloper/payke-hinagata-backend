@@ -51,10 +51,10 @@ class MemberControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedRole
      */
-    public function testIndexSuccess($user_role, $member_role)
+    public function testIndexSuccess($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->getJson(route('divisions.members.index', ['division' => $this->division->id]));
 
@@ -66,10 +66,10 @@ class MemberControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedRole
      */
-    public function testStoreSuccess($user_role, $member_role)
+    public function testStoreSuccess($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
         $user = User::factory()->create();
 
         $data = [
@@ -88,10 +88,10 @@ class MemberControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedRole
      */
-    public function testShowSuccess($user_role, $member_role)
+    public function testShowSuccess($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->getJson(route('divisions.members.show', [
             'division' => $this->division->id,
@@ -105,10 +105,10 @@ class MemberControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedRole
      */
-    public function testUpdateSuccess($user_role, $member_role)
+    public function testUpdateSuccess($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $data = ['role_names' => [MemberRole::MEMBER]];
 
@@ -124,10 +124,10 @@ class MemberControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedRole
      */
-    public function testDestroySuccess($user_role, $member_role)
+    public function testDestroySuccess($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->deleteJson(route('divisions.members.destroy', [
             'division' => $this->division->id,
@@ -147,10 +147,10 @@ class MemberControllerTest extends TestCase
     /**
      * @dataProvider provideUnAuthorizedRole
      */
-    public function testIndexUnAuthorized($user_role, $member_role)
+    public function testIndexUnAuthorized($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->getJson(route('divisions.members.index', ['division' => $this->division->id]));
 
@@ -160,10 +160,10 @@ class MemberControllerTest extends TestCase
     /**
      * @dataProvider provideUnAuthorizedRole
      */
-    public function testStoreUnAuthorized($user_role, $member_role)
+    public function testStoreUnAuthorized($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
         $user = User::factory()->create();
 
         $data = [
@@ -181,10 +181,10 @@ class MemberControllerTest extends TestCase
     /**
      * @dataProvider provideAuthorizedRole
      */
-    public function testStoreDuplicated($user_role, $member_role)
+    public function testStoreDuplicated($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $data = [
             'user_id' => $this->user->id,
@@ -202,10 +202,10 @@ class MemberControllerTest extends TestCase
     /**
      * @dataProvider provideUnAuthorizedRole
      */
-    public function testShowUnAuthorized($user_role, $member_role)
+    public function testShowUnAuthorized($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->getJson(route('divisions.members.show', [
             'division' => $this->division->id,
@@ -218,10 +218,10 @@ class MemberControllerTest extends TestCase
     /**
      * @dataProvider provideUnAuthorizedRole
      */
-    public function testUpdateUnAuthorized($user_role, $member_role)
+    public function testUpdateUnAuthorized($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $data = ['role_names' => [MemberRole::MEMBER]];
 
@@ -236,10 +236,10 @@ class MemberControllerTest extends TestCase
     /**
      * @dataProvider provideUnAuthorizedRole
      */
-    public function testDestroyUnAuthorized($user_role, $member_role)
+    public function testDestroyUnAuthorized($userRole, $memberRole)
     {
-        $this->user->syncRoles($user_role);
-        $this->member->syncRoles($member_role);
+        $this->user->syncRoles($userRole);
+        $this->member->syncRoles($memberRole);
 
         $response = $this->deleteJson(route('divisions.members.destroy', [
             'division' => $this->division->id,

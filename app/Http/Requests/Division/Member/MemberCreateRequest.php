@@ -21,7 +21,7 @@ class MemberCreateRequest extends FormRequest
         /** @var ?Division $division */
         $division = $this->route('division');
         $member = $user && $division ? Member::findByUniqueKeys($user->id, $division->id) : null;
-        $enable_all = $member?->hasAllCreatePermissionTo(Member::RESOURCE)
+        $enableAll = $member?->hasAllCreatePermissionTo(Member::RESOURCE)
             || $user?->hasAllCreatePermissionTo(Member::RESOURCE);
 
         return [
@@ -29,8 +29,8 @@ class MemberCreateRequest extends FormRequest
                 Rule::unique('members')->where(function (Builder $query) use ($division) {
                     return $query->where('division_id', $division->id);
                 }),
-                Rule::exists('users', 'id')->where(function (Builder $query) use ($enable_all, $user) {
-                    if ($enable_all) {
+                Rule::exists('users', 'id')->where(function (Builder $query) use ($enableAll, $user) {
+                    if ($enableAll) {
                         return $query;
                     } else {
                         return $query->where('id', $user->id);

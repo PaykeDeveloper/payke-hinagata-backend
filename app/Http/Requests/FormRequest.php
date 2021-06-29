@@ -24,21 +24,21 @@ class FormRequest extends BaseFormRequest
     private function castInputs(array $casts): void
     {
         $inputs = $this->all();
-        $merge_inputs = [];
+        $mergeInputs = [];
         foreach ($casts as $field => $pattern) {
             if (!array_key_exists($field, $inputs)) {
                 continue;
             }
             $input = $inputs[$field];
-            $casted_input = $this->cast($input, $pattern);
+            $castedInput = $this->cast($input, $pattern);
 
-            if ($input !== $casted_input) {
-                $merge_inputs[$field] = $casted_input;
+            if ($input !== $castedInput) {
+                $mergeInputs[$field] = $castedInput;
             }
         }
 
-        if (!empty($merge_inputs)) {
-            $this->merge($merge_inputs);
+        if (!empty($mergeInputs)) {
+            $this->merge($mergeInputs);
         }
     }
 

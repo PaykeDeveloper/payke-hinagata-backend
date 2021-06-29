@@ -99,13 +99,13 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
 
     public function updateFromRequest(mixed $attributes): self
     {
-        $update_email = array_key_exists('email', $attributes) &&
+        $updateEmail = array_key_exists('email', $attributes) &&
             $this->email !== $attributes['email'];
-        if ($update_email) {
+        if ($updateEmail) {
             $this->email_verified_at = null;
         }
         $this->update($attributes);
-        if ($update_email) {
+        if ($updateEmail) {
             $this->sendEmailVerificationNotification();
         }
         if (array_key_exists('role_names', $attributes)) {

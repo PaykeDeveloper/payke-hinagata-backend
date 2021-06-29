@@ -21,9 +21,9 @@ class TokenController extends AuthenticatedSessionController
     {
         return $this->loginPipeline($request)->then(function ($request) {
             $user = $request->user();
-            $token_key = $this->getTokenKey($request);
-            $user->tokens()->where('name', $token_key)->delete();
-            $token = $user->createToken($token_key)->plainTextToken;
+            $tokenKey = $this->getTokenKey($request);
+            $user->tokens()->where('name', $tokenKey)->delete();
+            $token = $user->createToken($tokenKey)->plainTextToken;
             return response(['token' => $token]);
         });
     }

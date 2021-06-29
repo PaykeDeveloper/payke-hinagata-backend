@@ -18,7 +18,7 @@ class RoleSeeder extends Seeder
 {
     public function run()
     {
-        $data_set = [
+        $dataSet = [
             // User Roles
             ['name' => UserRole::ORGANIZER, 'permissions' => array_merge(
                 PermissionType::getAllNames(Permission::RESOURCE),
@@ -56,11 +56,11 @@ class RoleSeeder extends Seeder
 
         $ids = [];
 
-        $admin_role = Role::updateOrCreate(['name' => UserRole::ADMINISTRATOR]);
-        $admin_role->syncPermissions(Permission::pluck('name')->all());
-        $ids[] = $admin_role->id;
+        $adminRole = Role::updateOrCreate(['name' => UserRole::ADMINISTRATOR]);
+        $adminRole->syncPermissions(Permission::pluck('name')->all());
+        $ids[] = $adminRole->id;
 
-        foreach ($data_set as $value) {
+        foreach ($dataSet as $value) {
             $name = $value['name'];
             $role = Role::updateOrCreate([
                 'name' => $name,
