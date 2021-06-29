@@ -45,7 +45,7 @@ class AuthServiceProvider extends ServiceProvider
 
         VerifyEmail::createUrlUsing(function (User $user) {
             $origin = config('constant.frontend_origin');
-            $base_url = URL::temporarySignedRoute(
+            $baseUrl = URL::temporarySignedRoute(
                 'verification.verify',
                 Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
                 [
@@ -56,7 +56,7 @@ class AuthServiceProvider extends ServiceProvider
 
             $path = null;
             $query = null;
-            $url = parse_url($base_url);
+            $url = parse_url($baseUrl);
             if (is_array($url)) {
                 if (array_key_exists('path', $url)) {
                     $path = $url['path'];

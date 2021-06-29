@@ -17,6 +17,8 @@
         <exclude-pattern>config/media-library.php</exclude-pattern>
     </rule>
 
+    <rule ref="Squiz.NamingConventions.ValidVariableName.NotCamelCaps"/>
+
     <arg name="extensions" value="php"/>
     <arg name="colors"/>
     <arg value="ps"/>

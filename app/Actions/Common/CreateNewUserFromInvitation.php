@@ -25,17 +25,17 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        $validated_input = $this->validateInput($input);
+        $validatedInput = $this->validateInput($input);
         /** @var Invitation $invitation */
-        $invitation = Invitation::find($validated_input['id']);
+        $invitation = Invitation::find($validatedInput['id']);
         $user = User::create([
             'name' => $invitation->name,
             'email' => $invitation->email,
-            'password' => Hash::make($validated_input['password']),
+            'password' => Hash::make($validatedInput['password']),
             'locale' => request()->getPreferredLanguage(),
         ]);
-        $role_names = $this->filteredRoles($invitation->role_names);
-        $user->syncRoles($role_names);
+        $roleNames = $this->filteredRoles($invitation->role_names);
+        $user->syncRoles($roleNames);
         $invitation->approved();
         return $user;
     }
@@ -45,16 +45,16 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
      */
     private function validateInput(array $input): array
     {
-        $updated_input = $this->updateInput($input);
-        $validator = Validator::make($updated_input, [
+        $updatedInput = $this->updateInput($input);
+        $validator = Validator::make($updatedInput, [
             'password' => $this->passwordRules(),
             'id' => ['required', 'integer'],
             'token' => [
                 'required',
                 'string',
-                Rule::exists(Invitation::class)->where(function ($query) use ($updated_input) {
+                Rule::exists(Invitation::class)->where(function ($query) use ($updatedInput) {
                     return $query
-                        ->where('id', $updated_input['id'] ?? null)
+                        ->where('id', $updatedInput['id'] ?? null)
                         ->where('status', InvitationStatus::PENDING);
                 }),
             ],
@@ -67,19 +67,19 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
 
     private function updateInput(array $input): array
     {
-        $updated_input = $input;
+        $updatedInput = $input;
         if (isset($input['token'])) {
-            $updated_input['token'] = hash('sha256', $input['token']);
+            $updatedInput['token'] = hash('sha256', $input['token']);
         }
-        return $updated_input;
+        return $updatedInput;
     }
 
-    private function filteredRoles(array $role_names): array
+    private function filteredRoles(array $roleNames): array
     {
-        $user_roles = UserRole::all();
-        $all_roles = Role::pluck('name')->all();
-        return array_filter($role_names, function ($name) use ($user_roles, $all_roles) {
-            return in_array($name, $user_roles) && in_array($name, $all_roles);
+        $userRoles = UserRole::all();
+        $allRoles = Role::pluck('name')->all();
+        return array_filter($roleNames, function ($name) use ($userRoles, $allRoles) {
+            return in_array($name, $userRoles) && in_array($name, $allRoles);
         });
     }
 }

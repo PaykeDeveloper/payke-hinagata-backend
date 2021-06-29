@@ -55,13 +55,13 @@ class FortifyServiceProvider extends ServiceProvider
          * @see \Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::loginPipeline
          */
         Fortify::authenticateThrough(function (Request $request) {
-            $enable_session = !in_array('api', $request->route()->middleware(), true);
+            $enableSession = !in_array('api', $request->route()->middleware(), true);
             return array_filter([
                 config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
                 Features::enabled(Features::twoFactorAuthentication()) ?
                     RedirectIfTwoFactorAuthenticatable::class : null,
                 AttemptToAuthenticate::class,
-                $enable_session ? PrepareAuthenticatedSession::class : null,
+                $enableSession ? PrepareAuthenticatedSession::class : null,
             ]);
         });
     }

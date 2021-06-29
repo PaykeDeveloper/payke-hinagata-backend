@@ -138,8 +138,8 @@ class ProjectController extends Controller
      */
     public function update(ProjectUpdateRequest $request, Division $division, Project $project): Response
     {
-        $updated_project = $project->updateFromRequest($request->validated());
-        return response($updated_project);
+        $result = $project->updateFromRequest($request->validated());
+        return response($result);
     }
 
     /**

@@ -36,10 +36,10 @@ class PermissionSeeder extends Seeder
             if ($resource['own']) {
                 $types = array_merge($types, PermissionType::OWN_TYPES);
             }
-            $resource_name = $resource['name'];
+            $resourceName = $resource['name'];
 
             foreach ($types as $type) {
-                $name = PermissionType::getName($type, $resource_name);
+                $name = PermissionType::getName($type, $resourceName);
                 $permission = Permission::updateOrCreate([
                     'name' => $name,
                 ]);
