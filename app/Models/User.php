@@ -89,7 +89,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      */
     public static function getFromRequest(User $user): Collection
     {
-        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
             // 全ての閲覧権限を持っている場合は全データ取得
             return static::all();
         } else {

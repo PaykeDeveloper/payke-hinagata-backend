@@ -17,7 +17,7 @@ class PermissionPolicy
 
     public function viewAny(User $user): bool
     {
-        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
             return true;
         }
         abort(Response::HTTP_NOT_FOUND);
@@ -26,7 +26,7 @@ class PermissionPolicy
 
     public function view(User $user, Permission $permission): bool
     {
-        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
             return true;
         }
         abort(Response::HTTP_NOT_FOUND);
@@ -36,18 +36,18 @@ class PermissionPolicy
     public function create(User $user): bool
     {
         return $this->viewAny($user)
-            && $user->hasAllCreatePermissionTo(self::RESOURCE);
+            && $user->hasCreateAllPermissionTo(self::RESOURCE);
     }
 
     public function update(User $user, Permission $permission): bool
     {
         return $this->view($user, $permission)
-            && $user->hasAllUpdatePermissionTo(self::RESOURCE);
+            && $user->hasUpdateAllPermissionTo(self::RESOURCE);
     }
 
     public function delete(User $user, Permission $permission): bool
     {
         return $this->view($user, $permission)
-            && $user->hasAllDeletePermissionTo(self::RESOURCE);
+            && $user->hasDeleteAllPermissionTo(self::RESOURCE);
     }
 }

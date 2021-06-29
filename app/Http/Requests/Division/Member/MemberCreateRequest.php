@@ -21,8 +21,8 @@ class MemberCreateRequest extends FormRequest
         /** @var ?Division $division */
         $division = $this->route('division');
         $member = $user && $division ? Member::findByUniqueKeys($user->id, $division->id) : null;
-        $enableAll = $member?->hasAllCreatePermissionTo(Member::RESOURCE)
-            || $user?->hasAllCreatePermissionTo(Member::RESOURCE);
+        $enableAll = $member?->hasCreateAllPermissionTo(Member::RESOURCE)
+            || $user?->hasCreateAllPermissionTo(Member::RESOURCE);
 
         return [
             'user_id' => ['required', 'integer',

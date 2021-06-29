@@ -29,11 +29,11 @@ class DivisionPolicy
     public function view(User $user, Division $division): bool
     {
         $member = $this->findMember($user->id, $division->id);
-        if ($member?->hasOwnViewPermissionTo(self::RESOURCE)) {
+        if ($member?->hasViewOwnPermissionTo(self::RESOURCE)) {
             return true;
         }
 
-        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
@@ -54,11 +54,11 @@ class DivisionPolicy
         }
 
         $member = $this->findMember($user->id, $division->id);
-        if ($member?->hasOwnUpdatePermissionTo(self::RESOURCE)) {
+        if ($member?->hasUpdateOwnPermissionTo(self::RESOURCE)) {
             return true;
         }
 
-        if ($user->hasAllUpdatePermissionTo(self::RESOURCE)) {
+        if ($user->hasUpdateAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
@@ -72,11 +72,11 @@ class DivisionPolicy
         }
 
         $member = $this->findMember($user->id, $division->id);
-        if ($member?->hasOwnDeletePermissionTo(self::RESOURCE)) {
+        if ($member?->hasDeleteOwnPermissionTo(self::RESOURCE)) {
             return true;
         }
 
-        if ($user->hasAllDeletePermissionTo(self::RESOURCE)) {
+        if ($user->hasDeleteAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 

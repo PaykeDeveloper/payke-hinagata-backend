@@ -16,60 +16,60 @@ trait HasAuthorization
 
     public function hasViewPermissionTo(string $resource): bool
     {
-        return $this->hasOwnViewPermissionTo($resource) || $this->hasAllViewPermissionTo($resource);
+        return $this->hasViewOwnPermissionTo($resource) || $this->hasViewAllPermissionTo($resource);
     }
 
-    public function hasOwnViewPermissionTo(string $resource): bool
+    public function hasViewOwnPermissionTo(string $resource): bool
     {
         return $this->hasResourcePermissionTo(PermissionType::VIEW_OWN, $resource);
     }
 
-    public function hasAllViewPermissionTo(string $resource): bool
+    public function hasViewAllPermissionTo(string $resource): bool
     {
         return $this->hasResourcePermissionTo(PermissionType::VIEW_ALL, $resource);
     }
 
     public function hasCreatePermissionTo(string $resource): bool
     {
-        return $this->hasOwnCreatePermissionTo($resource) || $this->hasAllCreatePermissionTo($resource);
+        return $this->hasCreateOwnPermissionTo($resource) || $this->hasCreateAllPermissionTo($resource);
     }
 
-    public function hasOwnCreatePermissionTo(string $resource): bool
+    public function hasCreateOwnPermissionTo(string $resource): bool
     {
         return $this->hasResourcePermissionTo(PermissionType::CREATE_OWN, $resource);
     }
 
-    public function hasAllCreatePermissionTo(string $resource): bool
+    public function hasCreateAllPermissionTo(string $resource): bool
     {
         return $this->hasResourcePermissionTo(PermissionType::CREATE_ALL, $resource);
     }
 
     public function hasUpdatePermissionTo(string $resource): bool
     {
-        return $this->hasOwnUpdatePermissionTo($resource) || $this->hasAllUpdatePermissionTo($resource);
+        return $this->hasUpdateOwnPermissionTo($resource) || $this->hasUpdateAllPermissionTo($resource);
     }
 
-    public function hasOwnUpdatePermissionTo(string $resource): bool
+    public function hasUpdateOwnPermissionTo(string $resource): bool
     {
         return $this->hasResourcePermissionTo(PermissionType::UPDATE_OWN, $resource);
     }
 
-    public function hasAllUpdatePermissionTo(string $resource): bool
+    public function hasUpdateAllPermissionTo(string $resource): bool
     {
         return $this->hasResourcePermissionTo(PermissionType::UPDATE_ALL, $resource);
     }
 
     public function hasDeletePermissionTo(string $resource): bool
     {
-        return $this->hasOwnDeletePermissionTo($resource) || $this->hasAllDeletePermissionTo($resource);
+        return $this->hasDeleteOwnPermissionTo($resource) || $this->hasDeleteAllPermissionTo($resource);
     }
 
-    public function hasOwnDeletePermissionTo(string $resource): bool
+    public function hasDeleteOwnPermissionTo(string $resource): bool
     {
         return $this->hasResourcePermissionTo(PermissionType::DELETE_OWN, $resource);
     }
 
-    public function hasAllDeletePermissionTo(string $resource): bool
+    public function hasDeleteAllPermissionTo(string $resource): bool
     {
         return $this->hasResourcePermissionTo(PermissionType::DELETE_ALL, $resource);
     }

@@ -44,7 +44,7 @@ class Division extends Model
      */
     public static function getFromRequest(User $user): Collection
     {
-        $divisions = $user->hasAllViewPermissionTo(self::RESOURCE)
+        $divisions = $user->hasViewAllPermissionTo(self::RESOURCE)
             ? self::all()
             : self::whereHas('members', function (Builder $query) use ($user) {
                 $query->where('user_id', '=', $user->id);

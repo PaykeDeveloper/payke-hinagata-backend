@@ -17,7 +17,7 @@ class InvitationPolicy
 
     public function viewAny(User $user): bool
     {
-        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
@@ -27,7 +27,7 @@ class InvitationPolicy
 
     public function view(User $user, Invitation $invitation): bool
     {
-        if ($user->hasAllViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
@@ -38,7 +38,7 @@ class InvitationPolicy
     public function create(User $user): bool
     {
         return $this->viewAny($user)
-            && $user->hasAllCreatePermissionTo(self::RESOURCE);
+            && $user->hasCreateAllPermissionTo(self::RESOURCE);
     }
 
     public function update(User $user, Invitation $invitation): bool
@@ -47,7 +47,7 @@ class InvitationPolicy
             return false;
         }
 
-        if ($user->hasAllUpdatePermissionTo(self::RESOURCE)) {
+        if ($user->hasUpdateAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
@@ -60,7 +60,7 @@ class InvitationPolicy
             return false;
         }
 
-        if ($user->hasAllDeletePermissionTo(self::RESOURCE)) {
+        if ($user->hasDeleteAllPermissionTo(self::RESOURCE)) {
             return true;
         }
 
