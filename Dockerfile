@@ -7,8 +7,11 @@ RUN pecl install xdebug-3.0.4
 RUN docker-php-ext-enable xdebug
 COPY ./docker/usr/local/etc/php/php.ini /usr/local/etc/php/php.ini
 
+# handle non-POST Form Data.
+RUN pecl install apfd
+
 # composer
-COPY --from=composer:2.0.14 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.1.3 /usr/bin/composer /usr/bin/composer
 RUN apt-get install -y unzip
 
 # mysql

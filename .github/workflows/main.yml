@@ -77,6 +77,7 @@ jobs:
         with:
           php-version: 8.0.3
           coverage: xdebug
+          extensions: apfd
       - uses: actions/cache@v2
         with:
           path: ./vendor
@@ -88,7 +89,7 @@ jobs:
       - run: composer test:coverage-text
   deploy-staging:
     needs: test
-    if: github.ref == 'refs/heads/main'
+#    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
