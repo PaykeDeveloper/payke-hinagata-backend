@@ -4,7 +4,7 @@ namespace App\Policies\Common;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserPolicy
 {
@@ -19,7 +19,6 @@ class UserPolicy
         }
 
         abort(Response::HTTP_NOT_FOUND);
-        return false;
     }
 
     public function view(User $user, User $targetUser): bool
@@ -35,7 +34,6 @@ class UserPolicy
         }
 
         abort(Response::HTTP_NOT_FOUND);
-        return false;
     }
 
     public function create(User $user): bool

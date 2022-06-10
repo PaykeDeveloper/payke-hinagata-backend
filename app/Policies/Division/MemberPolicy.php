@@ -9,7 +9,7 @@ use App\Models\Division\Member;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class MemberPolicy
 {
@@ -41,7 +41,6 @@ class MemberPolicy
         }
 
         abort(Response::HTTP_NOT_FOUND);
-        return false;
     }
 
     public function view(User $user, Member $member): bool
@@ -65,7 +64,6 @@ class MemberPolicy
         }
 
         abort(Response::HTTP_NOT_FOUND);
-        return false;
     }
 
     public function create(User $user): bool

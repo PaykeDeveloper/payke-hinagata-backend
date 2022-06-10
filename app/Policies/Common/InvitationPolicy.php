@@ -7,7 +7,7 @@ namespace App\Policies\Common;
 use App\Models\Common\Invitation;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class InvitationPolicy
 {
@@ -22,7 +22,6 @@ class InvitationPolicy
         }
 
         abort(Response::HTTP_NOT_FOUND);
-        return false;
     }
 
     public function view(User $user, Invitation $invitation): bool
@@ -32,7 +31,6 @@ class InvitationPolicy
         }
 
         abort(Response::HTTP_NOT_FOUND);
-        return false;
     }
 
     public function create(User $user): bool
