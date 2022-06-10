@@ -15,6 +15,9 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * @group Division Member
+ */
 class MemberController extends Controller
 {
     public function __construct()

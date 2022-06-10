@@ -8,6 +8,8 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
 class AuthServiceProvider extends ServiceProvider
@@ -15,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * The policy mappings for the application.
      *
-     * @var array
+     * @var array<class-string, class-string>
      */
     protected $policies = [
         \App\Models\User::class => \App\Policies\Common\UserPolicy::class,
@@ -29,6 +31,8 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\Sample\Project::class => \App\Policies\Sample\ProjectPolicy::class,
     ];
 
+    protected array $exceptedPolicies = [];
+
     /**
      * Register any authentication / authorization services.
      *
@@ -37,6 +41,20 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        /** @see \Illuminate\Auth\Access\Gate::guessPolicyName */
+        Gate::guessPolicyNamesUsing(function (string $class) {
+            if (!in_array($class, $this->exceptedPolicies, true)) {
+                return self::guessCustomisedPolicyName($class);
+            }
+            /** @var string $controllerClass */
+            $controllerClass = get_class(Route::current()->controller);
+            $classDirname = str_replace('/', '\\', dirname(str_replace('\\', '/', $controllerClass)));
+            $classDirnameSegments = explode('\\', $classDirname);
+            $endSegment = end($classDirnameSegments);
+            $classSegment = class_basename($class);
+            return ["$classDirnameSegments[0]\\Policies\\$endSegment\\{$classSegment}Policy"];
+        });
 
         ResetPassword::createUrlUsing(function (User $user, string $token) {
             $origin = config('constant.frontend_origin');
@@ -67,5 +85,15 @@ class AuthServiceProvider extends ServiceProvider
             }
             return "{$origin}{$path}?{$query}";
         });
+    }
+
+    private static function guessCustomisedPolicyName(string $class): array
+    {
+        $classDirname = str_replace('/', '\\', dirname(str_replace('\\', '/', $class)));
+        $classDirnameSegments = explode('\\', $classDirname);
+        $endSegment = end($classDirnameSegments);
+        $endSegment = $endSegment !== 'Models' ? "$endSegment\\" : '';
+        $classSegment = class_basename($class);
+        return ["$classDirnameSegments[0]\\Policies\\$endSegment{$classSegment}Policy"];
     }
 }

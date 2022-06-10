@@ -285,7 +285,7 @@ class ProjectControllerTest extends TestCase
             'division' => $this->division->id,
         ]), $data);
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertForbidden();
     }
 
     /**
@@ -319,7 +319,7 @@ class ProjectControllerTest extends TestCase
             'project' => $this->project->slug,
         ]), $data);
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertForbidden();
     }
 
     /**
@@ -340,7 +340,7 @@ class ProjectControllerTest extends TestCase
             'project' => $this->project->slug,
         ]), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['lock_version']]);
     }
 
@@ -357,7 +357,7 @@ class ProjectControllerTest extends TestCase
             'project' => $this->project->slug,
         ]));
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertForbidden();
     }
 
     public function provideAuthorizedViewRole(): array

@@ -6,16 +6,13 @@ on:
   pull_request:
     branches:
       - main
-  release:
-    types:
-      - published
 jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:
       db:
-        image: mysql:8.0.23
+        image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: _xwJL4<N_<ib5FP]
           MYSQL_DATABASE: testing
@@ -29,7 +26,7 @@ jobs:
         ports:
           - 3306:3306
       cache:
-        image: redis:6.0.10
+        image: redis:7.0
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
@@ -37,6 +34,11 @@ jobs:
           --health-retries 5
         ports:
           - 6379:6379
+      mail:
+        image: mailhog/mailhog
+        ports:
+          - 1025:1025
+          - 8025:8025
     env:
       APP_ENV: testing
       APP_KEY: base64:hG+0txeXIdVc2gvu7wzkJdFM8Uc0Z0Ck/ntD5tBc8Tw=
@@ -58,7 +60,7 @@ jobs:
       REDIS_HOST: 127.0.0.1
       REDIS_PASSWORD: null
       REDIS_PORT: 6379
-      MAIL_HOST: mail
+      MAIL_HOST: 127.0.0.1
       MAIL_PORT: 1025
       MAIL_USERNAME: null
       MAIL_PASSWORD: null
@@ -75,7 +77,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0.3
+          php-version: 8.1
           coverage: xdebug
       - uses: actions/cache@v2
         with:
@@ -86,7 +88,7 @@ jobs:
       - run: composer phpstan
       - run: composer phpcs
       - run: composer test:coverage-text
-  deploy-staging:
+  deploy:
     needs: test
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -100,11 +102,3 @@ jobs:
         env:
           HEROKU_APP: ${{ secrets.HEROKU_APP }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  deploy-production:
-    needs: test
-    if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v2
-      - run: echo TODO

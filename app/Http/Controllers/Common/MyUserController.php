@@ -8,6 +8,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * @group Common MyUser
+ */
 class MyUserController extends Controller
 {
     /**

@@ -225,7 +225,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->postJson(route('invitations.store'), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['email']]);
     }
 
@@ -247,7 +247,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->postJson(route('invitations.store'), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['email']]);
     }
 
@@ -269,7 +269,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->postJson(route('invitations.store'), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['email']]);
     }
 

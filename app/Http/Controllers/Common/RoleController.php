@@ -9,6 +9,9 @@ use App\Models\Common\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * @group Common Role
+ */
 class RoleController extends Controller
 {
     public function __construct()

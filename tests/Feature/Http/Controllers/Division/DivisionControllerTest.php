@@ -235,7 +235,7 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->putJson(route('divisions.update', ['division' => $this->division->id]), $data);
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertForbidden();
     }
 
     /**
@@ -263,7 +263,7 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->deleteJson(route('divisions.destroy', ['division' => $this->division->id]));
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertForbidden();
     }
 
     /**

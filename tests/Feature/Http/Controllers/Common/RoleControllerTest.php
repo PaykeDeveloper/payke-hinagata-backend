@@ -51,6 +51,6 @@ class RoleControllerTest extends TestCase
     {
         $response = $this->getJson(route('roles.index'));
 
-        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertForbidden();
     }
 }

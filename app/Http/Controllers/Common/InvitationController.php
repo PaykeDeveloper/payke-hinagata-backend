@@ -12,6 +12,9 @@ use App\Models\Common\Invitation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * @group Common Invitation
+ */
 class InvitationController extends Controller
 {
     public function __construct()

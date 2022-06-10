@@ -9,6 +9,9 @@ use App\Models\Common\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * @group Common Permission
+ */
 class PermissionController extends Controller
 {
     public function __construct()
@@ -20,7 +23,7 @@ class PermissionController extends Controller
      * @response [
      * {
      * "id": 1,
-     * "name": "user_viewAll"
+     * "name": "user__view_all"
      * }
      * ]
      */

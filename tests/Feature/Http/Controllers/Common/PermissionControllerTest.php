@@ -51,6 +51,6 @@ class PermissionControllerTest extends TestCase
     {
         $response = $this->getJson(route('permissions.index'));
 
-        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertForbidden();
     }
 }

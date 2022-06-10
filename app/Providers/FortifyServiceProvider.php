@@ -8,6 +8,7 @@ use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Actions\AttemptToAuthenticate;
@@ -42,7 +43,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            return Limit::perMinute(5)->by($request->email . $request->ip());
+            return Limit::perMinute(5)->by($request->get(config('fortify.username')) . $request->ip());
         });
 
         RateLimiter::for('two-factor', function (Request $request) {
@@ -55,7 +56,11 @@ class FortifyServiceProvider extends ServiceProvider
          * @see \Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::loginPipeline
          */
         Fortify::authenticateThrough(function (Request $request) {
-            $enableSession = !in_array('api', $request->route()->middleware(), true);
+            /** @var Route $route */
+            $route = $request->route();
+            /** @var array $middleware */
+            $middleware = $route->middleware();
+            $enableSession = !in_array('api', $middleware, true);
             return array_filter([
                 config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
                 Features::enabled(Features::twoFactorAuthentication()) ?

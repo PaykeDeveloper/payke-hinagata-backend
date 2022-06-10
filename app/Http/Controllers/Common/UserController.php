@@ -11,6 +11,9 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * @group Common User
+ */
 class UserController extends Controller
 {
     public function __construct()

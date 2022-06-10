@@ -195,7 +195,7 @@ class MemberControllerTest extends TestCase
             'division' => $this->division->id,
         ]), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['user_id']]);
     }
 

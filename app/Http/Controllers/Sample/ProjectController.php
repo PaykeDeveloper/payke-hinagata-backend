@@ -22,6 +22,9 @@ use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
+/**
+ * @group Sample Project
+ */
 class ProjectController extends Controller
 {
     public function __construct()

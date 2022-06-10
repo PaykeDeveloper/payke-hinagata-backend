@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
+ * @group Common Locale
  * @response [
  * {"label":"日本語","value":"ja"}
  * ]

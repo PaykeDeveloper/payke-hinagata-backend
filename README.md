@@ -9,14 +9,14 @@
 ### ユーザーの作成
 
 ```shell
-% docker-compose exec backend-web sh
+% docker compose exec backend-web sh
 backend-web% php artisan admin:create
 ```
 
 ### 開発環境の更新
 
 ```shell
-% docker-compose exec backend-web sh
+% docker compose exec backend-web sh
 backend-web% composer publish
 backend-web% composer helper
 ```
@@ -44,7 +44,7 @@ backend-web% composer helper
 ### composer、artisanコマンドの一覧を確認
 
 ```shell
-% docker-compose run backend-web sh
+% docker compose run backend-web sh
 backend-web% composer list
 backend-web% php artisan list
 ```

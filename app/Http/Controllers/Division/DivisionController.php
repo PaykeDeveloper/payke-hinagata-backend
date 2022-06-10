@@ -13,6 +13,9 @@ use App\Models\Division\Division;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * @group Division Division
+ */
 class DivisionController extends Controller
 {
     public function __construct()

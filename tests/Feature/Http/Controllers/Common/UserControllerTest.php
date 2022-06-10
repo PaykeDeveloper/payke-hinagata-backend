@@ -148,7 +148,7 @@ class UserControllerTest extends TestCase
 
         $response = $this->patchJson(route('users.update', ['user' => $user->id]), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['role_names.0']]);
     }
 

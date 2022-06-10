@@ -11,4 +11,4 @@
 |
 */
 
-return require __DIR__ . '/../../../vendor/laravel-lang/lang/locales/ja/pagination.php';
+return require __DIR__ . '/../../vendor/laravel-lang/lang/locales/ja/pagination.php';

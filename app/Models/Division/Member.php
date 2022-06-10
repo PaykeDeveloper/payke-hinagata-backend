@@ -70,7 +70,7 @@ class Member extends Model
         $enableAll = $member?->hasViewAllPermissionTo(self::RESOURCE)
             || $user->hasViewAllPermissionTo(self::RESOURCE);
 
-        $members = $division->members;
+        $members = $division->members->load(['permissions', 'roles']);
         if ($enableAll) {
             return $members;
         } else {
