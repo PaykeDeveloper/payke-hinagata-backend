@@ -43,7 +43,7 @@ class UserControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(User::count())
-            ->assertJsonFragment($user->toArray());
+            ->assertJsonFragment(['email' => $user->email]);
     }
 
     /**
@@ -59,7 +59,7 @@ class UserControllerTest extends TestCase
         $response = $this->getJson(route('users.show', ['user' => $user->id]));
 
         $response->assertOk()
-            ->assertJson($user->toArray());
+            ->assertJson(['email' => $user->email]);
     }
 
     /**

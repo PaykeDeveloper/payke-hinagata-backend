@@ -5,6 +5,7 @@
 namespace App\Policies\Common;
 
 use App\Models\Common\Invitation;
+use App\Models\ModelType;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,11 +14,11 @@ class InvitationPolicy
 {
     use HandlesAuthorization;
 
-    private const RESOURCE = Invitation::RESOURCE;
+    private const MODEL = ModelType::invitation;
 
     public function viewAny(User $user): bool
     {
-        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -26,7 +27,7 @@ class InvitationPolicy
 
     public function view(User $user, Invitation $invitation): bool
     {
-        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -36,7 +37,7 @@ class InvitationPolicy
     public function create(User $user): bool
     {
         return $this->viewAny($user)
-            && $user->hasCreateAllPermissionTo(self::RESOURCE);
+            && $user->hasCreateAllPermissionTo(self::MODEL);
     }
 
     public function update(User $user, Invitation $invitation): bool
@@ -45,7 +46,7 @@ class InvitationPolicy
             return false;
         }
 
-        if ($user->hasUpdateAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasUpdateAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -58,7 +59,7 @@ class InvitationPolicy
             return false;
         }
 
-        if ($user->hasDeleteAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasDeleteAllPermissionTo(self::MODEL)) {
             return true;
         }
 

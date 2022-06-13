@@ -5,7 +5,7 @@
 namespace App\Policies\Division;
 
 use App\Models\Division\Division;
-use App\Models\Division\Member;
+use App\Models\ModelType;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,11 +14,11 @@ class DivisionPolicy
 {
     use HandlesAuthorization;
 
-    private const RESOURCE = Division::RESOURCE;
+    private const MODEL = ModelType::division;
 
     public function viewAny(User $user): bool
     {
-        if ($user->hasViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -27,12 +27,12 @@ class DivisionPolicy
 
     public function view(User $user, Division $division): bool
     {
-        $member = $this->findMember($user->id, $division->id);
-        if ($member?->hasViewOwnPermissionTo(self::RESOURCE)) {
+        $member = $user->findMember($division);
+        if ($member?->hasViewOwnPermissionTo(self::MODEL)) {
             return true;
         }
 
-        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -42,7 +42,7 @@ class DivisionPolicy
     public function create(User $user): bool
     {
         return $this->viewAny($user)
-            && $user->hasCreatePermissionTo(self::RESOURCE);
+            && $user->hasCreatePermissionTo(self::MODEL);
     }
 
     public function update(User $user, Division $division): bool
@@ -51,12 +51,12 @@ class DivisionPolicy
             return false;
         }
 
-        $member = $this->findMember($user->id, $division->id);
-        if ($member?->hasUpdateOwnPermissionTo(self::RESOURCE)) {
+        $member = $user->findMember($division);
+        if ($member?->hasUpdateOwnPermissionTo(self::MODEL)) {
             return true;
         }
 
-        if ($user->hasUpdateAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasUpdateAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -69,31 +69,15 @@ class DivisionPolicy
             return false;
         }
 
-        $member = $this->findMember($user->id, $division->id);
-        if ($member?->hasDeleteOwnPermissionTo(self::RESOURCE)) {
+        $member = $user->findMember($division);
+        if ($member?->hasDeleteOwnPermissionTo(self::MODEL)) {
             return true;
         }
 
-        if ($user->hasDeleteAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasDeleteAllPermissionTo(self::MODEL)) {
             return true;
         }
 
         return false;
-    }
-
-    private ?Member $member = null;
-    private ?int $userId = null;
-    private ?int $divisionId = null;
-
-    private function findMember(int $userId, int $divisionId): ?Member
-    {
-        if ($userId === $this->userId && $divisionId === $this->divisionId) {
-            return $this->member;
-        }
-
-        $this->userId = $userId;
-        $this->divisionId = $divisionId;
-        $this->member = Member::findByUniqueKeys($userId, $divisionId);
-        return $this->member;
     }
 }

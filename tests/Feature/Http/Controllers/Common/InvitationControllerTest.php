@@ -45,7 +45,7 @@ class InvitationControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(Invitation::count())
-            ->assertJsonFragment($invitation->toArray());
+            ->assertJsonFragment(['email' => $invitation->email]);
     }
 
     /**
@@ -83,7 +83,7 @@ class InvitationControllerTest extends TestCase
         $response = $this->getJson(route('invitations.show', ['invitation' => $invitation->id]));
 
         $response->assertOk()
-            ->assertJson($invitation->toArray());
+            ->assertJsonFragment(['email' => $invitation->email]);
     }
 
     /**
@@ -300,7 +300,7 @@ class InvitationControllerTest extends TestCase
     {
         $this->user->syncRoles($role);
         $invitation = Invitation::factory()->create([
-            'status' => $this->faker->randomElement([InvitationStatus::DENIED, InvitationStatus::APPROVED]),
+            'status' => $this->faker->randomElement([InvitationStatus::Denied, InvitationStatus::Approved]),
         ]);
 
         $data = [
@@ -336,7 +336,7 @@ class InvitationControllerTest extends TestCase
     {
         $this->user->syncRoles($role);
         $invitation = Invitation::factory()->create([
-            'status' => $this->faker->randomElement([InvitationStatus::DENIED, InvitationStatus::APPROVED]),
+            'status' => $this->faker->randomElement([InvitationStatus::Denied, InvitationStatus::Approved]),
         ]);
 
         $response = $this->deleteJson(route('invitations.destroy', ['invitation' => $invitation->id]));

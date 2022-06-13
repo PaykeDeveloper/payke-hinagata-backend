@@ -2,23 +2,18 @@
 
 namespace App\Models\Common;
 
-final class LocaleType
+use App\Models\BaseEnum;
+
+enum LocaleType: string implements BaseEnum
 {
-    public const EN = 'en';
-    public const JA = 'ja';
+    case En = 'en';
+    case Ja = 'ja';
 
-    public static function all(): array
+    public function getLabel(): string
     {
-        return [self::EN, self::JA];
-    }
-
-    public static function options(): array
-    {
-        return [
-            [
-                'value' => self::JA,
-                'label' => '日本語',
-            ],
-        ];
+        return match ($this) {
+            self::En => __('English'),
+            self::Ja => __('Japanese'),
+        };
     }
 }

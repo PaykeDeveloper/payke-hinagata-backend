@@ -9,6 +9,7 @@ use App\Models\Sample\Priority;
 use App\Models\Sample\Project;
 use DateTimeZone;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\UploadedFile;
 
 class ProjectFactory extends Factory
 {
@@ -26,7 +27,7 @@ class ProjectFactory extends Factory
             'slug' => $this->faker->uuid,
             'name' => $this->faker->name,
             'description' => $this->faker->paragraph(),
-            'priority' => $this->faker->randomElement(Priority::all()),
+            'priority' => $this->faker->randomElement(Priority::cases()),
             'approved' => $this->faker->boolean(),
             'start_date' => $startDate,
             'finished_at' => $finishedAt,
@@ -35,5 +36,21 @@ class ProjectFactory extends Factory
             'productivity' => $this->faker->randomFloat(3, max: 999999),
             'lock_version' => $this->faker->randomDigit()
         ];
+    }
+
+    public function configure(): self
+    {
+        return parent::configure()->afterCreating(function (Project $project) {
+            if (!rand(0, 3)) {
+                return;
+            }
+
+            $thumbnail = UploadedFile::fake()->image(
+                "{$this->faker->slug}.png",
+                $this->faker->numberBetween(10, 500),
+                $this->faker->numberBetween(10, 500)
+            );
+            $project->saveCover($thumbnail);
+        });
     }
 }

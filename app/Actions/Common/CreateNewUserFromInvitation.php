@@ -8,6 +8,7 @@ use App\Models\Common\InvitationStatus;
 use App\Models\Common\Role;
 use App\Models\Common\UserRole;
 use App\Models\User;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -52,10 +53,10 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
             'token' => [
                 'required',
                 'string',
-                Rule::exists(Invitation::class)->where(function ($query) use ($updatedInput) {
+                Rule::exists(Invitation::class)->where(function (Builder $query) use ($updatedInput) {
                     return $query
-                        ->where('id', $updatedInput['id'] ?? null)
-                        ->where('status', InvitationStatus::PENDING);
+                        ->where('id', '=', $updatedInput['id'] ?? null)
+                        ->where('status', '=', InvitationStatus::Pending);
                 }),
             ],
         ], messages: [

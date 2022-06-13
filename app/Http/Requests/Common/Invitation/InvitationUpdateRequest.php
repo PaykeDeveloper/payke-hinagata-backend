@@ -17,7 +17,7 @@ class InvitationUpdateRequest extends FormRequest
 
         /** @var Invitation $invitation */
         $invitation = $this->route('invitation');
-        if ($invitation->status !== InvitationStatus::PENDING) {
+        if ($invitation->status !== InvitationStatus::Pending) {
             abort(Response::HTTP_METHOD_NOT_ALLOWED);
         }
     }

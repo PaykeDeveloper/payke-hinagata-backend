@@ -6,6 +6,7 @@ namespace App\Policies\Sample;
 
 use App\Models\Division\Division;
 use App\Models\Division\Member;
+use App\Models\ModelType;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -16,7 +17,7 @@ class ProjectPolicy
 {
     use HandlesAuthorization;
 
-    private const RESOURCE = Project::RESOURCE;
+    private const MODEL = ModelType::project;
 
     private Division $division;
     private ?Member $member;
@@ -28,16 +29,16 @@ class ProjectPolicy
         /** @var Division $division */
         $division = $request->route('division');
         $this->division = $division;
-        $this->member = Member::findByUniqueKeys($user->id, $division->id);
+        $this->member = $user->findMember($division);
     }
 
     public function viewAny(User $user): bool
     {
-        if ($this->member?->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
 
-        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -50,11 +51,11 @@ class ProjectPolicy
             abort(Response::HTTP_NOT_FOUND);
         }
 
-        if ($this->member?->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
 
-        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -67,11 +68,11 @@ class ProjectPolicy
             return false;
         }
 
-        if ($this->member?->hasCreateAllPermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasCreateAllPermissionTo(self::MODEL)) {
             return true;
         }
 
-        if ($user->hasCreateAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasCreateAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -84,11 +85,11 @@ class ProjectPolicy
             return false;
         }
 
-        if ($this->member?->hasUpdateAllPermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasUpdateAllPermissionTo(self::MODEL)) {
             return true;
         }
 
-        if ($user->hasUpdateAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasUpdateAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -101,11 +102,11 @@ class ProjectPolicy
             return false;
         }
 
-        if ($this->member?->hasDeleteAllPermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasDeleteAllPermissionTo(self::MODEL)) {
             return true;
         }
 
-        if ($user->hasDeleteAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasDeleteAllPermissionTo(self::MODEL)) {
             return true;
         }
 

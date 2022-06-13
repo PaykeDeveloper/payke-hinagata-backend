@@ -2,14 +2,29 @@
 
 namespace App\Models\Common;
 
-final class InvitationStatus
-{
-    public const PENDING = 'pending';
-    public const APPROVED = 'approved';
-    public const DENIED = 'denied';
+use App\Models\BaseEnum;
+use Illuminate\Support\Collection;
 
-    public static function all(): array
+enum InvitationStatus: string implements BaseEnum
+{
+    case Pending = 'pending';
+    case Approved = 'approved';
+    case Denied = 'denied';
+
+    public function getLabel(): string
     {
-        return [self::PENDING, self::APPROVED, self::DENIED];
+        return match ($this) {
+            self::Pending => __('Pending'),
+            self::Approved => __('Approved'),
+            self::Denied => __('Denied'),
+        };
+    }
+
+    public static function getOptions(): Collection
+    {
+        return collect(self::cases())->map(fn(self $case) => [
+            'value' => $case->value,
+            'label' => $case->getLabel(),
+        ]);
     }
 }

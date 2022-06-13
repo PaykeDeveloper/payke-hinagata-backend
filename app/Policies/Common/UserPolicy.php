@@ -2,6 +2,7 @@
 
 namespace App\Policies\Common;
 
+use App\Models\ModelType;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,11 +11,11 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    private const RESOURCE = User::RESOURCE;
+    private const MODEL = ModelType::user;
 
     public function viewAny(User $user): bool
     {
-        if ($user->hasViewPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -23,12 +24,12 @@ class UserPolicy
 
     public function view(User $user, User $targetUser): bool
     {
-        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
         if (
             $user->id === $targetUser->id &&
-            $user->hasViewOwnPermissionTo(self::RESOURCE)
+            $user->hasViewOwnPermissionTo(self::MODEL)
         ) {
             return true;
         }
@@ -39,7 +40,7 @@ class UserPolicy
     public function create(User $user): bool
     {
         return $this->viewAny($user)
-            && $user->hasCreateAllPermissionTo(self::RESOURCE);
+            && $user->hasCreateAllPermissionTo(self::MODEL);
     }
 
     public function update(User $user, User $targetUser): bool
@@ -50,12 +51,12 @@ class UserPolicy
 
         if (
             $user->id === $targetUser->id &&
-            $user->hasUpdateOwnPermissionTo(self::RESOURCE)
+            $user->hasUpdateOwnPermissionTo(self::MODEL)
         ) {
             return true;
         }
 
-        if ($user->hasUpdateAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasUpdateAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -70,12 +71,12 @@ class UserPolicy
 
         if (
             $user->id === $targetUser->id &&
-            $user->hasDeleteOwnPermissionTo(self::RESOURCE)
+            $user->hasDeleteOwnPermissionTo(self::MODEL)
         ) {
             return true;
         }
 
-        if ($user->hasDeleteAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasDeleteAllPermissionTo(self::MODEL)) {
             return true;
         }
 

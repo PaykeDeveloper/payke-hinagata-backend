@@ -6,6 +6,7 @@ namespace App\Policies\Division;
 
 use App\Models\Division\Division;
 use App\Models\Division\Member;
+use App\Models\ModelType;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class MemberPolicy
 {
     use HandlesAuthorization;
 
-    private const RESOURCE = Member::RESOURCE;
+    private const MODEL = ModelType::member;
 
     private Division $division;
     private ?Member $member;
@@ -27,16 +28,16 @@ class MemberPolicy
         /** @var Division $division */
         $division = $request->route('division');
         $this->division = $division;
-        $this->member = Member::findByUniqueKeys($user->id, $division->id);
+        $this->member = $user->findMember($division);
     }
 
     public function viewAny(User $user): bool
     {
-        if ($this->member?->hasViewPermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasViewPermissionTo(self::MODEL)) {
             return true;
         }
 
-        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -49,17 +50,17 @@ class MemberPolicy
             abort(Response::HTTP_NOT_FOUND);
         }
 
-        if ($this->member?->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
         if (
             $this->member?->id === $member->id &&
-            $this->member->hasViewOwnPermissionTo(self::RESOURCE)
+            $this->member->hasViewOwnPermissionTo(self::MODEL)
         ) {
             return true;
         }
 
-        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -72,11 +73,11 @@ class MemberPolicy
             return false;
         }
 
-        if ($this->member?->hasCreatePermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasCreatePermissionTo(self::MODEL)) {
             return true;
         }
 
-        if ($user->hasCreateAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasCreateAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -89,17 +90,17 @@ class MemberPolicy
             return false;
         }
 
-        if ($this->member?->hasUpdateAllPermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasUpdateAllPermissionTo(self::MODEL)) {
             return true;
         }
         if (
             $this->member?->id === $member->id &&
-            $this->member->hasUpdateOwnPermissionTo(self::RESOURCE)
+            $this->member->hasUpdateOwnPermissionTo(self::MODEL)
         ) {
             return true;
         }
 
-        if ($user->hasUpdateAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasUpdateAllPermissionTo(self::MODEL)) {
             return true;
         }
 
@@ -112,16 +113,16 @@ class MemberPolicy
             return false;
         }
 
-        if ($this->member?->hasDeleteAllPermissionTo(self::RESOURCE)) {
+        if ($this->member?->hasDeleteAllPermissionTo(self::MODEL)) {
             return true;
         }
         if (
             $this->member?->id === $member->id &&
-            $this->member->hasDeleteOwnPermissionTo(self::RESOURCE)
+            $this->member->hasDeleteOwnPermissionTo(self::MODEL)
         ) {
             return true;
         }
-        if ($user->hasDeleteAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasDeleteAllPermissionTo(self::MODEL)) {
             return true;
         }
 

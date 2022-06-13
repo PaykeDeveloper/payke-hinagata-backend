@@ -55,7 +55,7 @@ class DivisionControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(1)
-            ->assertJsonFragment($this->division->toArray());
+            ->assertJsonFragment(['name' => $this->division->name]);
     }
 
     /**
@@ -70,7 +70,7 @@ class DivisionControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(Division::count())
-            ->assertJsonFragment($division->toArray());
+            ->assertJsonFragment(['name' => $division->name]);
     }
 
     /**
@@ -99,7 +99,7 @@ class DivisionControllerTest extends TestCase
         $response = $this->getJson(route('divisions.show', ['division' => $this->division->id]));
 
         $response->assertOk()
-            ->assertJsonFragment($this->division->toArray());
+            ->assertJsonFragment(['name' => $this->division->name]);
     }
 
     /**
@@ -113,7 +113,8 @@ class DivisionControllerTest extends TestCase
         $response = $this->getJson(route('divisions.show', ['division' => $division->id]));
 
         $response->assertOk()
-            ->assertJsonFragment($division->toArray());
+            ->assertJsonFragment(['name' => $division->name]);
+
     }
 
     /**

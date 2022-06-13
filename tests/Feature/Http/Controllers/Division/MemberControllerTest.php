@@ -10,7 +10,6 @@ use App\Models\Division\Member;
 use App\Models\Division\MemberRole;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
@@ -60,7 +59,10 @@ class MemberControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(Member::whereDivisionId($this->division->id)->count())
-            ->assertJsonFragment($this->target_member->toArray());
+            ->assertJsonFragment([
+                'division_id' => $this->target_member->division_id,
+                'user_id' => $this->target_member->user_id,
+            ]);
     }
 
     /**
@@ -99,7 +101,10 @@ class MemberControllerTest extends TestCase
         ]));
 
         $response->assertOk()
-            ->assertJsonFragment($this->target_member->toArray());
+            ->assertJsonFragment([
+                'division_id' => $this->target_member->division_id,
+                'user_id' => $this->target_member->user_id,
+            ]);
     }
 
     /**

@@ -2,44 +2,41 @@
 
 namespace Database\Seeders\Common;
 
-use App\Models\Common\Invitation;
 use App\Models\Common\Permission;
 use App\Models\Common\PermissionType;
-use App\Models\Common\Role;
-use App\Models\Division\Division;
-use App\Models\Division\Member;
-use App\Models\Sample\Project;
-use App\Models\User;
+use App\Models\ModelType;
 use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder
 {
-    // 用意するリソース (モデル)
     private const RESOURCES = [
-        ['name' => User::RESOURCE, 'all' => true, 'own' => true,],
-        ['name' => Permission::RESOURCE, 'all' => true, 'own' => false,],
-        ['name' => Role::RESOURCE, 'all' => true, 'own' => false,],
-        ['name' => Invitation::RESOURCE, 'all' => true, 'own' => false,],
-        ['name' => Division::RESOURCE, 'all' => true, 'own' => true,],
-        ['name' => Member::RESOURCE, 'all' => true, 'own' => true,],
-        ['name' => Project::RESOURCE, 'all' => true, 'own' => false,],
+        ['model' => ModelType::user, 'all' => true, 'own' => true,],
+        ['model' => ModelType::permission, 'all' => true, 'own' => false,],
+        ['model' => ModelType::role, 'all' => true, 'own' => false,],
+        ['model' => ModelType::invitation, 'all' => true, 'own' => false,],
+        ['model' => ModelType::division, 'all' => true, 'own' => true,],
+        ['model' => ModelType::member, 'all' => true, 'own' => true,],
+        ['model' => ModelType::project, 'all' => true, 'own' => false,],
     ];
 
     public function run()
     {
         $ids = [];
         foreach (self::RESOURCES as $resource) {
-            $types = [];
+            /** @var ModelType $model */
+            $model = $resource['model'];
+
+            /** @var PermissionType[] $permissions */
+            $permissions = [];
             if ($resource['all']) {
-                $types = array_merge($types, PermissionType::ALL_TYPES);
+                $permissions = array_merge($permissions, PermissionType::ALL_TYPES);
             }
             if ($resource['own']) {
-                $types = array_merge($types, PermissionType::OWN_TYPES);
+                $permissions = array_merge($permissions, PermissionType::OWN_TYPES);
             }
-            $resourceName = $resource['name'];
 
-            foreach ($types as $type) {
-                $name = PermissionType::getName($type, $resourceName);
+            foreach ($permissions as $permission) {
+                $name = PermissionType::getName($model, $permission);
                 $permission = Permission::updateOrCreate([
                     'name' => $name,
                 ]);

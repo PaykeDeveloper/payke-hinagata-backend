@@ -4,14 +4,13 @@
 
 namespace App\Models\Sample;
 
-final class Priority
-{
-    public const HIGH = 'high';
-    public const MIDDLE = 'middle';
-    public const LOW = 'low';
+use ArchTech\Enums\Values;
 
-    public static function all(): array
-    {
-        return [self::HIGH, self::MIDDLE, self::LOW];
-    }
+enum Priority: string
+{
+    use Values;
+
+    case High = 'high';
+    case Middle = 'middle';
+    case Low = 'low';
 }

@@ -12,7 +12,6 @@ use App\Models\Sample\Priority;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
@@ -63,7 +62,7 @@ class ProjectControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(1)
-            ->assertJsonFragment($this->project->toArray());
+            ->assertJsonFragment(['slug' => $this->project->slug]);
     }
 
     /**
@@ -99,7 +98,7 @@ class ProjectControllerTest extends TestCase
         $data = [
             'name' => $this->faker->name,
             'description' => $this->faker->text,
-            'priority' => $this->faker->randomElement(Priority::all()),
+            'priority' => $this->faker->randomElement(Priority::values()),
             'approved' => $this->faker->boolean,
             'start_date' => $startDate,
             'finished_at' => $finishedAt,
@@ -145,7 +144,7 @@ class ProjectControllerTest extends TestCase
         ]));
 
         $response->assertOk()
-            ->assertJsonFragment($this->project->toArray());
+            ->assertJsonFragment(['slug' => $this->project->slug]);
     }
 
     /**
@@ -184,7 +183,7 @@ class ProjectControllerTest extends TestCase
         $data = [
             'name' => $this->faker->name,
             'description' => $this->faker->text,
-            'priority' => $this->faker->randomElement(Priority::all()),
+            'priority' => $this->faker->randomElement(Priority::values()),
             'approved' => $this->faker->boolean,
             'start_date' => $startDate,
             'finished_at' => $finishedAt,

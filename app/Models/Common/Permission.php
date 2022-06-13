@@ -11,8 +11,4 @@ use Spatie\Permission\Models\Permission as BaseModel;
 class Permission extends BaseModel
 {
     use HasFactory;
-
-    public const RESOURCE = 'permission';
-
-    protected $hidden = ['pivot', 'guard_name', 'created_at', 'updated_at'];
 }

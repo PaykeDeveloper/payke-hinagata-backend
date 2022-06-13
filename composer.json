@@ -8,6 +8,7 @@
         "php": "~8.1.0",
         "ext-gd": "*",
         "ext-mbstring": "*",
+        "archtechx/enums": "^0.3.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel-lang/lang": "^10.4",
         "laravel/fortify": "^1.11",

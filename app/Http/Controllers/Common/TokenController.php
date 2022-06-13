@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Common;
 
 use App\Http\Requests\Common\Token\TokenCreateRequest;
+use App\Http\Resources\Common\TokenResource;
+use App\Repositories\Common\TokenRepository;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -12,7 +15,13 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
  */
 class TokenController extends AuthenticatedSessionController
 {
-    private const TOKEN_NAME = 'api_v1';
+    private TokenRepository $repository;
+
+    public function __construct(StatefulGuard $guard, TokenRepository $repository)
+    {
+        parent::__construct($guard);
+        $this->repository = $repository;
+    }
 
     /**
      * @unauthenticated
@@ -23,30 +32,15 @@ class TokenController extends AuthenticatedSessionController
     public function storeToken(TokenCreateRequest $request): mixed
     {
         return $this->loginPipeline($request)->then(function ($request) {
-            $user = $request->user();
-            $tokenKey = $this->getTokenKey($request);
-            $user->tokens()->where('name', $tokenKey)->delete();
-            $token = $user->createToken($tokenKey)->plainTextToken;
-            return response(['token' => $token]);
+            $resource = $this->repository->store($request->validated(), $request->user());
+            return TokenResource::make($resource);
         });
     }
 
     public function destroyToken(Request $request): LogoutResponse
     {
-        $user = $request->user();
-        $user->tokens()->where('token', $request->bearerToken())->delete();
-
+        $this->repository->delete($request->user(), $request->bearerToken());
         $this->guard->logout();
         return app(LogoutResponse::class);
-    }
-
-    private function getTokenKey(TokenCreateRequest $request): string
-    {
-        return implode('|', [
-            self::TOKEN_NAME,
-            $request->package_name,
-            $request->platform_type,
-            $request->devide_id,
-        ]);
     }
 }

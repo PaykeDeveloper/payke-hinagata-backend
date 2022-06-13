@@ -4,65 +4,67 @@ namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Common\User\MyUserUpdateRequest;
+use App\Http\Resources\Common\UserResource;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 /**
  * @group Common MyUser
  */
 class MyUserController extends Controller
 {
-    /**
-     * @response {
-     * "id": 4,
-     * "name": "user01",
-     * "email": "user01@example.com",
-     * "email_verified_at": "2021-04-19T09:32:02.000000Z",
-     * "locale": null,
-     * "created_at": "2021-04-19T09:32:01.000000Z",
-     * "updated_at": "2021-04-19T09:32:02.000000Z",
-     * "permission_names": [
-     * "division_viewOwn",
-     * "division_createOwn",
-     * "division_updateOwn",
-     * "division_deleteOwn"
-     * ],
-     * "role_names": [
-     * "Staff"
-     * ]
-     * }
-     */
-    public function index(Request $request): Response
+    private UserRepository $repository;
+
+    public function __construct(UserRepository $repository)
     {
-        return response($request->user());
+        $this->repository = $repository;
     }
 
     /**
-     * @response {
-     * "id": 4,
-     * "name": "user01",
-     * "email": "user01@example.com",
-     * "email_verified_at": "2021-04-19T09:32:02.000000Z",
+     * @response
+     * {
+     * "id": 3,
+     * "name": "admin",
+     * "email": "admin@example.com",
+     * "email_verified_at": "2022-06-13T06:02:10.000000Z",
      * "locale": null,
-     * "created_at": "2021-04-19T09:32:01.000000Z",
-     * "updated_at": "2021-04-19T09:32:02.000000Z",
      * "permission_names": [
-     * "division_viewOwn",
-     * "division_createOwn",
-     * "division_updateOwn",
-     * "division_deleteOwn"
+     * "view_all__user"
      * ],
      * "role_names": [
-     * "Staff"
-     * ]
+     * "Administrator"
+     * ],
+     * "created_at": "2022-06-13T06:02:10.000000Z"
      * }
      */
-    public function store(MyUserUpdateRequest $request): Response
+    public function index(Request $request): UserResource
     {
-        /** @var User $user */
-        $user = $request->user();
-        $result = $user->updateFromRequest($request->validated());
-        return response($result);
+        /** @var User $resource */
+        $resource = $request->user();
+        return UserResource::make($resource);
+    }
+
+    /**
+     * @response
+     * {
+     * "id": 3,
+     * "name": "admin",
+     * "email": "admin@example.com",
+     * "email_verified_at": "2022-06-13T06:02:10.000000Z",
+     * "locale": null,
+     * "permission_names": [
+     * "view_all__user"
+     * ],
+     * "role_names": [
+     * "Administrator"
+     * ],
+     * "created_at": "2022-06-13T06:02:10.000000Z"
+     * }
+     */
+    public function store(MyUserUpdateRequest $request): UserResource
+    {
+        $resource = $this->repository->update($request->validated(), $request->user());
+        return UserResource::make($resource);
     }
 }

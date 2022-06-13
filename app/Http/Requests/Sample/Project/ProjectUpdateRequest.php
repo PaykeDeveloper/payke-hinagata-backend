@@ -6,7 +6,7 @@ namespace App\Http\Requests\Sample\Project;
 
 use App\Http\Requests\FormRequest;
 use App\Models\Sample\Priority;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class ProjectUpdateRequest extends FormRequest
 {
@@ -21,7 +21,7 @@ class ProjectUpdateRequest extends FormRequest
 //            'slug' => ['regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', Rule::unique('projects')->ignore($this->id)],
             'name' => ['string', 'max:255'],
             'description' => ['string'],
-            'priority' => ['nullable', Rule::in(Priority::all())],
+            'priority' => ['nullable', new Enum(Priority::class)],
             'approved' => ['nullable', 'boolean'],
             'start_date' => ['nullable', 'date'],
             'finished_at' => ['nullable', 'date', 'after:start_date'],

@@ -3,74 +3,75 @@
 namespace App\Models\Traits;
 
 use App\Models\Common\PermissionType;
+use App\Models\ModelType;
 use Spatie\Permission\Traits\HasRoles;
 
 trait HasAuthorization
 {
     use HasRoles;
 
-    private function hasResourcePermissionTo(string $type, string $resource): bool
+    private function hasResourcePermissionTo(ModelType $model, PermissionType $permission): bool
     {
-        return $this->hasPermissionTo(PermissionType::getName($type, $resource));
+        return $this->hasPermissionTo(PermissionType::getName($model, $permission));
     }
 
-    public function hasViewPermissionTo(string $resource): bool
+    public function hasViewPermissionTo(ModelType $model): bool
     {
-        return $this->hasViewOwnPermissionTo($resource) || $this->hasViewAllPermissionTo($resource);
+        return $this->hasViewOwnPermissionTo($model) || $this->hasViewAllPermissionTo($model);
     }
 
-    public function hasViewOwnPermissionTo(string $resource): bool
+    public function hasViewOwnPermissionTo(ModelType $model): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::VIEW_OWN, $resource);
+        return $this->hasResourcePermissionTo($model, PermissionType::viewOwn);
     }
 
-    public function hasViewAllPermissionTo(string $resource): bool
+    public function hasViewAllPermissionTo(ModelType $model): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::VIEW_ALL, $resource);
+        return $this->hasResourcePermissionTo($model, PermissionType::viewAll);
     }
 
-    public function hasCreatePermissionTo(string $resource): bool
+    public function hasCreatePermissionTo(ModelType $model): bool
     {
-        return $this->hasCreateOwnPermissionTo($resource) || $this->hasCreateAllPermissionTo($resource);
+        return $this->hasCreateOwnPermissionTo($model) || $this->hasCreateAllPermissionTo($model);
     }
 
-    public function hasCreateOwnPermissionTo(string $resource): bool
+    public function hasCreateOwnPermissionTo(ModelType $model): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::CREATE_OWN, $resource);
+        return $this->hasResourcePermissionTo($model, PermissionType::createOwn);
     }
 
-    public function hasCreateAllPermissionTo(string $resource): bool
+    public function hasCreateAllPermissionTo(ModelType $model): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::CREATE_ALL, $resource);
+        return $this->hasResourcePermissionTo($model, PermissionType::createAll);
     }
 
-    public function hasUpdatePermissionTo(string $resource): bool
+    public function hasUpdatePermissionTo(ModelType $model): bool
     {
-        return $this->hasUpdateOwnPermissionTo($resource) || $this->hasUpdateAllPermissionTo($resource);
+        return $this->hasUpdateOwnPermissionTo($model) || $this->hasUpdateAllPermissionTo($model);
     }
 
-    public function hasUpdateOwnPermissionTo(string $resource): bool
+    public function hasUpdateOwnPermissionTo(ModelType $model): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::UPDATE_OWN, $resource);
+        return $this->hasResourcePermissionTo($model, PermissionType::updateOwn);
     }
 
-    public function hasUpdateAllPermissionTo(string $resource): bool
+    public function hasUpdateAllPermissionTo(ModelType $model): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::UPDATE_ALL, $resource);
+        return $this->hasResourcePermissionTo($model, PermissionType::updateAll);
     }
 
-    public function hasDeletePermissionTo(string $resource): bool
+    public function hasDeletePermissionTo(ModelType $model): bool
     {
-        return $this->hasDeleteOwnPermissionTo($resource) || $this->hasDeleteAllPermissionTo($resource);
+        return $this->hasDeleteOwnPermissionTo($model) || $this->hasDeleteAllPermissionTo($model);
     }
 
-    public function hasDeleteOwnPermissionTo(string $resource): bool
+    public function hasDeleteOwnPermissionTo(ModelType $model): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::DELETE_OWN, $resource);
+        return $this->hasResourcePermissionTo($model, PermissionType::deleteOwn);
     }
 
-    public function hasDeleteAllPermissionTo(string $resource): bool
+    public function hasDeleteAllPermissionTo(ModelType $model): bool
     {
-        return $this->hasResourcePermissionTo(PermissionType::DELETE_ALL, $resource);
+        return $this->hasResourcePermissionTo($model, PermissionType::deleteAll);
     }
 }

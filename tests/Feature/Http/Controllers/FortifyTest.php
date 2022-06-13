@@ -23,7 +23,7 @@ class FortifyTest extends TestCase
         /** @var Invitation $invitation */
         $invitation = Invitation::factory()->create([
             'token' => hash('sha256', $token),
-            'status' => InvitationStatus::PENDING,
+            'status' => InvitationStatus::Pending,
         ]);
         $data = [
             'id' => $invitation->id,
@@ -43,7 +43,7 @@ class FortifyTest extends TestCase
         $password = $this->faker->password(minLength: 8);
         /** @var Invitation $invitation */
         $invitation = Invitation::factory()->create([
-            'status' => InvitationStatus::PENDING,
+            'status' => InvitationStatus::Pending,
         ]);
         $data = [
             'id' => $invitation->id,

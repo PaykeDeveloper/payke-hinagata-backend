@@ -5,9 +5,10 @@
 namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Common\PermissionResource;
 use App\Models\Common\Permission;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 /**
  * @group Common Permission
@@ -23,12 +24,13 @@ class PermissionController extends Controller
      * @response [
      * {
      * "id": 1,
-     * "name": "user__view_all"
+     * "name": "view_all__user"
      * }
      * ]
      */
-    public function index(Request $request): Response
+    public function index(Request $request): AnonymousResourceCollection
     {
-        return response(Permission::all());
+        $resources = Permission::all();
+        return PermissionResource::collection($resources);
     }
 }

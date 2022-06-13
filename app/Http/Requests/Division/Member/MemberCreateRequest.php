@@ -6,8 +6,8 @@ namespace App\Http\Requests\Division\Member;
 
 use App\Http\Requests\FormRequest;
 use App\Models\Division\Division;
-use App\Models\Division\Member;
 use App\Models\Division\MemberRole;
+use App\Models\ModelType;
 use App\Models\User;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
@@ -20,9 +20,9 @@ class MemberCreateRequest extends FormRequest
         $user = $this->user();
         /** @var ?Division $division */
         $division = $this->route('division');
-        $member = $user && $division ? Member::findByUniqueKeys($user->id, $division->id) : null;
-        $enableAll = $member?->hasCreateAllPermissionTo(Member::RESOURCE)
-            || $user?->hasCreateAllPermissionTo(Member::RESOURCE);
+        $member = $user && $division ? $user->findMember($division) : null;
+        $enableAll = $member?->hasCreateAllPermissionTo(ModelType::member)
+            || $user?->hasCreateAllPermissionTo(ModelType::member);
 
         return [
             'user_id' => ['required', 'integer',

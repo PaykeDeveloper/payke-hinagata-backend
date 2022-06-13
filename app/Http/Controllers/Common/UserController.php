@@ -6,9 +6,11 @@ namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Common\User\UserUpdateRequest;
+use App\Http\Resources\Common\UserResource;
 use App\Models\User;
-use Exception;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 /**
@@ -16,95 +18,86 @@ use Illuminate\Http\Response;
  */
 class UserController extends Controller
 {
-    public function __construct()
+    private UserRepository $repository;
+
+    public function __construct(UserRepository $repository)
     {
+        $this->repository = $repository;
         $this->authorizeResource(User::class);
     }
 
     /**
      * @response [
      * {
-     * "id": 4,
-     * "name": "user01",
-     * "email": "user01@example.com",
-     * "email_verified_at": "2021-04-19T09:32:02.000000Z",
+     * "id": 1,
+     * "name": "Kitty Emmerich I",
+     * "email": "yrath@example.com",
+     * "email_verified_at": "2022-06-13T03:55:23.000000Z",
      * "locale": null,
-     * "created_at": "2021-04-19T09:32:01.000000Z",
-     * "updated_at": "2021-04-19T09:32:02.000000Z",
      * "permission_names": [
-     * "division_viewOwn",
-     * "division_createOwn",
-     * "division_updateOwn",
-     * "division_deleteOwn"
+     * "view_all__user"
      * ],
      * "role_names": [
-     * "Staff"
-     * ]
+     * "Manager"
+     * ],
+     * "created_at": "2022-06-13T03:55:23.000000Z"
      * }
      * ]
      */
-    public function index(Request $request): Response
+    public function index(Request $request): AnonymousResourceCollection
     {
-        return response(User::getFromRequest($request->user()));
+        $resources = $this->repository->index($request->user());
+        return UserResource::collection($resources);
     }
 
     /**
-     * @response {
-     * "id": 4,
-     * "name": "user01",
-     * "email": "user01@example.com",
-     * "email_verified_at": "2021-04-19T09:32:02.000000Z",
+     * @response
+     * {
+     * "id": 1,
+     * "name": "Kitty Emmerich I",
+     * "email": "yrath@example.com",
+     * "email_verified_at": "2022-06-13T03:55:23.000000Z",
      * "locale": null,
-     * "created_at": "2021-04-19T09:32:01.000000Z",
-     * "updated_at": "2021-04-19T09:32:02.000000Z",
      * "permission_names": [
-     * "division_viewOwn",
-     * "division_createOwn",
-     * "division_updateOwn",
-     * "division_deleteOwn"
+     * "view_all__user"
      * ],
      * "role_names": [
-     * "Staff"
-     * ]
+     * "Manager"
+     * ],
+     * "created_at": "2022-06-13T03:55:23.000000Z"
      * }
      */
-    public function show(Request $request, User $user): Response
+    public function show(Request $request, User $user): UserResource
     {
-        return response($user);
+        return UserResource::make($user);
     }
 
     /**
-     * @response {
-     * "id": 4,
-     * "name": "user01",
-     * "email": "user01@example.com",
-     * "email_verified_at": "2021-04-19T09:32:02.000000Z",
+     * @response
+     * {
+     * "id": 1,
+     * "name": "Kitty Emmerich I",
+     * "email": "yrath@example.com",
+     * "email_verified_at": "2022-06-13T03:55:23.000000Z",
      * "locale": null,
-     * "created_at": "2021-04-19T09:32:01.000000Z",
-     * "updated_at": "2021-04-19T09:32:02.000000Z",
      * "permission_names": [
-     * "division_viewOwn",
-     * "division_createOwn",
-     * "division_updateOwn",
-     * "division_deleteOwn"
+     * "view_all__user"
      * ],
      * "role_names": [
-     * "Staff"
-     * ]
+     * "Manager"
+     * ],
+     * "created_at": "2022-06-13T03:55:23.000000Z"
      * }
      */
-    public function update(UserUpdateRequest $request, User $user): Response
+    public function update(UserUpdateRequest $request, User $user): UserResource
     {
-        $result = $user->updateFromRequest($request->validated());
-        return response($result);
+        $resource = $this->repository->update($request->validated(), $user);
+        return UserResource::make($resource);
     }
 
-    /**
-     * @throws Exception
-     */
     public function destroy(Request $request, User $user): Response
     {
         $user->delete();
-        return response(null, 204);
+        return response()->noContent();
     }
 }
