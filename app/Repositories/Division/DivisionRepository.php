@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class DivisionRepository
 {
-
     public function index(User $user): Collection
     {
         return match ($user->hasViewAllPermissionTo(ModelType::division)) {
@@ -25,12 +24,14 @@ class DivisionRepository
 
     public function store(array $attributes, User $user): Division
     {
-        $division = Division::create($attributes);
+        $division = new Division($attributes);
+        $division->save();
 
-        $member = Member::create([
+        $member = new Member([
             'user_id' => $user->id,
             'division_id' => $division->id,
         ]);
+        $member->save();
         $member->syncRoles(MemberRole::all());
 
         return $division->fresh();

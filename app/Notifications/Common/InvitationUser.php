@@ -1,7 +1,5 @@
 <?php
 
-/** @noinspection PhpUnusedParameterInspection */
-
 namespace App\Notifications\Common;
 
 use App\Models\Common\Invitation;

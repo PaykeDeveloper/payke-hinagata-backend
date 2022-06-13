@@ -28,13 +28,14 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
     {
         $validatedInput = $this->validateInput($input);
         /** @var Invitation $invitation */
-        $invitation = Invitation::find($validatedInput['id']);
-        $user = User::create([
+        $invitation = Invitation::query()->find($validatedInput['id']);
+        $user = new User([
             'name' => $invitation->name,
             'email' => $invitation->email,
             'password' => Hash::make($validatedInput['password']),
             'locale' => request()->getPreferredLanguage(),
         ]);
+        $user->save();
         $roleNames = $this->filteredRoles($invitation->role_names);
         $user->syncRoles($roleNames);
         $invitation->approved();
@@ -78,7 +79,7 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
     private function filteredRoles(array $roleNames): array
     {
         $userRoles = UserRole::all();
-        $allRoles = Role::pluck('name')->all();
+        $allRoles = Role::query()->pluck('name')->all();
         return array_filter($roleNames, function ($name) use ($userRoles, $allRoles) {
             return in_array($name, $userRoles) && in_array($name, $allRoles);
         });

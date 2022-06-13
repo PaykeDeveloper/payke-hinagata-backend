@@ -16,7 +16,7 @@ class TokenRepository
         return $user->createToken($tokenKey);
     }
 
-    public function delete(User $user, $token): void
+    public function delete(User $user, string $token): void
     {
         $user->tokens()->where('token', $token)->delete();
     }

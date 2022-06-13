@@ -7,5 +7,5 @@ namespace App\Models;
  */
 interface BaseEnum
 {
-    public function getLabel(): string;
+    public function getLabel(): array|string|null;
 }

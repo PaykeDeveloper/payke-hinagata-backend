@@ -114,7 +114,6 @@ class DivisionControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonFragment(['name' => $division->name]);
-
     }
 
     /**

@@ -2,8 +2,6 @@
 
 // FIXME: SAMPLE CODE
 
-/** @noinspection PhpUnusedParameterInspection */
-
 namespace App\Http\Controllers\Sample;
 
 use App\Exports\CollectionExport;

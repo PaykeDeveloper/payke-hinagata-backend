@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 
 class InvitationRepository
 {
-
     public function store(array $attributes, User $user): Invitation
     {
         $invitation = new Invitation($attributes);

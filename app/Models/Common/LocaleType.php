@@ -9,7 +9,7 @@ enum LocaleType: string implements BaseEnum
     case En = 'en';
     case Ja = 'ja';
 
-    public function getLabel(): string
+    public function getLabel(): array|string|null
     {
         return match ($this) {
             self::En => __('English'),

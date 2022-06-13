@@ -11,7 +11,7 @@ enum InvitationStatus: string implements BaseEnum
     case Approved = 'approved';
     case Denied = 'denied';
 
-    public function getLabel(): string
+    public function getLabel(): array|string|null
     {
         return match ($this) {
             self::Pending => __('Pending'),

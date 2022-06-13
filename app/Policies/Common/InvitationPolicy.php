@@ -1,7 +1,5 @@
 <?php
 
-/** @noinspection PhpUnusedParameterInspection */
-
 namespace App\Policies\Common;
 
 use App\Models\Common\Invitation;
