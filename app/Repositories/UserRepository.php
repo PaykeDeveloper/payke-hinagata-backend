@@ -14,7 +14,7 @@ class UserRepository
             true => User::query(),
             false => User::whereId($user->id),
         };
-        return $query->get();
+        return $query->with(['permissions', 'roles'])->get();
     }
 
     public function update(array $attributes, User $user): User

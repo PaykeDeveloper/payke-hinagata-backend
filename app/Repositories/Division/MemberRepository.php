@@ -12,15 +12,16 @@ class MemberRepository
 {
     public function index(User $user, Division $division): Collection
     {
+        $members = $division->members->load(['permissions', 'roles']);
         $filterMyUser = fn(Member $member) => $member->user_id === $user->id;
         /** @var ?Member $member */
-        $member = $division->members->firstWhere($filterMyUser);
+        $member = $members->firstWhere($filterMyUser);
         $enableAll = $member?->hasViewAllPermissionTo(ModelType::member)
             || $user->hasViewAllPermissionTo(ModelType::member);
 
         return match ($enableAll) {
-            true => $division->members,
-            false => $division->members->where($filterMyUser),
+            true => $members,
+            false => $members->where($filterMyUser),
         };
     }
 
