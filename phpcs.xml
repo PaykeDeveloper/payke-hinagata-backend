@@ -32,13 +32,4 @@
     <exclude-pattern>_ide_helper.php</exclude-pattern>
     <exclude-pattern>_ide_helper_models.php</exclude-pattern>
     <exclude-pattern>database/migrations/2021_02_01_000001_create_permission_tables.php</exclude-pattern>
-
-    <!-- TODO: PHP_CodeSniffer 4.0 がリリースされたら削除 -->
-    <exclude-pattern>app/Models/ModelType.php</exclude-pattern>
-    <exclude-pattern>app/Models/Common/LocaleType.php</exclude-pattern>
-    <exclude-pattern>app/Models/Common/PermissionType.php</exclude-pattern>
-    <exclude-pattern>app/Models/Common/ClientApp.php</exclude-pattern>
-    <exclude-pattern>app/Models/Common/InvitationStatus.php</exclude-pattern>
-    <exclude-pattern>app/Models/Common/PlatformType.php</exclude-pattern>
-    <exclude-pattern>app/Models/Sample/Priority.php</exclude-pattern>
 </ruleset>
