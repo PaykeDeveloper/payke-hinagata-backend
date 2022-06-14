@@ -12,7 +12,7 @@ class MemberRepository
 {
     public function index(User $user, Division $division): Collection
     {
-        $members = $division->members->load(['permissions', 'roles']);
+        $members = $division->members->loadMissing(['permissions', 'roles']);
         $filterMyUser = fn(Member $member) => $member->user_id === $user->id;
         /** @var ?Member $member */
         $member = $members->firstWhere($filterMyUser);

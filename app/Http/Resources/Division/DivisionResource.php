@@ -32,7 +32,7 @@ class DivisionResource extends JsonResource
     {
         /** @var User $user */
         $user = $request->user();
-        $user->members->load(['permissions', 'roles']);
+        $user->members->loadMissing(['permissions', 'roles']);
         return parent::toResponse($request);
     }
 }

@@ -12,7 +12,8 @@ trait HasAuthorization
 
     private function hasResourcePermissionTo(ModelType $model, PermissionType $permission): bool
     {
-        return $this->hasPermissionTo(PermissionType::getName($model, $permission));
+        return $this->loadMissing(['permissions', 'roles'])
+            ->hasPermissionTo(PermissionType::getName($model, $permission));
     }
 
     public function hasViewPermissionTo(ModelType $model): bool
