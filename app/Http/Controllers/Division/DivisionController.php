@@ -7,12 +7,11 @@ namespace App\Http\Controllers\Division;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Division\Division\DivisionCreateRequest;
 use App\Http\Requests\Division\Division\DivisionUpdateRequest;
+use App\Http\Resources\Division\DivisionCollection;
 use App\Http\Resources\Division\DivisionResource;
 use App\Models\Division\Division;
-use App\Models\User;
 use App\Repositories\Division\DivisionRepository;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 /**
@@ -41,10 +40,10 @@ class DivisionController extends Controller
      * }
      * ]
      */
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(Request $request): DivisionCollection
     {
         $resources = $this->repository->index($request->user());
-        return DivisionResource::collection($resources);
+        return DivisionCollection::make($resources);
     }
 
     /**
@@ -61,10 +60,7 @@ class DivisionController extends Controller
      */
     public function store(DivisionCreateRequest $request): DivisionResource
     {
-        /** @var User $user */
-        $user = $request->user();
-        $resource = $this->repository->store($request->validated(), $user);
-        $user->members->load(['permissions', 'roles']);
+        $resource = $this->repository->store($request->validated(), $request->user());
         return DivisionResource::make($resource);
     }
 
