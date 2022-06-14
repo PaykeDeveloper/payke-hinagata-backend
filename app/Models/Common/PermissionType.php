@@ -31,7 +31,7 @@ enum PermissionType: string
 
     public static function getName(ModelType $model, self $permission): string
     {
-        return implode("__", [$permission->value, $model->value]);
+        return implode("__", [$model->value, $permission->value]);
     }
 
     public static function getNames(ModelType $model, self ...$permissions): array

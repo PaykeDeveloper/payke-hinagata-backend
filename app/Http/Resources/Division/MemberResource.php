@@ -15,7 +15,7 @@ class MemberResource extends JsonResource
             'id' => $member->id,
             'division_id' => $member->division_id,
             'user_id' => $member->user_id,
-            'permission_names' => $member->getPermissionNames(),
+            'permission_names' => $member->getAllPermissionNames(),
             'role_names' => $member->getRoleNames(),
             'created_at' => $member->created_at,
         ];

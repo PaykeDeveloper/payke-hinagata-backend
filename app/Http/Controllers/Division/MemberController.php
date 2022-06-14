@@ -36,7 +36,7 @@ class MemberController extends Controller
      * "division_id": 2,
      * "user_id": 1,
      * "permission_names": [
-     * "view_all__user"
+     * "user__view_all"
      * ],
      * "role_names": [
      * "Division Manager"
@@ -58,7 +58,7 @@ class MemberController extends Controller
      * "division_id": 2,
      * "user_id": 1,
      * "permission_names": [
-     * "view_all__user"
+     * "user__view_all"
      * ],
      * "role_names": [
      * "Division Manager"
@@ -79,7 +79,7 @@ class MemberController extends Controller
      * "division_id": 2,
      * "user_id": 1,
      * "permission_names": [
-     * "view_all__user"
+     * "user__view_all"
      * ],
      * "role_names": [
      * "Division Manager"
@@ -99,7 +99,7 @@ class MemberController extends Controller
      * "division_id": 2,
      * "user_id": 1,
      * "permission_names": [
-     * "view_all__user"
+     * "user__view_all"
      * ],
      * "role_names": [
      * "Division Manager"

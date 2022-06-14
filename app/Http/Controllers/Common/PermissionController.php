@@ -22,7 +22,7 @@ class PermissionController extends Controller
      * @response [
      * {
      * "id": 1,
-     * "name": "view_all__user"
+     * "name": "user__view_all"
      * }
      * ]
      */

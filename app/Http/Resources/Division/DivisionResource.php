@@ -22,7 +22,7 @@ class DivisionResource extends JsonResource
             'id' => $division->id,
             'name' => $division->name,
             'request_member_id' => $member?->id,
-            'permission_names' => $member?->getAllPermissions() ?? Collection::make(),
+            'permission_names' => $member?->getAllPermissionNames() ?? Collection::make(),
             'created_at' => $division->created_at,
         ];
     }

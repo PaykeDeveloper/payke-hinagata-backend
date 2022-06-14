@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 
 /**
  * @mixin IdeHelperMember
@@ -33,5 +34,10 @@ class Member extends Model
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
+    }
+
+    public function getAllPermissionNames(): Collection
+    {
+        return $this->getAllPermissions()->pluck('name');
     }
 }

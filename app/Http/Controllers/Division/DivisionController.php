@@ -35,7 +35,7 @@ class DivisionController extends Controller
      * "name": "Juliet Kuhn",
      * "request_member_id": null,
      * "permission_names": [
-     * "view_all__user"
+     * "user__view_all"
      * ],
      * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
@@ -54,7 +54,7 @@ class DivisionController extends Controller
      * "name": "Juliet Kuhn",
      * "request_member_id": null,
      * "permission_names": [
-     * "view_all__user"
+     * "user__view_all"
      * ],
      * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
@@ -75,7 +75,7 @@ class DivisionController extends Controller
      * "name": "Juliet Kuhn",
      * "request_member_id": null,
      * "permission_names": [
-     * "view_all__user"
+     * "user__view_all"
      * ],
      * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
@@ -92,7 +92,7 @@ class DivisionController extends Controller
      * "name": "Juliet Kuhn",
      * "request_member_id": null,
      * "permission_names": [
-     * "view_all__user"
+     * "user__view_all"
      * ],
      * "created_at": "2022-06-13T03:55:24.000000Z"
      * }

@@ -30,7 +30,7 @@ class MyUserController extends Controller
      * "email_verified_at": "2022-06-13T06:02:10.000000Z",
      * "locale": null,
      * "permission_names": [
-     * "view_all__user"
+     * "user__view_all"
      * ],
      * "role_names": [
      * "Administrator"
@@ -54,7 +54,7 @@ class MyUserController extends Controller
      * "email_verified_at": "2022-06-13T06:02:10.000000Z",
      * "locale": null,
      * "permission_names": [
-     * "view_all__user"
+     * "user__view_all"
      * ],
      * "role_names": [
      * "Administrator"
