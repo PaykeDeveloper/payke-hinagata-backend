@@ -9,14 +9,15 @@ class MemberResource extends JsonResource
 {
     public function toArray($request): array
     {
-        /** @var Member $this */
+        /** @var Member $member */
+        $member = $this->resource;
         return [
-            'id' => $this->id,
-            'division_id' => $this->division_id,
-            'user_id' => $this->user_id,
-            'permission_names' => $this->getPermissionNames(),
-            'role_names' => $this->getRoleNames(),
-            'created_at' => $this->created_at,
+            'id' => $member->id,
+            'division_id' => $member->division_id,
+            'user_id' => $member->user_id,
+            'permission_names' => $member->getPermissionNames(),
+            'role_names' => $member->getRoleNames(),
+            'created_at' => $member->created_at,
         ];
     }
 }

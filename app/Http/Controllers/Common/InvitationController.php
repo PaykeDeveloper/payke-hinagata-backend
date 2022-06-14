@@ -34,6 +34,9 @@ class InvitationController extends Controller
      * "status": "denied",
      * "name": "Prof. Tamia Hagenes",
      * "email": "huels.tad@beer.biz",
+     * "role_names": [
+     * "Manager"
+     * ],
      * "created_by": 1,
      * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
@@ -52,6 +55,9 @@ class InvitationController extends Controller
      * "status": "denied",
      * "name": "Prof. Tamia Hagenes",
      * "email": "huels.tad@beer.biz",
+     * "role_names": [
+     * "Manager"
+     * ],
      * "created_by": 1,
      * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
@@ -69,6 +75,9 @@ class InvitationController extends Controller
      * "status": "denied",
      * "name": "Prof. Tamia Hagenes",
      * "email": "huels.tad@beer.biz",
+     * "role_names": [
+     * "Manager"
+     * ],
      * "created_by": 1,
      * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
@@ -85,6 +94,9 @@ class InvitationController extends Controller
      * "status": "denied",
      * "name": "Prof. Tamia Hagenes",
      * "email": "huels.tad@beer.biz",
+     * "role_names": [
+     * "Manager"
+     * ],
      * "created_by": 1,
      * "created_at": "2022-06-13T03:55:24.000000Z"
      * }

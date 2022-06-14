@@ -9,10 +9,11 @@ class PermissionResource extends JsonResource
 {
     public function toArray($request): array
     {
-        /** @var Permission $this */
+        /** @var Permission $permission */
+        $permission = $this->resource;
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id' => $permission->id,
+            'name' => $permission->name,
         ];
     }
 }

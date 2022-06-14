@@ -9,11 +9,13 @@ class RoleResource extends JsonResource
 {
     public function toArray($request): array
     {
-        /** @var Role $this */
+        /** @var Role $role */
+        $role = $this->resource;
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'type' => $this->type,
+            'id' => $role->id,
+            'name' => $role->name,
+            'type' => $role->type,
+            'required' => $role->required,
         ];
     }
 }

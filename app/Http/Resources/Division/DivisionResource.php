@@ -14,15 +14,16 @@ class DivisionResource extends JsonResource
     {
         /** @var User $user */
         $user = $request->user();
+        /** @var Division $division */
+        $division = $this->resource;
         /** @var ?Member $member */
-        $member = $user->findMember($this->resource);
-        /** @var Division $this */
+        $member = $user->findMember($division);
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id' => $division->id,
+            'name' => $division->name,
             'request_member_id' => $member?->id,
             'permission_names' => $member?->getAllPermissions() ?? Collection::make(),
-            'created_at' => $this->created_at,
+            'created_at' => $division->created_at,
         ];
     }
 }

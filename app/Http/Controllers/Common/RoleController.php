@@ -23,7 +23,8 @@ class RoleController extends Controller
      * {
      * "id": 1,
      * "name": "Administrator",
-     * "type": "user"
+     * "type": "user",
+     * "required": true,
      * }
      * ]
      */

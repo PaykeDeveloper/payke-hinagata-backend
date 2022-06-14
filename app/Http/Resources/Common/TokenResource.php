@@ -9,9 +9,10 @@ class TokenResource extends JsonResource
 {
     public function toArray($request): array
     {
-        /** @var NewAccessToken $this */
+        /** @var NewAccessToken $accessToken */
+        $accessToken = $this->resource;
         return [
-            'token' => $this->plainTextToken,
+            'token' => $accessToken->plainTextToken,
         ];
     }
 }
