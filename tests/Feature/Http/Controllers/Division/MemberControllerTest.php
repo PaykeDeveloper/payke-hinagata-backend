@@ -34,13 +34,8 @@ class MemberControllerTest extends TestCase
         $this->actingAs($this->user);
 
         $this->division = Division::factory()->create();
-        $this->member = Member::factory()->create([
-            'user_id' => $this->user->id,
-            'division_id' => $this->division->id,
-        ]);
-        $this->target_member = Member::factory()->create([
-            'division_id' => $this->division->id,
-        ]);
+        $this->member = Member::factory()->for($this->user)->for($this->division)->create();
+        $this->target_member = Member::factory()->for($this->division)->create();
     }
 
     /**
@@ -141,7 +136,7 @@ class MemberControllerTest extends TestCase
 
         $response->assertNoContent();
 
-        $result = Member::find($this->target_member->id);
+        $result = Member::query()->find($this->target_member->id);
         $this->assertNull($result);
     }
 
@@ -159,7 +154,7 @@ class MemberControllerTest extends TestCase
 
         $response = $this->getJson(route('divisions.members.index', ['division' => $this->division->id]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -180,7 +175,7 @@ class MemberControllerTest extends TestCase
             'division' => $this->division->id,
         ]), $data);
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -217,7 +212,7 @@ class MemberControllerTest extends TestCase
             'member' => $this->target_member->id,
         ]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -235,7 +230,7 @@ class MemberControllerTest extends TestCase
             'member' => $this->target_member->id,
         ]), $data);
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -251,14 +246,12 @@ class MemberControllerTest extends TestCase
             'member' => $this->target_member->id,
         ]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     public function provideAuthorizedRole(): array
     {
         return [
-            [UserRole::ADMINISTRATOR, null],
-            [UserRole::MANAGER, null],
             [UserRole::STAFF, MemberRole::MANAGER],
         ];
     }

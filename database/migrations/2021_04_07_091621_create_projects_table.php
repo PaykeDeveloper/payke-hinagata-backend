@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->foreignId('division_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('member_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->uuid('slug')->unique();
             $table->string('name');
             $table->text('description');

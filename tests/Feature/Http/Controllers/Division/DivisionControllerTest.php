@@ -10,7 +10,6 @@ use App\Models\Division\Member;
 use App\Models\Division\MemberRole;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
@@ -34,10 +33,7 @@ class DivisionControllerTest extends TestCase
         $this->actingAs($this->user);
 
         $this->division = Division::factory()->create();
-        $this->member = Member::factory()->create([
-            'user_id' => $this->user->id,
-            'division_id' => $this->division->id,
-        ]);
+        $this->member = Member::factory()->for($this->user)->for($this->division)->create();
     }
 
     /**
@@ -69,7 +65,7 @@ class DivisionControllerTest extends TestCase
         $response = $this->getJson(route('divisions.index'));
 
         $response->assertOk()
-            ->assertJsonCount(Division::count())
+            ->assertJsonCount(Division::query()->count())
             ->assertJsonFragment(['name' => $division->name]);
     }
 
@@ -160,7 +156,7 @@ class DivisionControllerTest extends TestCase
 
         $response->assertNoContent();
 
-        $result = Division::find($this->division->id);
+        $result = Division::query()->find($this->division->id);
         $this->assertNull($result);
     }
 
@@ -176,7 +172,7 @@ class DivisionControllerTest extends TestCase
 
         $response->assertNoContent();
 
-        $result = Division::find($division->id);
+        $result = Division::query()->find($division->id);
         $this->assertNull($result);
     }
 
@@ -193,13 +189,13 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->getJson(route('divisions.index'));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
      * @dataProvider provideUnAuthorizedCreateRole
      */
-    public function testStoreUnAuthorized($userRole, $status)
+    public function testStoreUnAuthorized($userRole)
     {
         $this->user->syncRoles($userRole);
 
@@ -207,7 +203,7 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->postJson(route('divisions.store'), $data);
 
-        $response->assertStatus($status);
+        $response->assertForbidden();
     }
 
     /**
@@ -220,7 +216,7 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->getJson(route('divisions.show', ['division' => $this->division->id]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -250,7 +246,7 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->putJson(route('divisions.update', ['division' => $division->id]), $data);
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -276,7 +272,7 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->deleteJson(route('divisions.destroy', ['division' => $division->id]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     public function provideAuthorizedIndexOwnRole(): array
@@ -304,8 +300,6 @@ class DivisionControllerTest extends TestCase
     public function provideAuthorizedShowOwnRole(): array
     {
         return [
-            [UserRole::ADMINISTRATOR, null],
-            [UserRole::MANAGER, null],
             [UserRole::STAFF, MemberRole::MANAGER],
             [UserRole::STAFF, MemberRole::MEMBER],
         ];
@@ -337,16 +331,14 @@ class DivisionControllerTest extends TestCase
     public function provideUnAuthorizedCreateRole(): array
     {
         return [
-            [UserRole::ORGANIZER, Response::HTTP_NOT_FOUND],
-            [UserRole::STAFF, Response::HTTP_FORBIDDEN],
+            [UserRole::ORGANIZER],
+            [UserRole::STAFF],
         ];
     }
 
     public function provideAuthorizedUpdateDeleteOwnRole(): array
     {
         return [
-            [UserRole::ADMINISTRATOR, null],
-            [UserRole::MANAGER, null],
             [UserRole::ORGANIZER, MemberRole::MANAGER],
             [UserRole::STAFF, MemberRole::MANAGER],
         ];

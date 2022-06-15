@@ -33,99 +33,64 @@ class MemberPolicy
 
     public function viewAny(User $user): bool
     {
-        if ($this->member?->hasViewPermissionTo(self::MODEL)) {
-            return true;
+        if ($this->member) {
+            return $this->member->hasViewPermissionTo(self::MODEL);
         }
 
-        if ($user->hasViewAllPermissionTo(self::MODEL)) {
-            return true;
-        }
-
-        abort(Response::HTTP_NOT_FOUND);
+        return $user->hasViewAllPermissionTo(self::MODEL);
     }
 
     public function view(User $user, Member $member): bool
     {
-        if ($this->division->id !== $member->division_id) {
-            abort(Response::HTTP_NOT_FOUND);
+        $this->assertNotFound($member);
+        if ($this->member) {
+            if ($this->member->hasViewAllPermissionTo(self::MODEL)) {
+                return true;
+            }
+            return $this->member->id === $member->id &&
+                $this->member->hasViewOwnPermissionTo(self::MODEL);
         }
-
-        if ($this->member?->hasViewAllPermissionTo(self::MODEL)) {
-            return true;
-        }
-        if (
-            $this->member?->id === $member->id &&
-            $this->member->hasViewOwnPermissionTo(self::MODEL)
-        ) {
-            return true;
-        }
-
-        if ($user->hasViewAllPermissionTo(self::MODEL)) {
-            return true;
-        }
-
-        abort(Response::HTTP_NOT_FOUND);
+        return $user->hasViewAllPermissionTo(self::MODEL);
     }
 
     public function create(User $user): bool
     {
-        if (!$this->viewAny($user)) {
-            return false;
+        if ($this->member) {
+            return $this->member->hasCreatePermissionTo(self::MODEL);
         }
-
-        if ($this->member?->hasCreatePermissionTo(self::MODEL)) {
-            return true;
-        }
-
-        if ($user->hasCreateAllPermissionTo(self::MODEL)) {
-            return true;
-        }
-
-        return false;
+        return $user->hasCreateAllPermissionTo(self::MODEL);
     }
 
     public function update(User $user, Member $member): bool
     {
-        if (!$this->view($user, $member)) {
-            return false;
+        $this->assertNotFound($member);
+        if ($this->member) {
+            if ($this->member->hasUpdateAllPermissionTo(self::MODEL)) {
+                return true;
+            }
+            return $this->member->id === $member->id &&
+                $this->member->hasUpdateOwnPermissionTo(self::MODEL);
         }
-
-        if ($this->member?->hasUpdateAllPermissionTo(self::MODEL)) {
-            return true;
-        }
-        if (
-            $this->member?->id === $member->id &&
-            $this->member->hasUpdateOwnPermissionTo(self::MODEL)
-        ) {
-            return true;
-        }
-
-        if ($user->hasUpdateAllPermissionTo(self::MODEL)) {
-            return true;
-        }
-
-        return false;
+        return $user->hasUpdateAllPermissionTo(self::MODEL);
     }
 
     public function delete(User $user, Member $member): bool
     {
-        if (!$this->view($user, $member)) {
-            return false;
+        $this->assertNotFound($member);
+        if ($this->member) {
+            if ($this->member->hasDeleteAllPermissionTo(self::MODEL)) {
+                return true;
+            }
+            return $this->member->id === $member->id &&
+                $this->member->hasDeleteOwnPermissionTo(self::MODEL);
         }
+        return $user->hasDeleteAllPermissionTo(self::MODEL);
+    }
 
-        if ($this->member?->hasDeleteAllPermissionTo(self::MODEL)) {
-            return true;
+    private function assertNotFound(Member $member): void
+    {
+        if ($this->division->id !== $member->division_id) {
+            abort(Response::HTTP_NOT_FOUND);
         }
-        if (
-            $this->member?->id === $member->id &&
-            $this->member->hasDeleteOwnPermissionTo(self::MODEL)
-        ) {
-            return true;
-        }
-        if ($user->hasDeleteAllPermissionTo(self::MODEL)) {
-            return true;
-        }
-
-        return false;
     }
 }

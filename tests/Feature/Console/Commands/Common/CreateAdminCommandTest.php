@@ -22,7 +22,7 @@ class CreateAdminCommandTest extends TestCase
     public function testAdminCreateWithOptions()
     {
         $name = $this->faker->userName;
-        $email = $this->faker->unique->safeEmail;
+        $email = $this->faker->unique()->safeEmail;
         $password = $this->faker->slug;
         $console = $this->artisan("admin:create --name=\"$name\" --email=\"$email\" --password=\"$password\"");
         $console->assertExitCode(0);
@@ -33,7 +33,7 @@ class CreateAdminCommandTest extends TestCase
      */
     public function testAdminCreateWithoutOptions()
     {
-        $email = $this->faker->unique->safeEmail;
+        $email = $this->faker->unique()->safeEmail;
         $password = $this->faker->password(minLength: 8);
         $console = $this->artisan('admin:create');
         $console->expectsQuestion('What is the name?', $this->faker->userName);

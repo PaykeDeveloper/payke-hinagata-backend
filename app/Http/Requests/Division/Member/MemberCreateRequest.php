@@ -16,25 +16,21 @@ class MemberCreateRequest extends FormRequest
 {
     public function rules(): array
     {
-        /** @var ?User $user */
-        $user = $this->user();
-        /** @var ?Division $division */
+        /** @var Division $division */
         $division = $this->route('division');
-        $member = $user && $division ? $user->findMember($division) : null;
-        $enableAll = $member?->hasCreateAllPermissionTo(ModelType::member)
-            || $user?->hasCreateAllPermissionTo(ModelType::member);
-
         return [
             'user_id' => ['required', 'integer',
                 Rule::unique('members')->where(function (Builder $query) use ($division) {
                     return $query->where('division_id', $division->id);
                 }),
-                Rule::exists('users', 'id')->where(function (Builder $query) use ($enableAll, $user) {
-                    if ($enableAll) {
-                        return $query;
-                    } else {
-                        return $query->where('id', $user->id);
-                    }
+                Rule::exists('users', 'id')->where(function (Builder $query) use ($division) {
+                    /** @var User $user */
+                    $user = $this->user();
+                    $member = $user->findMember($division);
+                    $enableAll = $member?->hasCreateAllPermissionTo(ModelType::member)
+                        || $user->hasCreateAllPermissionTo(ModelType::member);
+
+                    return $enableAll ? $query : $query->where('id', $user->id);
                 })],
             'role_names' => ['array'],
             'role_names.*' => ['string', Rule::exists('roles', 'name')->where(function (Builder $query) {

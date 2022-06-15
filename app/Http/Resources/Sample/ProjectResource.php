@@ -14,6 +14,7 @@ class ProjectResource extends JsonResource
         return [
             'id' => $project->id,
             'division_id' => $project->division_id,
+            'member_id' => $project->member_id,
             'slug' => $project->slug,
             'name' => $project->name,
             'cover_url' => $project->cover_url,

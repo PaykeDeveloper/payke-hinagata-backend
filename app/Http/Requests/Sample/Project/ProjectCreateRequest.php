@@ -5,7 +5,10 @@
 namespace App\Http\Requests\Sample\Project;
 
 use App\Http\Requests\FormRequest;
+use App\Models\Division\Division;
 use App\Models\Sample\Priority;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class ProjectCreateRequest extends FormRequest
@@ -19,6 +22,11 @@ class ProjectCreateRequest extends FormRequest
     {
         return [
 //            'slug' => ['required', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'unique:projects'],
+            'member_id' => ['nullable', 'integer', Rule::exists('members', 'id')->where(function (Builder $query) {
+                /** @var Division $division */
+                $division = $this->route('division');
+                return $query->where('division_id', '=', $division->id);
+            })],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['string'],
             'priority' => ['nullable', new Enum(Priority::class)],

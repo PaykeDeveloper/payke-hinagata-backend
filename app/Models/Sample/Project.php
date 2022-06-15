@@ -5,6 +5,7 @@
 namespace App\Models\Sample;
 
 use App\Models\Division\Division;
+use App\Models\Division\Member;
 use App\Models\Traits\OptimisticLocking;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -83,6 +84,11 @@ class Project extends Model implements HasMedia
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
+    }
+
+    public function member(): BelongsTo
+    {
+        return $this->belongsTo(Member::class);
     }
 
     /**

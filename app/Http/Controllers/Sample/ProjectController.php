@@ -40,6 +40,7 @@ class ProjectController extends Controller
      * {
      * "id": 1,
      * "division_id": 1,
+     * "member_id": 83,
      * "slug": "723fd6ef-d0db-3fac-81a8-64866fb515a7",
      * "name": "Grant Gerlach DVM",
      * "cover_url": "http://localhost:8000/storage/1/blanditiis-est-nisi-animi-dolore-quasi-animi-recusandae.png",
@@ -67,6 +68,7 @@ class ProjectController extends Controller
      * {
      * "id": 1,
      * "division_id": 1,
+     * "member_id": 83,
      * "slug": "723fd6ef-d0db-3fac-81a8-64866fb515a7",
      * "name": "Grant Gerlach DVM",
      * "cover_url": "http://localhost:8000/storage/1/blanditiis-est-nisi-animi-dolore-quasi-animi-recusandae.png",
@@ -94,6 +96,7 @@ class ProjectController extends Controller
      * {
      * "id": 1,
      * "division_id": 1,
+     * "member_id": 83,
      * "slug": "723fd6ef-d0db-3fac-81a8-64866fb515a7",
      * "name": "Grant Gerlach DVM",
      * "cover_url": "http://localhost:8000/storage/1/blanditiis-est-nisi-animi-dolore-quasi-animi-recusandae.png",
@@ -120,6 +123,7 @@ class ProjectController extends Controller
      * {
      * "id": 1,
      * "division_id": 1,
+     * "member_id": 83,
      * "slug": "723fd6ef-d0db-3fac-81a8-64866fb515a7",
      * "name": "Grant Gerlach DVM",
      * "cover_url": "http://localhost:8000/storage/1/blanditiis-est-nisi-animi-dolore-quasi-animi-recusandae.png",

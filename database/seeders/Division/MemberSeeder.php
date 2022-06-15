@@ -16,10 +16,10 @@ class MemberSeeder extends Seeder
     {
         $count = rand(1, 5);
         for ($i = 0; $i < $count; $i++) {
-            $user = User::inRandomOrder()->first();
-            $division = Division::inRandomOrder()->first();
+            $user = User::query()->inRandomOrder()->first();
+            $division = Division::query()->inRandomOrder()->first();
             /** @var Member $member */
-            $member = Member::updateOrCreate([
+            $member = Member::query()->updateOrCreate([
                 'user_id' => $user->id,
                 'division_id' => $division->id,
             ]);

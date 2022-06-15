@@ -12,8 +12,8 @@ class InvitationSeeder extends Seeder
     {
         $count = rand(1, 5);
         for ($i = 0; $i < $count; $i++) {
-            $user = User::inRandomOrder()->first();
-            Invitation::factory()->create(['created_by' => $user->id]);
+            $user = User::query()->inRandomOrder()->first();
+            Invitation::factory()->for($user, 'createdBy')->create();
         }
     }
 }

@@ -80,7 +80,7 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
     {
         $userRoles = UserRole::all();
         $allRoles = Role::query()->pluck('name')->all();
-        return array_filter($roleNames, function ($name) use ($userRoles, $allRoles) {
+        return array_filter($roleNames, function (string $name) use ($userRoles, $allRoles) {
             return in_array($name, $userRoles) && in_array($name, $allRoles);
         });
     }

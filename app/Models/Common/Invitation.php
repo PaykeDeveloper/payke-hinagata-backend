@@ -2,9 +2,11 @@
 
 namespace App\Models\Common;
 
+use App\Models\User;
 use App\Notifications\Common\InvitationUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Notification;
 
 /**
@@ -45,5 +47,10 @@ class Invitation extends Model
         $this->status = InvitationStatus::Approved;
         $this->save();
         return $this;
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

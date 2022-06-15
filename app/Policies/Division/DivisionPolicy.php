@@ -8,7 +8,6 @@ use App\Models\Division\Division;
 use App\Models\ModelType;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Symfony\Component\HttpFoundation\Response;
 
 class DivisionPolicy
 {
@@ -18,66 +17,38 @@ class DivisionPolicy
 
     public function viewAny(User $user): bool
     {
-        if ($user->hasViewPermissionTo(self::MODEL)) {
-            return true;
-        }
-
-        abort(Response::HTTP_NOT_FOUND);
+        return $user->hasViewPermissionTo(self::MODEL);
     }
 
     public function view(User $user, Division $division): bool
     {
         $member = $user->findMember($division);
-        if ($member?->hasViewOwnPermissionTo(self::MODEL)) {
-            return true;
+        if ($member) {
+            return $member->hasViewPermissionTo(self::MODEL);
         }
-
-        if ($user->hasViewAllPermissionTo(self::MODEL)) {
-            return true;
-        }
-
-        abort(Response::HTTP_NOT_FOUND);
+        return $user->hasViewAllPermissionTo(self::MODEL);
     }
 
     public function create(User $user): bool
     {
-        return $this->viewAny($user)
-            && $user->hasCreatePermissionTo(self::MODEL);
+        return $user->hasCreatePermissionTo(self::MODEL);
     }
 
     public function update(User $user, Division $division): bool
     {
-        if (!$this->view($user, $division)) {
-            return false;
-        }
-
         $member = $user->findMember($division);
-        if ($member?->hasUpdateOwnPermissionTo(self::MODEL)) {
-            return true;
+        if ($member) {
+            return $member->hasUpdatePermissionTo(self::MODEL);
         }
-
-        if ($user->hasUpdateAllPermissionTo(self::MODEL)) {
-            return true;
-        }
-
-        return false;
+        return $user->hasUpdateAllPermissionTo(self::MODEL);
     }
 
     public function delete(User $user, Division $division): bool
     {
-        if (!$this->view($user, $division)) {
-            return false;
-        }
-
         $member = $user->findMember($division);
-        if ($member?->hasDeleteOwnPermissionTo(self::MODEL)) {
-            return true;
+        if ($member) {
+            return $member->hasDeletePermissionTo(self::MODEL);
         }
-
-        if ($user->hasDeleteAllPermissionTo(self::MODEL)) {
-            return true;
-        }
-
-        return false;
+        return $user->hasDeleteAllPermissionTo(self::MODEL);
     }
 }

@@ -42,7 +42,7 @@ class UserControllerTest extends TestCase
         $response = $this->getJson(route('users.index'));
 
         $response->assertOk()
-            ->assertJsonCount(User::count())
+            ->assertJsonCount(User::query()->count())
             ->assertJsonFragment(['email' => $user->email]);
     }
 
@@ -96,7 +96,7 @@ class UserControllerTest extends TestCase
 
         $response->assertNoContent();
 
-        $result = Invitation::find($user->id);
+        $result = Invitation::query()->find($user->id);
         $this->assertNull($result);
     }
 
@@ -115,7 +115,7 @@ class UserControllerTest extends TestCase
 
         $response = $this->getJson(route('users.index'));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -158,7 +158,7 @@ class UserControllerTest extends TestCase
      *
      * @dataProvider provideUnAuthorizedOtherRole
      */
-    public function testUpdateUnAuthorized($role, $status)
+    public function testUpdateUnAuthorized($role)
     {
         $this->user->syncRoles($role);
         $user = User::factory()->create();
@@ -168,7 +168,7 @@ class UserControllerTest extends TestCase
 
         $response = $this->patchJson(route('users.update', ['user' => $user->id]), $data);
 
-        $response->assertStatus($status);
+        $response->assertForbidden();
     }
 
     /**
@@ -176,14 +176,14 @@ class UserControllerTest extends TestCase
      *
      * @dataProvider provideUnAuthorizedOtherRole
      */
-    public function testDestroyUnAuthorized($role, $status)
+    public function testDestroyUnAuthorized($role)
     {
         $this->user->syncRoles($role);
         $user = User::factory()->create();
 
         $response = $this->deleteJson(route('users.destroy', ['user' => $user->id]));
 
-        $response->assertStatus($status);
+        $response->assertForbidden();
     }
 
     public function provideAuthorizedViewRole(): array
@@ -213,8 +213,8 @@ class UserControllerTest extends TestCase
     public function provideUnAuthorizedOtherRole(): array
     {
         return [
-            [UserRole::MANAGER, Response::HTTP_FORBIDDEN],
-            [UserRole::STAFF, Response::HTTP_NOT_FOUND],
+            [UserRole::MANAGER],
+            [UserRole::STAFF],
         ];
     }
 }

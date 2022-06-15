@@ -37,12 +37,13 @@ class PermissionSeeder extends Seeder
 
             foreach ($permissions as $permission) {
                 $name = PermissionType::getName($model, $permission);
-                $permission = Permission::updateOrCreate([
+                /** @var Permission $permission */
+                $permission = Permission::query()->updateOrCreate([
                     'name' => $name,
                 ]);
                 $ids[] = $permission->id;
             }
         }
-        Permission::whereNotIn('id', $ids)->delete();
+        Permission::query()->whereNotIn('id', $ids)->delete();
     }
 }

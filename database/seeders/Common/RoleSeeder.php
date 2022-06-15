@@ -52,13 +52,15 @@ class RoleSeeder extends Seeder
 
         $ids = [];
 
-        $adminRole = Role::updateOrCreate(['name' => UserRole::ADMINISTRATOR]);
-        $adminRole->syncPermissions(Permission::pluck('name')->all());
+        /** @var Role $adminRole */
+        $adminRole = Role::query()->updateOrCreate(['name' => UserRole::ADMINISTRATOR]);
+        $adminRole->syncPermissions(Permission::query()->pluck('name')->all());
         $ids[] = $adminRole->id;
 
         foreach ($dataSet as $value) {
             $name = $value['name'];
-            $role = Role::updateOrCreate([
+            /** @var Role $role */
+            $role = Role::query()->updateOrCreate([
                 'name' => $name,
             ]);
             $ids[] = $role->id;
@@ -69,6 +71,6 @@ class RoleSeeder extends Seeder
                 $role->syncPermissions($permissions);
             }
         }
-        Role::whereNotIn('id', $ids)->delete();
+        Role::query()->whereNotIn('id', $ids)->delete();
     }
 }

@@ -31,7 +31,7 @@ class TokenController extends AuthenticatedSessionController
      */
     public function storeToken(TokenCreateRequest $request): mixed
     {
-        return $this->loginPipeline($request)->then(function ($request) {
+        return $this->loginPipeline($request)->then(function (TokenCreateRequest $request) {
             $resource = $this->repository->store($request->validated(), $request->user());
             return TokenResource::make($resource);
         });

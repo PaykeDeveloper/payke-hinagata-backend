@@ -44,14 +44,9 @@ class ProjectTest extends TestCase
         /** @var Project $project */
         $project = Project::factory()->create();
         $expected = $project->lock_version - 1;
-        try {
-            $project->update([
-                'name' => $this->faker->name,
-                'lock_version' => $expected,
-            ]);
-        } catch (ValidationException $e) {
-            $this->assertEquals($expected, $project->lock_version);
-            throw $e;
-        }
+        $project->update([
+            'name' => $this->faker->name,
+            'lock_version' => $expected,
+        ]);
     }
 }

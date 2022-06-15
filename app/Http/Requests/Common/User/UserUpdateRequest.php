@@ -12,7 +12,7 @@ class UserUpdateRequest extends FormRequest
 {
     public function rules(): array
     {
-        /** @var ?User $user */
+        /** @var User $user */
         $user = $this->route('user');
         return [
             'name' => ['string', 'max:255'],
