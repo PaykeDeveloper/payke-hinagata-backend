@@ -7,6 +7,7 @@ use App\Models\Common\InvitationStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
@@ -98,5 +99,35 @@ class FortifyTest extends TestCase
 
         $response->assertNoContent();
         $this->assertFalse($this->isAuthenticated());
+    }
+
+    public function testForgetPassword()
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $data = [
+            'email' => $user->email,
+        ];
+        $response = $this->postJson('forgot-password', $data);
+        $response->assertOk();
+    }
+
+    public function testResetPassword()
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        Password::broker(config('fortify.passwords'))->sendResetLink([
+            'email' => $user->email,
+        ], function (User $user, string $token) {
+            $password = $this->faker->password(minLength: 8);
+            $data = [
+                'token' => $token,
+                'email' => $user->email,
+                'password' => $password,
+                'password_confirmation' => $password,
+            ];
+            $response = $this->postJson('reset-password', $data);
+            $response->assertOk();
+        });
     }
 }

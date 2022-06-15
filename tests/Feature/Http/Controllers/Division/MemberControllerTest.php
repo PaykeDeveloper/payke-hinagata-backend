@@ -48,7 +48,11 @@ class MemberControllerTest extends TestCase
     public function testIndexSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.members.index', ['division' => $this->division->id]));
 
@@ -66,7 +70,11 @@ class MemberControllerTest extends TestCase
     public function testStoreSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
         $user = User::factory()->create();
 
         $data = [
@@ -88,7 +96,11 @@ class MemberControllerTest extends TestCase
     public function testShowSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.members.show', [
             'division' => $this->division->id,
@@ -108,7 +120,11 @@ class MemberControllerTest extends TestCase
     public function testUpdateSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = ['role_names' => [MemberRole::MEMBER]];
 
@@ -127,7 +143,11 @@ class MemberControllerTest extends TestCase
     public function testDestroySuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->deleteJson(route('divisions.members.destroy', [
             'division' => $this->division->id,
@@ -178,13 +198,10 @@ class MemberControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    /**
-     * @dataProvider provideAuthorizedRole
-     */
-    public function testStoreDuplicated($userRole, $memberRole)
+    public function testStoreDuplicated()
     {
-        $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        $this->user->syncRoles(UserRole::STAFF);
+        $this->member->syncRoles(MemberRole::MANAGER);
 
         $data = [
             'user_id' => $this->user->id,
@@ -252,6 +269,8 @@ class MemberControllerTest extends TestCase
     public function provideAuthorizedRole(): array
     {
         return [
+            [UserRole::ADMINISTRATOR, null],
+            [UserRole::MANAGER, null],
             [UserRole::STAFF, MemberRole::MANAGER],
         ];
     }

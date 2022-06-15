@@ -90,7 +90,11 @@ class DivisionControllerTest extends TestCase
     public function testShowSuccessOwn($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.show', ['division' => $this->division->id]));
 
@@ -118,7 +122,11 @@ class DivisionControllerTest extends TestCase
     public function testUpdateSuccessOwn($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = ['name' => $this->faker->name];
 
@@ -150,7 +158,11 @@ class DivisionControllerTest extends TestCase
     public function testDestroySuccessOwn($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->deleteJson(route('divisions.destroy', ['division' => $this->division->id]));
 
@@ -212,7 +224,11 @@ class DivisionControllerTest extends TestCase
     public function testShowUnAuthorized($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.show', ['division' => $this->division->id]));
 
@@ -300,6 +316,8 @@ class DivisionControllerTest extends TestCase
     public function provideAuthorizedShowOwnRole(): array
     {
         return [
+            [UserRole::ADMINISTRATOR, null],
+            [UserRole::MANAGER, null],
             [UserRole::STAFF, MemberRole::MANAGER],
             [UserRole::STAFF, MemberRole::MEMBER],
         ];
@@ -339,6 +357,8 @@ class DivisionControllerTest extends TestCase
     public function provideAuthorizedUpdateDeleteOwnRole(): array
     {
         return [
+            [UserRole::ADMINISTRATOR, null],
+            [UserRole::MANAGER, null],
             [UserRole::ORGANIZER, MemberRole::MANAGER],
             [UserRole::STAFF, MemberRole::MANAGER],
         ];

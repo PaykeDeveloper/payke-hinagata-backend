@@ -52,7 +52,11 @@ class ProjectControllerTest extends TestCase
     public function testIndexSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.projects.index', ['division' => $this->division->id]));
 
@@ -67,7 +71,11 @@ class ProjectControllerTest extends TestCase
     public function testStoreSuccessWithRequiredParams($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = ['name' => $this->faker->name];
 
@@ -85,14 +93,20 @@ class ProjectControllerTest extends TestCase
     public function testStoreSuccessWithFullParams($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
+        /** @var Member $member */
+        $member = Member::factory()->for($this->division)->create();
         $startDate = $this->faker->date();
         $finishedAt = $this->faker->dateTimeBetween($startDate, '+6day')
             ->setTimezone(new DateTimeZone('Asia/Tokyo'))
             ->format("Y-m-d\TH:i:s.u\Z");
         $data = [
-            'member_id' => $this->member->id,
+            'member_id' => $member->id,
             'name' => $this->faker->name,
             'description' => $this->faker->text,
             'priority' => $this->faker->randomElement(Priority::values()),
@@ -118,7 +132,11 @@ class ProjectControllerTest extends TestCase
     public function testStoreAsyncSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = ['name' => $this->faker->name];
 
@@ -133,7 +151,11 @@ class ProjectControllerTest extends TestCase
     public function testShowSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
@@ -150,7 +172,11 @@ class ProjectControllerTest extends TestCase
     public function testUpdateSuccessWithSingleParam($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = [
             'name' => $this->faker->name,
@@ -171,7 +197,11 @@ class ProjectControllerTest extends TestCase
     public function testUpdateSuccessWithFullParams($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         /** @var Member $member */
         $member = Member::factory()->for($this->member->division)->create();
@@ -208,7 +238,11 @@ class ProjectControllerTest extends TestCase
     public function testUpdateAsyncSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = [
             'name' => $this->faker->name,
@@ -228,7 +262,11 @@ class ProjectControllerTest extends TestCase
     public function testDestroySuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
@@ -247,7 +285,11 @@ class ProjectControllerTest extends TestCase
     public function testExportSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->get("api/v1/divisions/{$this->division->id}/projects/download");
 
@@ -328,7 +370,11 @@ class ProjectControllerTest extends TestCase
     public function testUpdateOptimisticLock($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = [
             'name' => $this->faker->name,
@@ -350,7 +396,11 @@ class ProjectControllerTest extends TestCase
     public function testUpdateIncorrectMember($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         /** @var Member $member */
         $member = Member::factory()->create();
@@ -386,6 +436,7 @@ class ProjectControllerTest extends TestCase
     public function provideAuthorizedViewRole(): array
     {
         return [
+            [UserRole::ADMINISTRATOR, null],
             [UserRole::MANAGER, MemberRole::MANAGER],
             [UserRole::MANAGER, MemberRole::MEMBER],
             [UserRole::STAFF, MemberRole::MANAGER],
@@ -403,6 +454,7 @@ class ProjectControllerTest extends TestCase
     public function provideAuthorizedOtherRole(): array
     {
         return [
+            [UserRole::ADMINISTRATOR, null],
             [UserRole::MANAGER, MemberRole::MANAGER],
             [UserRole::STAFF, MemberRole::MANAGER],
         ];
