@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Http\Controllers\Common;
 
-use App\Models\Common\Permission;
 use App\Models\Common\PermissionType;
+use App\Models\ModelType;
 use App\Models\User;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
@@ -31,7 +30,7 @@ class PermissionControllerTest extends TestCase
      */
     public function testIndexSuccess()
     {
-        $this->user->givePermissionTo(PermissionType::getName(PermissionType::VIEW_ALL, Permission::RESOURCE));
+        $this->user->givePermissionTo(PermissionType::getName(ModelType::permission, PermissionType::viewAll));
         $response = $this->getJson(route('permissions.index'));
 
         $response->assertOk()
@@ -51,6 +50,6 @@ class PermissionControllerTest extends TestCase
     {
         $response = $this->getJson(route('permissions.index'));
 
-        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertForbidden();
     }
 }

@@ -11,12 +11,11 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+/.idea
+#/.vscode
 
 # macOS
 .DS_Store
-
-# Intellij IDEA
-/.idea/
 
 # Project
 /coverage
@@ -27,3 +26,4 @@ yarn-error.log
 /public/docs/
 /.scribe
 /storage/framework/laravel-excel/
+.env.testing

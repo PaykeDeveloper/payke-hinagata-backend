@@ -10,7 +10,6 @@ use App\Models\Division\Member;
 use App\Models\Division\MemberRole;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
@@ -35,13 +34,8 @@ class MemberControllerTest extends TestCase
         $this->actingAs($this->user);
 
         $this->division = Division::factory()->create();
-        $this->member = Member::factory()->create([
-            'user_id' => $this->user->id,
-            'division_id' => $this->division->id,
-        ]);
-        $this->target_member = Member::factory()->create([
-            'division_id' => $this->division->id,
-        ]);
+        $this->member = Member::factory()->for($this->user)->for($this->division)->create();
+        $this->target_member = Member::factory()->for($this->division)->create();
     }
 
     /**
@@ -54,13 +48,20 @@ class MemberControllerTest extends TestCase
     public function testIndexSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.members.index', ['division' => $this->division->id]));
 
         $response->assertOk()
             ->assertJsonCount(Member::whereDivisionId($this->division->id)->count())
-            ->assertJsonFragment($this->target_member->toArray());
+            ->assertJsonFragment([
+                'division_id' => $this->target_member->division_id,
+                'user_id' => $this->target_member->user_id,
+            ]);
     }
 
     /**
@@ -69,7 +70,11 @@ class MemberControllerTest extends TestCase
     public function testStoreSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
         $user = User::factory()->create();
 
         $data = [
@@ -91,7 +96,11 @@ class MemberControllerTest extends TestCase
     public function testShowSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.members.show', [
             'division' => $this->division->id,
@@ -99,7 +108,10 @@ class MemberControllerTest extends TestCase
         ]));
 
         $response->assertOk()
-            ->assertJsonFragment($this->target_member->toArray());
+            ->assertJsonFragment([
+                'division_id' => $this->target_member->division_id,
+                'user_id' => $this->target_member->user_id,
+            ]);
     }
 
     /**
@@ -108,7 +120,11 @@ class MemberControllerTest extends TestCase
     public function testUpdateSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = ['role_names' => [MemberRole::MEMBER]];
 
@@ -127,7 +143,11 @@ class MemberControllerTest extends TestCase
     public function testDestroySuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->deleteJson(route('divisions.members.destroy', [
             'division' => $this->division->id,
@@ -136,7 +156,7 @@ class MemberControllerTest extends TestCase
 
         $response->assertNoContent();
 
-        $result = Member::find($this->target_member->id);
+        $result = Member::query()->find($this->target_member->id);
         $this->assertNull($result);
     }
 
@@ -154,7 +174,7 @@ class MemberControllerTest extends TestCase
 
         $response = $this->getJson(route('divisions.members.index', ['division' => $this->division->id]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -175,16 +195,13 @@ class MemberControllerTest extends TestCase
             'division' => $this->division->id,
         ]), $data);
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
-    /**
-     * @dataProvider provideAuthorizedRole
-     */
-    public function testStoreDuplicated($userRole, $memberRole)
+    public function testStoreDuplicated()
     {
-        $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        $this->user->syncRoles(UserRole::STAFF);
+        $this->member->syncRoles(MemberRole::MANAGER);
 
         $data = [
             'user_id' => $this->user->id,
@@ -195,7 +212,7 @@ class MemberControllerTest extends TestCase
             'division' => $this->division->id,
         ]), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['user_id']]);
     }
 
@@ -212,7 +229,7 @@ class MemberControllerTest extends TestCase
             'member' => $this->target_member->id,
         ]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -230,7 +247,7 @@ class MemberControllerTest extends TestCase
             'member' => $this->target_member->id,
         ]), $data);
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -246,7 +263,7 @@ class MemberControllerTest extends TestCase
             'member' => $this->target_member->id,
         ]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     public function provideAuthorizedRole(): array

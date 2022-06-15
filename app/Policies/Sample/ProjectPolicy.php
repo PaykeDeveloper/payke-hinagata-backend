@@ -6,17 +6,18 @@ namespace App\Policies\Sample;
 
 use App\Models\Division\Division;
 use App\Models\Division\Member;
+use App\Models\ModelType;
 use App\Models\Sample\Project;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProjectPolicy
 {
     use HandlesAuthorization;
 
-    private const RESOURCE = Project::RESOURCE;
+    private const MODEL = ModelType::project;
 
     private Division $division;
     private ?Member $member;
@@ -28,89 +29,56 @@ class ProjectPolicy
         /** @var Division $division */
         $division = $request->route('division');
         $this->division = $division;
-        $this->member = Member::findByUniqueKeys($user->id, $division->id);
+        $this->member = $user->findMember($division);
     }
 
     public function viewAny(User $user): bool
     {
-        if ($this->member?->hasViewAllPermissionTo(self::RESOURCE)) {
-            return true;
+        if ($this->member) {
+            return $this->member->hasViewAllPermissionTo(self::MODEL);
         }
-
-        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
-            return true;
-        }
-
-        abort(Response::HTTP_NOT_FOUND);
-        return false;
+        return $user->hasViewAllPermissionTo(self::MODEL);
     }
 
     public function view(User $user, Project $project): bool
     {
-        if ($this->division->id !== $project->division_id) {
-            abort(Response::HTTP_NOT_FOUND);
+        $this->assertNotFound($project);
+        if ($this->member) {
+            return $this->member->hasViewAllPermissionTo(self::MODEL);
         }
-
-        if ($this->member?->hasViewAllPermissionTo(self::RESOURCE)) {
-            return true;
-        }
-
-        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
-            return true;
-        }
-
-        abort(Response::HTTP_NOT_FOUND);
-        return false;
+        return $user->hasViewAllPermissionTo(self::MODEL);
     }
 
     public function create(User $user): bool
     {
-        if (!$this->viewAny($user)) {
-            return false;
+        if ($this->member) {
+            return $this->member->hasCreateAllPermissionTo(self::MODEL);
         }
-
-        if ($this->member?->hasCreateAllPermissionTo(self::RESOURCE)) {
-            return true;
-        }
-
-        if ($user->hasCreateAllPermissionTo(self::RESOURCE)) {
-            return true;
-        }
-
-        return false;
+        return $user->hasCreateAllPermissionTo(self::MODEL);
     }
 
     public function update(User $user, Project $project): bool
     {
-        if (!$this->view($user, $project)) {
-            return false;
+        $this->assertNotFound($project);
+        if ($this->member) {
+            return $this->member->hasUpdateAllPermissionTo(self::MODEL);
         }
-
-        if ($this->member?->hasUpdateAllPermissionTo(self::RESOURCE)) {
-            return true;
-        }
-
-        if ($user->hasUpdateAllPermissionTo(self::RESOURCE)) {
-            return true;
-        }
-
-        return false;
+        return $user->hasUpdateAllPermissionTo(self::MODEL);
     }
 
     public function delete(User $user, Project $project): bool
     {
-        if (!$this->view($user, $project)) {
-            return false;
+        $this->assertNotFound($project);
+        if ($this->member) {
+            return $this->member->hasDeleteAllPermissionTo(self::MODEL);
         }
+        return $user->hasDeleteAllPermissionTo(self::MODEL);
+    }
 
-        if ($this->member?->hasDeleteAllPermissionTo(self::RESOURCE)) {
-            return true;
+    private function assertNotFound(Project $project): void
+    {
+        if ($this->division->id !== $project->division_id) {
+            abort(Response::HTTP_NOT_FOUND);
         }
-
-        if ($user->hasDeleteAllPermissionTo(self::RESOURCE)) {
-            return true;
-        }
-
-        return false;
     }
 }

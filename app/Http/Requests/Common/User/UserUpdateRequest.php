@@ -25,7 +25,7 @@ class UserUpdateRequest extends FormRequest
             'role_names' => ['array'],
             'role_names.*' => ['string', Rule::exists('roles', 'name')->where(function (Builder $query) {
                 return $query->whereIn('name', UserRole::all());
-            })]
+            })],
         ];
     }
 }

@@ -2,85 +2,50 @@
 
 namespace App\Policies\Common;
 
+use App\Models\ModelType;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Http\Response;
 
 class UserPolicy
 {
     use HandlesAuthorization;
 
-    private const RESOURCE = User::RESOURCE;
+    private const MODEL = ModelType::user;
 
     public function viewAny(User $user): bool
     {
-        if ($user->hasViewPermissionTo(self::RESOURCE)) {
-            return true;
-        }
-
-        abort(Response::HTTP_NOT_FOUND);
-        return false;
+        return $user->hasViewPermissionTo(self::MODEL);
     }
 
     public function view(User $user, User $targetUser): bool
     {
-        if ($user->hasViewAllPermissionTo(self::RESOURCE)) {
+        if ($user->hasViewAllPermissionTo(self::MODEL)) {
             return true;
         }
-        if (
-            $user->id === $targetUser->id &&
-            $user->hasViewOwnPermissionTo(self::RESOURCE)
-        ) {
-            return true;
-        }
-
-        abort(Response::HTTP_NOT_FOUND);
-        return false;
+        return $user->id === $targetUser->id &&
+            $user->hasViewOwnPermissionTo(self::MODEL);
     }
 
     public function create(User $user): bool
     {
-        return $this->viewAny($user)
-            && $user->hasCreateAllPermissionTo(self::RESOURCE);
+        return $user->hasCreateAllPermissionTo(self::MODEL);
     }
 
     public function update(User $user, User $targetUser): bool
     {
-        if (!$this->view($user, $targetUser)) {
-            return false;
-        }
-
-        if (
-            $user->id === $targetUser->id &&
-            $user->hasUpdateOwnPermissionTo(self::RESOURCE)
-        ) {
+        if ($user->hasUpdateAllPermissionTo(self::MODEL)) {
             return true;
         }
-
-        if ($user->hasUpdateAllPermissionTo(self::RESOURCE)) {
-            return true;
-        }
-
-        return false;
+        return $user->id === $targetUser->id &&
+            $user->hasUpdateOwnPermissionTo(self::MODEL);
     }
 
     public function delete(User $user, User $targetUser): bool
     {
-        if (!$this->view($user, $targetUser)) {
-            return false;
-        }
-
-        if (
-            $user->id === $targetUser->id &&
-            $user->hasDeleteOwnPermissionTo(self::RESOURCE)
-        ) {
+        if ($user->hasDeleteAllPermissionTo(self::MODEL)) {
             return true;
         }
-
-        if ($user->hasDeleteAllPermissionTo(self::RESOURCE)) {
-            return true;
-        }
-
-        return false;
+        return $user->id === $targetUser->id &&
+            $user->hasDeleteOwnPermissionTo(self::MODEL);
     }
 }

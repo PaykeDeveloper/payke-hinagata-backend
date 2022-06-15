@@ -8,6 +8,7 @@ use App\Models\Common\InvitationStatus;
 use App\Models\Common\Role;
 use App\Models\Common\UserRole;
 use App\Models\User;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -27,13 +28,14 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
     {
         $validatedInput = $this->validateInput($input);
         /** @var Invitation $invitation */
-        $invitation = Invitation::find($validatedInput['id']);
-        $user = User::create([
+        $invitation = Invitation::query()->find($validatedInput['id']);
+        $user = new User([
             'name' => $invitation->name,
             'email' => $invitation->email,
             'password' => Hash::make($validatedInput['password']),
             'locale' => request()->getPreferredLanguage(),
         ]);
+        $user->save();
         $roleNames = $this->filteredRoles($invitation->role_names);
         $user->syncRoles($roleNames);
         $invitation->approved();
@@ -52,10 +54,10 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
             'token' => [
                 'required',
                 'string',
-                Rule::exists(Invitation::class)->where(function ($query) use ($updatedInput) {
+                Rule::exists(Invitation::class)->where(function (Builder $query) use ($updatedInput) {
                     return $query
-                        ->where('id', $updatedInput['id'] ?? null)
-                        ->where('status', InvitationStatus::PENDING);
+                        ->where('id', '=', $updatedInput['id'] ?? null)
+                        ->where('status', '=', InvitationStatus::Pending);
                 }),
             ],
         ], messages: [
@@ -77,8 +79,8 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
     private function filteredRoles(array $roleNames): array
     {
         $userRoles = UserRole::all();
-        $allRoles = Role::pluck('name')->all();
-        return array_filter($roleNames, function ($name) use ($userRoles, $allRoles) {
+        $allRoles = Role::query()->pluck('name')->all();
+        return array_filter($roleNames, function (string $name) use ($userRoles, $allRoles) {
             return in_array($name, $userRoles) && in_array($name, $allRoles);
         });
     }

@@ -7,17 +7,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProjectsTable extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->foreignId('division_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('member_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->uuid('slug')->unique();
             $table->string('name');
             $table->text('description');
-            $table->enum('priority', Priority::all())->nullable();
+            $table->enum('priority', [
+                Priority::High->value,
+                Priority::Middle->value,
+                Priority::Low->value,
+            ])->nullable();
             $table->boolean('approved')->nullable();
             $table->date('start_date')->nullable();
             $table->dateTimeTz('finished_at')->nullable();
@@ -34,4 +38,4 @@ class CreateProjectsTable extends Migration
     {
         Schema::dropIfExists('projects');
     }
-}
+};

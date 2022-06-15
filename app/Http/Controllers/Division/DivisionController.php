@@ -2,108 +2,106 @@
 
 // FIXME: SAMPLE CODE
 
-/** @noinspection PhpUnusedParameterInspection */
-
 namespace App\Http\Controllers\Division;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Division\Division\DivisionCreateRequest;
 use App\Http\Requests\Division\Division\DivisionUpdateRequest;
+use App\Http\Resources\Division\DivisionCollection;
+use App\Http\Resources\Division\DivisionResource;
 use App\Models\Division\Division;
+use App\Repositories\Division\DivisionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * @group Division Division
+ */
 class DivisionController extends Controller
 {
-    public function __construct()
+    private DivisionRepository $repository;
+
+    public function __construct(DivisionRepository $repository)
     {
+        $this->repository = $repository;
         $this->authorizeResource(Division::class);
     }
 
     /**
      * @response [
-     *   {
-     *     "id": 18,
-     *     "name": "companpdafawefd)",
-     *     "created_at": "2021-04-13T04:12:36.000000Z",
-     *     "updated_at": "2021-04-13T09:33:04.000000Z",
-     *     "request_member_id": 1
-     *   }
+     * {
+     * "id": 1,
+     * "name": "Juliet Kuhn",
+     * "request_member_id": null,
+     * "permission_names": [
+     * "user__view_all"
+     * ],
+     * "created_at": "2022-06-13T03:55:24.000000Z"
+     * }
      * ]
      */
-    public function index(Request $request): Response
+    public function index(Request $request): DivisionCollection
     {
-        return response(Division::getFromRequest($request->user()));
+        $resources = $this->repository->index($request->user());
+        return DivisionCollection::make($resources);
     }
 
     /**
-     * @response {
+     * @response
+     * {
      * "id": 1,
-     * "name": "aaaaaaaaaaaa",
-     * "created_at": "2021-04-19T10:02:33.000000Z",
-     * "updated_at": "2021-04-19T10:02:33.000000Z",
-     * "request_member_id": 1,
+     * "name": "Juliet Kuhn",
+     * "request_member_id": null,
      * "permission_names": [
-     * "project_viewAll",
-     * "project_createAll",
-     * "project_updateAll",
-     * "project_deleteAll"
-     * ]
+     * "user__view_all"
+     * ],
+     * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
      */
-    public function store(DivisionCreateRequest $request): Response
+    public function store(DivisionCreateRequest $request): DivisionResource
     {
-        $division = Division::createFromRequest($request->validated(), $request->user());
-        $division->setRequest($request->user());
-        return response($division);
+        $resource = $this->repository->store($request->validated(), $request->user());
+        return DivisionResource::make($resource);
     }
 
     /**
-     * @response {
+     * @response
+     * {
      * "id": 1,
-     * "name": "aaaaaaaaaaaa",
-     * "created_at": "2021-04-19T10:02:33.000000Z",
-     * "updated_at": "2021-04-19T10:02:33.000000Z",
-     * "request_member_id": 1,
+     * "name": "Juliet Kuhn",
+     * "request_member_id": null,
      * "permission_names": [
-     * "project_viewAll",
-     * "project_createAll",
-     * "project_updateAll",
-     * "project_deleteAll"
-     * ]
+     * "user__view_all"
+     * ],
+     * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
      */
-    public function show(Request $request, Division $division): Response
+    public function show(Request $request, Division $division): DivisionResource
     {
-        $division->setRequest($request->user());
-        return response($division);
+        return DivisionResource::make($division);
     }
 
     /**
-     * @response {
+     * @response
+     * {
      * "id": 1,
-     * "name": "aaaaaaaaaaaa",
-     * "created_at": "2021-04-19T10:02:33.000000Z",
-     * "updated_at": "2021-04-19T10:02:33.000000Z",
-     * "request_member_id": 1,
+     * "name": "Juliet Kuhn",
+     * "request_member_id": null,
      * "permission_names": [
-     * "project_viewAll",
-     * "project_createAll",
-     * "project_updateAll",
-     * "project_deleteAll"
-     * ]
+     * "user__view_all"
+     * ],
+     * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
      */
-    public function update(DivisionUpdateRequest $request, Division $division): Response
+    public function update(DivisionUpdateRequest $request, Division $division): DivisionResource
     {
-        $result = $division->updateFromRequest($request->validated());
-        $result->setRequest($request->user());
-        return response($result);
+        $resource = $this->repository->update($request->validated(), $division);
+        return DivisionResource::make($resource);
     }
 
     public function destroy(Request $request, Division $division): Response
     {
         $division->delete();
-        return response(null, 204);
+        return response()->noContent();
     }
 }

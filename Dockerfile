@@ -1,14 +1,14 @@
-FROM php:8.0.3-fpm
+FROM php:8.1-fpm
 
 RUN apt-get update
 
 # xdebug
-RUN pecl install xdebug-3.0.4
+RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 COPY ./docker/usr/local/etc/php/php.ini /usr/local/etc/php/php.ini
 
 # composer
-COPY --from=composer:2.0.14 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 RUN apt-get install -y unzip
 
 # mysql

@@ -2,52 +2,52 @@
 
 namespace App\Models\Common;
 
-final class PermissionType
+use App\Models\ModelType;
+
+enum PermissionType: string
 {
-    public const VIEW_OWN = 'viewOwn';
-    public const VIEW_ALL = 'viewAll';
-    public const CREATE_OWN = 'createOwn';
-    public const CREATE_ALL = 'createAll';
-    public const UPDATE_OWN = 'updateOwn';
-    public const UPDATE_ALL = 'updateAll';
-    public const DELETE_OWN = 'deleteOwn';
-    public const DELETE_ALL = 'deleteAll';
+    case viewOwn = 'view_own';
+    case viewAll = 'view_all';
+    case createOwn = 'create_own';
+    case createAll = 'create_all';
+    case updateOwn = 'update_own';
+    case updateAll = 'update_all';
+    case deleteOwn = 'delete_own';
+    case deleteAll = 'delete_all';
 
     public const OWN_TYPES = [
-        self::VIEW_OWN,
-        self::CREATE_OWN,
-        self::UPDATE_OWN,
-        self::DELETE_OWN,
+        self::viewOwn,
+        self::createOwn,
+        self::updateOwn,
+        self::deleteOwn,
     ];
 
     public const ALL_TYPES = [
-        self::VIEW_ALL,
-        self::CREATE_ALL,
-        self::UPDATE_ALL,
-        self::DELETE_ALL,
+        self::viewAll,
+        self::createAll,
+        self::updateAll,
+        self::deleteAll,
     ];
 
-    public static function all(): array
+    public static function getName(ModelType $model, self $permission): string
     {
-        return array_merge(self::OWN_TYPES, self::ALL_TYPES);
+        return implode("__", [$model->value, $permission->value]);
     }
 
-    public static function getName(string $type, string $resource): string
+    public static function getNames(ModelType $model, self ...$permissions): array
     {
-        return implode("_", [$resource, $type]);
+        return array_map(function (self $permission) use ($model) {
+            return self::getName($model, $permission);
+        }, $permissions);
     }
 
-    public static function getOwnNames(string $resource): array
+    public static function getOwnNames(ModelType $model): array
     {
-        return array_map(function ($type) use ($resource) {
-            return self::getName($type, $resource);
-        }, self::OWN_TYPES);
+        return self::getNames($model, ...self::OWN_TYPES);
     }
 
-    public static function getAllNames(string $resource): array
+    public static function getAllNames(ModelType $model): array
     {
-        return array_map(function ($type) use ($resource) {
-            return self::getName($type, $resource);
-        }, self::ALL_TYPES);
+        return self::getNames($model, ...self::ALL_TYPES);
     }
 }

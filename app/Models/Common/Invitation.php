@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Notifications\Common\InvitationUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Notification;
 
 /**
@@ -16,10 +16,8 @@ class Invitation extends Model
 {
     use HasFactory;
 
-    public const RESOURCE = 'invitation';
-
     protected $attributes = [
-        'status' => InvitationStatus::PENDING,
+        'status' => InvitationStatus::Pending,
     ];
 
     protected $guarded = [
@@ -35,36 +33,24 @@ class Invitation extends Model
 
     protected $casts = [
         'role_names' => 'array',
+        'status' => InvitationStatus::class,
     ];
 
-    private function sendInvitationNotification(string $token, string $locale): void
+    public function sendInvitationNotification(string $token, string $locale): void
     {
         Notification::route('mail', $this->email)
             ->notify((new InvitationUser($this, $token))->locale($locale));
     }
 
-    public static function createFromRequest(array $attributes, User $user): self
-    {
-        $invitation = new self();
-        $invitation->fill($attributes);
-        $token = Str::random(60);
-        $invitation->token = hash('sha256', $token);
-        $invitation->created_by = $user->id;
-        $invitation->save();
-        $invitation->sendInvitationNotification($token, $attributes['locale']);
-        return $invitation->fresh();
-    }
-
-    public function updateFromRequest(mixed $attributes): self
-    {
-        $this->update($attributes);
-        return $this->fresh();
-    }
-
     public function approved(): self
     {
-        $this->status = InvitationStatus::APPROVED;
+        $this->status = InvitationStatus::Approved;
         $this->save();
         return $this;
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

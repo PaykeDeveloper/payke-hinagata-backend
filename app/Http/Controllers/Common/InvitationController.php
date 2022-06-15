@@ -1,96 +1,115 @@
 <?php
 
-/** @noinspection PhpUnusedParameterInspection */
-
 namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Common\Invitation\InvitationCreateRequest;
 use App\Http\Requests\Common\Invitation\InvitationDestroyRequest;
 use App\Http\Requests\Common\Invitation\InvitationUpdateRequest;
+use App\Http\Resources\Common\InvitationResource;
 use App\Models\Common\Invitation;
+use App\Repositories\Common\InvitationRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
+/**
+ * @group Common Invitation
+ */
 class InvitationController extends Controller
 {
-    public function __construct()
+    private InvitationRepository $repository;
+
+    public function __construct(InvitationRepository $repository)
     {
+        $this->repository = $repository;
         $this->authorizeResource(Invitation::class);
     }
 
     /**
-     * @response [
+     * @response
+     * [
      * {
-     * "id":1,
-     * "status":"pending",
-     * "name":"Ova Ankunding",
-     * "email":"jayden.goodwin@nicolas.org",
-     * "created_by":1,
-     * "updated_at":"2021-04-14T07:55:48.000000Z",
-     * "created_at":"2021-04-14T07:55:48.000000Z",
+     * "id": 3,
+     * "status": "denied",
+     * "name": "Prof. Tamia Hagenes",
+     * "email": "huels.tad@beer.biz",
+     * "role_names": [
+     * "Manager"
+     * ],
+     * "created_by": 1,
+     * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
      * ]
      */
-    public function index(Request $request): Response
+    public function index(Request $request): AnonymousResourceCollection
     {
-        $invitations = Invitation::all();
-        return response($invitations);
+        $resources = Invitation::all();
+        return InvitationResource::collection($resources);
     }
 
     /**
-     * @response {
-     * "id":1,
-     * "status":"pending",
-     * "name":"Ova Ankunding",
-     * "email":"jayden.goodwin@nicolas.org",
-     * "created_by":1,
-     * "updated_at":"2021-04-14T07:55:48.000000Z",
-     * "created_at":"2021-04-14T07:55:48.000000Z",
+     * @response
+     * {
+     * "id": 3,
+     * "status": "denied",
+     * "name": "Prof. Tamia Hagenes",
+     * "email": "huels.tad@beer.biz",
+     * "role_names": [
+     * "Manager"
+     * ],
+     * "created_by": 1,
+     * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
      */
-    public function store(InvitationCreateRequest $request): Response
+    public function store(InvitationCreateRequest $request): InvitationResource
     {
-        $invitation = Invitation::createFromRequest($request->validated(), $request->user());
-        return response($invitation);
+        $resource = $this->repository->store($request->validated(), $request->user());
+        return InvitationResource::make($resource);
     }
 
     /**
-     * @response {
-     * "id":1,
-     * "status":"pending",
-     * "name":"Ova Ankunding",
-     * "email":"jayden.goodwin@nicolas.org",
-     * "created_by":1,
-     * "updated_at":"2021-04-14T07:55:48.000000Z",
-     * "created_at":"2021-04-14T07:55:48.000000Z",
+     * @response
+     * {
+     * "id": 3,
+     * "status": "denied",
+     * "name": "Prof. Tamia Hagenes",
+     * "email": "huels.tad@beer.biz",
+     * "role_names": [
+     * "Manager"
+     * ],
+     * "created_by": 1,
+     * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
      */
-    public function show(Request $request, Invitation $invitation): Response
+    public function show(Request $request, Invitation $invitation): InvitationResource
     {
-        return response($invitation);
+        return InvitationResource::make($invitation);
     }
 
     /**
-     * @response {
-     * "id":1,
-     * "status":"pending",
-     * "name":"Ova Ankunding",
-     * "email":"jayden.goodwin@nicolas.org",
-     * "created_by":1,
-     * "updated_at":"2021-04-14T07:55:48.000000Z",
-     * "created_at":"2021-04-14T07:55:48.000000Z",
+     * @response
+     * {
+     * "id": 3,
+     * "status": "denied",
+     * "name": "Prof. Tamia Hagenes",
+     * "email": "huels.tad@beer.biz",
+     * "role_names": [
+     * "Manager"
+     * ],
+     * "created_by": 1,
+     * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
      */
-    public function update(InvitationUpdateRequest $request, Invitation $invitation): Response
+    public function update(InvitationUpdateRequest $request, Invitation $invitation): InvitationResource
     {
-        $result = $invitation->updateFromRequest($request->validated());
-        return response($result);
+        $resource = $this->repository->update($request->validated(), $invitation);
+        return InvitationResource::make($resource);
     }
 
     public function destroy(InvitationDestroyRequest $request, Invitation $invitation): Response
     {
         $invitation->delete();
-        return response(null, 204);
+        return response()->noContent();
     }
 }

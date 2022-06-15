@@ -10,7 +10,6 @@ use App\Models\Division\Member;
 use App\Models\Division\MemberRole;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
@@ -34,10 +33,7 @@ class DivisionControllerTest extends TestCase
         $this->actingAs($this->user);
 
         $this->division = Division::factory()->create();
-        $this->member = Member::factory()->create([
-            'user_id' => $this->user->id,
-            'division_id' => $this->division->id,
-        ]);
+        $this->member = Member::factory()->for($this->user)->for($this->division)->create();
     }
 
     /**
@@ -55,7 +51,7 @@ class DivisionControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonCount(1)
-            ->assertJsonFragment($this->division->toArray());
+            ->assertJsonFragment(['name' => $this->division->name]);
     }
 
     /**
@@ -69,8 +65,8 @@ class DivisionControllerTest extends TestCase
         $response = $this->getJson(route('divisions.index'));
 
         $response->assertOk()
-            ->assertJsonCount(Division::count())
-            ->assertJsonFragment($division->toArray());
+            ->assertJsonCount(Division::query()->count())
+            ->assertJsonFragment(['name' => $division->name]);
     }
 
     /**
@@ -94,12 +90,16 @@ class DivisionControllerTest extends TestCase
     public function testShowSuccessOwn($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.show', ['division' => $this->division->id]));
 
         $response->assertOk()
-            ->assertJsonFragment($this->division->toArray());
+            ->assertJsonFragment(['name' => $this->division->name]);
     }
 
     /**
@@ -113,7 +113,7 @@ class DivisionControllerTest extends TestCase
         $response = $this->getJson(route('divisions.show', ['division' => $division->id]));
 
         $response->assertOk()
-            ->assertJsonFragment($division->toArray());
+            ->assertJsonFragment(['name' => $division->name]);
     }
 
     /**
@@ -122,7 +122,11 @@ class DivisionControllerTest extends TestCase
     public function testUpdateSuccessOwn($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = ['name' => $this->faker->name];
 
@@ -154,13 +158,17 @@ class DivisionControllerTest extends TestCase
     public function testDestroySuccessOwn($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->deleteJson(route('divisions.destroy', ['division' => $this->division->id]));
 
         $response->assertNoContent();
 
-        $result = Division::find($this->division->id);
+        $result = Division::query()->find($this->division->id);
         $this->assertNull($result);
     }
 
@@ -176,7 +184,7 @@ class DivisionControllerTest extends TestCase
 
         $response->assertNoContent();
 
-        $result = Division::find($division->id);
+        $result = Division::query()->find($division->id);
         $this->assertNull($result);
     }
 
@@ -193,13 +201,13 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->getJson(route('divisions.index'));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
      * @dataProvider provideUnAuthorizedCreateRole
      */
-    public function testStoreUnAuthorized($userRole, $status)
+    public function testStoreUnAuthorized($userRole)
     {
         $this->user->syncRoles($userRole);
 
@@ -207,7 +215,7 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->postJson(route('divisions.store'), $data);
 
-        $response->assertStatus($status);
+        $response->assertForbidden();
     }
 
     /**
@@ -216,11 +224,15 @@ class DivisionControllerTest extends TestCase
     public function testShowUnAuthorized($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.show', ['division' => $this->division->id]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -235,7 +247,7 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->putJson(route('divisions.update', ['division' => $this->division->id]), $data);
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertForbidden();
     }
 
     /**
@@ -250,7 +262,7 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->putJson(route('divisions.update', ['division' => $division->id]), $data);
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -263,7 +275,7 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->deleteJson(route('divisions.destroy', ['division' => $this->division->id]));
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertForbidden();
     }
 
     /**
@@ -276,7 +288,7 @@ class DivisionControllerTest extends TestCase
 
         $response = $this->deleteJson(route('divisions.destroy', ['division' => $division->id]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     public function provideAuthorizedIndexOwnRole(): array
@@ -337,8 +349,8 @@ class DivisionControllerTest extends TestCase
     public function provideUnAuthorizedCreateRole(): array
     {
         return [
-            [UserRole::ORGANIZER, Response::HTTP_NOT_FOUND],
-            [UserRole::STAFF, Response::HTTP_FORBIDDEN],
+            [UserRole::ORGANIZER],
+            [UserRole::STAFF],
         ];
     }
 

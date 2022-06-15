@@ -14,8 +14,8 @@ class ProjectSeeder extends Seeder
     {
         $count = rand(1, 5);
         for ($i = 0; $i < $count; $i++) {
-            $division = Division::inRandomOrder()->first();
-            Project::factory()->create(['division_id' => $division->id]);
+            $division = Division::query()->inRandomOrder()->first();
+            Project::factory()->for($division)->create();
         }
     }
 }

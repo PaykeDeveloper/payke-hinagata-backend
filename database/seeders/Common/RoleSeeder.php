@@ -2,16 +2,12 @@
 
 namespace Database\Seeders\Common;
 
-use App\Models\Common\Invitation;
 use App\Models\Common\Permission;
 use App\Models\Common\PermissionType;
 use App\Models\Common\Role;
 use App\Models\Common\UserRole;
-use App\Models\Division\Division;
-use App\Models\Division\Member;
 use App\Models\Division\MemberRole;
-use App\Models\Sample\Project;
-use App\Models\User;
+use App\Models\ModelType;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
@@ -21,48 +17,50 @@ class RoleSeeder extends Seeder
         $dataSet = [
             // User Roles
             ['name' => UserRole::ORGANIZER, 'permissions' => array_merge(
-                PermissionType::getAllNames(Permission::RESOURCE),
-                PermissionType::getAllNames(Role::RESOURCE),
-                PermissionType::getAllNames(User::RESOURCE),
-                PermissionType::getAllNames(Invitation::RESOURCE),
+                PermissionType::getAllNames(ModelType::permission),
+                PermissionType::getAllNames(ModelType::role),
+                PermissionType::getAllNames(ModelType::user),
+                PermissionType::getAllNames(ModelType::invitation),
             )],
             ['name' => UserRole::MANAGER, 'permissions' => array_merge(
-                PermissionType::getAllNames(Division::RESOURCE),
-                PermissionType::getAllNames(Member::RESOURCE),
+                PermissionType::getAllNames(ModelType::division),
+                PermissionType::getAllNames(ModelType::member),
                 [
-                    PermissionType::getName(PermissionType::VIEW_ALL, User::RESOURCE),
+                    PermissionType::getName(ModelType::user, PermissionType::viewAll),
                 ]
             )],
             ['name' => UserRole::STAFF, 'permissions' => array_merge(
                 [
-                    PermissionType::getName(PermissionType::VIEW_ALL, Role::RESOURCE),
-                    PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE),
+                    PermissionType::getName(ModelType::role, PermissionType::viewAll),
+                    PermissionType::getName(ModelType::division, PermissionType::viewOwn),
                 ]
             )],
 
             // Member Roles
             ['name' => MemberRole::MANAGER, 'permissions' => array_merge(
-                PermissionType::getOwnNames(Division::RESOURCE),
-                PermissionType::getAllNames(Member::RESOURCE),
-                PermissionType::getAllNames(Project::RESOURCE),
+                PermissionType::getOwnNames(ModelType::division),
+                PermissionType::getAllNames(ModelType::member),
+                PermissionType::getAllNames(ModelType::project),
             )],
             ['name' => MemberRole::MEMBER, 'permissions' => array_merge(
                 [
-                    PermissionType::getName(PermissionType::VIEW_OWN, Division::RESOURCE),
-                    PermissionType::getName(PermissionType::VIEW_ALL, Project::RESOURCE),
+                    PermissionType::getName(ModelType::division, PermissionType::viewOwn),
+                    PermissionType::getName(ModelType::project, PermissionType::viewAll),
                 ],
             )],
         ];
 
         $ids = [];
 
-        $adminRole = Role::updateOrCreate(['name' => UserRole::ADMINISTRATOR]);
-        $adminRole->syncPermissions(Permission::pluck('name')->all());
+        /** @var Role $adminRole */
+        $adminRole = Role::query()->updateOrCreate(['name' => UserRole::ADMINISTRATOR]);
+        $adminRole->syncPermissions(Permission::query()->pluck('name')->all());
         $ids[] = $adminRole->id;
 
         foreach ($dataSet as $value) {
             $name = $value['name'];
-            $role = Role::updateOrCreate([
+            /** @var Role $role */
+            $role = Role::query()->updateOrCreate([
                 'name' => $name,
             ]);
             $ids[] = $role->id;
@@ -73,6 +71,6 @@ class RoleSeeder extends Seeder
                 $role->syncPermissions($permissions);
             }
         }
-        Role::whereNotIn('id', $ids)->delete();
+        Role::query()->whereNotIn('id', $ids)->delete();
     }
 }

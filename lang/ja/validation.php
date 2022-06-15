@@ -11,7 +11,7 @@
 |
 */
 
-$base = require __DIR__ . '/../../../vendor/laravel-lang/lang/locales/ja/validation.php';
+$base = require __DIR__ . '/../../vendor/laravel-lang/lang/locales/ja/validation.php';
 return array_merge($base, [
     'locking' => '別のリクエストにより更新されています。',
     'custom' => [

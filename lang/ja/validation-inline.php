@@ -11,4 +11,4 @@
 |
 */
 
-return require __DIR__ . '/../../../vendor/laravel-lang/lang/locales/ja/validation-inline.php';
+return require __DIR__ . '/../../vendor/laravel-lang/lang/locales/ja/validation-inline.php';

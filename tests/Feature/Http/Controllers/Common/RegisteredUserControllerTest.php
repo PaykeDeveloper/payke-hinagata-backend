@@ -65,7 +65,7 @@ class RegisteredUserControllerTest extends TestCase
 
         $response = $this->postJson('register', $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['token']]);
     }
 }

@@ -57,6 +57,12 @@ class FormRequest extends BaseFormRequest
                 if ($input === null) {
                     return '';
                 }
+                return preg_replace("/\r\n/", "\n", $input);
+            case 'array':
+                if (is_array($input) && count($input) === 1 && $input[0] === null) {
+                    return [];
+                }
+                break;
         }
         return $input;
     }

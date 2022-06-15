@@ -58,7 +58,7 @@ class MyUserControllerTest extends TestCase
     public function testStoreSuccess()
     {
         $data = [
-            'locale' => LocaleType::EN,
+            'locale' => LocaleType::En,
         ];
 
         $response = $this->patchJson('api/v1/user', $data);

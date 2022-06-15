@@ -36,7 +36,7 @@ return [
                 /*
                  * Match only routes whose paths match this pattern (use * as a wildcard to match any characters). Example: 'users/*'.
                  */
-                'prefixes' => ['api/*'],
+                'prefixes' => ['api/*', 'webhook/*'],
 
                 /*
                  * Match only routes whose domains match this pattern (use * as a wildcard to match any characters). Example: 'api.*'.
@@ -171,6 +171,12 @@ return [
          * Middleware to attach to the docs endpoint (if `add_routes` is true).
          */
         'middleware' => [],
+        /*
+         * Directory within `public` in which to store CSS and JS assets.
+         * By default, assets are stored in `public/vendor/scribe`.
+         * If set, assets will be stored in `public/{{assets_directory}}`
+         */
+        'assets_directory' => null,
     ],
 
     'try_it_out' => [
@@ -185,6 +191,16 @@ return [
          * Leave as null to use the current app URL (config(app.url)).
          */
         'base_url' => null,
+
+        /**
+         * Fetch a CSRF token before each request, and add it as an X-XSRF-TOKEN header. Needed if you're using Laravel Sanctum.
+         */
+        'use_csrf' => false,
+
+        /**
+         * The URL to fetch the CSRF token from (if `use_csrf` is true).
+         */
+        'csrf_url' => '/sanctum/csrf-cookie',
     ],
 
     /*
@@ -247,7 +263,7 @@ INTRO
     /*
      * Example requests for each endpoint will be shown in each of these languages.
      * Supported options are: bash, javascript, php, python
-     * To add a language of your own, see https://scribe.knuckles.wtf/laravel/advanced/adding-example-languages
+     * To add a language of your own, see https://scribe.knuckles.wtf/laravel/advanced/example-requests
      *
      */
     'example_languages' => [
@@ -340,9 +356,9 @@ INTRO
         ],
         'responses' => [
             Strategies\Responses\UseTransformerTags::class,
+            Strategies\Responses\UseApiResourceTags::class,
             Strategies\Responses\UseResponseTag::class,
             Strategies\Responses\UseResponseFileTag::class,
-            Strategies\Responses\UseApiResourceTags::class,
             Strategies\Responses\ResponseCalls::class,
         ],
         'responseFields' => [

@@ -18,7 +18,7 @@ class InvitationFactory extends Factory
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->email,
             'token' => Str::random(60),
-            'status' => $this->faker->randomElement(InvitationStatus::all()),
+            'status' => $this->faker->randomElement(InvitationStatus::cases()),
             'role_names' => $this->faker->randomElements(UserRole::all()),
             'created_by' => null,
         ];
@@ -27,7 +27,7 @@ class InvitationFactory extends Factory
     public function pending(): InvitationFactory
     {
         return $this->state(fn(array $attributed) => [
-            'status' => InvitationStatus::PENDING,
+            'status' => InvitationStatus::Pending,
         ]);
     }
 }

@@ -1,14 +1,16 @@
 <?php
 
-/** @noinspection PhpUnusedParameterInspection */
-
 namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Common\RoleResource;
 use App\Models\Common\Role;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ * @group Common Role
+ */
 class RoleController extends Controller
 {
     public function __construct()
@@ -20,13 +22,15 @@ class RoleController extends Controller
      * @response [
      * {
      * "id": 1,
-     * "name": "Admin",
-     * "type": "user"
+     * "name": "Administrator",
+     * "type": "user",
+     * "required": true,
      * }
      * ]
      */
-    public function index(Request $request): Response
+    public function index(Request $request): AnonymousResourceCollection
     {
-        return response(Role::all());
+        $resources = Role::all();
+        return RoleResource::collection($resources);
     }
 }

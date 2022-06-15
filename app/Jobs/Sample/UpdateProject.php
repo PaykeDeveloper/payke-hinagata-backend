@@ -5,13 +5,12 @@
 namespace App\Jobs\Sample;
 
 use App\Models\Sample\Project;
+use App\Repositories\Sample\ProjectRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class UpdateProject implements ShouldQueue
 {
@@ -26,12 +25,8 @@ class UpdateProject implements ShouldQueue
         $this->attributes = $attributes;
     }
 
-    /**
-     * @throws FileDoesNotExist
-     * @throws FileIsTooBig
-     */
-    public function handle(): void
+    public function handle(ProjectRepository $repository): void
     {
-        $this->project->updateFromRequest($this->attributes);
+        $repository->update($this->attributes, $this->project);
     }
 }

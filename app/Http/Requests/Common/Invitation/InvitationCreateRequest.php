@@ -8,6 +8,7 @@ use App\Models\Common\LocaleType;
 use App\Models\Common\UserRole;
 use App\Models\User;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class InvitationCreateRequest extends FormRequest
 {
@@ -23,7 +24,7 @@ class InvitationCreateRequest extends FormRequest
                 Rule::unique(User::class),
                 Rule::unique(Invitation::class),
             ],
-            'locale' => ['required', 'string', Rule::in(LocaleType::all())],
+            'locale' => ['required', new Enum(LocaleType::class)],
             'role_names' => ['present', 'array'],
             'role_names.*' => ['string', Rule::in(UserRole::all())],
         ];

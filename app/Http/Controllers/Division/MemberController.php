@@ -2,23 +2,29 @@
 
 // FIXME: SAMPLE CODE
 
-/** @noinspection PhpUnusedParameterInspection */
-
 namespace App\Http\Controllers\Division;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Division\Member\MemberCreateRequest;
 use App\Http\Requests\Division\Member\MemberUpdateRequest;
+use App\Http\Resources\Division\MemberResource;
 use App\Models\Division\Division;
 use App\Models\Division\Member;
-use Exception;
+use App\Repositories\Division\MemberRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
+/**
+ * @group Division Member
+ */
 class MemberController extends Controller
 {
-    public function __construct()
+    private MemberRepository $repository;
+
+    public function __construct(MemberRepository $repository)
     {
+        $this->repository = $repository;
         $this->middleware('can:view,division');
         $this->authorizeResource(Member::class);
     }
@@ -27,105 +33,89 @@ class MemberController extends Controller
      * @response [
      * {
      * "id": 1,
-     * "user_id": 4,
-     * "division_id": 1,
-     * "created_at": "2021-04-19T10:02:33.000000Z",
-     * "updated_at": "2021-04-19T10:02:33.000000Z",
+     * "division_id": 2,
+     * "user_id": 1,
      * "permission_names": [
-     * "project_viewAll",
-     * "project_createAll",
-     * "project_updateAll",
-     * "project_deleteAll"
+     * "user__view_all"
      * ],
      * "role_names": [
-     * "Member"
-     * ]
+     * "Division Manager"
+     * ],
+     * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
      * ]
      */
-    public function index(Request $request, Division $division): Response
+    public function index(Request $request, Division $division): AnonymousResourceCollection
     {
-        $members = Member::findFromRequest($request->user(), $division);
-        return response($members);
+        $resources = $this->repository->index($request->user(), $division);
+        return MemberResource::collection($resources);
     }
 
     /**
-     * @response {
+     * @response
+     * {
      * "id": 1,
-     * "user_id": 4,
-     * "division_id": 1,
-     * "created_at": "2021-04-19T10:02:33.000000Z",
-     * "updated_at": "2021-04-19T10:02:33.000000Z",
+     * "division_id": 2,
+     * "user_id": 1,
      * "permission_names": [
-     * "project_viewAll",
-     * "project_createAll",
-     * "project_updateAll",
-     * "project_deleteAll"
+     * "user__view_all"
      * ],
      * "role_names": [
-     * "Member"
-     * ]
+     * "Division Manager"
+     * ],
+     * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
      */
-    public function store(MemberCreateRequest $request, Division $division): Response
+    public function store(MemberCreateRequest $request, Division $division): MemberResource
     {
-        $member = Member::createFromRequest($request->validated(), $division);
-        return response($member);
+        $resource = $this->repository->store($request->validated(), $division);
+        return MemberResource::make($resource);
     }
 
     /**
-     * @response {
+     * @response
+     * {
      * "id": 1,
-     * "user_id": 4,
-     * "division_id": 1,
-     * "created_at": "2021-04-19T10:02:33.000000Z",
-     * "updated_at": "2021-04-19T10:02:33.000000Z",
+     * "division_id": 2,
+     * "user_id": 1,
      * "permission_names": [
-     * "project_viewAll",
-     * "project_createAll",
-     * "project_updateAll",
-     * "project_deleteAll"
+     * "user__view_all"
      * ],
      * "role_names": [
-     * "Member"
-     * ]
+     * "Division Manager"
+     * ],
+     * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
      */
-    public function show(Request $request, Division $division, Member $member): Response
+    public function show(Request $request, Division $division, Member $member): MemberResource
     {
-        return response($member);
+        return MemberResource::make($member);
     }
 
     /**
-     * @response {
+     * @response
+     * {
      * "id": 1,
-     * "user_id": 4,
-     * "division_id": 1,
-     * "created_at": "2021-04-19T10:02:33.000000Z",
-     * "updated_at": "2021-04-19T10:02:33.000000Z",
+     * "division_id": 2,
+     * "user_id": 1,
      * "permission_names": [
-     * "project_viewAll",
-     * "project_createAll",
-     * "project_updateAll",
-     * "project_deleteAll"
+     * "user__view_all"
      * ],
      * "role_names": [
-     * "Member"
-     * ]
+     * "Division Manager"
+     * ],
+     * "created_at": "2022-06-13T03:55:24.000000Z"
      * }
      */
-    public function update(MemberUpdateRequest $request, Division $division, Member $member): Response
+    public function update(MemberUpdateRequest $request, Division $division, Member $member): MemberResource
     {
-        $result = $member->updateFromRequest($request->validated());
-        return response($result);
+        $resource = $this->repository->update($request->validated(), $member);
+        return MemberResource::make($resource);
     }
 
-    /**
-     * @throws Exception
-     */
     public function destroy(Request $request, Division $division, Member $member): Response
     {
         $member->delete();
-        return response(null, 204);
+        return response()->noContent();
     }
 }

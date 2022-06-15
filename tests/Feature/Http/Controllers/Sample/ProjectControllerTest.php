@@ -11,8 +11,8 @@ use App\Models\Division\MemberRole;
 use App\Models\Sample\Priority;
 use App\Models\Sample\Project;
 use App\Models\User;
+use DateTimeZone;
 use Illuminate\Foundation\Testing\WithFaker;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
@@ -38,13 +38,8 @@ class ProjectControllerTest extends TestCase
         $this->actingAs($this->user);
 
         $this->division = Division::factory()->create();
-        $this->member = Member::factory()->create([
-            'user_id' => $this->user->id,
-            'division_id' => $this->division->id,
-        ]);
-        $this->project = Project::factory()->create([
-            'division_id' => $this->division->id,
-        ]);
+        $this->member = Member::factory()->for($this->user)->for($this->division)->create();
+        $this->project = Project::factory()->for($this->division)->create();
     }
 
     /**
@@ -57,13 +52,17 @@ class ProjectControllerTest extends TestCase
     public function testIndexSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.projects.index', ['division' => $this->division->id]));
 
         $response->assertOk()
             ->assertJsonCount(1)
-            ->assertJsonFragment($this->project->toArray());
+            ->assertJsonFragment(['slug' => $this->project->slug]);
     }
 
     /**
@@ -72,7 +71,11 @@ class ProjectControllerTest extends TestCase
     public function testStoreSuccessWithRequiredParams($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = ['name' => $this->faker->name];
 
@@ -90,16 +93,23 @@ class ProjectControllerTest extends TestCase
     public function testStoreSuccessWithFullParams($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
+        /** @var Member $member */
+        $member = Member::factory()->for($this->division)->create();
         $startDate = $this->faker->date();
         $finishedAt = $this->faker->dateTimeBetween($startDate, '+6day')
-            ->setTimezone(new \DateTimeZone('Asia/Tokyo'))
+            ->setTimezone(new DateTimeZone('Asia/Tokyo'))
             ->format("Y-m-d\TH:i:s.u\Z");
         $data = [
+            'member_id' => $member->id,
             'name' => $this->faker->name,
             'description' => $this->faker->text,
-            'priority' => $this->faker->randomElement(Priority::all()),
+            'priority' => $this->faker->randomElement(Priority::values()),
             'approved' => $this->faker->boolean,
             'start_date' => $startDate,
             'finished_at' => $finishedAt,
@@ -122,7 +132,11 @@ class ProjectControllerTest extends TestCase
     public function testStoreAsyncSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = ['name' => $this->faker->name];
 
@@ -137,7 +151,11 @@ class ProjectControllerTest extends TestCase
     public function testShowSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->getJson(route('divisions.projects.show', [
             'division' => $this->division->id,
@@ -145,7 +163,7 @@ class ProjectControllerTest extends TestCase
         ]));
 
         $response->assertOk()
-            ->assertJsonFragment($this->project->toArray());
+            ->assertJsonFragment(['slug' => $this->project->slug]);
     }
 
     /**
@@ -154,7 +172,11 @@ class ProjectControllerTest extends TestCase
     public function testUpdateSuccessWithSingleParam($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = [
             'name' => $this->faker->name,
@@ -175,16 +197,24 @@ class ProjectControllerTest extends TestCase
     public function testUpdateSuccessWithFullParams($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
+
+        /** @var Member $member */
+        $member = Member::factory()->for($this->member->division)->create();
 
         $startDate = $this->faker->date();
         $finishedAt = $this->faker->dateTimeBetween($startDate, '+6day')
-            ->setTimezone(new \DateTimeZone('Asia/Tokyo'))
+            ->setTimezone(new DateTimeZone('Asia/Tokyo'))
             ->format("Y-m-d\TH:i:s.u\Z");
         $data = [
+            'member_id' => $member->id,
             'name' => $this->faker->name,
             'description' => $this->faker->text,
-            'priority' => $this->faker->randomElement(Priority::all()),
+            'priority' => $this->faker->randomElement(Priority::values()),
             'approved' => $this->faker->boolean,
             'start_date' => $startDate,
             'finished_at' => $finishedAt,
@@ -208,7 +238,11 @@ class ProjectControllerTest extends TestCase
     public function testUpdateAsyncSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = [
             'name' => $this->faker->name,
@@ -228,7 +262,11 @@ class ProjectControllerTest extends TestCase
     public function testDestroySuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->deleteJson(route('divisions.projects.destroy', [
             'division' => $this->division->id,
@@ -237,7 +275,7 @@ class ProjectControllerTest extends TestCase
 
         $response->assertNoContent();
 
-        $result = Project::find($this->project->id);
+        $result = Project::query()->find($this->project->id);
         $this->assertNull($result);
     }
 
@@ -247,7 +285,11 @@ class ProjectControllerTest extends TestCase
     public function testExportSuccess($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $response = $this->get("api/v1/divisions/{$this->division->id}/projects/download");
 
@@ -268,7 +310,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->getJson(route('divisions.projects.index', ['division' => $this->division->id]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -285,7 +327,7 @@ class ProjectControllerTest extends TestCase
             'division' => $this->division->id,
         ]), $data);
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertForbidden();
     }
 
     /**
@@ -301,7 +343,7 @@ class ProjectControllerTest extends TestCase
             'project' => $this->project->slug,
         ]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -319,7 +361,7 @@ class ProjectControllerTest extends TestCase
             'project' => $this->project->slug,
         ]), $data);
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertForbidden();
     }
 
     /**
@@ -328,7 +370,11 @@ class ProjectControllerTest extends TestCase
     public function testUpdateOptimisticLock($userRole, $memberRole)
     {
         $this->user->syncRoles($userRole);
-        $this->member->syncRoles($memberRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
 
         $data = [
             'name' => $this->faker->name,
@@ -340,8 +386,35 @@ class ProjectControllerTest extends TestCase
             'project' => $this->project->slug,
         ]), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['lock_version']]);
+    }
+
+    /**
+     * @dataProvider provideAuthorizedOtherRole
+     */
+    public function testUpdateIncorrectMember($userRole, $memberRole)
+    {
+        $this->user->syncRoles($userRole);
+        if ($memberRole) {
+            $this->member->syncRoles($memberRole);
+        } else {
+            $this->member->delete();
+        }
+
+        /** @var Member $member */
+        $member = Member::factory()->create();
+        $data = [
+            'member_id' => $member->id,
+        ];
+
+        $response = $this->putJson(route('divisions.projects.update', [
+            'division' => $this->division->id,
+            'project' => $this->project->slug,
+        ]), $data);
+
+        $response->assertUnprocessable()
+            ->assertJsonStructure(['errors' => ['member_id']]);
     }
 
     /**
@@ -357,7 +430,7 @@ class ProjectControllerTest extends TestCase
             'project' => $this->project->slug,
         ]));
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertForbidden();
     }
 
     public function provideAuthorizedViewRole(): array

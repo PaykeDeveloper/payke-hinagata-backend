@@ -6,16 +6,14 @@ namespace App\Jobs\Sample;
 
 use App\Mail\Sample\ProjectCreated;
 use App\Models\Division\Division;
-use App\Models\Sample\Project;
 use App\Models\User;
+use App\Repositories\Sample\ProjectRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Mail;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class CreateProject implements ShouldQueue
 {
@@ -32,13 +30,9 @@ class CreateProject implements ShouldQueue
         $this->user = $user;
     }
 
-    /**
-     * @throws FileDoesNotExist
-     * @throws FileIsTooBig
-     */
-    public function handle(): void
+    public function handle(ProjectRepository $repository): void
     {
-        $project = Project::createFromRequest($this->attributes, $this->division);
+        $project = $repository->store($this->attributes, $this->division);
         Mail::to($this->user)->send(new ProjectCreated($project));
     }
 }

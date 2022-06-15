@@ -5,6 +5,7 @@
 namespace App\Models\Sample;
 
 use App\Models\Division\Division;
+use App\Models\Division\Member;
 use App\Models\Traits\OptimisticLocking;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,8 +13,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -24,13 +23,6 @@ class Project extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
     use OptimisticLocking;
-
-    public const RESOURCE = 'project';
-
-    protected $hidden = [
-        'division',
-        'media',
-    ];
 
     /**
      * デフォルトの設定
@@ -63,6 +55,7 @@ class Project extends Model implements HasMedia
     protected $casts = [
         'approved' => 'boolean',
         'coefficient' => 'double',
+        'priority' => Priority::class,
     ];
 
     /**
@@ -93,6 +86,11 @@ class Project extends Model implements HasMedia
         return $this->belongsTo(Division::class);
     }
 
+    public function member(): BelongsTo
+    {
+        return $this->belongsTo(Member::class);
+    }
+
     /**
      * 画像アップロード用の設定
      * @return string|null
@@ -102,11 +100,7 @@ class Project extends Model implements HasMedia
         return $this->getFirstMediaUrl(self::COLLECTION_NAME);
     }
 
-    /**
-     * @throws FileDoesNotExist
-     * @throws FileIsTooBig
-     */
-    private function saveCover(?UploadedFile $value): void
+    public function saveCover(?UploadedFile $value): void
     {
         if ($value) {
             $this->addMedia($value)->toMediaCollection(self::COLLECTION_NAME);
@@ -118,34 +112,5 @@ class Project extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::COLLECTION_NAME)->singleFile();
-    }
-
-    /**
-     * @throws FileDoesNotExist
-     * @throws FileIsTooBig
-     */
-    public static function createFromRequest(mixed $attributes, Division $division): self
-    {
-        $project = new self();
-        $project->fill($attributes);
-        $project->division_id = $division->id;
-        $project->save();
-        if (array_key_exists('cover', $attributes)) {
-            $project->saveCover($attributes['cover']);
-        }
-        return $project->fresh();
-    }
-
-    /**
-     * @throws FileDoesNotExist
-     * @throws FileIsTooBig
-     */
-    public function updateFromRequest(mixed $attributes): self
-    {
-        $this->update($attributes);
-        if (array_key_exists('cover', $attributes)) {
-            $this->saveCover($attributes['cover']);
-        }
-        return $this->fresh();
     }
 }

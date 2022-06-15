@@ -7,7 +7,6 @@ use App\Models\Common\InvitationStatus;
 use App\Models\Common\UserRole;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
@@ -44,8 +43,8 @@ class InvitationControllerTest extends TestCase
         $response = $this->getJson(route('invitations.index'));
 
         $response->assertOk()
-            ->assertJsonCount(Invitation::count())
-            ->assertJsonFragment($invitation->toArray());
+            ->assertJsonCount(Invitation::query()->count())
+            ->assertJsonFragment(['email' => $invitation->email]);
     }
 
     /**
@@ -83,7 +82,7 @@ class InvitationControllerTest extends TestCase
         $response = $this->getJson(route('invitations.show', ['invitation' => $invitation->id]));
 
         $response->assertOk()
-            ->assertJson($invitation->toArray());
+            ->assertJsonFragment(['email' => $invitation->email]);
     }
 
     /**
@@ -119,7 +118,7 @@ class InvitationControllerTest extends TestCase
 
         $response->assertNoContent();
 
-        $result = Invitation::find($invitation->id);
+        $result = Invitation::query()->find($invitation->id);
         $this->assertNull($result);
     }
 
@@ -139,7 +138,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->getJson(route('invitations.index'));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -170,7 +169,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->getJson(route('invitations.show', ['invitation' => $invitation->id]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -205,7 +204,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->postJson(route('invitations.store'), $data);
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -225,7 +224,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->postJson(route('invitations.store'), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['email']]);
     }
 
@@ -247,7 +246,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->postJson(route('invitations.store'), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['email']]);
     }
 
@@ -269,7 +268,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->postJson(route('invitations.store'), $data);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        $response->assertUnprocessable()
             ->assertJsonStructure(['errors' => ['email']]);
     }
 
@@ -288,7 +287,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->patchJson(route('invitations.update', ['invitation' => $invitation->id]), $data);
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -300,7 +299,7 @@ class InvitationControllerTest extends TestCase
     {
         $this->user->syncRoles($role);
         $invitation = Invitation::factory()->create([
-            'status' => $this->faker->randomElement([InvitationStatus::DENIED, InvitationStatus::APPROVED]),
+            'status' => $this->faker->randomElement([InvitationStatus::Denied, InvitationStatus::Approved]),
         ]);
 
         $data = [
@@ -309,7 +308,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->patchJson(route('invitations.update', ['invitation' => $invitation->id]), $data);
 
-        $response->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
+        $response->assertUnprocessable();
     }
 
     /**
@@ -324,7 +323,7 @@ class InvitationControllerTest extends TestCase
 
         $response = $this->deleteJson(route('invitations.destroy', ['invitation' => $invitation->id]));
 
-        $response->assertNotFound();
+        $response->assertForbidden();
     }
 
     /**
@@ -336,12 +335,12 @@ class InvitationControllerTest extends TestCase
     {
         $this->user->syncRoles($role);
         $invitation = Invitation::factory()->create([
-            'status' => $this->faker->randomElement([InvitationStatus::DENIED, InvitationStatus::APPROVED]),
+            'status' => $this->faker->randomElement([InvitationStatus::Denied, InvitationStatus::Approved]),
         ]);
 
         $response = $this->deleteJson(route('invitations.destroy', ['invitation' => $invitation->id]));
 
-        $response->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
+        $response->assertUnprocessable();
     }
 
     public function provideAuthorizedRole(): array
