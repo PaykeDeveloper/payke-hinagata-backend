@@ -62,8 +62,7 @@ class FortifyTest extends TestCase
     {
         $password = $this->faker->password(minLength: 8);
         /** @var User $user */
-        $user = User::factory()->create();
-        $user->update(['password' => Hash::make($password)]);
+        $user = User::factory()->create(['password' => Hash::make($password)]);
 
         $data = [
             'email' => $user->email,
@@ -129,5 +128,22 @@ class FortifyTest extends TestCase
             $response = $this->postJson('reset-password', $data);
             $response->assertOk();
         });
+    }
+
+    public function testUpdatePassword()
+    {
+        $currentPassword = $this->faker->password(minLength: 8);
+        /** @var User $user */
+        $user = User::factory()->create(['password' => Hash::make($currentPassword)]);
+        $this->actingAs($user);
+
+        $password = $this->faker->password(minLength: 8);
+        $data = [
+            'current_password' => $currentPassword,
+            'password' => $password,
+            'password_confirmation' => $password,
+        ];
+        $response = $this->putJson('user/password', $data);
+        $response->assertOk();
     }
 }
