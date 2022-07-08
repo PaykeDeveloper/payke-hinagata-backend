@@ -12,7 +12,7 @@ class DivisionCollection extends ResourceCollection
     {
         /** @var User $user */
         $user = $request->user();
-        $user->members->loadMissing(['permissions', 'roles']);
+        $user->members->loadMissing(['permissions', 'roles.permissions']);
         return parent::toResponse($request);
     }
 }
