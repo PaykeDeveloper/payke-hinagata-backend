@@ -61,6 +61,7 @@ backend-web% php artisan tinker
 
 ```shell
 backend-web% php artisan migrate:fresh
+backend-web% php artisan db:seed
 ```
 
 #### URL一覧を確認

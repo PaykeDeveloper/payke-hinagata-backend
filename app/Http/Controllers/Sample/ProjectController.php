@@ -4,7 +4,7 @@
 
 namespace App\Http\Controllers\Sample;
 
-use App\Exports\CollectionExport;
+use App\Exports\ResourceCollectionExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sample\Project\ProjectCreateRequest;
 use App\Http\Requests\Sample\Project\ProjectUpdateRequest;
@@ -17,8 +17,6 @@ use App\Repositories\Sample\ProjectRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Exception;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
@@ -152,13 +150,10 @@ class ProjectController extends Controller
         return response()->noContent();
     }
 
-    /**
-     * @throws Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     */
-    public function download(Request $request, Division $division): BinaryFileResponse
+    public function download(Request $request, Division $division): Response|BinaryFileResponse
     {
-        return Excel::download(new CollectionExport($division->projects), 'projects.csv');
+        $export = new ResourceCollectionExport($request, ProjectResource::collection($division->projects));
+        return $export->download('projects.csv');
     }
 
     public function storeAsync(ProjectCreateRequest $request, Division $division): Response
