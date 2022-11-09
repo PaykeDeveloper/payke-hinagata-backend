@@ -52,6 +52,7 @@ class Project extends Model implements HasMedia
     protected $dates = [
         'finished_at',
     ];
+
     protected $casts = [
         'approved' => 'boolean',
         'coefficient' => 'double',
@@ -62,6 +63,7 @@ class Project extends Model implements HasMedia
      * 画像アップロード用の設定
      */
     private const COLLECTION_NAME = 'cover';
+
     protected $appends = ['cover_url'];
 
     protected static function booted()
@@ -93,6 +95,7 @@ class Project extends Model implements HasMedia
 
     /**
      * 画像アップロード用の設定
+     *
      * @return string|null
      */
     public function getCoverUrlAttribute(): ?string

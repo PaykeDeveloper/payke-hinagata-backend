@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param \Illuminate\Console\Scheduling\Schedule $schedule
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         // FIXME: SAMPLE CODE
         // $schedule->job(new CountProjects())->everyFiveMinutes()->onOneServer()->withoutOverlapping();
         $schedule->call(function () {
-            \Log::debug("SAMPLE LOGGING");
+            \Log::debug('SAMPLE LOGGING');
         })->name('sample_schedule')->onOneServer()->withoutOverlapping()->everyTenMinutes();
     }
 

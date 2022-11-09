@@ -22,7 +22,9 @@ class DivisionControllerTest extends TestCase
     use WithFaker;
 
     private User $user;
+
     private Division $division;
+
     private Member $member;
 
     public function setUp(): void

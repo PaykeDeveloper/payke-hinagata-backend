@@ -26,7 +26,7 @@ class InvitationFactory extends Factory
 
     public function pending(): InvitationFactory
     {
-        return $this->state(fn(array $attributed) => [
+        return $this->state(fn (array $attributed) => [
             'status' => InvitationStatus::Pending,
         ]);
     }

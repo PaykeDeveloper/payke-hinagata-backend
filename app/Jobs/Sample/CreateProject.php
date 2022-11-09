@@ -20,7 +20,9 @@ class CreateProject implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private Division $division;
+
     private array $attributes;
+
     private User $user;
 
     public function __construct(Division $division, mixed $attributes, User $user)

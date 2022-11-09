@@ -24,7 +24,7 @@ class ProjectFactory extends Factory
 
         return [
             'division_id' => Division::factory(),
-            'member_id' => fn(array $attributes) => $this->faker->boolean() ?
+            'member_id' => fn (array $attributes) => $this->faker->boolean() ?
                 Member::factory(state: ['division_id' => $attributes['division_id']]) : null,
             'slug' => $this->faker->uuid,
             'name' => $this->faker->name,
@@ -36,7 +36,7 @@ class ProjectFactory extends Factory
             'difficulty' => $this->faker->optional()->numberBetween(1, 5),
             'coefficient' => $this->faker->optional()->randomFloat(1, max: 99),
             'productivity' => $this->faker->optional()->randomFloat(3, max: 999999),
-            'lock_version' => $this->faker->randomDigitNotNull
+            'lock_version' => $this->faker->randomDigitNotNull,
         ];
     }
 

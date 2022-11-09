@@ -21,7 +21,7 @@ class ProjectCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-//            'slug' => ['required', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'unique:projects'],
+            //            'slug' => ['required', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'unique:projects'],
             'member_id' => ['nullable', 'integer', Rule::exists('members', 'id')->where(function (Builder $query) {
                 /** @var Division $division */
                 $division = $this->route('division');

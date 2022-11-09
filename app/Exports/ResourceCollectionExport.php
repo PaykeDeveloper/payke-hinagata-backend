@@ -14,6 +14,7 @@ class ResourceCollectionExport implements FromArray, WithHeadings
     use Exportable;
 
     private Request $request;
+
     private ResourceCollection $resourceCollection;
 
     public function __construct(Request $request, ResourceCollection $collection)

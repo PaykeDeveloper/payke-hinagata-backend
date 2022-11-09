@@ -26,8 +26,11 @@ class ProjectControllerTest extends TestCase
     use WithFaker;
 
     private User $user;
+
     private Division $division;
+
     private Member $member;
+
     private Project $project;
 
     public function setUp(): void

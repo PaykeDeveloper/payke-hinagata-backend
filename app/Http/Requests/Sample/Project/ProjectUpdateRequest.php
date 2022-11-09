@@ -21,7 +21,7 @@ class ProjectUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-//            'slug' => ['regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', Rule::unique('projects')->ignore($this->id)],
+            //            'slug' => ['regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', Rule::unique('projects')->ignore($this->id)],
             'member_id' => ['nullable', 'integer', Rule::exists('members', 'id')->where(function (Builder $query) {
                 /** @var Division $division */
                 $division = $this->route('division');

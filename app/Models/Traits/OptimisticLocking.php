@@ -18,6 +18,7 @@ trait OptimisticLocking
 
     /**
      * @throws ValidationException
+     *
      * @see Model::performUpdate()
      */
     protected function performUpdate(Builder $query): bool

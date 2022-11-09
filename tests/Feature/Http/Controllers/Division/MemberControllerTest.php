@@ -22,8 +22,11 @@ class MemberControllerTest extends TestCase
     use WithFaker;
 
     private User $user;
+
     private Division $division;
+
     private Member $member;
+
     private Member $target_member;
 
     public function setUp(): void
@@ -79,7 +82,7 @@ class MemberControllerTest extends TestCase
 
         $data = [
             'user_id' => $user->id,
-            'role_names' => [MemberRole::MEMBER]
+            'role_names' => [MemberRole::MEMBER],
         ];
 
         $response = $this->postJson(route('divisions.members.store', [
@@ -188,7 +191,7 @@ class MemberControllerTest extends TestCase
 
         $data = [
             'user_id' => $user->id,
-            'role_names' => [MemberRole::MEMBER]
+            'role_names' => [MemberRole::MEMBER],
         ];
 
         $response = $this->postJson(route('divisions.members.store', [
@@ -205,7 +208,7 @@ class MemberControllerTest extends TestCase
 
         $data = [
             'user_id' => $this->user->id,
-            'role_names' => [MemberRole::MEMBER]
+            'role_names' => [MemberRole::MEMBER],
         ];
 
         $response = $this->postJson(route('divisions.members.store', [
