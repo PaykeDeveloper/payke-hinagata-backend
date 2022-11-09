@@ -159,12 +159,12 @@ class ProjectController extends Controller
     public function storeAsync(ProjectCreateRequest $request, Division $division): Response
     {
         CreateProject::dispatch($division, $request->validated(), $request->user());
-        return response()->noContent();
+        return response()->noContent(Response::HTTP_ACCEPTED);
     }
 
     public function updateAsync(ProjectUpdateRequest $request, Division $division, Project $project): Response
     {
         UpdateProject::dispatch($project, $request->validated())->afterResponse();
-        return response()->noContent();
+        return response()->noContent(Response::HTTP_ACCEPTED);
     }
 }
