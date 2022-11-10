@@ -4,9 +4,11 @@
 
 namespace App\Models\Sample;
 
+use App\ModelFilters\Sample\ProjectFilter;
 use App\Models\Division\Division;
 use App\Models\Division\Member;
 use App\Models\Traits\OptimisticLocking;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,7 +23,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Project extends Model implements HasMedia
 {
     use HasFactory;
-    use InteractsWithMedia;
     use OptimisticLocking;
 
     /**
@@ -59,11 +60,6 @@ class Project extends Model implements HasMedia
         'priority' => Priority::class,
     ];
 
-    /**
-     * 画像アップロード用の設定
-     */
-    private const COLLECTION_NAME = 'cover';
-
     protected $appends = ['cover_url'];
 
     protected static function booted()
@@ -95,9 +91,16 @@ class Project extends Model implements HasMedia
 
     /**
      * 画像アップロード用の設定
-     *
-     * @return string|null
      */
+    use InteractsWithMedia;
+
+    private const COLLECTION_NAME = 'cover';
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(self::COLLECTION_NAME)->singleFile();
+    }
+
     public function getCoverUrlAttribute(): ?string
     {
         return $this->getFirstMediaUrl(self::COLLECTION_NAME);
@@ -112,8 +115,13 @@ class Project extends Model implements HasMedia
         }
     }
 
-    public function registerMediaCollections(): void
+    /**
+     * APIフィルター用の設定
+     */
+    use Filterable;
+
+    public function modelFilter(): ?string
     {
-        $this->addMediaCollection(self::COLLECTION_NAME)->singleFile();
+        return $this->provideFilter(ProjectFilter::class);
     }
 }

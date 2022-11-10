@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Sample;
 use App\Exports\ResourceCollectionExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sample\Project\ProjectCreateRequest;
+use App\Http\Requests\Sample\Project\ProjectIndexRequest;
 use App\Http\Requests\Sample\Project\ProjectUpdateRequest;
 use App\Http\Resources\Sample\ProjectResource;
 use App\Jobs\Sample\CreateProject;
@@ -56,9 +57,10 @@ class ProjectController extends Controller
      * }
      * ]
      */
-    public function index(Request $request, Division $division): AnonymousResourceCollection
+    public function index(ProjectIndexRequest $request, Division $division): AnonymousResourceCollection
     {
-        return ProjectResource::collection($division->projects);
+        $projects = $division->projects()->filter($request->validated())->get();
+        return ProjectResource::collection($projects);
     }
 
     /**
