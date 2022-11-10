@@ -61,7 +61,7 @@ class CreateNewUserFromInvitation implements CreatesNewUsers
                 }),
             ],
         ], messages: [
-            'token.exists' => __('Register from an Invitation email.')
+            'token.exists' => __('Register from an Invitation email.'),
         ]);
 
         return $validator->validate();

@@ -19,6 +19,7 @@ class MemberPolicy
     private const MODEL = ModelType::member;
 
     private Division $division;
+
     private ?Member $member;
 
     public function __construct(Request $request)

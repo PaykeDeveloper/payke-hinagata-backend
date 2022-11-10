@@ -13,6 +13,7 @@ use App\Models\Sample\Project;
 use App\Models\User;
 use DateTimeZone;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\Response;
 use Tests\RefreshSeedDatabase;
 use Tests\TestCase;
 
@@ -26,8 +27,11 @@ class ProjectControllerTest extends TestCase
     use WithFaker;
 
     private User $user;
+
     private Division $division;
+
     private Member $member;
+
     private Project $project;
 
     public function setUp(): void
@@ -142,7 +146,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->postJson("api/v1/divisions/{$this->division->id}/projects/create-async", $data);
 
-        $response->assertNoContent();
+        $response->assertNoContent(Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -253,7 +257,7 @@ class ProjectControllerTest extends TestCase
             $data
         );
 
-        $response->assertNoContent();
+        $response->assertNoContent(Response::HTTP_ACCEPTED);
     }
 
     /**

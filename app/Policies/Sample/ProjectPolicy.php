@@ -20,6 +20,7 @@ class ProjectPolicy
     private const MODEL = ModelType::project;
 
     private Division $division;
+
     private ?Member $member;
 
     public function __construct(Request $request)

@@ -12,6 +12,7 @@ class InvitationUser extends Notification
     use Queueable;
 
     private Invitation $invitation;
+
     private string $token;
 
     public function __construct(Invitation $invitation, string $token)

@@ -12,9 +12,9 @@ class TokenCreateRequest extends LoginRequest
     public function rules(): array
     {
         return [
-                'package_name' => ['required', new Enum(ClientApp::class)],
-                'platform_type' => ['required', new Enum(PlatformType::class)],
-                'device_id' => ['nullable', 'string'],
-            ] + parent::rules();
+            'package_name' => ['required', new Enum(ClientApp::class)],
+            'platform_type' => ['required', new Enum(PlatformType::class)],
+            'device_id' => ['nullable', 'string'],
+        ] + parent::rules();
     }
 }

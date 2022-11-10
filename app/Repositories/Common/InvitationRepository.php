@@ -4,7 +4,6 @@ namespace App\Repositories\Common;
 
 use App\Models\Common\Invitation;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
 class InvitationRepository

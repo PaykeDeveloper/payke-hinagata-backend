@@ -19,7 +19,7 @@ class FormRequest extends BaseFormRequest
     }
 
     /**
-     * @param array $casts
+     * @param  array  $casts
      */
     private function castInputs(array $casts): void
     {

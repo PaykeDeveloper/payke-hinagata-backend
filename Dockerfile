@@ -23,4 +23,7 @@ RUN docker-php-ext-install exif
 RUN apt-get install -y libzip-dev
 RUN docker-php-ext-install zip
 
+# laravel-lang/publisher
+RUN docker-php-ext-install bcmath
+
 WORKDIR /var/www/html

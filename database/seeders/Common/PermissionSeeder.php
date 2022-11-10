@@ -10,13 +10,13 @@ use Illuminate\Database\Seeder;
 class PermissionSeeder extends Seeder
 {
     private const RESOURCES = [
-        ['model' => ModelType::user, 'all' => true, 'own' => true,],
-        ['model' => ModelType::permission, 'all' => true, 'own' => false,],
-        ['model' => ModelType::role, 'all' => true, 'own' => false,],
-        ['model' => ModelType::invitation, 'all' => true, 'own' => false,],
-        ['model' => ModelType::division, 'all' => true, 'own' => true,],
-        ['model' => ModelType::member, 'all' => true, 'own' => true,],
-        ['model' => ModelType::project, 'all' => true, 'own' => false,],
+        ['model' => ModelType::user, 'all' => true, 'own' => true],
+        ['model' => ModelType::permission, 'all' => true, 'own' => false],
+        ['model' => ModelType::role, 'all' => true, 'own' => false],
+        ['model' => ModelType::invitation, 'all' => true, 'own' => false],
+        ['model' => ModelType::division, 'all' => true, 'own' => true],
+        ['model' => ModelType::member, 'all' => true, 'own' => true],
+        ['model' => ModelType::project, 'all' => true, 'own' => false],
     ];
 
     public function run()

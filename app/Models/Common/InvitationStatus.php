@@ -22,7 +22,7 @@ enum InvitationStatus: string implements BaseEnum
 
     public static function getOptions(): Collection
     {
-        return collect(self::cases())->map(fn(self $case) => [
+        return collect(self::cases())->map(fn (self $case) => [
             'value' => $case->value,
             'label' => $case->getLabel(),
         ]);

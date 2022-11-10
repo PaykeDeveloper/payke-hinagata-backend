@@ -31,11 +31,12 @@ class MemberCreateRequest extends FormRequest
                         || $user->hasCreateAllPermissionTo(ModelType::member);
 
                     return $enableAll ? $query : $query->where('id', $user->id);
-                })],
+                }),
+            ],
             'role_names' => ['array'],
             'role_names.*' => ['string', Rule::exists('roles', 'name')->where(function (Builder $query) {
                 return $query->whereIn('name', MemberRole::all());
-            })]
+            })],
         ];
     }
 }

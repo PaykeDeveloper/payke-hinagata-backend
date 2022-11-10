@@ -29,11 +29,11 @@ class DatabaseSeeder extends Seeder
         ProjectSeeder::class,
     ];
 
-
     /**
      * Seed the application's database.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function run()

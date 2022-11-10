@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get(\App\Providers\RouteServiceProvider::HOME, fn() => response(null, 204));
+Route::get(\App\Providers\RouteServiceProvider::HOME, fn () => response(null, 204));
 
 if (!App::isProduction() && config('app.debug')) {
-    Route::get('/', fn() => view('welcome'));
-    Route::get('/phpinfo', fn() => phpinfo());
+    Route::get('/', fn () => view('welcome'));
+    Route::get('/phpinfo', fn () => phpinfo());
 }

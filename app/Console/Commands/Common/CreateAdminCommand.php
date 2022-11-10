@@ -20,10 +20,10 @@ class CreateAdminCommand extends Command
 
     public function handle(): int
     {
-        $name = $this->option("name");
-        $email = $this->option("email");
-        $password = $this->option("password");
-        $passwordConfirmation = $this->option("password");
+        $name = $this->option('name');
+        $email = $this->option('email');
+        $password = $this->option('password');
+        $passwordConfirmation = $this->option('password');
 
         while ($name === null) {
             $name = $this->ask('What is the name?');

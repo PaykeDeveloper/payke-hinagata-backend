@@ -167,6 +167,8 @@ return [
         /*
          * Package Service Providers...
          */
+        Spatie\Permission\PermissionServiceProvider::class,
+        EloquentFilter\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -178,7 +180,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
 
-        Spatie\Permission\PermissionServiceProvider::class,
     ],
 
     /*

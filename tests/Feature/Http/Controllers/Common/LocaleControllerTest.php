@@ -25,7 +25,7 @@ class LocaleControllerTest extends TestCase
                 '*' => [
                     'value',
                     'label',
-                ]
+                ],
             ]);
     }
 }

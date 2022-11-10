@@ -5,8 +5,11 @@ namespace App\Models\Common;
 final class UserRole
 {
     public const ADMINISTRATOR = 'Administrator';
+
     public const ORGANIZER = 'Organizer';
+
     public const MANAGER = 'Manager';
+
     public const STAFF = 'Staff';
 
     public static function all(): array

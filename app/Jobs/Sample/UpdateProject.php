@@ -17,6 +17,7 @@ class UpdateProject implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private Project $project;
+
     private array $attributes;
 
     public function __construct(Project $project, mixed $attributes)

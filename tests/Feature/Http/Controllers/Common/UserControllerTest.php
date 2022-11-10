@@ -152,7 +152,6 @@ class UserControllerTest extends TestCase
             ->assertJsonStructure(['errors' => ['role_names.0']]);
     }
 
-
     /**
      * 更新で、権限エラーになる。
      *

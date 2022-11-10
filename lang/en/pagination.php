@@ -1,3 +1,8 @@
 <?php
 
-return require __DIR__ . '/../../vendor/laravel-lang/lang/source/pagination.php';
+declare(strict_types=1);
+
+return [
+    'next' => 'Next &raquo;',
+    'previous' => '&laquo; Previous',
+];
