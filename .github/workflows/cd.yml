@@ -7,5 +7,44 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - run: echo TODO
+      - uses: actions/checkout@v3
+      - uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.GCP_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@v1
+        with:
+          install_components: beta
+      - run: gcloud auth configure-docker $HOST
+        env:
+          HOST: ${{ secrets.GCP_REPOSITORY_HOST }}
+      - uses: docker/metadata-action@v4
+        id: meta
+        with:
+          images: ${{ secrets.GCP_REPOSITORY_HOST }}${{ secrets.GCP_REPOSITORY_PATH }}
+      - uses: docker/build-push-action@v3
+        with:
+          file: Dockerfile.prod.dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            SENTRY_RELEASE=${{ steps.meta.outputs.version }}
+      - run: gcloud beta run jobs update migrate --image $IMAGE --region $REGION --wait
+        env:
+          IMAGE: ${{ secrets.GCP_REPOSITORY_HOST }}${{ secrets.GCP_REPOSITORY_PATH }}:${{ steps.meta.outputs.version }}
+          REGION: ${{ secrets.GCP_REGION }}
+      - run: gcloud beta run jobs update seed --image $IMAGE --region $REGION --wait
+        env:
+          IMAGE: ${{ secrets.GCP_REPOSITORY_HOST }}${{ secrets.GCP_REPOSITORY_PATH }}:${{ steps.meta.outputs.version }}
+          REGION: ${{ secrets.GCP_REGION }}
+      - uses: google-github-actions/deploy-cloudrun@v1
+        id: deploy
+        with:
+          service: ${{ secrets.GCP_CROUD_RUN }}
+          image: ${{ secrets.GCP_REPOSITORY_HOST }}${{ secrets.GCP_REPOSITORY_PATH }}:${{ steps.meta.outputs.version }}
+      - run: curl "${{ steps.deploy.outputs.url }}"
