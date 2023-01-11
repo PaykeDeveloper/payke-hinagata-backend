@@ -32,7 +32,7 @@ RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/a
 # Switch to the production php.ini for production operations.
 # RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # https://github.com/docker-library/docs/blob/master/php/README.md#configuration
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
@@ -42,12 +42,6 @@ RUN a2enmod rewrite
 
 
 RUN apt-get update
-
-# xdebug
-RUN pecl install xdebug
-RUN docker-php-ext-enable xdebug
-COPY ./docker/usr/local/etc/php/php.ini "$PHP_INI_DIR/php.ini-xdebug"
-RUN cat "$PHP_INI_DIR/php.ini-xdebug" >> "$PHP_INI_DIR/php.ini"
 
 # composer
 COPY --from=composer:2.4 /usr/bin/composer /usr/bin/composer
@@ -65,8 +59,12 @@ RUN docker-php-ext-install exif
 RUN apt-get install -y libzip-dev
 RUN docker-php-ext-install zip
 
-# laravel-lang/publisher
-RUN docker-php-ext-install bcmath
-
+COPY . .
 RUN chown -R www-data:www-data .
 USER www-data
+
+ENV APP_ENV=production
+RUN ln -s /secrets/env .env.production
+
+RUN composer install --no-dev --optimize-autoloader
+RUN composer optimize
