@@ -120,11 +120,11 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             SENTRY_RELEASE=${{ steps.meta.outputs.version }}
-      - run: gcloud beta run jobs update migrate --image $IMAGE --region $REGION --execute-now
+      - run: gcloud beta run jobs update migrate --image $IMAGE --region $REGION --wait
         env:
           IMAGE: ${{ secrets.GCP_REPOSITORY_HOST }}${{ secrets.GCP_REPOSITORY_PATH }}:${{ steps.meta.outputs.version }}
           REGION: ${{ secrets.GCP_REGION }}
-      - run: gcloud beta run jobs update seed --image $IMAGE --region $REGION --execute-now
+      - run: gcloud beta run jobs update seed --image $IMAGE --region $REGION --wait
         env:
           IMAGE: ${{ secrets.GCP_REPOSITORY_HOST }}${{ secrets.GCP_REPOSITORY_PATH }}:${{ steps.meta.outputs.version }}
           REGION: ${{ secrets.GCP_REGION }}
