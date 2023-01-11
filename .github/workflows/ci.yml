@@ -90,7 +90,7 @@ jobs:
       - run: composer test:coverage-text
   deploy:
     needs: test
-    if: github.ref == 'refs/heads/master'
+#    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -124,7 +124,7 @@ jobs:
         env:
           IMAGE: ${{ secrets.GCP_REPOSITORY_HOST }}${{ secrets.GCP_REPOSITORY_PATH }}:${{ steps.meta.outputs.version }}
           REGION: ${{ secrets.GCP_REGION }}
-      - run: gcloud beta run jobs update db_seed --image $IMAGE --region $REGION --execute-now
+      - run: gcloud beta run jobs update seed --image $IMAGE --region $REGION --execute-now
         env:
           IMAGE: ${{ secrets.GCP_REPOSITORY_HOST }}${{ secrets.GCP_REPOSITORY_PATH }}:${{ steps.meta.outputs.version }}
           REGION: ${{ secrets.GCP_REGION }}
