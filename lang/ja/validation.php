@@ -12,6 +12,7 @@ return [
     'alpha_dash' => ':Attributeには、英数字(\'A-Z\',\'a-z\',\'0-9\')とハイフンと下線(\'-\',\'_\')が使用できます。',
     'alpha_num' => ':Attributeには、英数字(\'A-Z\',\'a-z\',\'0-9\')が使用できます。',
     'array' => ':Attributeには、配列を指定してください。',
+    'ascii' => ':Attributeには、英数字と記号のみ使用可能です。',
     'before' => ':Attributeには、:dateより前の日付を指定してください。',
     'before_or_equal' => ':Attributeには、:date以前の日付を指定してください。',
     'between' => [
@@ -26,6 +27,7 @@ return [
     'date' => ':Attributeは、正しい日付ではありません。',
     'date_equals' => ':Attributeは:dateに等しい日付でなければいけません。',
     'date_format' => ':Attributeの形式が\':format\'と一致しません。',
+    'decimal' => 'The :attribute must have :decimal decimal places.',
     'declined' => ':Attributeを拒否する必要があります。',
     'declined_if' => ':Otherが:valueの場合、:attributeを拒否する必要があります。',
     'different' => ':Attributeと:otherには、異なるものを指定してください。',
@@ -61,6 +63,7 @@ return [
     'ipv4' => ':AttributeはIPv4アドレスを指定してください。',
     'ipv6' => ':AttributeはIPv6アドレスを指定してください。',
     'json' => ':Attributeには、有効なJSON文字列を指定してください。',
+    'lowercase' => ':Attributeは、小文字で入力してください。',
     'lt' => [
         'array' => ':Attributeの項目数は、:value個より少なくなければいけません。',
         'file' => ':Attributeは、:value KBより小さくなければいけません。',
@@ -126,8 +129,10 @@ return [
     'starts_with' => ':Attributeは、次のいずれかで始まる必要があります。:values',
     'string' => ':Attributeには、文字列を指定してください。',
     'timezone' => ':Attributeには、有効なタイムゾーンを指定してください。',
+    'ulid' => ':Attributeは、有効なULIDでなければいけません。',
     'unique' => '指定の:attributeは既に使用されています。',
     'uploaded' => ':Attributeのアップロードに失敗しました。',
+    'uppercase' => ':Attributeは、大文字で入力してください。',
     'url' => ':Attributeは、有効なURL形式で指定してください。',
     'uuid' => ':Attributeは、有効なUUIDでなければいけません。',
     'attributes' => [
