@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 /**
  * @group Common Locale
+ *
  * @response [
  * {
  * "value": "ja",
