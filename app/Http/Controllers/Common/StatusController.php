@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 /**
  * @group Common Status
+ *
  * @response {
  * "is_authenticated": false
  * }

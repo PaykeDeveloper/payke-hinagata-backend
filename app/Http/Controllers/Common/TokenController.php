@@ -25,6 +25,7 @@ class TokenController extends AuthenticatedSessionController
 
     /**
      * @unauthenticated
+     *
      * @response {
      * "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
      * }
