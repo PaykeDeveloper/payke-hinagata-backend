@@ -343,7 +343,7 @@ class InvitationControllerTest extends TestCase
         $response->assertUnprocessable();
     }
 
-    public function provideAuthorizedRole(): array
+    public static function provideAuthorizedRole(): array
     {
         return [
             [UserRole::ADMINISTRATOR],
@@ -351,7 +351,7 @@ class InvitationControllerTest extends TestCase
         ];
     }
 
-    public function provideUnAuthorizedRole(): array
+    public static function provideUnAuthorizedRole(): array
     {
         return [
             [UserRole::MANAGER],
