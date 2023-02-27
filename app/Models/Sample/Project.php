@@ -50,7 +50,7 @@ class Project extends Model implements HasMedia
      * Mutatorはその何倍も大事。。
      * https://readouble.com/laravel/8.x/ja/eloquent-mutators.html
      */
-    protected $dates = [
+    protected array $dates = [
         'finished_at',
     ];
 
