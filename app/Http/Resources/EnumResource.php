@@ -9,10 +9,11 @@ class EnumResource extends JsonResource
 {
     public function toArray($request): array
     {
-        /** @var BaseEnum $this */
+        /** @var BaseEnum $enum */
+        $enum = $this->resource;
         return [
-            'value' => $this->value,
-            'label' => $this->getLabel(),
+            'value' => $enum->value,
+            'label' => $enum->getLabel(),
         ];
     }
 }
