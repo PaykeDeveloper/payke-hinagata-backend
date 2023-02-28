@@ -15,7 +15,6 @@ class InvitationFactory extends Factory
 
     public function definition(): array
     {
-
         return [
             'name' => fake()->name,
             'email' => fake()->unique()->email,
@@ -28,7 +27,7 @@ class InvitationFactory extends Factory
 
     public function pending(): InvitationFactory
     {
-        return $this->state(fn(array $attributed) => [
+        return $this->state(fn (array $attributed) => [
             'status' => InvitationStatus::Pending,
         ]);
     }
