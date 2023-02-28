@@ -2,17 +2,19 @@
 
 namespace App\Http\Resources;
 
-use App\Models\BaseEnum;
+use App\Models\Common\InvitationStatus;
+use App\Models\Common\LocaleType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class EnumResource extends JsonResource
 {
     public function toArray($request): array
     {
-        /** @var BaseEnum $this */
+        /** @var LocaleType|InvitationStatus $enum */
+        $enum = $this->resource;
         return [
-            'value' => $this->value,
-            'label' => $this->getLabel(),
+            'value' => $enum->value,
+            'label' => $enum->getLabel(),
         ];
     }
 }

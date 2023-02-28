@@ -269,7 +269,7 @@ class MemberControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function provideAuthorizedRole(): array
+    public static function provideAuthorizedRole(): array
     {
         return [
             [UserRole::ADMINISTRATOR, null],
@@ -278,7 +278,7 @@ class MemberControllerTest extends TestCase
         ];
     }
 
-    public function provideUnAuthorizedRole(): array
+    public static function provideUnAuthorizedRole(): array
     {
         return [
             [UserRole::ORGANIZER, MemberRole::MEMBER],

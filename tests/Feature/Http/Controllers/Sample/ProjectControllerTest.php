@@ -437,7 +437,7 @@ class ProjectControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function provideAuthorizedViewRole(): array
+    public static function provideAuthorizedViewRole(): array
     {
         return [
             [UserRole::ADMINISTRATOR, null],
@@ -448,14 +448,14 @@ class ProjectControllerTest extends TestCase
         ];
     }
 
-    public function provideUnAuthorizedViewRole(): array
+    public static function provideUnAuthorizedViewRole(): array
     {
         return [
             [UserRole::ORGANIZER, null],
         ];
     }
 
-    public function provideAuthorizedOtherRole(): array
+    public static function provideAuthorizedOtherRole(): array
     {
         return [
             [UserRole::ADMINISTRATOR, null],
@@ -464,7 +464,7 @@ class ProjectControllerTest extends TestCase
         ];
     }
 
-    public function provideUnAuthorizedOtherRole(): array
+    public static function provideUnAuthorizedOtherRole(): array
     {
         return [
             [UserRole::MANAGER, MemberRole::MEMBER],

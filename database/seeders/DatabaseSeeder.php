@@ -32,11 +32,9 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function run()
+    public function run(): void
     {
         DB::transaction(function () {
             $this->call(self::BASE_SEEDS);

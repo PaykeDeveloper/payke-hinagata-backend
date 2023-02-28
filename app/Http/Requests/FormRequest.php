@@ -18,9 +18,6 @@ class FormRequest extends BaseFormRequest
         }
     }
 
-    /**
-     * @param  array  $casts
-     */
     private function castInputs(array $casts): void
     {
         $inputs = $this->all();

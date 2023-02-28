@@ -293,14 +293,14 @@ class DivisionControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function provideAuthorizedIndexOwnRole(): array
+    public static function provideAuthorizedIndexOwnRole(): array
     {
         return [
             [UserRole::STAFF],
         ];
     }
 
-    public function provideAuthorizedIndexOtherRole(): array
+    public static function provideAuthorizedIndexOtherRole(): array
     {
         return [
             [UserRole::ADMINISTRATOR],
@@ -308,14 +308,14 @@ class DivisionControllerTest extends TestCase
         ];
     }
 
-    public function provideUnAuthorizedIndexRole(): array
+    public static function provideUnAuthorizedIndexRole(): array
     {
         return [
             [UserRole::ORGANIZER],
         ];
     }
 
-    public function provideAuthorizedShowOwnRole(): array
+    public static function provideAuthorizedShowOwnRole(): array
     {
         return [
             [UserRole::ADMINISTRATOR, null],
@@ -325,14 +325,14 @@ class DivisionControllerTest extends TestCase
         ];
     }
 
-    public function provideAuthorizedShowOtherRole(): array
+    public static function provideAuthorizedShowOtherRole(): array
     {
         return [
             [UserRole::ADMINISTRATOR],
         ];
     }
 
-    public function provideUnAuthorizedShowRole(): array
+    public static function provideUnAuthorizedShowRole(): array
     {
         return [
             [UserRole::ORGANIZER, null],
@@ -340,7 +340,7 @@ class DivisionControllerTest extends TestCase
         ];
     }
 
-    public function provideAuthorizedCreateRole(): array
+    public static function provideAuthorizedCreateRole(): array
     {
         return [
             [UserRole::ADMINISTRATOR],
@@ -348,7 +348,7 @@ class DivisionControllerTest extends TestCase
         ];
     }
 
-    public function provideUnAuthorizedCreateRole(): array
+    public static function provideUnAuthorizedCreateRole(): array
     {
         return [
             [UserRole::ORGANIZER],
@@ -356,7 +356,7 @@ class DivisionControllerTest extends TestCase
         ];
     }
 
-    public function provideAuthorizedUpdateDeleteOwnRole(): array
+    public static function provideAuthorizedUpdateDeleteOwnRole(): array
     {
         return [
             [UserRole::ADMINISTRATOR, null],
@@ -366,7 +366,7 @@ class DivisionControllerTest extends TestCase
         ];
     }
 
-    public function provideUnAuthorizedUpdateDeleteOwnRole(): array
+    public static function provideUnAuthorizedUpdateDeleteOwnRole(): array
     {
         return [
             [UserRole::ORGANIZER, MemberRole::MEMBER],
@@ -374,7 +374,7 @@ class DivisionControllerTest extends TestCase
         ];
     }
 
-    public function provideAuthorizedUpdateDeleteOtherRole(): array
+    public static function provideAuthorizedUpdateDeleteOtherRole(): array
     {
         return [
             [UserRole::ADMINISTRATOR],
@@ -382,7 +382,7 @@ class DivisionControllerTest extends TestCase
         ];
     }
 
-    public function provideUnAuthorizedUpdateDeleteOtherRole(): array
+    public static function provideUnAuthorizedUpdateDeleteOtherRole(): array
     {
         return [
             [UserRole::ORGANIZER],
