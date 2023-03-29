@@ -44,7 +44,7 @@ RUN a2enmod rewrite
 RUN apt-get update
 
 # composer
-COPY --from=composer:2.4 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 RUN apt-get install -y unzip
 
 # mysql
@@ -59,9 +59,17 @@ RUN docker-php-ext-install exif
 RUN apt-get install -y libzip-dev
 RUN docker-php-ext-install zip
 
+ARG user=www-data
+ARG group=$user
+
+ENV HOME /home/$user
+RUN mkdir $HOME
+RUN chown -R $user:$group $HOME
+
 COPY . .
-RUN chown -R www-data:www-data .
-USER www-data
+
+RUN chown -R $user:$group .
+USER $user
 
 ENV APP_ENV=production
 RUN ln -s /secrets/env .env.production

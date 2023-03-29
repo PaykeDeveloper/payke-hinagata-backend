@@ -50,7 +50,7 @@ COPY ./docker/usr/local/etc/php/php.ini "$PHP_INI_DIR/php.ini-xdebug"
 RUN cat "$PHP_INI_DIR/php.ini-xdebug" >> "$PHP_INI_DIR/php.ini"
 
 # composer
-COPY --from=composer:2.4 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 RUN apt-get install -y unzip
 
 # mysql
@@ -68,5 +68,12 @@ RUN docker-php-ext-install zip
 # laravel-lang/publisher
 RUN docker-php-ext-install bcmath
 
-RUN chown -R www-data:www-data .
-USER www-data
+ARG user=www-data
+ARG group=$user
+
+ENV HOME /home/$user
+RUN mkdir $HOME
+RUN chown -R $user:$group $HOME
+
+RUN chown -R $user:$group .
+USER $user
