@@ -37,8 +37,8 @@ class Project extends Model implements HasMedia
      * Eloquentの規約は大事。。
      * https://readouble.com/laravel/8.x/ja/eloquent.html
      */
-//    public $incrementing = false;
-//    protected $keyType = 'string';
+    //    public $incrementing = false;
+    //    protected $keyType = 'string';
     protected $guarded = [
         'id',
         'slug',
