@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
  */
 class Member extends Model
 {
-    use HasFactory, HasAuthorization;
+    use HasAuthorization, HasFactory;
 
     protected string $guard_name = 'web';
 
