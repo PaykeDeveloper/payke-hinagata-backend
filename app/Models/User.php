@@ -17,9 +17,9 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * @mixin IdeHelperUser
  */
-class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
+class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, HasAuthorization;
+    use HasApiTokens, HasAuthorization, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
